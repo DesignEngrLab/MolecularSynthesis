@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CE5AA992-FBAB-43F8-9F4F-4E639F8726E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>GraphSynth.Search</RootNamespace>
+    <AssemblyName>GraphSynth.Search</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OBDotNet, Version=0.5.0.0, Culture=neutral, PublicKeyToken=3069c9c4f488e4bd">
+      <HintPath>..\..\Tools\lib\OBDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="OBDotNet, Version=0.5.0.0, Culture=neutral, PublicKeyToken=3069c9c4f488e4bd">
+      <HintPath>..\..\Tools\lib\OBDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algorithms\AbstractAlgorithm.cs" />
+    <Compile Include="Algorithms\Bandits\AbstractBandit.cs" />
+    <Compile Include="Algorithms\Bandits\EGreedyBandit.cs" />
+    <Compile Include="Algorithms\Bandits\UCTBandit.cs" />
+    <Compile Include="Algorithms\BFS.cs" />
+    <Compile Include="Algorithms\Evaluations\AbstractEvaluation.cs" />
+    <Compile Include="Algorithms\Evaluations\RolloutEvaluation.cs" />
+    <Compile Include="Algorithms\MCTS.cs" />
+    <Compile Include="Algorithms\Random.cs" />
+    <Compile Include="MoleculeSearch.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
+      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
+      <Name>GraphSynth.BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
+      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
+      <Name>GraphSynth.BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
+      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
+      <Name>GraphSynth.BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
+      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
+      <Name>GraphSynth.BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
+      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
+      <Name>GraphSynth.BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
+      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
+      <Name>GraphSynth.BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
+      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
+      <Name>GraphSynth.BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
+      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
+      <Name>GraphSynth.BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
+      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
+      <Name>GraphSynth.BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
+      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
+      <Name>LAMMPSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
+      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
+      <Name>LAMMPSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
+      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
+      <Name>LAMMPSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
+      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
+      <Name>LAMMPSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
+      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
+      <Name>LAMMPSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
+      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
+      <Name>LAMMPSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
+      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
+      <Name>LAMMPSnow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
+      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
+      <Name>LAMMPSnow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
+      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
+      <Name>LAMMPSnow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
+      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
+      <Name>LAMMPSnow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
+      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
+      <Name>LAMMPSnow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
+      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
+      <Name>LAMMPSnow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OpenBabelFunctions\OpenBabelFunctions.csproj">
+      <Project>{efaa61e4-be78-496f-9846-4464bea08f98}</Project>
+      <Name>OpenBabelFunctions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

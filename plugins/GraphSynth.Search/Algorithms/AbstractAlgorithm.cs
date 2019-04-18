@@ -196,7 +196,7 @@ namespace GraphSynth.Search.Algorithms {
             const double ftol = 1.0e-6;
             const int maxiter = 40000;
             const int maxeval = 20000;
-            Environment.Exit(0);
+            
 
             var minSettings = new lammps.LAMMPSsettings();
             if (periodic) {
@@ -208,8 +208,8 @@ namespace GraphSynth.Search.Algorithms {
                 File.Delete(coeff);
             if (File.Exists(lmpdat))
                 File.Delete(lmpdat);
-
             Converter.moltoUFF(mol, coeff, lmpdat, false, padding);
+ 
 
             string[] lmparg = {"", "-screen", "none", "-log", "log.lammps." + rankMe};
             using (var lmps = new lammps(minSettings, lmparg)) {

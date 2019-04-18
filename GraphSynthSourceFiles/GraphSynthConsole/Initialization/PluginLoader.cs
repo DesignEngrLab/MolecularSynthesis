@@ -148,6 +148,7 @@ namespace GraphSynth
                 if (choice >= 0 && choice < SearchAlgorithms.Count)
                     SearchAlgorithms[choice].RunSearchProcess();
             }
+            Environment.Exit(0);
             if (choice <= 31) PluginDialog();
         }
 

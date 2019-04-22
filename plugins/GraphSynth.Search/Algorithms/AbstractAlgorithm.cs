@@ -219,6 +219,7 @@ namespace GraphSynth.Search.Algorithms {
                 OBFunctions.updatexyz(mol, lmps.getAtomPos());
             }
 
+
             return mol;
         }
 

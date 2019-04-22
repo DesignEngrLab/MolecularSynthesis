@@ -16,121 +16,121 @@ namespace library
         public partial struct Internal
         {
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_open")]
             internal static extern void lammps_open_0(int _0, string[] _1, IntPtr _2, void** _3);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_open_no_mpi")]
             internal static extern void lammps_open_no_mpi_0(int _0, string[] _1, void** _2);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_open_no_mpi")]
             internal static extern void lammps_open_no_mpi_1(int _0,  string[] _1, HandleRef _2);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_close")]
             internal static extern void lammps_close_0(HandleRef _0h);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_close")]
             internal static extern void lammps_close_0(IntPtr _0);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_file")]
             internal static extern void lammps_file_0(HandleRef _0h, string _1);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_file")]
             internal static extern void lammps_file_0(IntPtr _0, string _1);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_command")]
             internal static extern string lammps_command_0(HandleRef _0h, string _1);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_command")]
             internal static extern IntPtr lammps_command_1(HandleRef _0h, string _1);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_command")]
             internal static extern IntPtr lammps_command_0(IntPtr _0, string _1);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_free")]
             internal static extern void lammps_free_0(HandleRef _0h);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_extract_global")]
             internal static extern IntPtr lammps_extract_global_0(HandleRef _0h, string _1);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_extract_atom")]
             internal static extern IntPtr lammps_extract_atom_0(HandleRef _0h, string _1);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_extract_atom")]
             internal static extern IntPtr lammps_extract_atom_0(IntPtr _0, string _1);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_extract_compute")]
             internal static extern IntPtr lammps_extract_compute_0(HandleRef _0h, string _1, int _2, int _3);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_extract_compute")]
             internal static extern IntPtr lammps_extract_compute_0(IntPtr _0, string _1, int _2, int _3);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_extract_fix")]
             internal static extern IntPtr lammps_extract_fix_0(HandleRef _0h, string _1, int _2, int _3, int _4, int _5);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_extract_variable")]
             internal static extern IntPtr lammps_extract_variable_0(HandleRef _0h, string _1, string _2);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_get_natoms")]
             internal static extern int lammps_get_natoms_0(HandleRef _0h);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_get_natoms")]
             internal static extern int lammps_get_natoms_0(IntPtr _0);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_gather_atoms")]
             //internal static extern void lammps_gather_atoms_0(HandleRef _0h, string _1, int _2, int _3, int* _4);
             //internal static extern void lammps_gather_atoms_0(HandleRef _0h, string _1, int _2, int _3, void* _4);
             internal static extern void lammps_gather_atoms_0(HandleRef _0h, string _1, int _2, int _3,  IntPtr _4);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_gather_atoms")]
             //internal static extern void lammps_gather_atoms_0(HandleRef _0h, string _1, int _2, int _3, int* _4);
             //internal static extern void lammps_gather_atoms_0(HandleRef _0h, string _1, int _2, int _3, void* _4);
             internal static extern void lammps_gather_atoms_0(IntPtr _0, string _1, int _2, int _3,  IntPtr _4);
 
             [SuppressUnmanagedCodeSecurity]
-            [DllImport("liblammps_ubuntu.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+            [DllImport("liblammps.so", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                 EntryPoint="lammps_scatter_atoms")]
             internal static extern void lammps_scatter_atoms_0(HandleRef _0h, string _1, int _2, int _3, HandleRef _4);
         }
@@ -168,35 +168,7 @@ namespace library
             return new IntPtr(lamp);
         }
 
-//        public static HandleRef lammps_open_no_mpi(int _0, string _1)
-//        {
-//            var arg1 = _1;
-//            void* lmp;
-//            Internal.lammps_open_no_mpi_0(_0, arg1, &lmp);
-//            HandleRef ptr2lammps = new HandleRef(lmp);
-//            return ptr2lammps;
-//        }
-        public static void lammps_open_no_mpi(int _0, string[] _1, HandleRef _3)
-        {
-            var arg1 = _1;
-            //var arg3 = _3;
-//            IntPtr[] argv = new IntPtr[_1.Length];
-//            for (int i = 0; i <= _1.Length; i++)
-//            {
-//                argv[i]=StringToByteArray(_1[i]);
-//            }
-//            int len = _1.Length;
-//            char*[] argv = new char*[len];
-//
-//            for(int i = 0; i < len; ++i)
-//            {
-//                argv[i] = (char*)Marshal.StringToHGlobalAnsi(_1[i]).ToPointer();
-//            }
-//
-            Internal.lammps_open_no_mpi_1(_0, arg1, _3);
 
-           
-        }
         public static void lammps_open_no_mpi(int _0, string[] _1, void** _2)
         {
             var arg1 = _1;
@@ -212,17 +184,11 @@ namespace library
             void* lamp;
 
             var arg2 = &lamp;
-
-
             Internal.lammps_open_no_mpi_0(_0, arguments, arg2);
             return new IntPtr(lamp);
         }
        
-//        public static void lammps_close(HandleRef _0h)
-//        {
-//            var arg0 = _0h;
-//            Internal.lammps_close_0(arg0);
-//        }
+
 
         public static void lammps_close(IntPtr _0)
         {
@@ -230,12 +196,7 @@ namespace library
             Internal.lammps_close_0(arg0);
         }
 
-//        public static void lammps_file(HandleRef _0h, string _1)
-//        {
-//            var arg0 = _0h;
-//            var arg1 = _1;
-//            Internal.lammps_file_0(arg0, arg1);
-//        }
+
 
         public static void lammps_file(IntPtr _0, string _1)
         {
@@ -244,15 +205,6 @@ namespace library
             Internal.lammps_file_0(arg0, arg1);
         }
 
-//        public static string lammps_command(HandleRef _0h, string _1)
-//        {
-//            var arg0 = _0h;
-//            var arg1 = _1;
-//            //var __ret = Internal.lammps_command_1(arg0, arg1);
-//            IntPtr ptr= Internal.lammps_command_1(arg0, arg1);
-//            return Marshal.PtrToStringAuto(ptr);
-//            //return __ret;
-//        }
 
         public static string lammps_command(IntPtr _0, string _1)
         {
@@ -495,35 +447,10 @@ namespace library
         }
         public lammps(LAMMPSsettings settings, string[] lmparg)
         {
-            //void* lamp;
-            //lammps_open_no_mpi(0,null,&lamp);
-            //lmp=new HandleRef(this,new IntPtr(lamp));
-            //first entry must be empty
-            
-            //lmp=new HandleRef(this,lammps_open_no_mpi(3,lmparg));
             lmp=lammps_open_no_mpi(lmparg.Length,lmparg);
             initialize(settings);
         }
-        public lammps(LAMMPSsettings settings, IntPtr comm)
-        {
-            //open with MPI
-            //first entry must be empty
-            string[] lmparg = new string[]{"","-screen","none"};
-            //lmp=new HandleRef(this,lammps_open(0,null,comm));
-            lmp=lammps_open(3,lmparg,comm);
-            //lmp=new HandleRef(this,lammps_open(3,lmparg,comm));
-            initialize(settings);
-        }
-        public lammps(LAMMPSsettings settings, IntPtr comm, string[] lmparg)
-        {
-            //open with MPI
-            //first entry must be empty
-            //string[] lmparg = new string[]{"","-screen","none"};
-            //lmp=new HandleRef(this,lammps_open(0,null,comm));
-            //lmp=new HandleRef(this,lammps_open(lmparg.Length,lmparg,comm));
-            lmp=lammps_open(lmparg.Length,lmparg,comm);
-            initialize(settings);
-        }
+
         public void runCommand(string cmd)
         {
             lammps_command(lmp,cmd);
@@ -535,8 +462,8 @@ namespace library
         }
         public void minimize(double etol,double ftol, int maxiter, int maxeval, string min_style)
         {
-            lammps.lammps_command(lmp, "min_style "+min_style);
-            lammps.lammps_command(lmp, "minimize "+etol+" "+ftol+" "+maxiter+" "+ maxeval);
+            lammps.lammps_command(lmp, "min_style " + min_style);
+            lammps.lammps_command(lmp, "minimize " + etol + " " + ftol + " " + maxiter + " " + maxeval);
         }
         public void openFile(string file)
         {
@@ -546,16 +473,14 @@ namespace library
         private void initialize( LAMMPSsettings settings)
         {
             lammps_command(lmp,"units " + settings.units);
-
             lammps_command(lmp,"boundary " + settings.boundary);
             lammps_command(lmp,"atom_style " + settings.atom_style);
-            lammps_command(lmp,"pair_style " + settings.pair_style); 
-
-
+            lammps_command(lmp,"pair_style " + settings.pair_style);
+            
             //can choose not to have bonds, angles, dihedrals, or special bonds
             if (settings.bond_style != "")
             {
-                var foo= lammps_command(lmp,"bond_style " + settings.bond_style);
+                lammps_command(lmp,"bond_style " + settings.bond_style);
             }
             if (settings.angle_style != "")
             {

@@ -82,6 +82,7 @@
     <Compile Include="Algorithms\Random.cs" />
     <Compile Include="MoleculeSearch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomRuleApplication.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using GraphSynth.Representation;
 using GraphSynth.Search.Algorithms;
 using OpenBabelFunctions;
@@ -27,18 +26,12 @@ namespace GraphSynth.Search {
 
         protected override void Run() {
 
-            randomTrail();
             //mcts();
             //bfs();
 
         }
 
-        private void bfs()
-        {
-            var agent = new BFS(settings);
-            Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
-            agent.search(Seed.copy(), 5);
-        }
+
 
         private void mcts() {
             var time0 = DateTime.Now;
@@ -53,17 +46,6 @@ namespace GraphSynth.Search {
             
             
         }
-
-        private void randomTrail() {
-            var agent = new Algorithms.Random(settings);
-            Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
-            agent.buildTrail(Seed, 5, 10);
-        }
-
-
-        
-        
-
         public override string text => "Molecule Search Runner";
     }
 }

@@ -8,7 +8,7 @@ namespace GraphSynth.Search.Algorithms
 {
     public class BFS : AbstractAlgorithm
     {
-        protected override string RunDirectoryName => "BFS";
+        public override string RunDirectoryName => "BFS";
         private Queue<BFSNode> QueueBFS;
         private HashSet<string> allNode;
         private HashSet<string> allFinalCand;

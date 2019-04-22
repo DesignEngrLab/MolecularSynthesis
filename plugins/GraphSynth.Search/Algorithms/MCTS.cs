@@ -46,7 +46,7 @@ namespace GraphSynth.Search.Algorithms {
         private int nodeCnt = 0;
 
         private readonly AbstractEvaluation _evaluation;  // how we evaluate leaf nodes
-        protected override string RunDirectoryName => "MCTS";
+        public override string RunDirectoryName => "MCTS";
         private StreamWriter sw;
 
         /// <inheritdoc />

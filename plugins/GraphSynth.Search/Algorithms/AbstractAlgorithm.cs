@@ -16,14 +16,14 @@ namespace GraphSynth.Search.Algorithms {
         public readonly System.Random Rand = new System.Random();
         private static readonly string IODir = OBFunctions.GetRamDir();
 
-        protected readonly string _runDirectory;
-        protected abstract string RunDirectoryName { get; } // the algorithm-based output directory
+        public readonly string _runDirectory;
+        public abstract string RunDirectoryName { get; } // the algorithm-based output directory
         private readonly string _inputFilePath;
 
         private const double Slope = 0.5; // kcal/mol/angstrom over strain percent
         private const double AngleFloor = 155; // minimum acceptable angle between carboxylates
 
-        protected static readonly graph2almostanything Converter = new graph2almostanything();
+        public static readonly graph2almostanything Converter = new graph2almostanything();
         private readonly Dictionary<string, double> previous = new Dictionary<string, double>(); // cache evaluations
         private readonly HashSet<string> uniqueLinkers = new HashSet<string>();
         private int candidateCnt = 0;

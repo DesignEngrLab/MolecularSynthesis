@@ -54,7 +54,7 @@ namespace GraphSynth.Search
             
             
             var agent = new Algorithms.Deterministic(settings);
-            BFSNode seedNode = new BFSNode(agent, Seed, 0);
+            BFSNode seedNode = new BFSNode(Seed, 0);
             QueueBFS.Enqueue(seedNode);
             while (QueueBFS.Count != 0)
             {
@@ -115,13 +115,11 @@ namespace GraphSynth.Search
     
     public class BFSNode
     {
-        private readonly AbstractAlgorithm _agent;
         private candidate Cand;
         private int Depth;
 
-        public BFSNode(AbstractAlgorithm agent, candidate cand, int depth)
+        public BFSNode(candidate cand, int depth)
         {
-            _agent = agent;
             Cand = cand;
             Depth = depth;
         }
@@ -143,23 +141,23 @@ namespace GraphSynth.Search
 
         public BFSNode[] getChildren()
         {
-            var opts = _agent.GetAvailableOptions(Cand);
+            var opts = AbstractAlgorithm.GetAvailableOptions(Cand);
             var nodes = new BFSNode[opts.Count];
             for (var i = 0; i < nodes.Length; i++)
             {
-                var child = _agent.CopyAndApplyOption(opts[i], Cand, true);
-                nodes[i] = new BFSNode(_agent, child, Depth + 1);
+                var child = AbstractAlgorithm.CopyAndApplyOption(opts[i], Cand, true);
+                nodes[i] = new BFSNode(child, Depth + 1);
             }
             return nodes;
         }
 
         public candidate[] getFinalCand()
         {
-            var opts = _agent.GetCarboxylOptions(Cand);
+            var opts = AbstractAlgorithm.GetCarboxylOptions(Cand);
             var finals = new candidate[opts.Count];
             for (var i = 0; i < finals.Length; i++)
             {
-                finals[i] = _agent.CopyAndApplyOption(opts[i], Cand, true);
+                finals[i] = AbstractAlgorithm.CopyAndApplyOption(opts[i], Cand, true);
             }
             return finals;
         }

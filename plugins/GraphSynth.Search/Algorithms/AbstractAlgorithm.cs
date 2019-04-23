@@ -12,7 +12,7 @@ using library;
 namespace GraphSynth.Search.Algorithms {
     
     public abstract class AbstractAlgorithm {
-        public readonly GlobalSettings Settings;
+        public static GlobalSettings Settings;
         public readonly System.Random Rand = new System.Random();
         private static readonly string IODir = OBFunctions.GetRamDir();
 
@@ -40,7 +40,7 @@ namespace GraphSynth.Search.Algorithms {
         /// </summary>
         /// <param name="cand"></param>
         /// <returns></returns>
-        public List<option> GetAvailableOptions(candidate cand) {
+        public static List<option> GetAvailableOptions(candidate cand) {
             var options = new List<option>();
             options.AddRange(Settings.rulesets[0].recognize(cand.graph, false));//ruleset[0] is non-carboxy ruleset
 //            for (var i = options.Count - 1; i >= 0; i--) // trim options that would lead to invalid states
@@ -97,7 +97,7 @@ namespace GraphSynth.Search.Algorithms {
         /// </summary>
         /// <param name="cand"></param>
         /// <returns></returns>
-        public List<option> GetCarboxylOptions(candidate cand) {
+        public static List<option> GetCarboxylOptions(candidate cand) {
 //            cand.graph = Minimize(cand.graph);
             var options = new List<option>();
             options.AddRange(Settings.rulesets[1].recognize(cand.graph, false));//ruleset[1] is carboxy ruleset
@@ -126,7 +126,7 @@ namespace GraphSynth.Search.Algorithms {
         /// <summary>
         /// Apply the option to the candidate and store the agent's evaluation.
         /// </summary>
-        public void ApplyOption(option opt, candidate cand, bool doMinimize, bool doEvaluate=false) {
+        public static void ApplyOption(option opt, candidate cand, bool doMinimize, bool doEvaluate=false) {
             cand.graph.globalVariables.Add(cand.f0); // track fitness values of previous states 
             
             // Minimize and evaluate
@@ -142,7 +142,7 @@ namespace GraphSynth.Search.Algorithms {
         /// <summary>
         /// Copies the candidate graph, transfers the L-mapping, and returns the resultant candidate.
         /// </summary>
-        public candidate CopyAndApplyOption(option opt, candidate cand, bool doMinimize) {
+        public static candidate CopyAndApplyOption(option opt, candidate cand, bool doMinimize) {
             var newCand = cand.copy();
             var newOpt = opt.copy();
             SearchProcess.transferLmappingToChild(newCand.graph, cand.graph, newOpt);
@@ -198,7 +198,7 @@ namespace GraphSynth.Search.Algorithms {
         /// </summary>
         /// <param name="cand"></param>
         /// <returns></returns>
-        public double Evaluate(candidate cand) {
+        public static double Evaluate(candidate cand) {
             return 0;
         }
         

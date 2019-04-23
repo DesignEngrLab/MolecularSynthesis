@@ -180,7 +180,7 @@ namespace GraphSynth.Search.Algorithms {
             TransitionReward = transitionReward;
 //            AbsoluteReward = _parent.Evaluate(cand);
             AbsoluteReward = 0;
-            Options = _parent.GetAvailableOptions(cand);
+            Options = AbstractAlgorithm.GetAvailableOptions(cand);
             Children = new Dictionary<candidate, NodeCountTuple>[Options.Count];
             for(var i=0; i<Children.Length; i++)
                 Children[i] = new Dictionary<candidate, NodeCountTuple>();

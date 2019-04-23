@@ -62,7 +62,7 @@ namespace GraphSynth.Search
                     var opt = agent.ChooseOption(cand);
                     if (opt == null)
                         return;
-                    agent.ApplyOption(opt, cand, true);
+                    AbstractAlgorithm.ApplyOption(opt, cand, true);
                     var mol = OBFunctions.designgraphtomol(cand.graph);
                     candSMILE = OBFunctions.moltoSMILES(mol);
                     Console.WriteLine("{0}", candSMILE);
@@ -74,7 +74,7 @@ namespace GraphSynth.Search
                 var carboxOpt = agent.ChooseCarboxOption(cand);
                 if (carboxOpt == null)
                     return;
-                agent.ApplyOption(carboxOpt, cand, true);
+                AbstractAlgorithm.ApplyOption(carboxOpt, cand, true);
                 candSMILE = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
                 Console.WriteLine("{0}", candSMILE);
                 coeff = Path.Combine(linkerDir, "linker" + (TOTAL_RULE+1) + ".coeff");

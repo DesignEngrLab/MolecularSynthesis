@@ -80,7 +80,7 @@
     <Compile Include="Algorithms\Evaluations\RolloutEvaluation.cs" />
     <Compile Include="Algorithms\MCTS.cs" />
     <Compile Include="Algorithms\Random.cs" />
-    <Compile Include="BFS.cs" />
+    <Compile Include="Bfs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomRuleApplication.cs" />
   </ItemGroup>

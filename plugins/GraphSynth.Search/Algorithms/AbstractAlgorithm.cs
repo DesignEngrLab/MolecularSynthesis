@@ -16,8 +16,7 @@ namespace GraphSynth.Search.Algorithms {
         public readonly System.Random Rand = new System.Random();
         private static readonly string IODir = OBFunctions.GetRamDir();
 
-        public readonly string _runDirectory;
-        public abstract string RunDirectoryName { get; } // the algorithm-based output directory
+
         private readonly string _inputFilePath;
 
         private const double Slope = 0.5; // kcal/mol/angstrom over strain percent
@@ -33,37 +32,8 @@ namespace GraphSynth.Search.Algorithms {
         protected AbstractAlgorithm(GlobalSettings settings_) {
             Settings = settings_;
 
-            // Make sure we can write output files
-            _runDirectory = Path.Combine(Settings.OutputDirAbs, RunDirectoryName);
-            //_inputFilePath = Path.Combine(Settings.OutputDirAbs, "config/in.deform");
-            if (!Directory.Exists(_runDirectory))
-                Directory.CreateDirectory(_runDirectory);
-            //if (!File.Exists(_inputFilePath))
-            //    throw new Exception("Input file doesn't exist: " + _inputFilePath);
-        }
-        
-        public void loadSmileAndReward (){
-            if (File.Exists(_runDirectory + "/dictInfo.txt")) {
-                using (StreamReader file = new StreamReader(_runDirectory + "/dictInfo.txt")) {
-                    string line;
-                    char[] separator = {','};
-                    while ((line = file.ReadLine()) != null) {
-//                    Console.WriteLine(line);
-                        string[] splits = line.Split(separator, StringSplitOptions.None);
-                        previous.Add(splits[0], Convert.ToDouble(splits[1]));
-                        candidateCnt++;
-                    }
-                }
-            }
         }
 
-        public void saveSmileAndReward (){
-            using (StreamWriter file = new StreamWriter(_runDirectory + "/dictInfo.txt")) {
-                foreach (var entry in previous) {
-                    file.WriteLine("{0},{1}", entry.Key, entry.Value);
-                }
-            }
-        }
 
         /// <summary>
         /// Get all available options for the given graph.

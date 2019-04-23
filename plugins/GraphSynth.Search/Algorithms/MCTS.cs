@@ -46,7 +46,7 @@ namespace GraphSynth.Search.Algorithms {
         private int nodeCnt = 0;
 
         private readonly AbstractEvaluation _evaluation;  // how we evaluate leaf nodes
-        public override string RunDirectoryName => "MCTS";
+
         private StreamWriter sw;
 
         /// <inheritdoc />
@@ -127,9 +127,9 @@ namespace GraphSynth.Search.Algorithms {
                     var successorNode = new BanditNode(this, successorState, immediateReward);
                     node.Children[optionIndex][successorState] = new BanditNode.NodeCountTuple(successorNode);
                     totalReward = immediateReward + _evaluation.Evaluate(successorState);//this evalutation tells how this state is POTENTIALLY good
-                    var fileDir = _runDirectory + "/intermediateLinkers/linker" + nodeCnt;
+                    var fileDir = "_runDirectory" + "/intermediateLinkers/linker" + nodeCnt;
                     Directory.CreateDirectory(fileDir);
-                    Settings.filer.Save(_runDirectory + "/intermediateLinkers/linker" + nodeCnt + "/linker" + nodeCnt + ".xml", successorState);
+                    Settings.filer.Save("_runDirectory" + "/intermediateLinkers/linker" + nodeCnt + "/linker" + nodeCnt + ".xml", successorState);
                     Console.WriteLine("Node{0}: depth: {1}, reward: {2}, smi: {3}", nodeCnt, MaxDepth - depth + 1, totalReward,
                         OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(successorState.graph)));
                     sw.WriteLine("{0},{1},{2},{3}", nodeCnt, MaxDepth - depth + 1, totalReward,

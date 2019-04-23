@@ -15,8 +15,6 @@ namespace GraphSynth.Search.Algorithms {
         }
 
 
-        public override string RunDirectoryName => "Random";
-
         public option ChooseOption(candidate cand)
         {
             var options = GetAvailableOptions(cand);

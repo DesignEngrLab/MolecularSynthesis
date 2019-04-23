@@ -14,8 +14,5 @@ namespace GraphSynth.Search.Algorithms
 
 
 
-        public override string RunDirectoryName => "Deterministic";
-
-
     }
 }

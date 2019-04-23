@@ -14,29 +14,32 @@ namespace GraphSynth.Search
     public class RandomRuleApplication: SearchProcess
     {
         
-        private string _runDirectory;
-        private string _inputFilePath;
+        private readonly string _runDirectory;
+        private readonly string _inputFilePath;
         
         private candidate Seed;
-        private int NUM_TRAIL = 5;
-        private int TOTAL_RULE = 5;
+        private const int NUM_TRAIL = 5;
+        private const int TOTAL_RULE = 5;
 
 
         /// <inheritdoc />
         /// <summary>
         /// Initializes SearchProcess properties.
         /// </summary>
-        public RandomRuleApplication() {
+        public RandomRuleApplication(GlobalSettings settings): base(settings) 
+        {
             RequireSeed = true;
             RequiredNumRuleSets = 1;
             AutoPlay = true;
-        }
-
-        protected override void Run() {
+            
             _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication");
             if (!Directory.Exists(_runDirectory))
                 Directory.CreateDirectory(_runDirectory);
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
+        }
+
+        protected override void Run() {
+
             
             
             var agent = new Algorithms.Random(settings);

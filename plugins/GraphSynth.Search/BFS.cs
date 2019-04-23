@@ -10,11 +10,11 @@ namespace GraphSynth.Search
 {
     public class BFS: SearchProcess
     {
-        private string _runDirectory;
-        private string _inputFilePath;
+        private readonly string _runDirectory;
+        private readonly string _inputFilePath;
         
         private candidate Seed;
-        private int MAX_DEPTH = 2;
+        private const int MAX_DEPTH = 2;
         private Queue<BFSNode> QueueBFS;
         private HashSet<string> allNode;
         private HashSet<string> allFinalCand;
@@ -28,14 +28,12 @@ namespace GraphSynth.Search
         /// <summary>
         /// Initializes SearchProcess properties.
         /// </summary>
-        public BFS() {
+        public BFS(GlobalSettings settings): base(settings)
+        {
             RequireSeed = true;
             RequiredNumRuleSets = 1;
             AutoPlay = true;
-        }
-
-        protected override void Run()
-        {
+            
             _runDirectory = Path.Combine(settings.OutputDirAbs, "BFS");
             if (!Directory.Exists(_runDirectory))
                 Directory.CreateDirectory(_runDirectory);
@@ -49,6 +47,11 @@ namespace GraphSynth.Search
             nodeInfoWriter.WriteLine("SMILE,Depth");
             candInfoWriter = new StreamWriter(_runDirectory + "/candInfo.txt");
             candInfoWriter.WriteLine("SMILE,Depth");
+        }
+
+        protected override void Run()
+        {
+            
             
             var agent = new Algorithms.Deterministic(settings);
             BFSNode seedNode = new BFSNode(agent, Seed, 0);

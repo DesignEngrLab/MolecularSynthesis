@@ -50,12 +50,12 @@ namespace GraphSynth.Search
             this.settings = settings;
         }
 
-        /// <summary>
-        ///   Initializes a new instance of the <see cref = "SearchProcess" /> class.
-        /// </summary>
-        protected SearchProcess()
-        {
-        }
+//        /// <summary>
+//        ///   Initializes a new instance of the <see cref = "SearchProcess" /> class.
+//        /// </summary>
+//        protected SearchProcess()
+//        {
+//        }
 
         /// <summary>
         ///   Gets the seed graph defined in settings.

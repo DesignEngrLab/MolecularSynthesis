@@ -75,12 +75,12 @@
     <Compile Include="Algorithms\Bandits\AbstractBandit.cs" />
     <Compile Include="Algorithms\Bandits\EGreedyBandit.cs" />
     <Compile Include="Algorithms\Bandits\UCTBandit.cs" />
-    <Compile Include="Algorithms\BFS.cs" />
+    <Compile Include="Algorithms\Deterministic.cs" />
     <Compile Include="Algorithms\Evaluations\AbstractEvaluation.cs" />
     <Compile Include="Algorithms\Evaluations\RolloutEvaluation.cs" />
     <Compile Include="Algorithms\MCTS.cs" />
     <Compile Include="Algorithms\Random.cs" />
-    <Compile Include="MoleculeSearch.cs" />
+    <Compile Include="BFS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomRuleApplication.cs" />
   </ItemGroup>

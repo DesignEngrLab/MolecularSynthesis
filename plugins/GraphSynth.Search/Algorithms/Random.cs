@@ -11,6 +11,7 @@ namespace GraphSynth.Search.Algorithms {
 
         public Random(GlobalSettings settings) : base(settings)
         {
+            
         }
 
 

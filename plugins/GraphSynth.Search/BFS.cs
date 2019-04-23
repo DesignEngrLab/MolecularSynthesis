@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using GraphSynth.Representation;
+using GraphSynth.Search.Algorithms;
 using OpenBabelFunctions;
 
-namespace GraphSynth.Search.Algorithms
+
+namespace GraphSynth.Search
 {
-    public class BFS : AbstractAlgorithm
+    public class BFS: SearchProcess
     {
-        public override string RunDirectoryName => "BFS";
+        private string _runDirectory;
+        private string _inputFilePath;
+        
+        private candidate Seed;
+        private int MAX_DEPTH = 2;
         private Queue<BFSNode> QueueBFS;
         private HashSet<string> allNode;
         private HashSet<string> allFinalCand;
@@ -16,9 +22,24 @@ namespace GraphSynth.Search.Algorithms
         private int candCnt;
         private StreamWriter nodeInfoWriter;
         private StreamWriter candInfoWriter;
+        
+        
+        /// <inheritdoc />
+        /// <summary>
+        /// Initializes SearchProcess properties.
+        /// </summary>
+        public BFS() {
+            RequireSeed = true;
+            RequiredNumRuleSets = 1;
+            AutoPlay = true;
+        }
 
-        public BFS(GlobalSettings settings) : base(settings)
+        protected override void Run()
         {
+            _runDirectory = Path.Combine(settings.OutputDirAbs, "BFS");
+            if (!Directory.Exists(_runDirectory))
+                Directory.CreateDirectory(_runDirectory);
+            Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             QueueBFS = new Queue<BFSNode>();
             allNode = new HashSet<string>();
             allFinalCand = new HashSet<string>();
@@ -28,18 +49,16 @@ namespace GraphSynth.Search.Algorithms
             nodeInfoWriter.WriteLine("SMILE,Depth");
             candInfoWriter = new StreamWriter(_runDirectory + "/candInfo.txt");
             candInfoWriter.WriteLine("SMILE,Depth");
-        }
-
-        public void search(candidate seed, int maxDepth)
-        {
-            BFSNode seedNode = new BFSNode(this, seed, 0);
+            
+            var agent = new Algorithms.Deterministic(settings);
+            BFSNode seedNode = new BFSNode(agent, Seed, 0);
             QueueBFS.Enqueue(seedNode);
             while (QueueBFS.Count != 0)
             {
                 var popNode = QueueBFS.Dequeue();
                 Console.WriteLine("{0},{1}", popNode.getSMILE(), popNode.getDepth());
 //                Console.Write(".");
-                if (popNode.getDepth() < maxDepth)
+                if (popNode.getDepth() < MAX_DEPTH)
                 {
                     var newNodes = popNode.getChildren();
                     foreach (var node in newNodes)
@@ -83,21 +102,23 @@ namespace GraphSynth.Search.Algorithms
             }
             nodeInfoWriter.Close();
             candInfoWriter.Close();
+            
+            
         }
-        
-        
+
+        public override string text => "BFS Search Runner";
     }
     
-
+    
     public class BFSNode
     {
-        private readonly BFS _parent;
+        private readonly AbstractAlgorithm _agent;
         private candidate Cand;
         private int Depth;
 
-        public BFSNode(BFS parent, candidate cand, int depth)
+        public BFSNode(AbstractAlgorithm agent, candidate cand, int depth)
         {
-            _parent = parent;
+            _agent = agent;
             Cand = cand;
             Depth = depth;
         }
@@ -119,23 +140,23 @@ namespace GraphSynth.Search.Algorithms
 
         public BFSNode[] getChildren()
         {
-            var opts = _parent.GetAvailableOptions(Cand);
+            var opts = _agent.GetAvailableOptions(Cand);
             var nodes = new BFSNode[opts.Count];
             for (var i = 0; i < nodes.Length; i++)
             {
-                var child = _parent.CopyAndApplyOption(opts[i], Cand, true);
-                nodes[i] = new BFSNode(_parent, child, Depth + 1);
+                var child = _agent.CopyAndApplyOption(opts[i], Cand, true);
+                nodes[i] = new BFSNode(_agent, child, Depth + 1);
             }
             return nodes;
         }
 
         public candidate[] getFinalCand()
         {
-            var opts = _parent.GetCarboxylOptions(Cand);
+            var opts = _agent.GetCarboxylOptions(Cand);
             var finals = new candidate[opts.Count];
             for (var i = 0; i < finals.Length; i++)
             {
-                finals[i] = _parent.CopyAndApplyOption(opts[i], Cand, true);
+                finals[i] = _agent.CopyAndApplyOption(opts[i], Cand, true);
             }
             return finals;
         }

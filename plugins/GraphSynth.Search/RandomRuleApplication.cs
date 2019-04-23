@@ -13,6 +13,10 @@ namespace GraphSynth.Search
 {
     public class RandomRuleApplication: SearchProcess
     {
+        
+        private string _runDirectory;
+        private string _inputFilePath;
+        
         private candidate Seed;
         private int NUM_TRAIL = 5;
         private int TOTAL_RULE = 5;
@@ -26,17 +30,21 @@ namespace GraphSynth.Search
             RequireSeed = true;
             RequiredNumRuleSets = 1;
             AutoPlay = true;
-
         }
 
         protected override void Run() {
-            var agent = new Algorithms.Random(settings);
+            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication");
+            if (!Directory.Exists(_runDirectory))
+                Directory.CreateDirectory(_runDirectory);
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
+            
+            
+            var agent = new Algorithms.Random(settings);
             for (var t = 0; t < NUM_TRAIL; t++)
             {
                 Console.WriteLine("Trail: {0}", t);
                 var cand = Seed.copy();
-                var linkerDir = agent._runDirectory + "/trail" + t + "/";
+                var linkerDir = _runDirectory + "/trail" + t + "/";
                 Directory.CreateDirectory(linkerDir);
                 var coeff = Path.Combine(linkerDir, "linker0.coeff");
                 var lmpdat = Path.Combine(linkerDir, "linker0.lmpdat");

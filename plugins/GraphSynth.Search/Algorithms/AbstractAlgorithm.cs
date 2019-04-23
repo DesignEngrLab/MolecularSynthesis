@@ -36,8 +36,8 @@ namespace GraphSynth.Search.Algorithms {
             // Make sure we can write output files
             _runDirectory = Path.Combine(Settings.OutputDirAbs, RunDirectoryName);
             //_inputFilePath = Path.Combine(Settings.OutputDirAbs, "config/in.deform");
-            //if (!Directory.Exists(_runDirectory))
-            //    Directory.CreateDirectory(_runDirectory);
+            if (!Directory.Exists(_runDirectory))
+                Directory.CreateDirectory(_runDirectory);
             //if (!File.Exists(_inputFilePath))
             //    throw new Exception("Input file doesn't exist: " + _inputFilePath);
         }

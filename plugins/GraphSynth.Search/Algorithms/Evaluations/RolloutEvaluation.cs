@@ -9,7 +9,7 @@ namespace GraphSynth.Search.Algorithms.Evaluations {
         private Random _random;
         
         public RolloutEvaluation(int width, int depth, AbstractAlgorithm parent) : base(width, depth, parent) {
-            _random = new Random(Parent.Settings);
+            _random = new Random(AbstractAlgorithm.Settings);
         }
 
 
@@ -29,13 +29,13 @@ namespace GraphSynth.Search.Algorithms.Evaluations {
             var candCopy = cand.copy();
             double bestRewardSoFar = 0;
             
-            var carboxylOpts = Parent.GetCarboxylOptions(candCopy);
+            var carboxylOpts = AbstractAlgorithm.GetCarboxylOptions(candCopy);
             if (carboxylOpts.Count != 0) {
                 for (var i = 0; i < carboxylOpts.Count; i++) {
                     var evaluateCopy = candCopy.copy();
-                    var evaluateOpts = Parent.GetCarboxylOptions(evaluateCopy);
-                    Parent.ApplyOption(evaluateOpts[i], evaluateCopy, true);
-                    var reward = Parent.Evaluate(evaluateCopy);
+                    var evaluateOpts = AbstractAlgorithm.GetCarboxylOptions(evaluateCopy);
+                    AbstractAlgorithm.ApplyOption(evaluateOpts[i], evaluateCopy, true);
+                    var reward = AbstractAlgorithm.Evaluate(evaluateCopy);
                     if (reward > bestRewardSoFar) {
                         bestRewardSoFar = reward;
                     }
@@ -48,15 +48,15 @@ namespace GraphSynth.Search.Algorithms.Evaluations {
                 var opt = _random.ChooseOption(candCopy);
                 if (opt == null)
                     break;
-                Parent.ApplyOption(opt, candCopy, true);
+                AbstractAlgorithm.ApplyOption(opt, candCopy, true);
                 
-                carboxylOpts = Parent.GetCarboxylOptions(candCopy);
+                carboxylOpts = AbstractAlgorithm.GetCarboxylOptions(candCopy);
                 if (carboxylOpts.Count != 0) {
                     for (var i = 0; i < carboxylOpts.Count; i++) {
                         var evaluateCopy = candCopy.copy();
-                        var evaluateOpts = Parent.GetCarboxylOptions(evaluateCopy);
-                        Parent.ApplyOption(evaluateOpts[i], evaluateCopy, true);
-                        var reward = Parent.Evaluate(evaluateCopy);
+                        var evaluateOpts = AbstractAlgorithm.GetCarboxylOptions(evaluateCopy);
+                        AbstractAlgorithm.ApplyOption(evaluateOpts[i], evaluateCopy, true);
+                        var reward = AbstractAlgorithm.Evaluate(evaluateCopy);
                         if (reward > bestRewardSoFar) {
                             bestRewardSoFar = reward;
                         }

@@ -39,6 +39,7 @@ namespace GraphSynth.Search
             _runDirectory = Path.Combine(settings.OutputDirAbs, "BFS");
             if (!Directory.Exists(_runDirectory))
                 Directory.CreateDirectory(_runDirectory);
+            
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             QueueBFS = new Queue<BFSNode>();
             allNode = new HashSet<string>();

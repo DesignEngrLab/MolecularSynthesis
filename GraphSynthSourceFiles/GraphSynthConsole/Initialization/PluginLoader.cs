@@ -136,7 +136,7 @@ namespace GraphSynth
             //var readKey = Console.ReadKey().Key.ToString();
             //readKey = readKey.Replace("D", "");
             //int choice = Enum.TryParse(readKey, out response) ? (int)response : -1;
-            int choice = 1;
+            int choice = 0;
             Console.Write("\n");
             if (choice == 30) HelpDialog();
             else if (choice == 31) VerbosityDialog();

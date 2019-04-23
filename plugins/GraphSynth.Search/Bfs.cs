@@ -8,7 +8,7 @@ using OpenBabelFunctions;
 
 namespace GraphSynth.Search
 {
-    public class BFS: SearchProcess
+    public class Bfs: SearchProcess
     {
         private readonly string _runDirectory;
         private readonly string _inputFilePath;
@@ -28,7 +28,7 @@ namespace GraphSynth.Search
         /// <summary>
         /// Initializes SearchProcess properties.
         /// </summary>
-        public BFS(GlobalSettings settings): base(settings)
+        public Bfs(GlobalSettings settings): base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 1;

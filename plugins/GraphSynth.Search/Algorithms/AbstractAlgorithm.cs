@@ -5,6 +5,7 @@ using OpenBabelFunctions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using library;
 
 
@@ -13,18 +14,16 @@ namespace GraphSynth.Search.Algorithms {
     
     public abstract class AbstractAlgorithm {
         public static GlobalSettings Settings;
-        public readonly System.Random Rand = new System.Random();
+        public static readonly System.Random Rand = new System.Random();
         private static readonly string IODir = OBFunctions.GetRamDir();
 
 
         private readonly string _inputFilePath;
 
-        private const double Slope = 0.5; // kcal/mol/angstrom over strain percent
         private const double AngleFloor = 155; // minimum acceptable angle between carboxylates
 
         public static readonly graph2almostanything Converter = new graph2almostanything();
         private readonly Dictionary<string, double> previous = new Dictionary<string, double>(); // cache evaluations
-        private readonly HashSet<string> uniqueLinkers = new HashSet<string>();
         private int candidateCnt = 0;
         
 
@@ -32,6 +31,12 @@ namespace GraphSynth.Search.Algorithms {
         protected AbstractAlgorithm(GlobalSettings settings_) {
             Settings = settings_;
 
+        }
+
+        public static string GetLinkerName(candidate cand)
+        {
+            var arr = cand.recipe.Select(x => Convert.ToString(x.optionNumber));
+            return String.Join("-", arr);
         }
 
 

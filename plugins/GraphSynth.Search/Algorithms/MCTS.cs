@@ -197,7 +197,7 @@ namespace GraphSynth.Search.Algorithms {
             // List of counts proportional to number of times each child was sampled
             var averagedCounts = counts.Select(c => (double) c / countSum).ToList();
 
-            var randVal = _parent.Rand.NextDouble();
+            var randVal = AbstractAlgorithm.Rand.NextDouble();
             double current = 0;
             for (var i = 0; i < averagedCounts.Count; i++) {
                 current += averagedCounts[i];

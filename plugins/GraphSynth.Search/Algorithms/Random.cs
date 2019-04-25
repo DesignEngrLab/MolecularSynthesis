@@ -19,14 +19,12 @@ namespace GraphSynth.Search.Algorithms {
         {
             var options = GetAvailableOptions(cand);
             return options.Count > 0 ? options[Rand.Next(options.Count)] : null;
-
         }
 
         public option ChooseCarboxOption(candidate cand)
         {
             var options = GetCarboxylOptions(cand);
             return options.Count > 0 ? options[Rand.Next(options.Count)] : null;
-
         }
 
 

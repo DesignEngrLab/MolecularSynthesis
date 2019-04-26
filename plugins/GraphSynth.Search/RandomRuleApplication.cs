@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using GraphSynth.Representation;
 using GraphSynth.Search.Algorithms;
 using GraphSynth.Search.Tools;
@@ -20,8 +20,11 @@ namespace GraphSynth.Search
         private readonly string _inputFilePath;
         
         private candidate Seed;
-        private const int NUM_TRAIL = 5;
+        private JobBuffer jobBuffer;
+        private const int NUM_TRAIL = 50;
         private const int TOTAL_RULE = 5;
+        
+        private static Mutex mutex = new Mutex();
 
 
         /// <inheritdoc />
@@ -38,13 +41,40 @@ namespace GraphSynth.Search
             if (!Directory.Exists(_runDirectory))
                 Directory.CreateDirectory(_runDirectory);
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
+            
+            jobBuffer = new JobBuffer();
         }
 
         protected override void Run()
         {
+
+            Thread autoReleaseBuffer = new Thread(autoSubmitSimulation);
+            Thread generateLinkers = new Thread(generate);
+            autoReleaseBuffer.Start();
+            generateLinkers.Start();
+
+            generateLinkers.Join();
+            autoReleaseBuffer.Abort();
+
+        }
+        
+        private void autoSubmitSimulation()
+        {
+            while (true)
+            {
+               //mutex.WaitOne();
+               if (jobBuffer.canFeedIn())
+               {
+                   var linkerName = jobBuffer.Remove();
+                   Console.WriteLine("Job " + linkerName + " Submmitted");
+               }
+               //mutex.ReleaseMutex();
+            }
+        }
+
+        private void generate()
+        {
             var linkerSet = new HashSet<string>();
-            var linkerBuffer = new MolBuffer(_runDirectory);
-            
             var agent = new Algorithms.Random(settings);
             for (var t = 0; t < NUM_TRAIL; t++)
             {
@@ -72,14 +102,17 @@ namespace GraphSynth.Search
                     continue;
                 }
                 linkerSet.Add(linkerName);
-                linkerBuffer.Add(linkerName, cand, AbstractAlgorithm.Rand.NextDouble());
-            }
+                var coeff = Path.Combine(_runDirectory, "linker-" + linkerName + ".coeff");
+                var lmpdat = Path.Combine(_runDirectory, "linker-" + linkerName + ".lmpdat");
+                AbstractAlgorithm.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
 
-            while (linkerBuffer.Size() > 0)
-            {
-                linkerBuffer.Remove();
-            }
+                //mutex.WaitOne();
+                jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());
+                //mutex.ReleaseMutex();
 
+
+            }
+            
         }
         
         public override string text => "RandomTrail Search Runner";

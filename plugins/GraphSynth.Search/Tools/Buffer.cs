@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Priority_Queue;
 using System.IO;
 using GraphSynth.Representation;
@@ -7,44 +8,34 @@ using OpenBabelFunctions;
 
 namespace GraphSynth.Search.Tools
 {
-    public class MolBuffer
+    public class JobBuffer
     {
-        private readonly string _fileDir;
+        private const int MAX_SIMULATION = 20;
         private readonly SimplePriorityQueue<string, double> buffer;
-        private readonly Dictionary<string, candidate> candLookUpDict;
+        private int onSimulation;
 
-        public MolBuffer(string fileDir)
+        public JobBuffer()
         {
-            _fileDir = fileDir;
             buffer = new SimplePriorityQueue<string, double>();
-            candLookUpDict = new Dictionary<string, candidate>();
         }
 
-        public void Add(string linkerName, candidate cand, double priority)
+        public void Add(string linkerName, double priority)
         {
             buffer.Enqueue(linkerName, priority);
-            candLookUpDict.Add(linkerName, cand);
         }
 
-        public void Remove()
+        public string Remove()
         {
             var linkerName = buffer.Dequeue();
-            var cand = candLookUpDict[linkerName];
-            WriteFile(linkerName, cand);
-            candLookUpDict.Remove(linkerName);
+            onSimulation++;
+            return linkerName;
         }
 
-        public int Size()
+        public bool canFeedIn()
         {
-            return candLookUpDict.Count;
+            return buffer.Count > 0 && onSimulation < MAX_SIMULATION;
         }
-        
-        private void WriteFile(string linkerName, candidate cand)
-        {
-            var coeff = Path.Combine(_fileDir, "linker-" + linkerName + ".coeff");
-            var lmpdat = Path.Combine(_fileDir, "linker-" + linkerName + ".lmpdat");
-            AbstractAlgorithm.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
-        }
+
     }
 
 

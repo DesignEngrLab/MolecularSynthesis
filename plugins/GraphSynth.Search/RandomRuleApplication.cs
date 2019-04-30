@@ -68,7 +68,6 @@ namespace GraphSynth.Search
                {
                    var linkerName = jobBuffer.Remove();
                    Console.WriteLine("Job " + linkerName + " Submmitted");
-                   Environment.Exit(0);
                }
                //mutex.ReleaseMutex();
             }

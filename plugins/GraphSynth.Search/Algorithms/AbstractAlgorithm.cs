@@ -18,11 +18,11 @@ namespace GraphSynth.Search.Algorithms {
         private static readonly string IODir = OBFunctions.GetRamDir();
 
 
-        private readonly string _inputFilePath;
+        private static readonly string _inputFilePath;
 
         private const double AngleFloor = 155; // minimum acceptable angle between carboxylates
 
-        public static readonly graph2almostanything Converter = new graph2almostanything();
+        public static readonly graph2almostanything Converter = new graph2almostanything(_inputFilePath);
         private readonly Dictionary<string, double> previous = new Dictionary<string, double>(); // cache evaluations
         private int candidateCnt = 0;
         

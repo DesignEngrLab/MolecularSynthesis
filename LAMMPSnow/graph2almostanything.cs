@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Collections;
+using System.Configuration;
 using GraphSynth.Representation;
 using OpenBabel;
 using OpenBabelFunctions;
@@ -17,13 +18,11 @@ namespace LAMMPSnow
 
         public Dictionary<string, LAMMPSNow.parminf> parameters = new Dictionary<string, LAMMPSNow.parminf>();
         public static List<string[]> atomtypes = new List<string[]>();
+        public readonly string _inputDir;
 
 
         public graph2almostanything(string uffparmpath)
         {
-            //inititalize converter to whatever settings we want
-            //also initialized to set up periodic table
-            //scale = inscale;
             new OBConversion(); //initialize open babel
             ParseUFFParamFile(uffparmpath);
 

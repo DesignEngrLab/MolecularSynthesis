@@ -1,13 +1,15 @@
 ﻿using System;
 using Priority_Queue;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 
 namespace GraphSynth.Search.Tools
 {
     public class JobBuffer
     {
-        private const int MAX_SIMULATION = 20;
+        private const int MAX_SIMULATION = 10;
         private readonly SimplePriorityQueue<string, double> buffer;
         private readonly string _bufferDir;
         private int onSimulation;
@@ -23,12 +25,16 @@ namespace GraphSynth.Search.Tools
             buffer.Enqueue(linkerName, priority);
         }
 
-        public string Remove()
+        public bool Remove()
         {
+            var priority = buffer.GetPriority(buffer.First);
             var linkerName = buffer.Dequeue();
             onSimulation++;
             submitlammps(linkerName, "short");
-            return linkerName;
+            Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority + ". Current on simulation " + onSimulation);
+            if (onSimulation == MAX_SIMULATION)
+                return true;
+            return false;
         }
 
         public bool canFeedIn()

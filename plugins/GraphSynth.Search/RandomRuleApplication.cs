@@ -38,8 +38,10 @@ namespace GraphSynth.Search
             AutoPlay = true;
             
             _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication");
-            if (!Directory.Exists(_runDirectory))
-                Directory.CreateDirectory(_runDirectory);
+            if (Directory.Exists(_runDirectory))
+                Directory.Delete(_runDirectory);
+            Directory.CreateDirectory(_runDirectory);
+
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             jobBuffer = new JobBuffer(_runDirectory);
         }

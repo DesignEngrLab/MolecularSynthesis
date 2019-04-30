@@ -55,7 +55,7 @@ namespace GraphSynth.Search
             generateLinkers.Start();
 
             generateLinkers.Join();
-            autoReleaseBuffer.Abort();
+            autoReleaseBuffer.Join();
 
         }
         
@@ -66,8 +66,9 @@ namespace GraphSynth.Search
                //mutex.WaitOne();
                if (jobBuffer.canFeedIn())
                {
-                   var linkerName = jobBuffer.Remove();
-                   Console.WriteLine("Job " + linkerName + " Submmitted");
+                   var finish = jobBuffer.Remove();
+                   if (finish)
+                       break;
                }
                //mutex.ReleaseMutex();
             }

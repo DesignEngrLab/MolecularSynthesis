@@ -47,10 +47,6 @@ namespace GraphSynth.Search.Tools
                 proc.StartInfo.RedirectStandardInput = false;
                 proc.Start();
                 proc.WaitForExit();
-                string output = proc.StandardOutput.ReadToEnd();
-                string[] lineseperated = output.Split(new char[] {' ', '\t'}, StringSplitOptions.RemoveEmptyEntries);
-                int jobid = Convert.ToInt32(lineseperated[2]);
-                Console.WriteLine (jobid);
             }
 
         }

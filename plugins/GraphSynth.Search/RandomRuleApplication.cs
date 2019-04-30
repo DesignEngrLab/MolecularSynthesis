@@ -68,6 +68,7 @@ namespace GraphSynth.Search
                {
                    var finish = jobBuffer.Remove();
                    if (finish)
+                       
                        break;
                }
                //mutex.ReleaseMutex();

@@ -102,8 +102,8 @@ namespace GraphSynth.Search
                     continue;
                 }
                 linkerSet.Add(linkerName);
-                var coeff = Path.Combine(_runDirectory, "linker-" + linkerName + ".coeff");
-                var lmpdat = Path.Combine(_runDirectory, "linker-" + linkerName + ".lmpdat");
+                var coeff = Path.Combine(_runDirectory, "linker" + linkerName + ".coeff");
+                var lmpdat = Path.Combine(_runDirectory, "linker" + linkerName + ".lmpdat");
                 AbstractAlgorithm.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
 
                 //mutex.WaitOne();

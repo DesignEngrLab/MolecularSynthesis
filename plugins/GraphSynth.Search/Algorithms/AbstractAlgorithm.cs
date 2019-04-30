@@ -18,7 +18,7 @@ namespace GraphSynth.Search.Algorithms {
         private static readonly string IODir = OBFunctions.GetRamDir();
 
 
-        private static readonly string _inputFilePath;
+        private static readonly string _inputFilePath = Settings.InputDirAbs;
 
         private const double AngleFloor = 155; // minimum acceptable angle between carboxylates
 
@@ -30,7 +30,6 @@ namespace GraphSynth.Search.Algorithms {
 
         protected AbstractAlgorithm(GlobalSettings settings_) {
             Settings = settings_;
-
         }
 
         public static string GetLinkerName(candidate cand)

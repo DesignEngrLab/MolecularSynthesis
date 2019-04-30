@@ -41,6 +41,7 @@ namespace GraphSynth.Search
             if (Directory.Exists(_runDirectory))
                 Directory.Delete(_runDirectory);
             Directory.CreateDirectory(_runDirectory);
+            
 
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             jobBuffer = new JobBuffer(_runDirectory);

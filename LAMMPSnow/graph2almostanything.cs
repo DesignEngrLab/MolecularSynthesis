@@ -24,7 +24,7 @@ namespace LAMMPSnow
         public graph2almostanything(string uffparmpath)
         {
             new OBConversion(); //initialize open babel
-            ParseUFFParamFile(uffparmpath);
+            ParseUFFParamFile(Path.Combine(uffparmpath, "UFF4MOF.prm"));
 
 
         }

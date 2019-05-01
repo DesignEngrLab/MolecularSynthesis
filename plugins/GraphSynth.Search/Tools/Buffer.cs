@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Priority_Queue;
 using System.Diagnostics;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace GraphSynth.Search.Tools
         private const int MAX_SIMULATION = 10;
         private readonly SimplePriorityQueue<string, double> buffer;
         private readonly string _bufferDir;
-        private int onSimulation;
+        private HashSet<string> onSimulation;
 
         public JobBuffer(string dir)
         {
@@ -29,17 +30,18 @@ namespace GraphSynth.Search.Tools
         {
             var priority = buffer.GetPriority(buffer.First);
             var linkerName = buffer.Dequeue();
-            onSimulation++;
+            onSimulation.Add(linkerName);
             submitlammps(linkerName, "short");
             Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority + ". Current on simulation " + onSimulation);
-            if (onSimulation == MAX_SIMULATION)
+            if (linkerName == "finish")
                 return true;
             return false;
+
         }
 
         public bool canFeedIn()
         {
-            return buffer.Count > 0 && onSimulation < MAX_SIMULATION;
+            return buffer.Count > 0 && onSimulation.Count <= MAX_SIMULATION;
         }
         
         private void submitlammps(string linkerId, string queue) {

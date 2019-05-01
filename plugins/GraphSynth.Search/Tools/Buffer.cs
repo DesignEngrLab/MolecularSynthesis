@@ -33,7 +33,7 @@ namespace GraphSynth.Search.Tools
             foreach (var linkerName in onSimulation)
             {
                 var simulationDir = Path.Combine(_bufferDir, "linker" + linkerName + "_deformation");
-                if (Directory.Exists(Path.Combine(simulationDir, "DONE")))
+                if (File.Exists(Path.Combine(simulationDir, "DONE")))
                 {
                     Console.WriteLine("linker" + linkerName + "finished");
                     onSimulation.Remove(linkerName);

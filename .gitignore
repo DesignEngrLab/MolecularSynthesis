@@ -3,3 +3,8 @@
 ################################################################################
 
 /GraphSynthSourceFiles
+/.vs
+/LAMMPSharp/obj
+/LAMMPSnow/obj
+/OpenBabelFunctions/obj
+/plugins/GraphSynth.Search/obj

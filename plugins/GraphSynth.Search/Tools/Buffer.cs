@@ -30,11 +30,9 @@ namespace GraphSynth.Search.Tools
 
         public void Check_finised()
         {
-            Console.WriteLine("Check!");
             foreach (var linkerName in onSimulation)
             {
                 var simulationDir = Path.Combine(_bufferDir, "linker" + linkerName + "_deformation");
-                Console.WriteLine(Path.Combine(simulationDir, "DONE"));
                 if (Directory.Exists(Path.Combine(simulationDir, "DONE")))
                 {
                     Console.WriteLine("linker" + linkerName + "finished");

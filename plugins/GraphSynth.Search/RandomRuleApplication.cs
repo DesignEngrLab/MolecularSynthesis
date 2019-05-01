@@ -49,8 +49,8 @@ namespace GraphSynth.Search
         protected override void Run()
         {
 
-            Thread autoReleaseBuffer = new Thread(autoSubmitSimulation);
-            Thread generateLinkers = new Thread(generate);
+            Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
+            Thread generateLinkers = new Thread(Generate);
             autoReleaseBuffer.Start();
             generateLinkers.Start();
 
@@ -59,7 +59,7 @@ namespace GraphSynth.Search
 
         }
         
-        private void autoSubmitSimulation()
+        private void AutoSubmitSimulation()
         {
             while (true)
             {
@@ -68,15 +68,15 @@ namespace GraphSynth.Search
                {
                    var finish = jobBuffer.Remove();
                    if (finish)
-                       
                        break;
                }
                //mutex.ReleaseMutex();
             }
         }
 
-        private void generate()
+        private void Generate()
         {
+            Console.WriteLine(NUM_TRAIL);
             var linkerSet = new HashSet<string>();
             var agent = new Algorithms.Random(settings);
             for (var t = 0; t < NUM_TRAIL; t++)

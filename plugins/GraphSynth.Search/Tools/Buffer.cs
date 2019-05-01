@@ -19,6 +19,7 @@ namespace GraphSynth.Search.Tools
         {
             buffer = new SimplePriorityQueue<string, double>();
             _bufferDir = dir;
+            onSimulation = new HashSet<string>();
         }
 
         public void Add(string linkerName, double priority)

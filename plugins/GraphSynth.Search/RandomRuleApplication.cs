@@ -48,11 +48,12 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
-
-            Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
             Thread generateLinkers = new Thread(Generate);
-            autoReleaseBuffer.Start();
+            Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
+            
             generateLinkers.Start();
+            autoReleaseBuffer.Start();
+
 
             generateLinkers.Join();
             autoReleaseBuffer.Join();

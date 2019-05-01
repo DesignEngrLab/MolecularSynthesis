@@ -21,7 +21,7 @@ namespace GraphSynth.Search
         
         private candidate Seed;
         private JobBuffer jobBuffer;
-        private const int NUM_TRAIL = 20;
+        private const int NUM_TRAIL = 15;
         private const int TOTAL_RULE = 5;
         
         private static Mutex mutex = new Mutex();
@@ -65,12 +65,13 @@ namespace GraphSynth.Search
             while (true)
             {
                //mutex.WaitOne();
-               if (jobBuffer.canFeedIn())
-               {
-                   var finish = jobBuffer.Remove();
-                   if (finish)
-                       break;
-               }
+                jobBuffer.Check_finised();
+                if (jobBuffer.CanFeedIn())
+                {
+                    var finish = jobBuffer.Remove();
+                    if (finish)
+                        break;
+                }
                //mutex.ReleaseMutex();
             }
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Priority_Queue;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 
@@ -13,7 +14,7 @@ namespace GraphSynth.Search.Tools
         private const int MAX_SIMULATION = 10;
         private readonly SimplePriorityQueue<string, double> buffer;
         private readonly string _bufferDir;
-        private HashSet<string> onSimulation;
+        private readonly HashSet<string> onSimulation;
 
         public JobBuffer(string dir)
         {
@@ -27,25 +28,38 @@ namespace GraphSynth.Search.Tools
             buffer.Enqueue(linkerName, priority);
         }
 
+        public void Check_finised()
+        {
+            foreach (var linkerName in onSimulation)
+            {
+                var simulationDir = Path.Combine(_bufferDir, "linker" + linkerName + "_deformation");
+                //Console.WriteLine(Path.Combine(simulationDir, "DONE"));
+                if (Directory.Exists(Path.Combine(simulationDir, "DONE")))
+                {
+                    onSimulation.Remove(linkerName);
+                }
+            }
+        }
+
         public bool Remove()
         {
             var priority = buffer.GetPriority(buffer.First);
             var linkerName = buffer.Dequeue();
             onSimulation.Add(linkerName);
-            submitlammps(linkerName, "short");
-            Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority + ". Current on simulation " + onSimulation);
+            Submitlammps(linkerName, "short");
+            Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority + ". Current on simulation " + onSimulation.Count);
             if (linkerName == "finish")
                 return true;
             return false;
 
         }
 
-        public bool canFeedIn()
+        public bool CanFeedIn()
         {
             return buffer.Count > 0 && onSimulation.Count <= MAX_SIMULATION;
         }
         
-        private void submitlammps(string linkerId, string queue) {
+        private void Submitlammps(string linkerId, string queue) {
             using (Process proc = new Process()) {
                 proc.StartInfo.FileName = "submit_lammps_linker_deform_remote";
                 proc.StartInfo.Arguments = linkerId + " " + queue;

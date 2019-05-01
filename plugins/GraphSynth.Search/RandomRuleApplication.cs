@@ -68,7 +68,7 @@ namespace GraphSynth.Search
                 jobBuffer.Check_finised();
                 if (jobBuffer.CanFeedIn())
                 {
-                    var finish = jobBuffer.Remove();
+                    var finish = jobBuffer.Simulate();
                     if (finish)
                         break;
                 }

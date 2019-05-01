@@ -30,18 +30,23 @@ namespace GraphSynth.Search.Tools
 
         public void Check_finised()
         {
+            var finished_linkers = new HashSet<string>();
             foreach (var linkerName in onSimulation)
             {
                 var simulationDir = Path.Combine(_bufferDir, "linker" + linkerName + "_deformation");
                 if (File.Exists(Path.Combine(simulationDir, "DONE")))
                 {
                     Console.WriteLine("linker" + linkerName + "finished");
-                    onSimulation.Remove(linkerName);
+                    finished_linkers.Add(linkerName);
                 }
+            }
+            foreach (var finish in finished_linkers)
+            {
+                onSimulation.Remove(finish);
             }
         }
 
-        public bool Remove()
+        public bool Simulate()
         {
             var priority = buffer.GetPriority(buffer.First);
             var linkerName = buffer.Dequeue();

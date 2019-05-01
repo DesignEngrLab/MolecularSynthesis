@@ -59,9 +59,6 @@
     <Reference Include="OBDotNet, Version=0.5.0.0, Culture=neutral, PublicKeyToken=3069c9c4f488e4bd">
       <HintPath>..\..\Tools\lib\OBDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="OBDotNet, Version=0.5.0.0, Culture=neutral, PublicKeyToken=3069c9c4f488e4bd">
-      <HintPath>..\..\Tools\lib\OBDotNet.dll</HintPath>
-    </Reference>
     <Reference Include="Priority Queue, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\assembly lib\Priority Queue.dll</HintPath>
     </Reference>
@@ -103,81 +100,9 @@
       <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
       <Name>GraphSynth.BaseClasses</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
-      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
-      <Name>GraphSynth.BaseClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
-      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
-      <Name>GraphSynth.BaseClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
-      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
-      <Name>GraphSynth.BaseClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
-      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
-      <Name>GraphSynth.BaseClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
-      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
-      <Name>GraphSynth.BaseClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
-      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
-      <Name>GraphSynth.BaseClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
-      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
-      <Name>GraphSynth.BaseClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GraphSynthSourceFiles\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
-      <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
-      <Name>GraphSynth.BaseClasses</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
       <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
       <Name>LAMMPSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
-      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
-      <Name>LAMMPSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
-      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
-      <Name>LAMMPSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
-      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
-      <Name>LAMMPSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
-      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
-      <Name>LAMMPSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
-      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
-      <Name>LAMMPSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
-      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
-      <Name>LAMMPSnow</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
-      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
-      <Name>LAMMPSnow</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
-      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
-      <Name>LAMMPSnow</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
-      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
-      <Name>LAMMPSnow</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
-      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
-      <Name>LAMMPSnow</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
       <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>

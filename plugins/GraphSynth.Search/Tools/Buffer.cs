@@ -36,7 +36,7 @@ namespace GraphSynth.Search.Tools
                 var simulationDir = Path.Combine(_bufferDir, "linker" + linkerName + "_deformation");
                 if (File.Exists(Path.Combine(simulationDir, "DONE")))
                 {
-                    Console.WriteLine("linker" + linkerName + "finished");
+                    Console.WriteLine("linker " + linkerName + " finished");
                     finished_linkers.Add(linkerName);
                 }
             }

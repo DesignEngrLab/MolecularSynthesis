@@ -18,7 +18,7 @@ namespace LAMMPSnow
 
         public Dictionary<string, LAMMPSNow.parminf> parameters = new Dictionary<string, LAMMPSNow.parminf>();
         public static List<string[]> atomtypes = new List<string[]>();
-        public readonly string _inputDir;
+        public readonly string _uffparmpath;
 
 
         public graph2almostanything(string uffparmpath)

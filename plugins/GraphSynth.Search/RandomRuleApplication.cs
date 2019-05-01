@@ -41,7 +41,6 @@ namespace GraphSynth.Search
             if (Directory.Exists(_runDirectory))
                 Directory.Delete(_runDirectory);
             Directory.CreateDirectory(_runDirectory);
-            
 
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             jobBuffer = new JobBuffer(_runDirectory);
@@ -90,12 +89,12 @@ namespace GraphSynth.Search
                     var opt = agent.ChooseOption(cand);
                     if (opt == null)
                         return;
-                    AbstractAlgorithm.ApplyOption(opt, cand, true);
+                    agent.ApplyOption(opt, cand, true);
                 }
                 var carboxOpt = agent.ChooseCarboxOption(cand);
                 if (carboxOpt == null)
                     return;
-                AbstractAlgorithm.ApplyOption(carboxOpt, cand, true);
+                agent.ApplyOption(carboxOpt, cand, true);
                 var candSMILE = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
                 var linkerName = AbstractAlgorithm.GetLinkerName(cand);
                 Console.WriteLine(candSMILE);
@@ -108,7 +107,7 @@ namespace GraphSynth.Search
                 linkerSet.Add(linkerName);
                 var coeff = Path.Combine(_runDirectory, "linker" + linkerName + ".coeff");
                 var lmpdat = Path.Combine(_runDirectory, "linker" + linkerName + ".lmpdat");
-                AbstractAlgorithm.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
+                agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
 
                 //mutex.WaitOne();
                 jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());

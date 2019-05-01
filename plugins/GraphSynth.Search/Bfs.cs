@@ -63,7 +63,7 @@ namespace GraphSynth.Search
 //                Console.Write(".");
                 if (popNode.getDepth() < MAX_DEPTH)
                 {
-                    var newNodes = popNode.getChildren();
+                    var newNodes = popNode.getChildren(agent);
                     foreach (var node in newNodes)
                     {
                         var nodeSMILE = node.getSMILE();
@@ -77,7 +77,7 @@ namespace GraphSynth.Search
                             QueueBFS.Enqueue(node);
                             nodeCnt++;
 
-                            var terminalLinker = node.getFinalCand();
+                            var terminalLinker = node.getFinalCand(agent);
                             foreach (var linker in terminalLinker)
                             {
                                 var mol = OBFunctions.designgraphtomol(linker.graph);
@@ -139,25 +139,25 @@ namespace GraphSynth.Search
             return OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(Cand.graph));
         }
 
-        public BFSNode[] getChildren()
+        public BFSNode[] getChildren(Deterministic agent)
         {
             var opts = AbstractAlgorithm.GetAvailableOptions(Cand);
             var nodes = new BFSNode[opts.Count];
             for (var i = 0; i < nodes.Length; i++)
             {
-                var child = AbstractAlgorithm.CopyAndApplyOption(opts[i], Cand, true);
+                var child = agent.CopyAndApplyOption(opts[i], Cand, true);
                 nodes[i] = new BFSNode(child, Depth + 1);
             }
             return nodes;
         }
 
-        public candidate[] getFinalCand()
+        public candidate[] getFinalCand(Deterministic agent)
         {
             var opts = AbstractAlgorithm.GetCarboxylOptions(Cand);
             var finals = new candidate[opts.Count];
             for (var i = 0; i < finals.Length; i++)
             {
-                finals[i] = AbstractAlgorithm.CopyAndApplyOption(opts[i], Cand, true);
+                finals[i] = agent.CopyAndApplyOption(opts[i], Cand, true);
             }
             return finals;
         }

@@ -34,7 +34,7 @@ namespace GraphSynth.Search.Algorithms.Evaluations {
                 for (var i = 0; i < carboxylOpts.Count; i++) {
                     var evaluateCopy = candCopy.copy();
                     var evaluateOpts = AbstractAlgorithm.GetCarboxylOptions(evaluateCopy);
-                    AbstractAlgorithm.ApplyOption(evaluateOpts[i], evaluateCopy, true);
+                    _random.ApplyOption(evaluateOpts[i], evaluateCopy, true);
                     var reward = AbstractAlgorithm.Evaluate(evaluateCopy);
                     if (reward > bestRewardSoFar) {
                         bestRewardSoFar = reward;
@@ -48,14 +48,14 @@ namespace GraphSynth.Search.Algorithms.Evaluations {
                 var opt = _random.ChooseOption(candCopy);
                 if (opt == null)
                     break;
-                AbstractAlgorithm.ApplyOption(opt, candCopy, true);
+                _random.ApplyOption(opt, candCopy, true);
                 
                 carboxylOpts = AbstractAlgorithm.GetCarboxylOptions(candCopy);
                 if (carboxylOpts.Count != 0) {
                     for (var i = 0; i < carboxylOpts.Count; i++) {
                         var evaluateCopy = candCopy.copy();
                         var evaluateOpts = AbstractAlgorithm.GetCarboxylOptions(evaluateCopy);
-                        AbstractAlgorithm.ApplyOption(evaluateOpts[i], evaluateCopy, true);
+                        _random.ApplyOption(evaluateOpts[i], evaluateCopy, true);
                         var reward = AbstractAlgorithm.Evaluate(evaluateCopy);
                         if (reward > bestRewardSoFar) {
                             bestRewardSoFar = reward;

@@ -18,11 +18,9 @@ namespace GraphSynth.Search.Algorithms {
         private static readonly string IODir = OBFunctions.GetRamDir();
 
 
-        private static readonly string _inputFilePath = Settings.InputDirAbs;
-
         private const double AngleFloor = 155; // minimum acceptable angle between carboxylates
 
-        public static readonly graph2almostanything Converter = new graph2almostanything(_inputFilePath);
+        public readonly graph2almostanything Converter;
         private readonly Dictionary<string, double> previous = new Dictionary<string, double>(); // cache evaluations
         private int candidateCnt = 0;
         
@@ -30,6 +28,7 @@ namespace GraphSynth.Search.Algorithms {
 
         protected AbstractAlgorithm(GlobalSettings settings_) {
             Settings = settings_;
+            Converter = new graph2almostanything(Settings.InputDirAbs);
         }
 
         public static string GetLinkerName(candidate cand)
@@ -58,18 +57,18 @@ namespace GraphSynth.Search.Algorithms {
                     // is too large, then need to re-think this.
                  // Do not consider CarboxyOpt here
        
-            var set = new HashSet<String>();
-            for (var i = options.Count - 1; i >= 0; i--) {
-                var evalCand = CopyAndApplyOption(options[i], cand, false);
-                var smile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(evalCand.graph));
-                if (set.Contains(smile))
-                {
-                    options.RemoveAt(i);
-                } else
-                {
-                    set.Add(smile);
-                }
-            }    
+//            var set = new HashSet<String>();
+//            for (var i = options.Count - 1; i >= 0; i--) {
+//                var evalCand = CopyAndApplyOption(options[i], cand, false);
+//                var smile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(evalCand.graph));
+//                if (set.Contains(smile))
+//                {
+//                    options.RemoveAt(i);
+//                } else
+//                {
+//                    set.Add(smile);
+//                }
+//            }    
             return options;
         }
         
@@ -111,18 +110,18 @@ namespace GraphSynth.Search.Algorithms {
 //                    options.RemoveAt(i);
 //                }
                     // Do not consider CarboxyOpt here
-            var set = new HashSet<String>();
-            for (var i = options.Count - 1; i >= 0; i--) {
-                var evalCand = CopyAndApplyOption(options[i], cand, false);
-                var smile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(evalCand.graph));
-                if (set.Contains(smile))
-                {
-                    options.RemoveAt(i);
-                } else
-                {
-                    set.Add(smile);
-                }
-            }
+//            var set = new HashSet<String>();
+//            for (var i = options.Count - 1; i >= 0; i--) {
+//                var evalCand = CopyAndApplyOption(options[i], cand, false);
+//                var smile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(evalCand.graph));
+//                if (set.Contains(smile))
+//                {
+//                    options.RemoveAt(i);
+//                } else
+//                {
+//                    set.Add(smile);
+//                }
+//            }
                     
             return options;// return the first one by default
         }
@@ -130,7 +129,7 @@ namespace GraphSynth.Search.Algorithms {
         /// <summary>
         /// Apply the option to the candidate and store the agent's evaluation.
         /// </summary>
-        public static void ApplyOption(option opt, candidate cand, bool doMinimize, bool doEvaluate=false) {
+        public void ApplyOption(option opt, candidate cand, bool doMinimize, bool doEvaluate=false) {
             cand.graph.globalVariables.Add(cand.f0); // track fitness values of previous states 
             
             // Minimize and evaluate
@@ -146,7 +145,7 @@ namespace GraphSynth.Search.Algorithms {
         /// <summary>
         /// Copies the candidate graph, transfers the L-mapping, and returns the resultant candidate.
         /// </summary>
-        public static candidate CopyAndApplyOption(option opt, candidate cand, bool doMinimize) {
+        public candidate CopyAndApplyOption(option opt, candidate cand, bool doMinimize) {
             var newCand = cand.copy();
             var newOpt = opt.copy();
             SearchProcess.transferLmappingToChild(newCand.graph, cand.graph, newOpt);
@@ -157,14 +156,14 @@ namespace GraphSynth.Search.Algorithms {
         /// <summary>
         /// Clean way to minimize a graph.
         /// </summary>
-        private static designGraph Minimize(designGraph graph) {
+        private designGraph Minimize(designGraph graph) {
             var mol = QuickMinimization(OBFunctions.designgraphtomol(graph), IODir + "rank" + ".lmpdat",
                 IODir + "rank" + ".coeff", false, 0);
             OBFunctions.updatepositions(graph, mol);
             return OBFunctions.tagconvexhullpoints(graph);
         }
 
-        private static OBMol QuickMinimization(OBMol mol, string coeff, string lmpdat, bool periodic, int rankMe) {
+        private OBMol QuickMinimization(OBMol mol, string coeff, string lmpdat, bool periodic, int rankMe) {
             double padding = 50;
             const double etol = 0.0;
             const double ftol = 1.0e-6;

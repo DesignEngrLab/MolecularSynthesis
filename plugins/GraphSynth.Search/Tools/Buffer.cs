@@ -50,13 +50,12 @@ namespace GraphSynth.Search.Tools
         {
             var priority = buffer.GetPriority(buffer.First);
             var linkerName = buffer.Dequeue();
+            if (linkerName == "finish")
+                return true;
             onSimulation.Add(linkerName);
             Submitlammps(linkerName, "short");
             Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority + ". Current on simulation " + onSimulation.Count);
-            if (linkerName == "finish")
-                return true;
             return false;
-
         }
 
         public bool CanFeedIn()

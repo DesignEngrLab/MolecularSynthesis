@@ -28,7 +28,7 @@ namespace GraphSynth.Search.Tools
             buffer.Enqueue(linkerName, priority);
         }
 
-        public void Check_finised()
+        public bool Check_finised()
         {
             var finished_linkers = new HashSet<string>();
             foreach (var linkerName in onSimulation)
@@ -44,6 +44,7 @@ namespace GraphSynth.Search.Tools
             {
                 onSimulation.Remove(finish);
             }
+            Console.WriteLine("Current on simulation " + onSimulation.Count);
             return onSimulation.Count > 0;
         }
 
@@ -55,7 +56,8 @@ namespace GraphSynth.Search.Tools
                 return true;
             onSimulation.Add(linkerName);
             Submitlammps(linkerName, "short");
-            Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority + ". Current on simulation " + onSimulation.Count);
+            Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
+            Console.WriteLine("Current on simulation " + onSimulation.Count);
             return false;
         }
 

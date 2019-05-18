@@ -17,7 +17,6 @@ namespace GraphSynth.Search
     {
         
         private readonly string _runDirectory;
-        private readonly string _dataDirectory;
         private readonly string _learnDirectory;
 
         private readonly string _inputFilePath;
@@ -42,13 +41,14 @@ namespace GraphSynth.Search
             RequiredNumRuleSets = 1;
             AutoPlay = true;
             
+            Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
+            
             _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "randomCarbox");
             _learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             if (Directory.Exists(_runDirectory))
                 Directory.Delete(_runDirectory, true);
             Directory.CreateDirectory(_runDirectory);
 
-            Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             jobBuffer = new JobBuffer(_runDirectory);
             server = new LearningServer(_runDirectory, _learnDirectory);
         }
@@ -115,8 +115,8 @@ namespace GraphSynth.Search
                     continue;
                 }
                 linkerSet.Add(linkerName);
-                var coeff = Path.Combine(_dataDirectory, "linker" + linkerName + ".coeff");
-                var lmpdat = Path.Combine(_dataDirectory, "linker" + linkerName + ".lmpdat");
+                var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
+                var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
                 agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
 
                 //mutex.WaitOne();

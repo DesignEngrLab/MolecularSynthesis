@@ -39,7 +39,7 @@ namespace GraphSynth.Search.Tools
                 {
                     Console.WriteLine("linker" + linkerName + "finished");
                     finished_linkers.Add(linkerName);
-                    sever.CalculateFeature("calcPoint.py", linkerName);
+                    server.CalculateFeature("calcPoint.py", linkerName);
                 }
             }
             if (finished_linkers.Count > 0)

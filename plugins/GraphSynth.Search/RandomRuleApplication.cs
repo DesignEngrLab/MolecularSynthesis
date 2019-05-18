@@ -17,10 +17,15 @@ namespace GraphSynth.Search
     {
         
         private readonly string _runDirectory;
+        private readonly string _dataDirectory;
+        private readonly string _learnDirectory;
+
         private readonly string _inputFilePath;
         
         private candidate Seed;
         private JobBuffer jobBuffer;
+        private LearningServer server;
+
         private const int NUM_TRAIL = 22;
         private const int TOTAL_RULE = 5;
         
@@ -37,13 +42,16 @@ namespace GraphSynth.Search
             RequiredNumRuleSets = 1;
             AutoPlay = true;
             
-            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "randomCarbox", "data");
-            if (Directory.Exists(_runDirectory))
-                Directory.Delete(_runDirectory, true);
-            Directory.CreateDirectory(_runDirectory);
+            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "randomCarbox");
+            _dataDirectory = Path.Combine(_runDirectory, "data");
+            _learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
+            if (Directory.Exists(_dataDirectory))
+                Directory.Delete(_dataDirectory, true);
+            Directory.CreateDirectory(_dataDirectory);
 
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
-            jobBuffer = new JobBuffer(_runDirectory);
+            jobBuffer = new JobBuffer(_dataDirectory);
+            server = new LearningServer(_dataDirectory, _learnDirectory);
         }
 
         protected override void Run()
@@ -70,7 +78,7 @@ namespace GraphSynth.Search
                 {
                     all_submitted = jobBuffer.Simulate();
                 }
-                all_finished = jobBuffer.Check_finised();
+                all_finished = jobBuffer.Check_finised(server);
                 if (all_finished && all_submitted)
                     break;
                 //mutex.ReleaseMutex();
@@ -108,8 +116,8 @@ namespace GraphSynth.Search
                     continue;
                 }
                 linkerSet.Add(linkerName);
-                var coeff = Path.Combine(_runDirectory, "linker" + linkerName + ".coeff");
-                var lmpdat = Path.Combine(_runDirectory, "linker" + linkerName + ".lmpdat");
+                var coeff = Path.Combine(_dataDirectory, "linker" + linkerName + ".coeff");
+                var lmpdat = Path.Combine(_dataDirectory, "linker" + linkerName + ".lmpdat");
                 agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
 
                 //mutex.WaitOne();

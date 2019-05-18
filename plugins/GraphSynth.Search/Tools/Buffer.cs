@@ -16,10 +16,11 @@ namespace GraphSynth.Search.Tools
         private readonly string _bufferDir;
         private readonly HashSet<string> onSimulation;
 
-        public JobBuffer(string dir)
+
+        public JobBuffer(string dataDir)
         {
             buffer = new SimplePriorityQueue<string, double>();
-            _bufferDir = dir;
+            _bufferDir = dataDir;
             onSimulation = new HashSet<string>();
         }
 
@@ -28,7 +29,7 @@ namespace GraphSynth.Search.Tools
             buffer.Enqueue(linkerName, priority);
         }
 
-        public bool Check_finised()
+        public bool Check_finised(LearningServer server)
         {
             var finished_linkers = new HashSet<string>();
             foreach (var linkerName in onSimulation)
@@ -38,6 +39,7 @@ namespace GraphSynth.Search.Tools
                 {
                     Console.WriteLine("linker" + linkerName + "finished");
                     finished_linkers.Add(linkerName);
+                    sever.CalculateFeature("calcPoint.py", linkerName);
                 }
             }
             if (finished_linkers.Count > 0)

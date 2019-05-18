@@ -43,7 +43,6 @@ namespace GraphSynth.Search
             AutoPlay = true;
             
             _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "randomCarbox");
-            _dataDirectory = Path.Combine(_runDirectory, "data");
             _learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             if (Directory.Exists(_dataDirectory))
                 Directory.Delete(_dataDirectory, true);

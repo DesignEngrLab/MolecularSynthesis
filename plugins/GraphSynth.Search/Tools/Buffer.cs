@@ -44,6 +44,7 @@ namespace GraphSynth.Search.Tools
             {
                 onSimulation.Remove(finish);
             }
+            return onSimulation.Count > 0;
         }
 
         public bool Simulate()
@@ -58,15 +59,10 @@ namespace GraphSynth.Search.Tools
             return false;
         }
 
-        public bool BufferNotEmpty()
-        {
-            return buffer.Count > 0;
-        }
 
-
-        public bool SimQNotFull()
+        public bool CanFeedIn()
         {
-            return onSimulation.Count < MAX_SIMULATION;
+            return buffer.Count > 0 && onSimulation.Count < MAX_SIMULATION;
         }
         
         private void Submitlammps(string linkerId, string queue) {

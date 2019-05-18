@@ -35,6 +35,8 @@ namespace GraphSynth.Search.Tools
                 proc.StartInfo.RedirectStandardInput = false;
                 proc.Start();
                 proc.WaitForExit();
+                string output = proc.StandardOutput.ReadToEnd();
+                Console.WriteLine(output);
             }
 
         }

@@ -16,10 +16,14 @@ namespace GraphSynth.Search.Tools
         private readonly string _bufferDir;
         private readonly HashSet<string> onSimulation;
 
-        public JobBuffer(string dir)
+
+        public JobBuffer(string runDir)
         {
             buffer = new SimplePriorityQueue<string, double>();
-            _bufferDir = dir;
+            _bufferDir = Path.Combine(runDir, "data");
+            if (Directory.Exists(_bufferDir))
+                Directory.Delete(_bufferDir, true);
+            Directory.CreateDirectory(_bufferDir);
             onSimulation = new HashSet<string>();
         }
 
@@ -28,7 +32,7 @@ namespace GraphSynth.Search.Tools
             buffer.Enqueue(linkerName, priority);
         }
 
-        public void Check_finised()
+        public bool Check_finised(LearningServer server)
         {
             var finished_linkers = new HashSet<string>();
             foreach (var linkerName in onSimulation)
@@ -38,12 +42,18 @@ namespace GraphSynth.Search.Tools
                 {
                     Console.WriteLine("linker " + linkerName + " finished");
                     finished_linkers.Add(linkerName);
+                    server.CalculateFeature("calcPoint.py", linkerName);
                 }
             }
-            foreach (var finish in finished_linkers)
+            if (finished_linkers.Count > 0)
             {
-                onSimulation.Remove(finish);
+                foreach (var finish in finished_linkers)
+                {
+                    onSimulation.Remove(finish);
+                }
+                Console.WriteLine("Current on simulation " + onSimulation.Count);
             }
+            return onSimulation.Count == 0;
         }
 
         public bool Simulate()
@@ -54,9 +64,11 @@ namespace GraphSynth.Search.Tools
                 return true;
             onSimulation.Add(linkerName);
             Submitlammps(linkerName, "short");
-            Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority + ". Current on simulation " + onSimulation.Count);
+            Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
+            Console.WriteLine("Current on simulation " + onSimulation.Count);
             return false;
         }
+
 
         public bool CanFeedIn()
         {

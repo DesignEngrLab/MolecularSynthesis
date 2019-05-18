@@ -44,13 +44,13 @@ namespace GraphSynth.Search
             
             _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "randomCarbox");
             _learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
-            if (Directory.Exists(_dataDirectory))
-                Directory.Delete(_dataDirectory, true);
-            Directory.CreateDirectory(_dataDirectory);
+            if (Directory.Exists(_runDirectory))
+                Directory.Delete(_runDirectory, true);
+            Directory.CreateDirectory(_runDirectory);
 
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
-            jobBuffer = new JobBuffer(_dataDirectory);
-            server = new LearningServer(_dataDirectory, _learnDirectory);
+            jobBuffer = new JobBuffer(_runDirectory);
+            server = new LearningServer(_runDirectory, _learnDirectory);
         }
 
         protected override void Run()

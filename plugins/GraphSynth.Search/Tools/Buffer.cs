@@ -17,10 +17,13 @@ namespace GraphSynth.Search.Tools
         private readonly HashSet<string> onSimulation;
 
 
-        public JobBuffer(string dataDir)
+        public JobBuffer(string runDir)
         {
             buffer = new SimplePriorityQueue<string, double>();
-            _bufferDir = dataDir;
+            _bufferDir = Path.Combine(runDir, "data");
+            if (Directory.Exists(_bufferDir))
+                Directory.Delete(_bufferDir, true);
+            Directory.CreateDirectory(_bufferDir);
             onSimulation = new HashSet<string>();
         }
 

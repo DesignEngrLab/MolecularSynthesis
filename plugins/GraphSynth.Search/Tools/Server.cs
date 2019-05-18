@@ -32,10 +32,10 @@ namespace GraphSynth.Search.Tools
                 proc.StartInfo.RedirectStandardInput = false;
                 proc.Start();
                 proc.WaitForExit();
-                string output = proc.StandardOutput.ReadToEnd();
-                string error = proc.StandardError.ReadToEnd();
-                Console.WriteLine(error);
-                Console.WriteLine(output);
+                //string output = proc.StandardOutput.ReadToEnd();
+                //string error = proc.StandardError.ReadToEnd();
+                //Console.WriteLine(error);
+                //Console.WriteLine(output);
             }
 
         }

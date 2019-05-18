@@ -48,7 +48,7 @@ namespace GraphSynth.Search.Tools
                 }
                 Console.WriteLine("Current on simulation " + onSimulation.Count);
             }
-            return onSimulation.Count > 0;
+            return onSimulation.Count == 0;
         }
 
         public bool Simulate()

@@ -58,9 +58,15 @@ namespace GraphSynth.Search.Tools
             return false;
         }
 
-        public bool CanFeedIn()
+        public bool BufferNotEmpty()
         {
-            return buffer.Count > 0 && onSimulation.Count < MAX_SIMULATION;
+            return buffer.count > 0;
+        }
+
+
+        public bool SimQNotFull()
+        {
+            return onSimulation.Count < MAX_SIMULATION;
         }
         
         private void Submitlammps(string linkerId, string queue) {

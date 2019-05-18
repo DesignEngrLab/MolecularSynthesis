@@ -40,11 +40,14 @@ namespace GraphSynth.Search.Tools
                     finished_linkers.Add(linkerName);
                 }
             }
-            foreach (var finish in finished_linkers)
+            if (finished_linkers.Count > 0)
             {
-                onSimulation.Remove(finish);
+                foreach (var finish in finished_linkers)
+                {
+                    onSimulation.Remove(finish);
+                }
+                Console.WriteLine("Current on simulation " + onSimulation.Count);
             }
-            Console.WriteLine("Current on simulation " + onSimulation.Count);
             return onSimulation.Count > 0;
         }
 

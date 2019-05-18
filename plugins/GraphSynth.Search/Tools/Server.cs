@@ -29,13 +29,15 @@ namespace GraphSynth.Search.Tools
                 proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
                 proc.StartInfo.Arguments = script + " " + lmpData;
                 proc.StartInfo.WorkingDirectory = Path.Combine(_learnDir, "Computation");
-                proc.StartInfo.RedirectStandardError = false;
+                proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.RedirectStandardInput = false;
                 proc.Start();
                 proc.WaitForExit();
                 string output = proc.StandardOutput.ReadToEnd();
+                string error = proc.StandardError.ReadToEnd();
+                Console.WriteLine(error);
                 Console.WriteLine(output);
             }
 

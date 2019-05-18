@@ -37,7 +37,7 @@ namespace GraphSynth.Search
             RequiredNumRuleSets = 1;
             AutoPlay = true;
             
-            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication");
+            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "randomCarbox");
             if (Directory.Exists(_runDirectory))
                 Directory.Delete(_runDirectory, true);
             Directory.CreateDirectory(_runDirectory);

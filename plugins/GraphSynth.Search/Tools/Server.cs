@@ -26,7 +26,7 @@ namespace GraphSynth.Search.Tools
             var lmpData = Path.Combine(_dataDir, "linker" + linkerId + ".lmpdat");
             using (Process proc = new Process())
             {
-                proc.StartInfo.FileName = "rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
+                proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
                 proc.StartInfo.Arguments = script + " " + lmpData;
                 proc.StartInfo.WorkingDirectory = Path.Combine(_learnDir, "Computation");
                 proc.StartInfo.RedirectStandardError = false;

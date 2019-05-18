@@ -69,7 +69,6 @@ namespace GraphSynth.Search
         private void AutoSubmitSimulation()
         {
             var all_submitted = false;
-            var all_finished = false;
             while (true)
             {
                 //mutex.WaitOne();
@@ -77,7 +76,7 @@ namespace GraphSynth.Search
                 {
                     all_submitted = jobBuffer.Simulate();
                 }
-                all_finished = jobBuffer.Check_finised(server);
+                var all_finished = jobBuffer.Check_finised(server);
                 if (all_finished && all_submitted)
                     break;
                 //mutex.ReleaseMutex();

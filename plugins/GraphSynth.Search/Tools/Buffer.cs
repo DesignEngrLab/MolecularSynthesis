@@ -60,7 +60,7 @@ namespace GraphSynth.Search.Tools
 
         public bool BufferNotEmpty()
         {
-            return buffer.count > 0;
+            return buffer.Count > 0;
         }
 
 

@@ -16,6 +16,12 @@ namespace GraphSynth.Search.Tools
         private readonly string _bufferDir;
         private readonly HashSet<string> onSimulation;
         private readonly Dictionary<string,int> epochLookUp;
+        private bool allFinishFlag;
+
+        public bool AllFinishFlag
+        {
+            set{this.allFinishFlag = value;}
+        }
         
         public JobBuffer(string runDir)
         {
@@ -26,6 +32,7 @@ namespace GraphSynth.Search.Tools
             Directory.CreateDirectory(_bufferDir);
             onSimulation = new HashSet<string>();
             epochLookUp = new Dictionary<string, int>();
+            allFinishFlag = false;
         }
 
         public void Add(string linkerName, double priority, int epoch)
@@ -50,11 +57,11 @@ namespace GraphSynth.Search.Tools
                 foreach (var linkerName in finished_linkers)
                 {
                     onSimulation.Remove(linkerName);
-                    epochLookUp.Remove(linkerName);
                     var property = server.CalculateProperty(linkerName);
                     Console.WriteLine("linker " + linkerName + " finished, with property " + property);
                     Console.WriteLine("Current on simulation " + onSimulation.Count);
                     sw.WriteLine("Epoch " + epochLookUp[linkerName] + "," + linkerName + "," + property);
+                    epochLookUp.Remove(linkerName);
                 }
             }
             return onSimulation.Count == 0;
@@ -64,13 +71,11 @@ namespace GraphSynth.Search.Tools
         {
             var priority = buffer.GetPriority(buffer.First);
             var linkerName = buffer.Dequeue();
-            if (linkerName == "finish")
-                return true;
             onSimulation.Add(linkerName);
             Submitlammps(linkerName, "short");
             //Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
             //Console.WriteLine("Current on simulation " + onSimulation.Count);
-            return false;
+            return allFinishFlag;
         }
 
 

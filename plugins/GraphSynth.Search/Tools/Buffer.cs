@@ -40,18 +40,19 @@ namespace GraphSynth.Search.Tools
                 var simulationDir = Path.Combine(_bufferDir, "linker" + linkerName + "_deformation");
                 if (File.Exists(Path.Combine(simulationDir, "DONE")))
                 {
-                    Console.WriteLine("linker " + linkerName + " finished");
                     finished_linkers.Add(linkerName);
-                    server.CalculateProperty(linkerName);
+
                 }
             }
             if (finished_linkers.Count > 0)
             {
-                foreach (var finish in finished_linkers)
+                foreach (var linkerName in finished_linkers)
                 {
-                    onSimulation.Remove(finish);
+                    onSimulation.Remove(linkerName);
+                    var property = server.CalculateProperty(linkerName);
+                    Console.WriteLine("linker " + linkerName + " finished, with property " + property
+                        + ". Current on simulation " + onSimulation.Count);
                 }
-                Console.WriteLine("Current on simulation " + onSimulation.Count);
             }
             return onSimulation.Count == 0;
         }
@@ -64,8 +65,8 @@ namespace GraphSynth.Search.Tools
                 return true;
             onSimulation.Add(linkerName);
             Submitlammps(linkerName, "short");
-            Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
-            Console.WriteLine("Current on simulation " + onSimulation.Count);
+            //Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
+            //Console.WriteLine("Current on simulation " + onSimulation.Count);
             return false;
         }
 

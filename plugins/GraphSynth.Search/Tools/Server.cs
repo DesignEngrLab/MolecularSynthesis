@@ -67,7 +67,7 @@ namespace GraphSynth.Search.Tools
             }
         }
 
-        public void CalculateProperty(string linkerId)
+        public string CalculateProperty(string linkerId)
         {
             var aveData = Path.Combine(_runDir, "data", "linker" + linkerId + "_deformation", "linker" + linkerId + "-ave-force.d");
             using (Process proc = new Process())
@@ -84,8 +84,9 @@ namespace GraphSynth.Search.Tools
                 //string error = proc.StandardError.ReadToEnd();
                 //Console.WriteLine(error);
                 string output = proc.StandardOutput.ReadToEnd();
-                Console.WriteLine(output);
+                //Console.WriteLine(output);
                 sw.WriteLine(linkerId + "," + output);
+                return output;
 
             }
         }

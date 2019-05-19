@@ -100,11 +100,11 @@ namespace GraphSynth.Search
                     Console.WriteLine("Trail: {0}", t);
                     for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX; total_rule++)
                     {
+                        var cand = Seed.copy();
                         while(true)
                         {
                             var successFlag = true;
                             Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
-                            var cand = Seed.copy();
                             for (var step = 0; step < total_rule; step++)
                             {
                                 var opt = agent.ChooseOption(cand);
@@ -112,6 +112,7 @@ namespace GraphSynth.Search
                                 {
                                     Console.WriteLine("Fail on step {0}", step+1);
                                     successFlag = false;
+                                    cand = Seed.copy();
                                     break;
                                 }
                                 agent.ApplyOption(opt, cand, true);
@@ -123,11 +124,11 @@ namespace GraphSynth.Search
                             {
                                 Console.WriteLine("Fail on finding final carbox");
                                 successFlag = false;
+                                cand = Seed.copy();
                             }
                             if (successFlag == false)
                                 continue;
                             agent.ApplyOption(carboxOpt, cand, true);
-                            
                         }
                         
                         var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));

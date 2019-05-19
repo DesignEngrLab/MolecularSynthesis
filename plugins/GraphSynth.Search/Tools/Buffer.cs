@@ -15,7 +15,7 @@ namespace GraphSynth.Search.Tools
         private readonly SimplePriorityQueue<string, double> buffer;
         private readonly string _bufferDir;
         private readonly HashSet<string> onSimulation;
-        private readonly Dictionary<string,string> epochLookUp;
+        private readonly Dictionary<string,int> epochLookUp;
         
         public JobBuffer(string runDir)
         {

@@ -155,7 +155,7 @@ namespace GraphSynth.Search
                     }
                 }
             }
-            jobBuffer.Add("finish", 1.0);
+            jobBuffer.Add("finish", 1.0, NUM_EPOCH);
         }
         
         public override string text => "RandomTrail Search Runner";

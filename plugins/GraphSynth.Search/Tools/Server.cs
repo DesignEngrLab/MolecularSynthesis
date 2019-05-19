@@ -85,7 +85,6 @@ namespace GraphSynth.Search.Tools
                 //Console.WriteLine(error);
                 string output = proc.StandardOutput.ReadToEnd();
                 //Console.WriteLine(output);
-                sw.WriteLine(linkerId + "," + output);
                 return output;
 
             }

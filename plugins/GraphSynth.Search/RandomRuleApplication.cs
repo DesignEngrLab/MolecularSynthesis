@@ -50,7 +50,7 @@ namespace GraphSynth.Search
             Directory.CreateDirectory(_runDirectory);
 
             jobBuffer = new JobBuffer(_runDirectory);
-            server = new LearningServer(_runDirectory, _learnDirectory);
+            server = new LearningServer(_runDirectory, _learnDirectory, "point");
         }
 
         protected override void Run()

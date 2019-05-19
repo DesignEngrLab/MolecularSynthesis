@@ -42,7 +42,7 @@ namespace GraphSynth.Search.Tools
                 {
                     Console.WriteLine("linker " + linkerName + " finished");
                     finished_linkers.Add(linkerName);
-                    server.CalculateFeature("calcPoint.py", linkerName);
+                    server.CalculateFeature(linkerName);
                 }
             }
             if (finished_linkers.Count > 0)

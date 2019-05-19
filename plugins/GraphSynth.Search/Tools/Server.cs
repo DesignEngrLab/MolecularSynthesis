@@ -9,31 +9,33 @@ namespace GraphSynth.Search.Tools
     public class LearningServer
     {
         private readonly string _runDir;
+        private readonly string _learnDir;
+        private readonly string _featureDir;
+        private readonly string _task;
         private static readonly Dictionary<string,string> scriptLookup = new Dictionary<string, string>()
         {
             {"point", "calcPoint.py"}
         };
-        private readonly string _learnDir;
 
-        public LearningServer(string runDir, string learnDir)
+        public LearningServer(string runDir, string learnDir, string task)
         {
             _runDir = runDir;
             _learnDir = learnDir;
-        }
-
-
-        public void CalculateFeature(string task, string linkerId)
-        {
-            var _featureDir = Path.Combine(_runDir, task);
+            _task = task;
+            _featureDir = Path.Combine(_runDir, task);
             if (Directory.Exists(_featureDir))
                 Directory.Delete(_featureDir, true);
             Directory.CreateDirectory(_featureDir);
-            
+        }
+
+
+        public void CalculateFeature(string linkerId)
+        {
             var lmpData = Path.Combine(_runDir, "data", "linker" + linkerId + ".lmpdat");
             using (Process proc = new Process())
             {
                 proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
-                proc.StartInfo.Arguments = scriptLookup[task] + " " + lmpData + _featureDir;
+                proc.StartInfo.Arguments = scriptLookup[_task] + " " + lmpData + _featureDir;
                 proc.StartInfo.WorkingDirectory = Path.Combine(_learnDir, "computation");
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.UseShellExecute = false;
@@ -46,7 +48,6 @@ namespace GraphSynth.Search.Tools
                 Console.WriteLine(error);
                 Console.WriteLine(output);
             }
-
         }
 
     }

@@ -53,7 +53,7 @@ namespace GraphSynth.Search
             
             var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             server = new LearningServer(_runDirectory, learnDirectory, "point", "stiff");
-            sw = new StreamWriter(Path.Combine(_runDirectory, learnDirectory, "point", "stiff" + ".txt"));
+            sw = new StreamWriter(Path.Combine(_runDirectory, "stiff" + ".txt"));
         }
 
         protected override void Run()

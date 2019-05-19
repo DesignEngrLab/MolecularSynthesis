@@ -92,7 +92,7 @@ namespace GraphSynth.Search
         {
             var agent = new Algorithms.Random(settings);
             var linkerSet = new HashSet<string>();
-            for (var e = 0; t < NUM_EPOCH; e++)
+            for (var e = 0; e < NUM_EPOCH; e++)
             {
                 Console.WriteLine("Epoch: {0}", e);
                 for (var t = 0; t < NUM_TRAIL; t++)

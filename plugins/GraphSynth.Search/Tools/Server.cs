@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -89,7 +90,7 @@ namespace GraphSynth.Search.Tools
 
         public void ShutDown()
         {
-            sw.close();
+            sw.Close();
         }
 
     }

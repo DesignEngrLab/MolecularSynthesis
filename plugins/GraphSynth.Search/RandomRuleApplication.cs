@@ -23,7 +23,7 @@ namespace GraphSynth.Search
         private LearningServer server;
 
         private const int NUM_TRAIL = 5;
-        private const int TOTAL_RULE = 12;
+        private const int TOTAL_RULE = 5;
         
         private static Mutex mutex = new Mutex();
 
@@ -47,7 +47,7 @@ namespace GraphSynth.Search
             Directory.CreateDirectory(_runDirectory);
 
             jobBuffer = new JobBuffer(_runDirectory);
-            server = new LearningServer(_runDirectory, learnDirectory, "point");
+            server = new LearningServer(_runDirectory, learnDirectory, "point", "stiff");
         }
 
         protected override void Run()
@@ -121,6 +121,7 @@ namespace GraphSynth.Search
                 var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                 var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
                 agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
+                server.CalculateProperty(linkerName);
 
                 //mutex.WaitOne();
                 jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());

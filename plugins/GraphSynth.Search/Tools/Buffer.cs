@@ -50,8 +50,8 @@ namespace GraphSynth.Search.Tools
                 {
                     onSimulation.Remove(linkerName);
                     var property = server.CalculateProperty(linkerName);
-                    Console.WriteLine("linker " + linkerName + " finished, with property " + property
-                        + ". Current on simulation " + onSimulation.Count);
+                    Console.WriteLine("linker " + linkerName + " finished, with property " + property);
+                    Console.WriteLine("Current on simulation " + onSimulation.Count);
                 }
             }
             return onSimulation.Count == 0;

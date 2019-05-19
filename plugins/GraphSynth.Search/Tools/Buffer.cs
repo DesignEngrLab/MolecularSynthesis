@@ -11,7 +11,7 @@ namespace GraphSynth.Search.Tools
 {
     public class JobBuffer
     {
-        private const int MAX_SIMULATION = 100;
+        private const int MAX_SIMULATION = 250;
         private readonly SimplePriorityQueue<string, double> buffer;
         private readonly string _bufferDir;
         private readonly HashSet<string> onSimulation;

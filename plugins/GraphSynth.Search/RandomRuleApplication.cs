@@ -116,7 +116,8 @@ namespace GraphSynth.Search
                         if (carboxOpt == null)
                         {
                             Console.WriteLine("Fail on finding final carbox");
-                            return;
+                            total_rule--;
+                            continue;
                         }
                         agent.ApplyOption(carboxOpt, cand, true);
                         var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));

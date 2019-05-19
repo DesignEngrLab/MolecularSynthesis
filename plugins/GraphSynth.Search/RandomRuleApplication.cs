@@ -79,7 +79,7 @@ namespace GraphSynth.Search
                 var allFinished = jobBuffer.Check_finised(server);
                 if (allFinished && allSubmitted)
                 {
-                    server.ShutDown();
+                    //server.ShutDown();
                     break;
                 }
 
@@ -107,7 +107,6 @@ namespace GraphSynth.Search
                             Console.WriteLine("Fail on step {0}", step+1);
                             return;
                         }
-
                         agent.ApplyOption(opt, cand, true);
                     }
                     var carboxOpt = agent.ChooseCarboxOption(cand);
@@ -135,8 +134,7 @@ namespace GraphSynth.Search
                     //mutex.WaitOne();
                     jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());
                     //mutex.ReleaseMutex();
-                    }
-                
+                }
             }
             jobBuffer.Add("finish", 1.0);
             

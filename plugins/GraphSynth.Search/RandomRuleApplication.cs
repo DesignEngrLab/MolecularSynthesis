@@ -100,26 +100,36 @@ namespace GraphSynth.Search
                     Console.WriteLine("Trail: {0}", t);
                     for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX; total_rule++)
                     {
-                        Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
-                        var cand = Seed.copy();
-                        for (var step = 0; step < total_rule; step++)
+                        while(true)
                         {
-                            var opt = agent.ChooseOption(cand);
-                            if (opt == null)
+                            var successFlag = true;
+                            Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
+                            var cand = Seed.copy();
+                            for (var step = 0; step < total_rule; step++)
                             {
-                                Console.WriteLine("Fail on step {0}", step+1);
-                                return;
+                                var opt = agent.ChooseOption(cand);
+                                if (opt == null)
+                                {
+                                    Console.WriteLine("Fail on step {0}", step+1);
+                                    successFlag = false;
+                                    break;
+                                }
+                                agent.ApplyOption(opt, cand, true);
                             }
-                            agent.ApplyOption(opt, cand, true);
+                            if (successFlag == false)
+                                continue;
+                            var carboxOpt = agent.ChooseCarboxOption(cand);
+                            if (carboxOpt == null)
+                            {
+                                Console.WriteLine("Fail on finding final carbox");
+                                successFlag = false;
+                            }
+                            if (successFlag == false)
+                                continue;
+                            agent.ApplyOption(carboxOpt, cand, true);
+                            
                         }
-                        var carboxOpt = agent.ChooseCarboxOption(cand);
-                        if (carboxOpt == null)
-                        {
-                            Console.WriteLine("Fail on finding final carbox");
-                            total_rule--;
-                            continue;
-                        }
-                        agent.ApplyOption(carboxOpt, cand, true);
+                        
                         var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
                         var linkerName = AbstractAlgorithm.GetLinkerName(cand);
                         //Console.WriteLine(candSmile);
@@ -136,7 +146,7 @@ namespace GraphSynth.Search
                         server.CalculateFeature(linkerName);
 
                         //mutex.WaitOne();
-                        jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());
+                        jobBuffer.Add("Epoch " + e + "," + linkerName, AbstractAlgorithm.Rand.NextDouble());
                         //mutex.ReleaseMutex();
                     }
                 }

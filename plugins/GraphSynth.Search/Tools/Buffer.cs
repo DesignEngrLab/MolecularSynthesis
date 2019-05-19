@@ -11,7 +11,7 @@ namespace GraphSynth.Search.Tools
 {
     public class JobBuffer
     {
-        private const int MAX_SIMULATION = 250;
+        private const int MAX_SIMULATION = 150;
         private readonly SimplePriorityQueue<string, double> buffer;
         private readonly string _bufferDir;
         private readonly HashSet<string> onSimulation;
@@ -41,7 +41,6 @@ namespace GraphSynth.Search.Tools
                 if (File.Exists(Path.Combine(simulationDir, "DONE")))
                 {
                     finished_linkers.Add(linkerName);
-
                 }
             }
             if (finished_linkers.Count > 0)

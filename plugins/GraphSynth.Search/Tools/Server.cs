@@ -1,4 +1,4 @@
-using System;
+using System
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,7 +14,7 @@ namespace GraphSynth.Search.Tools
         private readonly string _propertyDir;
         private readonly string _featureUsed;
         private readonly string _propertyUsed;
-        //private StreamWriter sw;
+        private StreamWriter sw;
         private static readonly Dictionary<string, string> featureScriptLookup = new Dictionary<string, string>()
         {
             {"point", "calcPoint.py"}
@@ -32,7 +32,7 @@ namespace GraphSynth.Search.Tools
             _propertyUsed = property;
             _featureDir = Path.Combine(_runDir, "feature", feature);
             _propertyDir = Path.Combine(_runDir, "property", property);
-            //sw = new StreamWriter(Path.Combine(_runDir, "property", property + ".txt"));
+            
 
             if (Directory.Exists(_featureDir))
                 Directory.Delete(_featureDir, true);
@@ -41,6 +41,8 @@ namespace GraphSynth.Search.Tools
             if (Directory.Exists(_propertyDir))
                 Directory.Delete(_propertyDir, true);
             Directory.CreateDirectory(_propertyDir);
+
+            sw = new StreamWriter(Path.Combine(_runDir, "property", property + ".txt"));
         }
 
 
@@ -83,15 +85,15 @@ namespace GraphSynth.Search.Tools
                 //Console.WriteLine(error);
                 string output = proc.StandardOutput.ReadToEnd();
                 Console.WriteLine(output);
-                //sw.WriteLine(linkerId + "," + output);
+                sw.WriteLine(linkerId + "," + output);
 
             }
         }
 
-        //public void ShutDown()
-        //{
-        //    sw.Close();
-        //}
+        public void ShutDown()
+        {
+            sw.Close();
+        }
 
     }
 

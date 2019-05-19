@@ -22,6 +22,7 @@ namespace GraphSynth.Search
         private JobBuffer jobBuffer;
         private LearningServer server;
 
+        private const int NUM_EPOCH = 10;
         private const int NUM_TRAIL = 10;
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 16;
@@ -89,56 +90,57 @@ namespace GraphSynth.Search
 
         private void Generate()
         {
-            Console.WriteLine(NUM_TRAIL);
-            var linkerSet = new HashSet<string>();
             var agent = new Algorithms.Random(settings);
-            for (var t = 0; t < NUM_TRAIL; t++)
+            var linkerSet = new HashSet<string>();
+            for (var e = 0; t < NUM_EPOCH; e++)
             {
-                Console.WriteLine("Trail: {0}", t);
-                for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX; total_rule++)
+                Console.WriteLine("Epoch: {0}", e);
+                for (var t = 0; t < NUM_TRAIL; t++)
                 {
-                    Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
-                    var cand = Seed.copy();
-                    for (var step = 0; step < total_rule; step++)
+                    Console.WriteLine("Trail: {0}", t);
+                    for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX; total_rule++)
                     {
-                        var opt = agent.ChooseOption(cand);
-                        if (opt == null)
+                        Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
+                        var cand = Seed.copy();
+                        for (var step = 0; step < total_rule; step++)
                         {
-                            Console.WriteLine("Fail on step {0}", step+1);
+                            var opt = agent.ChooseOption(cand);
+                            if (opt == null)
+                            {
+                                Console.WriteLine("Fail on step {0}", step+1);
+                                return;
+                            }
+                            agent.ApplyOption(opt, cand, true);
+                        }
+                        var carboxOpt = agent.ChooseCarboxOption(cand);
+                        if (carboxOpt == null)
+                        {
+                            Console.WriteLine("Fail on finding final carbox");
                             return;
                         }
-                        agent.ApplyOption(opt, cand, true);
-                    }
-                    var carboxOpt = agent.ChooseCarboxOption(cand);
-                    if (carboxOpt == null)
-                    {
-                        Console.WriteLine("Fail on finding final carbox");
-                        return;
-                    }
-                    agent.ApplyOption(carboxOpt, cand, true);
-                    var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
-                    var linkerName = AbstractAlgorithm.GetLinkerName(cand);
-                    //Console.WriteLine(candSmile);
-                    Console.WriteLine(linkerName);
-                    if (linkerSet.Contains(linkerName))
-                    {
-                        total_rule--;
-                        continue;
-                    }
-                    linkerSet.Add(linkerName);
-                    var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
-                    var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
-                    agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
-                    server.CalculateFeature(linkerName);
+                        agent.ApplyOption(carboxOpt, cand, true);
+                        var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
+                        var linkerName = AbstractAlgorithm.GetLinkerName(cand);
+                        //Console.WriteLine(candSmile);
+                        Console.WriteLine(linkerName);
+                        if (linkerSet.Contains(linkerName))
+                        {
+                            total_rule--;
+                            continue;
+                        }
+                        linkerSet.Add(linkerName);
+                        var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
+                        var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
+                        agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
+                        server.CalculateFeature(linkerName);
 
-                    //mutex.WaitOne();
-                    jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());
-                    //mutex.ReleaseMutex();
+                        //mutex.WaitOne();
+                        jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());
+                        //mutex.ReleaseMutex();
+                    }
                 }
             }
             jobBuffer.Add("finish", 1.0);
-            
-            
         }
         
         public override string text => "RandomTrail Search Runner";

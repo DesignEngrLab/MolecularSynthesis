@@ -63,7 +63,7 @@ namespace GraphSynth.Search.Tools
             if (linkerName == "finish")
                 return true;
             onSimulation.Add(linkerName);
-            string[] epochAndName = linkerName.Split(",");
+            string[] epochAndName = linkerName.Split(',');
             Submitlammps(epochAndName[1], "short");
             //Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
             //Console.WriteLine("Current on simulation " + onSimulation.Count);

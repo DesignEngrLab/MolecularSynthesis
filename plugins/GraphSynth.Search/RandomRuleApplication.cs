@@ -129,6 +129,7 @@ namespace GraphSynth.Search
                             if (successFlag == false)
                                 continue;
                             agent.ApplyOption(carboxOpt, cand, true);
+                            break;
                         }
                         
                         var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));

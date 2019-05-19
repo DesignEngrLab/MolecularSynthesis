@@ -21,6 +21,7 @@ namespace GraphSynth.Search
         private candidate Seed;
         private JobBuffer jobBuffer;
         private LearningServer server;
+        private StreamWriter sw;
 
         private const int NUM_EPOCH = 10;
         private const int NUM_TRAIL = 10;
@@ -52,6 +53,7 @@ namespace GraphSynth.Search
             
             var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             server = new LearningServer(_runDirectory, learnDirectory, "point", "stiff");
+            sw = new StreamWriter(Path.Combine(_runDirectory, learnDirectory, "point", "stiff" + ".txt"));
         }
 
         protected override void Run()
@@ -77,10 +79,10 @@ namespace GraphSynth.Search
                 {
                     allSubmitted = jobBuffer.Simulate();
                 }
-                var allFinished = jobBuffer.Check_finised(server);
+                var allFinished = jobBuffer.Check_finised(server, sw);
                 if (allFinished && allSubmitted)
                 {
-                    //server.ShutDown();
+                    sw.Close();
                     break;
                 }
 
@@ -148,7 +150,7 @@ namespace GraphSynth.Search
                         server.CalculateFeature(linkerName);
 
                         //mutex.WaitOne();
-                        jobBuffer.Add("Epoch " + e + "," + linkerName, AbstractAlgorithm.Rand.NextDouble());
+                        jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble(), e);
                         //mutex.ReleaseMutex();
                     }
                 }

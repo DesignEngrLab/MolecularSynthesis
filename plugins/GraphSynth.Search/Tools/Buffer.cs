@@ -15,8 +15,8 @@ namespace GraphSynth.Search.Tools
         private readonly SimplePriorityQueue<string, double> buffer;
         private readonly string _bufferDir;
         private readonly HashSet<string> onSimulation;
-
-
+        private readonly Dictionary<string,string> epochLookUp;
+        
         public JobBuffer(string runDir)
         {
             buffer = new SimplePriorityQueue<string, double>();
@@ -25,14 +25,16 @@ namespace GraphSynth.Search.Tools
                 Directory.Delete(_bufferDir, true);
             Directory.CreateDirectory(_bufferDir);
             onSimulation = new HashSet<string>();
+            epochLookUp = new Dictionary<string, int>();
         }
 
-        public void Add(string linkerName, double priority)
+        public void Add(string linkerName, double priority, int epoch)
         {
             buffer.Enqueue(linkerName, priority);
+            epochLookUp[linkerName] = epoch;
         }
 
-        public bool Check_finised(LearningServer server)
+        public bool Check_finised(LearningServer server, StreamWriter sw)
         {
             var finished_linkers = new HashSet<string>();
             foreach (var linkerName in onSimulation)
@@ -48,9 +50,11 @@ namespace GraphSynth.Search.Tools
                 foreach (var linkerName in finished_linkers)
                 {
                     onSimulation.Remove(linkerName);
+                    epochLookUp.Remove(linkerName);
                     var property = server.CalculateProperty(linkerName);
                     Console.WriteLine("linker " + linkerName + " finished, with property " + property);
                     Console.WriteLine("Current on simulation " + onSimulation.Count);
+                    sw.WriteLine("Epoch " + epochLookUp[linkerName] + "," + linkerName + "," + property);
                 }
             }
             return onSimulation.Count == 0;
@@ -63,8 +67,7 @@ namespace GraphSynth.Search.Tools
             if (linkerName == "finish")
                 return true;
             onSimulation.Add(linkerName);
-            string[] epochAndName = linkerName.Split(',');
-            Submitlammps(epochAndName[1], "short");
+            Submitlammps(linkerName, "short");
             //Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
             //Console.WriteLine("Current on simulation " + onSimulation.Count);
             return false;

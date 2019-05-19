@@ -17,16 +17,13 @@ namespace GraphSynth.Search
     {
         
         private readonly string _runDirectory;
-        private readonly string _learnDirectory;
 
-        private readonly string _inputFilePath;
-        
         private candidate Seed;
         private JobBuffer jobBuffer;
         private LearningServer server;
 
-        private const int NUM_TRAIL = 22;
-        private const int TOTAL_RULE = 5;
+        private const int NUM_TRAIL = 5;
+        private const int TOTAL_RULE = 12;
         
         private static Mutex mutex = new Mutex();
 
@@ -44,13 +41,13 @@ namespace GraphSynth.Search
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             
             _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "randomCarbox");
-            _learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
+            var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             if (Directory.Exists(_runDirectory))
                 Directory.Delete(_runDirectory, true);
             Directory.CreateDirectory(_runDirectory);
 
             jobBuffer = new JobBuffer(_runDirectory);
-            server = new LearningServer(_runDirectory, _learnDirectory, "point");
+            server = new LearningServer(_runDirectory, learnDirectory, "point");
         }
 
         protected override void Run()
@@ -68,16 +65,16 @@ namespace GraphSynth.Search
         
         private void AutoSubmitSimulation()
         {
-            var all_submitted = false;
+            var allSubmitted = false;
             while (true)
             {
                 //mutex.WaitOne();
                 if (jobBuffer.CanFeedIn())
                 {
-                    all_submitted = jobBuffer.Simulate();
+                    allSubmitted = jobBuffer.Simulate();
                 }
-                var all_finished = jobBuffer.Check_finised(server);
-                if (all_finished && all_submitted)
+                var allFinished = jobBuffer.Check_finised(server);
+                if (allFinished && allSubmitted)
                     break;
                 //mutex.ReleaseMutex();
             }
@@ -93,20 +90,27 @@ namespace GraphSynth.Search
                 Console.WriteLine("Trail: {0}", t);
                 var cand = Seed.copy();
 
-                for (var step = 1; step < TOTAL_RULE + 1; step++)
+                for (var step = 0; step < TOTAL_RULE ; step++)
                 {
                     var opt = agent.ChooseOption(cand);
                     if (opt == null)
+                    {
+                        Console.WriteLine("Fail on step {0}", step+1);
                         return;
+                    }
+
                     agent.ApplyOption(opt, cand, true);
                 }
                 var carboxOpt = agent.ChooseCarboxOption(cand);
                 if (carboxOpt == null)
+                {
+                    Console.WriteLine("Fail on finding final carbox");
                     return;
+                }
                 agent.ApplyOption(carboxOpt, cand, true);
-                var candSMILE = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
+                var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
                 var linkerName = AbstractAlgorithm.GetLinkerName(cand);
-                Console.WriteLine(candSMILE);
+                Console.WriteLine(candSmile);
                 Console.WriteLine(linkerName);
                 if (linkerSet.Contains(linkerName))
                 {
@@ -122,7 +126,7 @@ namespace GraphSynth.Search
                 jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());
                 //mutex.ReleaseMutex();
             }
-            jobBuffer.Add("finish", 2.0);
+            jobBuffer.Add("finish", 1.0);
             
             
         }

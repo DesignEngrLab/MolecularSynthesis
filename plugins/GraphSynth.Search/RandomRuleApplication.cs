@@ -22,8 +22,9 @@ namespace GraphSynth.Search
         private JobBuffer jobBuffer;
         private LearningServer server;
 
-        private const int NUM_TRAIL = 5;
-        private const int TOTAL_RULE = 5;
+        private const int NUM_TRAIL = 10;
+        private const int TOTAL_RULE_MIN = 6;
+        private const int TOTAL_RULE_MAX = 16;
         
         private static Mutex mutex = new Mutex();
 
@@ -77,7 +78,11 @@ namespace GraphSynth.Search
                 }
                 var allFinished = jobBuffer.Check_finised(server);
                 if (allFinished && allSubmitted)
+                {
+                    server.ShutDown();
                     break;
+                }
+
                 //mutex.ReleaseMutex();
             }
         }
@@ -90,44 +95,48 @@ namespace GraphSynth.Search
             for (var t = 0; t < NUM_TRAIL; t++)
             {
                 Console.WriteLine("Trail: {0}", t);
-                var cand = Seed.copy();
-
-                for (var step = 0; step < TOTAL_RULE ; step++)
+                for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX; total_rule++)
                 {
-                    var opt = agent.ChooseOption(cand);
-                    if (opt == null)
+                    Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
+                    var cand = Seed.copy();
+                    for (var step = 0; step < total_rule; step++)
                     {
-                        Console.WriteLine("Fail on step {0}", step+1);
+                        var opt = agent.ChooseOption(cand);
+                        if (opt == null)
+                        {
+                            Console.WriteLine("Fail on step {0}", step+1);
+                            return;
+                        }
+
+                        agent.ApplyOption(opt, cand, true);
+                    }
+                    var carboxOpt = agent.ChooseCarboxOption(cand);
+                    if (carboxOpt == null)
+                    {
+                        Console.WriteLine("Fail on finding final carbox");
                         return;
                     }
+                    agent.ApplyOption(carboxOpt, cand, true);
+                    var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
+                    var linkerName = AbstractAlgorithm.GetLinkerName(cand);
+                    //Console.WriteLine(candSmile);
+                    Console.WriteLine(linkerName);
+                    if (linkerSet.Contains(linkerName))
+                    {
+                        total_rule--;
+                        continue;
+                    }
+                    linkerSet.Add(linkerName);
+                    var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
+                    var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
+                    agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
+                    server.CalculateFeature(linkerName);
 
-                    agent.ApplyOption(opt, cand, true);
-                }
-                var carboxOpt = agent.ChooseCarboxOption(cand);
-                if (carboxOpt == null)
-                {
-                    Console.WriteLine("Fail on finding final carbox");
-                    return;
-                }
-                agent.ApplyOption(carboxOpt, cand, true);
-                var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
-                var linkerName = AbstractAlgorithm.GetLinkerName(cand);
-                Console.WriteLine(candSmile);
-                Console.WriteLine(linkerName);
-                if (linkerSet.Contains(linkerName))
-                {
-                    t--;
-                    continue;
-                }
-                linkerSet.Add(linkerName);
-                var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
-                var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
-                agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
-                server.CalculateFeature(linkerName);
-
-                //mutex.WaitOne();
-                jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());
-                //mutex.ReleaseMutex();
+                    //mutex.WaitOne();
+                    jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());
+                    //mutex.ReleaseMutex();
+                    }
+                
             }
             jobBuffer.Add("finish", 1.0);
             

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,11 +13,12 @@ namespace GraphSynth.Search.Tools
         private readonly string _propertyDir;
         private readonly string _featureUsed;
         private readonly string _propertyUsed;
-        private static readonly Dictionary<string,string> featureScriptLookup = new Dictionary<string, string>()
+        private StreamWriter sw;
+        private static readonly Dictionary<string, string> featureScriptLookup = new Dictionary<string, string>()
         {
             {"point", "calcPoint.py"}
         };
-        private static readonly Dictionary<string,string> propertyScriptLookup = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> propertyScriptLookup = new Dictionary<string, string>()
         {
             {"stiff", "calcStiff.py"}
         };
@@ -31,11 +31,12 @@ namespace GraphSynth.Search.Tools
             _propertyUsed = property;
             _featureDir = Path.Combine(_runDir, "feature", feature);
             _propertyDir = Path.Combine(_runDir, "property", property);
-            
+            sw = new StreamWriter(Path.Combine(_runDir, "property", property + ".txt"));
+
             if (Directory.Exists(_featureDir))
                 Directory.Delete(_featureDir, true);
             Directory.CreateDirectory(_featureDir);
-            
+
             if (Directory.Exists(_propertyDir))
                 Directory.Delete(_propertyDir, true);
             Directory.CreateDirectory(_propertyDir);
@@ -56,13 +57,13 @@ namespace GraphSynth.Search.Tools
                 proc.StartInfo.RedirectStandardInput = false;
                 proc.Start();
                 proc.WaitForExit();
-                string output = proc.StandardOutput.ReadToEnd();
-                string error = proc.StandardError.ReadToEnd();
-                Console.WriteLine(error);
-                Console.WriteLine(output);
+                //string output = proc.StandardOutput.ReadToEnd();
+                //string error = proc.StandardError.ReadToEnd();
+                //Console.WriteLine(error);
+                //Console.WriteLine(output);
             }
         }
-        
+
         public void CalculateProperty(string linkerId)
         {
             var aveData = Path.Combine(_runDir, "data", "linker" + linkerId + "_deformation", "linker" + linkerId + "-ave-force.d");
@@ -77,11 +78,18 @@ namespace GraphSynth.Search.Tools
                 proc.StartInfo.RedirectStandardInput = false;
                 proc.Start();
                 proc.WaitForExit();
+                //string error = proc.StandardError.ReadToEnd();
+                //Console.WriteLine(error);
                 string output = proc.StandardOutput.ReadToEnd();
-                string error = proc.StandardError.ReadToEnd();
-                Console.WriteLine(error);
                 Console.WriteLine(output);
+                sw.WriteLine(linkerId + "," + output);
+
             }
+        }
+
+        public void ShutDown()
+        {
+            sw.close();
         }
 
     }

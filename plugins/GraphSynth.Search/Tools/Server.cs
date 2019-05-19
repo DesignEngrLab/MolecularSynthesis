@@ -35,7 +35,7 @@ namespace GraphSynth.Search.Tools
             using (Process proc = new Process())
             {
                 proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
-                proc.StartInfo.Arguments = scriptLookup[_task] + " " + lmpData + _featureDir;
+                proc.StartInfo.Arguments = scriptLookup[_task] + " " + lmpData + " " + _featureDir;
                 proc.StartInfo.WorkingDirectory = Path.Combine(_learnDir, "computation");
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.UseShellExecute = false;

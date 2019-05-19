@@ -48,7 +48,7 @@ namespace GraphSynth.Search.Tools
             using (Process proc = new Process())
             {
                 proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
-                proc.StartInfo.Arguments = featureScriptLookup[_featureUsed] + " " + lmpData + " " + _propertyDir;
+                proc.StartInfo.Arguments = featureScriptLookup[_featureUsed] + " " + lmpData + " " + _featureDir;
                 proc.StartInfo.WorkingDirectory = Path.Combine(_learnDir, "computation");
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.UseShellExecute = false;
@@ -69,7 +69,7 @@ namespace GraphSynth.Search.Tools
             using (Process proc = new Process())
             {
                 proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
-                proc.StartInfo.Arguments = propertyScriptLookup[_propertyUsed] + " " + aveData + " " + _featureDir;
+                proc.StartInfo.Arguments = propertyScriptLookup[_propertyUsed] + " " + aveData + " " + _propertyDir;
                 proc.StartInfo.WorkingDirectory = Path.Combine(_learnDir, "computation");
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.UseShellExecute = false;

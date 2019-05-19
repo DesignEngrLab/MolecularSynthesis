@@ -41,12 +41,14 @@ namespace GraphSynth.Search
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             
             _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "randomCarbox");
-            var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
+            
             if (Directory.Exists(_runDirectory))
                 Directory.Delete(_runDirectory, true);
             Directory.CreateDirectory(_runDirectory);
 
             jobBuffer = new JobBuffer(_runDirectory);
+            
+            var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             server = new LearningServer(_runDirectory, learnDirectory, "point", "stiff");
         }
 
@@ -121,7 +123,7 @@ namespace GraphSynth.Search
                 var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                 var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
                 agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
-                server.CalculateProperty(linkerName);
+                server.CalculateFeature(linkerName);
 
                 //mutex.WaitOne();
                 jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble());

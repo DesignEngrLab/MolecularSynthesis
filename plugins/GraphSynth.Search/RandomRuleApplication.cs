@@ -43,7 +43,7 @@ namespace GraphSynth.Search
             
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             
-            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "randomCarbox");
+            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "bestAngle");
             
             if (Directory.Exists(_runDirectory))
                 Directory.Delete(_runDirectory, true);
@@ -121,7 +121,7 @@ namespace GraphSynth.Search
                             }
                             if (successFlag == false)
                                 continue;
-                            var carboxOpt = agent.ChooseCarboxOption(cand);
+                            var carboxOpt = agent.ChooseCarboxOptionBestAngle(cand);
                             if (carboxOpt == null)
                             {
                                 Console.WriteLine("Fail on finding final carbox");

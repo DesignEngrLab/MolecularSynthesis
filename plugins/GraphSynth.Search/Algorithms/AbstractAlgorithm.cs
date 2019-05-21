@@ -19,12 +19,8 @@ namespace GraphSynth.Search.Algorithms {
 
 
         private const double AngleFloor = 155; // minimum acceptable angle between carboxylates
-
         public readonly graph2almostanything Converter;
-        private readonly Dictionary<string, double> previous = new Dictionary<string, double>(); // cache evaluations
-        private int candidateCnt = 0;
         
-
 
         protected AbstractAlgorithm(GlobalSettings settings_) {
             Settings = settings_;
@@ -191,8 +187,6 @@ namespace GraphSynth.Search.Algorithms {
                 lmps.minimize(etol, ftol, maxiter, maxeval, "cg");
                 OBFunctions.updatexyz(mol, lmps.getAtomPos());
             }
-
-
             return mol;
         }
 
@@ -205,28 +199,14 @@ namespace GraphSynth.Search.Algorithms {
             return 0;
         }
         
-        /// <summary>
-        /// Check if a molecular has been evaluated or not.
-        /// </summary>
-        /// <param name="cand"></param>
-        /// <returns></returns>
-        public bool HasEvaluate(candidate cand) {
-            return previous.ContainsKey(OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph)));
-        }
-
-
-
-        
 
         
         /// <summary>
         /// Calculate the angle between 2 carboxylates
         /// </summary>
         public static double CalAngle(OBMol mol) {
-            
-            
+
             var mapping = OBFunctions.findcarboxylates(mol);
-            
             var carbA = mol.GetAtom(mapping[0][1]); // carbon in carboxylate
             var aA = mol.GetAtom(mapping[0][3]); // atom that the carbon connects to
             var carbB = mol.GetAtom(mapping[1][1]);
@@ -240,8 +220,7 @@ namespace GraphSynth.Search.Algorithms {
         /// Whether the candidate has enough carboxylates and conforms to angle- and carboxylate-blocking constraints.
         /// </summary>
         public static bool CanCalculateReward(OBMol mol) {
-            
-            
+
             var mapping = OBFunctions.findcarboxylates(mol);
             if (mapping.Count < 2) return false; 
             

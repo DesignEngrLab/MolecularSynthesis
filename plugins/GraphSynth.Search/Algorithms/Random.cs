@@ -27,6 +27,20 @@ namespace GraphSynth.Search.Algorithms {
             return options.Count > 0 ? options[Rand.Next(options.Count)] : null;
         }
 
+        public option ChooseCarboxOptionBestAngle(candidate cand)
+        {
+            var options = GetCarboxylOptions(cand);
+            foreach (var opt in options) 
+            {
+                var evalcand = copyandapplyoption(opt, cand, true);
+                var mol = obfunctions.designgraphtomol(evalcand.graph);
+                var angle = CalAngle(mol);
+                Console.WriteLine(angle);
+            }
+            Environment.Exit(0);
+            return options.Count > 0 ? options[Rand.Next(options.Count)] : null;
+        }
+
 
     }
 

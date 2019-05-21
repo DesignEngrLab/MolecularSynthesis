@@ -36,7 +36,7 @@ namespace GraphSynth.Search.Algorithms {
             foreach (var opt in options) 
             {
                 var evalcand = CopyAndApplyOption(opt, cand, true);
-                var mol = OBfunctions.designgraphtomol(evalcand.graph);
+                var mol = OBFunctions.designgraphtomol(evalcand.graph);
                 var angle = CalAngle(mol);
                 Console.WriteLine(angle);
             }

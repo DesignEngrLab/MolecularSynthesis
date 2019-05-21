@@ -40,7 +40,7 @@ namespace GraphSynth.Search
             RequireSeed = true;
             RequiredNumRuleSets = 1;
             AutoPlay = true;
-            var carboxType = "bestAngle";
+            var carboxType = "randomCarbox";
             
             
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
@@ -123,7 +123,8 @@ namespace GraphSynth.Search
                             }
                             if (successFlag == false)
                                 continue;
-                            var carboxOpt = agent.ChooseCarboxOptionBestAngle(cand);
+                            var carboxOpt = agent.ChooseCarboxOption(cand);
+                            //var carboxOpt = agent.ChooseCarboxOptionBestAngle(cand);
                             if (carboxOpt == null)
                             {
                                 Console.WriteLine("Fail on finding final carbox");

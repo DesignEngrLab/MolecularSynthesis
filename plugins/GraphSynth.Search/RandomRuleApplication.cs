@@ -23,7 +23,7 @@ namespace GraphSynth.Search
         private LearningServer server;
         private StreamWriter sw;
 
-        private const int NUM_EPOCH = 10;
+        private const int NUM_EPOCH = 100;
         private const int NUM_TRAIL = 10;
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 16;
@@ -40,10 +40,12 @@ namespace GraphSynth.Search
             RequireSeed = true;
             RequiredNumRuleSets = 1;
             AutoPlay = true;
+            var carboxType = "bestAngle";
+            
             
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             
-            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", "bestAngle");
+            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", carboxType);
             
             if (Directory.Exists(_runDirectory))
                 Directory.Delete(_runDirectory, true);
@@ -53,7 +55,7 @@ namespace GraphSynth.Search
             
             var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             server = new LearningServer(_runDirectory, learnDirectory, "point", "stiff");
-            sw = new StreamWriter(Path.Combine(_runDirectory, "stiff" + ".txt"));
+            sw = new StreamWriter(Path.Combine(_runDirectory, carboxType + ".txt"));
         }
 
         protected override void Run()

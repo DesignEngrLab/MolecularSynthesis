@@ -33,15 +33,25 @@ namespace GraphSynth.Search.Algorithms {
         public option ChooseCarboxOptionBestAngle(candidate cand)
         {
             var options = GetCarboxylOptions(cand);
+            var bestOpt = null;
+            var bestAngle = .0;
             foreach (var opt in options) 
             {
                 var evalcand = CopyAndApplyOption(opt, cand, true);
                 var mol = OBFunctions.designgraphtomol(evalcand.graph);
                 var angle = CalAngle(mol);
-                Console.WriteLine(angle);
+                if (angle > 180)
+                {
+                    Console.WriteLine(angle + " too large");
+                    Environment.Exit(0);
+                }
+                if (angle > bestAngle)
+                {
+                    bestAngle = angle;
+                    bestOpt = opt;
+                }
             }
-            Environment.Exit(0);
-            return options.Count > 0 ? options[Rand.Next(options.Count)] : null;
+            return bestOpt;
         }
 
 

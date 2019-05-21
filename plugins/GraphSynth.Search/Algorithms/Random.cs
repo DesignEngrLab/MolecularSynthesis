@@ -33,7 +33,7 @@ namespace GraphSynth.Search.Algorithms {
         public option ChooseCarboxOptionBestAngle(candidate cand)
         {
             var options = GetCarboxylOptions(cand);
-            var bestOpt = null;
+            option bestOpt = null;
             var bestAngle = .0;
             foreach (var opt in options) 
             {

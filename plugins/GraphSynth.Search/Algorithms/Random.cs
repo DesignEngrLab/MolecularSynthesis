@@ -1,5 +1,6 @@
 ﻿using GraphSynth.Representation;
 using System;
+using OpenBabelFunctions;
 
 
 
@@ -34,8 +35,8 @@ namespace GraphSynth.Search.Algorithms {
             var options = GetCarboxylOptions(cand);
             foreach (var opt in options) 
             {
-                var evalcand = Copyandapplyoption(opt, cand, true);
-                var mol = Obfunctions.designgraphtomol(evalcand.graph);
+                var evalcand = CopyAndApplyOption(opt, cand, true);
+                var mol = OBfunctions.designgraphtomol(evalcand.graph);
                 var angle = CalAngle(mol);
                 Console.WriteLine(angle);
             }

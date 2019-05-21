@@ -1,5 +1,6 @@
-﻿Using System;
-using GraphSynth.Representation;
+﻿using GraphSynth.Representation;
+using System;
+
 
 
 namespace GraphSynth.Search.Algorithms {

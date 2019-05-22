@@ -26,7 +26,6 @@ namespace GraphSynth.Search.Tools
         public JobBuffer(string runDir)
         {
 
-
             buffer = new SimplePriorityQueue<string, double>();
             _bufferDir = Path.Combine(runDir, "data");
             if (Directory.Exists(_bufferDir))
@@ -37,7 +36,6 @@ namespace GraphSynth.Search.Tools
                 Tuple.Create("short", new HashSet<string>()), 
                 Tuple.Create("greaneylab", new HashSet<string>()),
             };
-
 
             epochLookUp = new Dictionary<string, int>();
             allSubmitFlag = false;
@@ -55,8 +53,8 @@ namespace GraphSynth.Search.Tools
             foreach (var onSimulationInfo in onSimulationTuples)
             {
                 var queue = onSimulationInfo.Item1;
-                var onSimulation = onSimulationInfo.Item2;
-                foreach (var linkerName in onSimulation)
+                var set = onSimulationInfo.Item2;
+                foreach (var linkerName in set)
                 {
                     var simulationDir = Path.Combine(_bufferDir, "linker" + linkerName + "_deformation");
                     if (File.Exists(Path.Combine(simulationDir, "DONE")))
@@ -68,10 +66,10 @@ namespace GraphSynth.Search.Tools
                 {
                     foreach (var linkerName in finished_linkers)
                     {
-                        onSimulation.Remove(linkerName);
+                        set.Remove(linkerName);
                         var property = server.CalculateProperty(linkerName);
                         Console.WriteLine("linker " + linkerName + " finished, with property " + property);
-                        Console.WriteLine("Current "  + queue + " on simulation " + onSimulation.Count);
+                        Console.WriteLine("Current "  + queue + " on simulation " + set.Count);
                         sw.WriteLine("Epoch " + epochLookUp[linkerName] + "," + linkerName + "," + property);
                         epochLookUp.Remove(linkerName);
                     }
@@ -85,20 +83,15 @@ namespace GraphSynth.Search.Tools
         {
             var priority = buffer.GetPriority(buffer.First);
             var linkerName = buffer.Dequeue();
-            if (onSimulationTuples[0].Item2.Count > onSimulationTuples[1].Item2.Count)
-            {
-                var target_queue = onSimulationTuples[1].Item1;
-                var target_onSimulation = onSimulationTuples[1].Item2;
-                target_onSimulation.Add(linkerName);
-                Submitlammps(linkerName, target_queue);
-            }
-            else
-            {   
-                var target_queue = onSimulationTuples[0].Item1;
-                var target_onSimulation = onSimulationTuples[0].Item2;
-                target_onSimulation.Add(linkerName);
-                Submitlammps(linkerName, target_queue);
-            }
+            var current_simulations = onSimulationTuples.Select(x => x.Item2.Count);
+            var target = Array.IndexOf(current_simulations, current_simulations.Min());
+
+            var target_queue = onSimulationTuples[target].Item1;
+            var target_onSimulation = onSimulationTuples[target].Item2;
+            target_onSimulation.Add(linkerName);
+            Submitlammps(linkerName, target_queue);
+
+
 
             //Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
             //Console.WriteLine("Current on simulation " + onSimulation.Count);
@@ -108,8 +101,8 @@ namespace GraphSynth.Search.Tools
 
         public bool CanFeedIn()
         {
-            return buffer.Count > 0 && 
-                (onSimulationTuples[0].Item2.Count < MAX_SIMULATION || onSimulationTuples[1].Item2.Count < MAX_SIMULATION);
+            var current_simulations = onSimulationTuples.Select(x => x.Item2.Count);
+            return buffer.Count > 0 && current_simulations.Min() < MAX_SIMULATION;
         }
         
         private void Submitlammps(string linkerId, string queue) {

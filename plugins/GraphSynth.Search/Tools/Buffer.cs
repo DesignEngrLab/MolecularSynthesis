@@ -78,24 +78,22 @@ namespace GraphSynth.Search.Tools
                 }
             }
             
-            return onSimulation.Count == 0;
+            return onSimulationTuples[0].Item2.Count == 0 && onSimulationTuples[1].Item2.Count == 0;
         }
 
         public bool Simulate()
         {
             var priority = buffer.GetPriority(buffer.First);
             var linkerName = buffer.Dequeue();
-            var target_queue = "";
-            var target_onSimulation = null;
             if (onSimulationTuples[0].Item2.Count > onSimulationTuples[1].Item2.Count)
             {
-                target_queue = onSimulationTuples[1].Item1;
-                target_onSimulation = onSimulationTuples[1].Item2;
+                var target_queue = onSimulationTuples[1].Item1;
+                var target_onSimulation = onSimulationTuples[1].Item2;
             }
             else
-            {
-                target_queue = onSimulationTuples[0].Item1;
-                target_onSimulation = onSimulationTuples[0].Item2;
+            {   
+                var target_queue = onSimulationTuples[0].Item1;
+                var target_onSimulation = onSimulationTuples[0].Item2;
             }
             target_onSimulation.Add(linkerName);
             Submitlammps(linkerName, target_queue);

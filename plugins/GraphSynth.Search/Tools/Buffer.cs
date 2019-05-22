@@ -88,7 +88,7 @@ namespace GraphSynth.Search.Tools
 
             var target_queue = onSimulationTuples[target].Item1;
             var target_set = onSimulationTuples[target].Item2;
-            target_onSimulation.Add(linkerName);
+            target_set.Add(linkerName);
             Submitlammps(linkerName, target_queue);
 
             Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);

@@ -91,10 +91,8 @@ namespace GraphSynth.Search.Tools
             target_onSimulation.Add(linkerName);
             Submitlammps(linkerName, target_queue);
 
-
-
-            //Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
-            //Console.WriteLine("Current on simulation " + onSimulation.Count);
+            Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
+            Console.WriteLine("Current on simulation " + onSimulation.Count);
             return allSubmitFlag;
         }
 

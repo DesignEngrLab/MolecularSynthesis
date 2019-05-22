@@ -40,7 +40,7 @@ namespace GraphSynth.Search.Tools
             };
             foreach (var pair in onSimulationTuples)
             {
-                Console.WriteLine(pair.Item1());
+                Console.WriteLine(pair.Item1);
             }
             Environment.Exit(0);
 

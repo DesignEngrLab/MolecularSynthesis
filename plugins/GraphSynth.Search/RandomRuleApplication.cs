@@ -158,7 +158,7 @@ namespace GraphSynth.Search
                     }
                 }
             }
-            jobBuffer.AllFinishFlag = true;
+            jobBuffer.AllSubmitFlag = true;
         }
         
         public override string text => "RandomTrail Search Runner";

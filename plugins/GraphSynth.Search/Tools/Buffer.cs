@@ -87,12 +87,12 @@ namespace GraphSynth.Search.Tools
             var target = Array.IndexOf(current_simulations, current_simulations.Min());
 
             var target_queue = onSimulationTuples[target].Item1;
-            var target_onSimulation = onSimulationTuples[target].Item2;
+            var target_set = onSimulationTuples[target].Item2;
             target_onSimulation.Add(linkerName);
             Submitlammps(linkerName, target_queue);
 
             Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
-            Console.WriteLine("Current on simulation " + onSimulation.Count);
+            Console.WriteLine("Current "  + target_queue + " on simulation " + target_set.Count);
             return allSubmitFlag;
         }
 

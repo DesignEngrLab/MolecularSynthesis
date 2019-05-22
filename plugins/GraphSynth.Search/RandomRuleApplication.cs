@@ -23,8 +23,8 @@ namespace GraphSynth.Search
         private LearningServer server;
         private StreamWriter sw;
 
-        private const int NUM_EPOCH = 10;
-        private const int NUM_TRAIL = 1;
+        private const int NUM_EPOCH = 100;
+        private const int NUM_TRAIL = 10;
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 16;
         

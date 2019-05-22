@@ -49,9 +49,9 @@ namespace GraphSynth.Search.Tools
 
         public bool Check_finised(LearningServer server, StreamWriter sw)
         {
-            var finished_linkers = new HashSet<string>();
             foreach (var onSimulationInfo in onSimulationTuples)
             {
+                var finished_linkers = new HashSet<string>();
                 var queue = onSimulationInfo.Item1;
                 var set = onSimulationInfo.Item2;
                 foreach (var linkerName in set)

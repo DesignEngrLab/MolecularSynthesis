@@ -89,14 +89,17 @@ namespace GraphSynth.Search.Tools
             {
                 var target_queue = onSimulationTuples[1].Item1;
                 var target_onSimulation = onSimulationTuples[1].Item2;
+                target_onSimulation.Add(linkerName);
+                Submitlammps(linkerName, target_queue);
             }
             else
             {   
                 var target_queue = onSimulationTuples[0].Item1;
                 var target_onSimulation = onSimulationTuples[0].Item2;
+                target_onSimulation.Add(linkerName);
+                Submitlammps(linkerName, target_queue);
             }
-            target_onSimulation.Add(linkerName);
-            Submitlammps(linkerName, target_queue);
+
             //Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
             //Console.WriteLine("Current on simulation " + onSimulation.Count);
             return allSubmitFlag;

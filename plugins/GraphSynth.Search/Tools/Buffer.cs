@@ -83,7 +83,7 @@ namespace GraphSynth.Search.Tools
         {
             var priority = buffer.GetPriority(buffer.First);
             var linkerName = buffer.Dequeue();
-            var current_simulations = onSimulationTuples.Select(x => x.Item2.Count);
+            var current_simulations = onSimulationTuples.Select(x => x.Item2.Count).ToArray();
             var target = Array.IndexOf(current_simulations, current_simulations.Min());
 
             var target_queue = onSimulationTuples[target].Item1;

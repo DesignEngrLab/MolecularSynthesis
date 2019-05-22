@@ -14,6 +14,7 @@ namespace GraphSynth.Search.Tools
         private const int MAX_SIMULATION = 150;
         private readonly SimplePriorityQueue<string, double> buffer;
         private readonly string _bufferDir;
+        private Tuple<string, HashSet<string>>[] onSimulationTuples;
         private readonly HashSet<string> onSimulation;
         private readonly Dictionary<string,int> epochLookUp;
         private bool allFinishFlag;
@@ -25,11 +26,24 @@ namespace GraphSynth.Search.Tools
         
         public JobBuffer(string runDir)
         {
+
+
             buffer = new SimplePriorityQueue<string, double>();
             _bufferDir = Path.Combine(runDir, "data");
             if (Directory.Exists(_bufferDir))
                 Directory.Delete(_bufferDir, true);
             Directory.CreateDirectory(_bufferDir);
+            onSimulationTuples = new Tuple<string, HashSet<string>>[]
+            {
+                Tuple.Create("short", new HashSet<string>()), 
+                Tuple.Create("greaneylab", new HashSet<string>()),
+            };
+            foreach (var pair in onSimulationTuples)
+            {
+                Console.WriteLine(pair.Item1());
+            }
+            Environment.Exit(0);
+
             onSimulation = new HashSet<string>();
             epochLookUp = new Dictionary<string, int>();
             allFinishFlag = false;

@@ -50,6 +50,8 @@ class CarboxLearner(object):
 				model_file = os.path.join("model", "carbox_value_" + self.model + "_csf.pt")
 			elif task == "Regression":
 				model_file = os.path.join("model", "carbox_value_" + self.model + "_reg.pt")
+			if "model" not in os.listdir(os.getcwd()):
+				os.mkdir("model")
 			torch.save(net.state_dict(), model_file)
 			print("Save Model")
 	

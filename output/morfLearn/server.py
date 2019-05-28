@@ -49,4 +49,5 @@ def main():
 
 
 if __name__ == '__main__':
+	sys.argv[1] = "9998"
     main()

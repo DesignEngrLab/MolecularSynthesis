@@ -59,7 +59,7 @@ namespace GraphSynth.Search
         {
             
             server.StartOnlineServer();
-            client.SendMessage("Test Message..................");
+            client.SendMessage("time");
             server.ShutDownOnlineServer();
             Environment.Exit(0);
 

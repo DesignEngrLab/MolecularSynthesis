@@ -36,7 +36,7 @@ namespace GraphSynth.Search.Tools
 
                 // Creation TCP/IP Socket using  
                 // Socket Class Costructor 
-                Socket sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Unspecified);
+                Socket sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 Console.WriteLine("Try to send message");
 
                 try

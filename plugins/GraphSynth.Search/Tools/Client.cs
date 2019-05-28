@@ -29,7 +29,7 @@ namespace GraphSynth.Search.Tools
                 IPHostEntry ipHost = Dns.GetHostEntry(hostName);
                 Console.WriteLine(ipHost);
                 Console.WriteLine(ipHost.AddressList.Count);
-                foreach(var addr in ipHost.AddressList)
+                foreach(var ipAddr in ipHost.AddressList)
                 {
                     Console.WriteLine(ipAddr);
                     Console.WriteLine(ipAddr.AddressFamily);

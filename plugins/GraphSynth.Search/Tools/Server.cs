@@ -107,7 +107,7 @@ namespace GraphSynth.Search.Tools
                     proc.StartInfo.RedirectStandardOutput = true;
                     proc.StartInfo.RedirectStandardInput = false;
                     proc.Start();
-                    proc.WaitForExit();
+                    //proc.WaitForExit();
                     string error = proc.StandardError.ReadToEnd();
                     Console.WriteLine(error);
                     string output = proc.StandardOutput.ReadToEnd();

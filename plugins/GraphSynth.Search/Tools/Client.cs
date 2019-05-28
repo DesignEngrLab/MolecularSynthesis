@@ -28,10 +28,10 @@ namespace GraphSynth.Search.Tools
                 Console.WriteLine(hostName);
                 IPHostEntry ipHost = Dns.GetHostEntry(hostName);
                 Console.WriteLine(ipHost);
-                foreach(var ipAddr in ipHost.AddressList)
+                foreach(var addr in ipHost.AddressList)
                 {
-                    Console.WriteLine(ipAddr);
-                    Console.WriteLine(ipAddr.AddressFamily);
+                    Console.WriteLine(addr);
+                    Console.WriteLine(addr.AddressFamily);
                 }
                 Environment.Exit(0);
 

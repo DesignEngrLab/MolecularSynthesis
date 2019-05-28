@@ -59,7 +59,7 @@ namespace GraphSynth.Search
         {
             server.StartOnlineServer();
             client.SendMessage("time");
-            //server.ShutDownOnlineServer();
+            server.ShutDownOnlineServer();
             Environment.Exit(0);
 
             Thread generateLinkers = new Thread(Generate);

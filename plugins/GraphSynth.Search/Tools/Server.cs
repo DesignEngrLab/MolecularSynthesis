@@ -33,9 +33,9 @@ namespace GraphSynth.Search.Tools
                 onlineSeverProcess.StartInfo.RedirectStandardInput = false;
                 onlineSeverProcess.Start();
                 onlineSeverProcess.WaitForExit();
-                string error = proc.StandardError.ReadToEnd();
+                string error = onlineSeverProcess.StandardError.ReadToEnd();
                 Console.WriteLine(error);
-                string output = proc.StandardOutput.ReadToEnd();
+                string output = onlineSeverProcess.StandardOutput.ReadToEnd();
                 Console.WriteLine(output);
             }
             Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);

@@ -55,6 +55,7 @@ namespace GraphSynth.Search
             if (CARBOXTYPE == "estimator")
             {
                 server.StartOnlineServer();
+                server.ShutDownOnlineServer();
             }
             Environment.Exit(0);
             Thread generateLinkers = new Thread(Generate);

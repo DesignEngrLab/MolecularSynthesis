@@ -14,8 +14,8 @@ namespace GraphSynth.Search.Tools
         private readonly string _propertyDir;
         private readonly string _featureUsed;
         private readonly string _propertyUsed;
-        private bool onlineSeverStarted;
-        private int onlineSeverId;
+
+        private Process onlineSeverProcess;
         
         private static readonly Dictionary<string, string> featureScriptLookup = new Dictionary<string, string>()
         {
@@ -44,8 +44,7 @@ namespace GraphSynth.Search.Tools
                 Directory.Delete(_propertyDir, true);
             Directory.CreateDirectory(_propertyDir);
 
-            onlineSeverStarted = false;
-            onlineSeverId = -1;
+            onlineSeverProcess = null;
         }
 
 
@@ -95,7 +94,7 @@ namespace GraphSynth.Search.Tools
 
         public void StartOnlineServer()
         {
-            if (!onlineSeverStarted)
+            if (onlineSeverProcess == null)
             {
                 using (Process proc = new Process())
                 {
@@ -112,11 +111,18 @@ namespace GraphSynth.Search.Tools
                     //Console.WriteLine(error);
                     //string output = proc.StandardOutput.ReadToEnd();
                     //Console.WriteLine(output);
-                    onlineSeverStarted = true;
-                    onlineSeverId = proc.Id;
+                    onlineSeverProcess = proc;
                 }
             }
-            Console.WriteLine("Online server already started with Process ID: {0}.", onlineSeverId);
+            Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);
+        }
+
+        public void ShutDownOnlineServer()
+        {
+            if (onlineSeverProcess != null)
+                onlineSeverProcess.Kill();
+            Console.WriteLine("Online server with Process ID: {0} has already shutted down", onlineSeverProcess.Id);
+            onlineSeverProcess = null;
         }
     }
 

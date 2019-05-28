@@ -45,6 +45,7 @@ namespace GraphSynth.Search.Tools
             Directory.CreateDirectory(_propertyDir);
 
             onlineSeverStarted = false;
+            onlineSeverId = -1;
         }
 
 

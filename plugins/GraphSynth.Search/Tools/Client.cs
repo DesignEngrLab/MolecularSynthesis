@@ -24,7 +24,9 @@ namespace GraphSynth.Search.Tools
                 // for the socket. This example  
                 // uses port 11111 on the local  
                 // computer. 
-                IPHostEntry ipHost = Dns.GetHostEntry("localhost");
+                var hostName = Dns.GetHostName();
+                Console.WriteLine(hostName);
+                IPHostEntry ipHost = Dns.GetHostEntry(hostName);
                 Console.WriteLine(ipHost);
                 IPAddress ipAddr = ipHost.AddressList[0];
                 Console.WriteLine(ipAddr);

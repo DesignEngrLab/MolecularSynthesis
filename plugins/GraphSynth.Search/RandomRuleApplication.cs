@@ -50,7 +50,7 @@ namespace GraphSynth.Search
             var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             computation = new Computation(_runDirectory, learnDirectory, "point", "stiff");
             sw = new StreamWriter(Path.Combine(_runDirectory, CARBOXTYPE + ".txt"));
-            int port = 9997;
+            int port = 9996;
             server = new LearningServer(learnDirectory, port);
             client = new MessageClient(port);
         }

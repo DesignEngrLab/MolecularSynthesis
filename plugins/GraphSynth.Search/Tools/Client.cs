@@ -30,6 +30,7 @@ namespace GraphSynth.Search.Tools
             // Connect Socket to the remote endpoint using method Connect() 
             try
             {
+                Console.WriteLine("Try to connect to server.....");
                 sender.Connect(localEndPoint);
 
                 // We print EndPoint information  

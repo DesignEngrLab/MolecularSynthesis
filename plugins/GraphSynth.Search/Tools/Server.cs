@@ -34,11 +34,11 @@ namespace GraphSynth.Search.Tools
                 onlineSeverProcess.StartInfo.RedirectStandardOutput = true;
                 onlineSeverProcess.StartInfo.RedirectStandardInput = false;
                 onlineSeverProcess.Start();
-                onlineSeverProcess.WaitForExit();
-                string error = onlineSeverProcess.StandardError.ReadToEnd();
-                Console.WriteLine(error);
-                string output = onlineSeverProcess.StandardOutput.ReadToEnd();
-                Console.WriteLine(output);
+                //onlineSeverProcess.WaitForExit();
+                //string error = onlineSeverProcess.StandardError.ReadToEnd();
+                //Console.WriteLine(error);
+                //string output = onlineSeverProcess.StandardOutput.ReadToEnd();
+                //Console.WriteLine(output);
             }
             System.Threading.Thread.Sleep(10000);
             Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);

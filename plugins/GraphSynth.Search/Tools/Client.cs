@@ -28,8 +28,9 @@ namespace GraphSynth.Search.Tools
                 Console.WriteLine(hostName);
                 IPHostEntry ipHost = Dns.GetHostEntry(hostName);
                 Console.WriteLine(ipHost);
-
-                IPEndPoint localEndPoint = new IPEndPoint(ipHost.AddressList[1], portUsed);
+                //Here ipHost contains two ip address, only the second one matches python server.
+                var ipAddr = ipHost.AddressList[1];
+                IPEndPoint localEndPoint = new IPEndPoint(ipAddr, portUsed);
                 Console.WriteLine(localEndPoint);
 
                 // Creation TCP/IP Socket using  

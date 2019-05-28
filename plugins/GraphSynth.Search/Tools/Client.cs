@@ -25,12 +25,16 @@ namespace GraphSynth.Search.Tools
                 // uses port 11111 on the local  
                 // computer. 
                 IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
+                Console.WriteLine(ipHost);
                 IPAddress ipAddr = ipHost.AddressList[0];
+                Console.WriteLine(ipAddr);
                 IPEndPoint localEndPoint = new IPEndPoint(ipAddr, portUsed);
+                Console.WriteLine(localEndPoint);
 
                 // Creation TCP/IP Socket using  
                 // Socket Class Costructor 
                 Socket sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                Console.WriteLine("Try to send message");
 
                 try
                 {

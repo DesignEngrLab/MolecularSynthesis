@@ -40,7 +40,7 @@ namespace GraphSynth.Search.Tools
                 //string output = onlineSeverProcess.StandardOutput.ReadToEnd();
                 //Console.WriteLine(output);
             }
-            System.Threading.Thread.Sleep(10000);
+            System.Threading.Thread.Sleep(5000);
             Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);
         }
 

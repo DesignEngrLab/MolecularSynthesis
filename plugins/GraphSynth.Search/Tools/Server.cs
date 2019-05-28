@@ -11,32 +11,34 @@ namespace GraphSynth.Search.Tools
 
         private readonly string _learnDir;
         private Process onlineSeverProcess;
+        private readonly int portUsed;
         
 
-        public LearningServer(string learnDir)
+        public LearningServer(string learnDir, int port)
         {
             _learnDir = learnDir;
+            portUsed = port;
         }
 
 
-        public void StartOnlineServer(int port)
+        public void StartOnlineServer()
         {
             if (onlineSeverProcess == null)
             {
                 onlineSeverProcess = new Process();
                 onlineSeverProcess.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
-                onlineSeverProcess.StartInfo.Arguments = "server.py" + " " + port.ToString();
+                onlineSeverProcess.StartInfo.Arguments = "server.py" + " " + portUsed.ToString();
                 onlineSeverProcess.StartInfo.WorkingDirectory = Path.Combine(_learnDir);
                 onlineSeverProcess.StartInfo.RedirectStandardError = true;
                 onlineSeverProcess.StartInfo.UseShellExecute = false;
                 onlineSeverProcess.StartInfo.RedirectStandardOutput = true;
                 onlineSeverProcess.StartInfo.RedirectStandardInput = false;
                 onlineSeverProcess.Start();
-                onlineSeverProcess.WaitForExit();
-                string error = onlineSeverProcess.StandardError.ReadToEnd();
-                Console.WriteLine(error);
-                string output = onlineSeverProcess.StandardOutput.ReadToEnd();
-                Console.WriteLine(output);
+                //onlineSeverProcess.WaitForExit();
+                //string error = onlineSeverProcess.StandardError.ReadToEnd();
+                //Console.WriteLine(error);
+                //string output = onlineSeverProcess.StandardOutput.ReadToEnd();
+                //Console.WriteLine(output);
             }
             Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);
         }

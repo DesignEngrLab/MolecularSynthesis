@@ -49,13 +49,17 @@ namespace GraphSynth.Search
             var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             computation = new Computation(_runDirectory, learnDirectory, "point", "stiff");
             sw = new StreamWriter(Path.Combine(_runDirectory, CARBOXTYPE + ".txt"));
-            server = new LearningServer(learnDirectory);
+            int port = 9998;
+            server = new LearningServer(learnDirectory, port);
+            client = new MessageClient(port);
         }
 
         protected override void Run()
         {
-            server.StartOnlineServer(9998);
+            
+            server.StartOnlineServer();
             server.ShutDownOnlineServer();
+            client.SendMessage();
             Environment.Exit(0);
 
             Thread generateLinkers = new Thread(Generate);

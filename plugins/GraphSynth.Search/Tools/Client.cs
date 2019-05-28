@@ -72,13 +72,11 @@ namespace GraphSynth.Search.Tools
                 // Manage of Socket's Exceptions 
                 catch (ArgumentNullException ane)
                 {
-
                     Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
                 }
 
                 catch (SocketException se)
                 {
-
                     Console.WriteLine("SocketException : {0}", se.ToString());
                 }
 
@@ -90,7 +88,6 @@ namespace GraphSynth.Search.Tools
 
             catch (Exception e)
             {
-
                 Console.WriteLine(e.ToString());
             }
         }

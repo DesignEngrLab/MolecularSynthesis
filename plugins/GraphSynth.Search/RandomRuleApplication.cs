@@ -17,8 +17,9 @@ namespace GraphSynth.Search
 
         private candidate Seed;
         private JobBuffer jobBuffer;
-        private LearningServer server;
+        private Computation computation;
         private StreamWriter sw;
+        private LearningServer server;
 
         private const int NUM_EPOCH = 100;
         private const int NUM_TRAIL = 10;
@@ -46,18 +47,17 @@ namespace GraphSynth.Search
             jobBuffer = new JobBuffer(_runDirectory);
             
             var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
-            server = new LearningServer(_runDirectory, learnDirectory, "point", "stiff");
+            computation = new Computation(_runDirectory, learnDirectory, "point", "stiff");
             sw = new StreamWriter(Path.Combine(_runDirectory, CARBOXTYPE + ".txt"));
+            server = new LearningServer(learnDirectory);
         }
 
         protected override void Run()
         {
-            if (CARBOXTYPE == "estimator")
-            {
-                server.StartOnlineServer();
-                server.ShutDownOnlineServer();
-            }
+            server.StartOnlineServer();
+            server.ShutDownOnlineServer();
             Environment.Exit(0);
+
             Thread generateLinkers = new Thread(Generate);
             Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
             
@@ -66,6 +66,8 @@ namespace GraphSynth.Search
 
             generateLinkers.Join();
             autoReleaseBuffer.Join();
+
+
 
         }
         
@@ -79,7 +81,7 @@ namespace GraphSynth.Search
                 {
                     allSubmitted = jobBuffer.Simulate();
                 }
-                var allFinished = jobBuffer.Check_finised(server, sw);
+                var allFinished = jobBuffer.Check_finised(computation, sw);
                 if (allFinished && allSubmitted)
                 {
                     sw.Close();
@@ -148,7 +150,7 @@ namespace GraphSynth.Search
                         var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                         var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
                         agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
-                        server.CalculateFeature(linkerName);
+                        computation.CalculateFeature(linkerName);
 
                         //mutex.WaitOne();
                         jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble(), e);

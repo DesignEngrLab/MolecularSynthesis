@@ -19,24 +19,24 @@ namespace GraphSynth.Search.Tools
         }
 
 
-        public void StartOnlineServer()
+        public void StartOnlineServer(int port)
         {
             if (onlineSeverProcess == null)
             {
                 onlineSeverProcess = new Process();
                 onlineSeverProcess.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
-                onlineSeverProcess.StartInfo.Arguments = "server.py";
+                onlineSeverProcess.StartInfo.Arguments = "server.py" + " " + port.ToString();
                 onlineSeverProcess.StartInfo.WorkingDirectory = Path.Combine(_learnDir);
                 onlineSeverProcess.StartInfo.RedirectStandardError = true;
                 onlineSeverProcess.StartInfo.UseShellExecute = false;
                 onlineSeverProcess.StartInfo.RedirectStandardOutput = true;
                 onlineSeverProcess.StartInfo.RedirectStandardInput = false;
                 onlineSeverProcess.Start();
-                //proc.WaitForExit();
-                //string error = proc.StandardError.ReadToEnd();
-                //Console.WriteLine(error);
-                //string output = proc.StandardOutput.ReadToEnd();
-                //Console.WriteLine(output);
+                onlineSeverProcess.WaitForExit();
+                string error = proc.StandardError.ReadToEnd();
+                Console.WriteLine(error);
+                string output = proc.StandardOutput.ReadToEnd();
+                Console.WriteLine(output);
             }
             Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);
         }

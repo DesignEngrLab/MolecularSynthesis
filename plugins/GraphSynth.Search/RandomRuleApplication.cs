@@ -54,7 +54,7 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
-            server.StartOnlineServer();
+            server.StartOnlineServer(9998);
             server.ShutDownOnlineServer();
             Environment.Exit(0);
 

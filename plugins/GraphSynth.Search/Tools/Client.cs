@@ -30,8 +30,7 @@ namespace GraphSynth.Search.Tools
 
                 // Creation TCP/IP Socket using  
                 // Socket Class Costructor 
-                Socket sender = new Socket(ipAddr.AddressFamily,
-                           SocketType.Stream, ProtocolType.Tcp);
+                Socket sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
                 try
                 {

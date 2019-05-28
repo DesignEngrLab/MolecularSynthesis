@@ -28,9 +28,14 @@ namespace GraphSynth.Search.Tools
                 Console.WriteLine(hostName);
                 IPHostEntry ipHost = Dns.GetHostEntry(hostName);
                 Console.WriteLine(ipHost);
-                IPAddress ipAddr = ipHost.AddressList[0];
-                Console.WriteLine(ipAddr);
-                Console.WriteLine(ipAddr.AddressFamily);
+                Console.WriteLine(ipHost.AddressList.Count);
+                foreach(var addr in ipHost.AddressList)
+                {
+                    Console.WriteLine(ipAddr);
+                    Console.WriteLine(ipAddr.AddressFamily);
+                }
+                Environment.Exit(0);
+
                 IPEndPoint localEndPoint = new IPEndPoint(ipAddr, portUsed);
                 Console.WriteLine(localEndPoint);
 

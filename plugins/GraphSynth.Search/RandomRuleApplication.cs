@@ -20,6 +20,7 @@ namespace GraphSynth.Search
         private Computation computation;
         private StreamWriter sw;
         private LearningServer server;
+        private MessageClient client;
 
         private const int NUM_EPOCH = 100;
         private const int NUM_TRAIL = 10;

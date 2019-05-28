@@ -58,7 +58,7 @@ namespace GraphSynth.Search
         protected override void Run()
         {
             server.StartOnlineServer();
-            //client.SendMessage("time");
+            client.SendMessage("time");
             server.ShutDownOnlineServer();
             Environment.Exit(0);
 

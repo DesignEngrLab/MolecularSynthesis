@@ -108,10 +108,10 @@ namespace GraphSynth.Search.Tools
                     proc.StartInfo.RedirectStandardInput = false;
                     proc.Start();
                     //proc.WaitForExit();
-                    string error = proc.StandardError.ReadToEnd();
-                    Console.WriteLine(error);
-                    string output = proc.StandardOutput.ReadToEnd();
-                    Console.WriteLine(output);
+                    //string error = proc.StandardError.ReadToEnd();
+                    //Console.WriteLine(error);
+                    //string output = proc.StandardOutput.ReadToEnd();
+                    //Console.WriteLine(output);
                     onlineSeverStarted = true;
                     onlineSeverId = proc.Id;
                 }

@@ -28,16 +28,8 @@ namespace GraphSynth.Search.Tools
                 Console.WriteLine(hostName);
                 IPHostEntry ipHost = Dns.GetHostEntry(hostName);
                 Console.WriteLine(ipHost);
-                foreach(var addr in ipHost.AddressList)
-                {
-                    Console.WriteLine(addr);
-                    Console.WriteLine(addr.AddressFamily);
-                }
-                Environment.Exit(0);
 
-                var ipAddr = ipHost.AddressList[0];
-
-                IPEndPoint localEndPoint = new IPEndPoint(ipAddr, portUsed);
+                IPEndPoint localEndPoint = new IPEndPoint(ipHost.AddressList[1], portUsed);
                 Console.WriteLine(localEndPoint);
 
                 // Creation TCP/IP Socket using  

@@ -47,7 +47,7 @@ namespace GraphSynth.Search.Tools
             epochLookUp[linkerName] = epoch;
         }
 
-        public bool Check_finised(LearningServer server, StreamWriter sw)
+        public bool Check_finised(Computation computation, StreamWriter sw)
         {
             foreach (var onSimulationInfo in onSimulationTuples)
             {
@@ -67,7 +67,7 @@ namespace GraphSynth.Search.Tools
                     foreach (var linkerName in finished_linkers)
                     {
                         set.Remove(linkerName);
-                        var property = server.CalculateProperty(linkerName);
+                        var property = computation.CalculateProperty(linkerName);
                         Console.WriteLine("linker " + linkerName + " finished, with property " + property);
                         Console.WriteLine("Current "  + queue + " on simulation " + set.Count);
                         sw.WriteLine("Epoch " + epochLookUp[linkerName] + "," + linkerName + "," + property);

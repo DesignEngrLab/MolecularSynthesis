@@ -9,21 +9,24 @@ namespace GraphSynth.Search.Tools
     public class MessageClient
     {
 
-        private readonly int portUsed;
+        private readonly int messagePort;
         private readonly Socket sender;
 
 
         public MessageClient(int port)
         {
-            portUsed = port;
+            messagePort = port;
+        }
 
+        public void Connect()
+        {
             // Establish the remote endpoint for the socket and connect to the port given
             var hostName = Dns.GetHostName();
             IPHostEntry ipHost = Dns.GetHostEntry(hostName);
 
             //Here ipHost contains two ip address, only the second one matches python server
             var ipAddr = ipHost.AddressList[1];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, portUsed);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, messagePort);
 
             sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
@@ -41,7 +44,6 @@ namespace GraphSynth.Search.Tools
             {
                 Console.WriteLine(e.ToString());
             }
-
         }
 
         public void SendMessage(string msg)

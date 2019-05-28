@@ -58,6 +58,7 @@ namespace GraphSynth.Search
         protected override void Run()
         {
             server.StartOnlineServer();
+            clinet.Connect();
             client.SendMessage("time");
             server.ShutDownOnlineServer();
             Environment.Exit(0);

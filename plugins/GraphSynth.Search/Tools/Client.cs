@@ -16,7 +16,7 @@ namespace GraphSynth.Search.Tools
             portUsed = port;
         }
 
-        public static void SendMessage(string msg)
+        public void SendMessage(string msg)
         {
             try
             {

@@ -14,6 +14,8 @@ namespace GraphSynth.Search.Tools
         private readonly string _propertyDir;
         private readonly string _featureUsed;
         private readonly string _propertyUsed;
+        private bool onlineSeverStarted;
+        private int onlineSeverId;
         
         private static readonly Dictionary<string, string> featureScriptLookup = new Dictionary<string, string>()
         {
@@ -42,7 +44,7 @@ namespace GraphSynth.Search.Tools
                 Directory.Delete(_propertyDir, true);
             Directory.CreateDirectory(_propertyDir);
 
-            
+            onlineSeverStarted = false;
         }
 
 
@@ -88,6 +90,32 @@ namespace GraphSynth.Search.Tools
                 return output;
 
             }
+        }
+
+        public void StartOnlineServer()
+        {
+            if (!onlineSeverStarted)
+            {
+                using (Process proc = new Process())
+                {
+                    proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
+                    proc.StartInfo.Arguments = "server.py";
+                    proc.StartInfo.WorkingDirectory = Path.Combine(_learnDir);
+                    proc.StartInfo.RedirectStandardError = true;
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.StartInfo.RedirectStandardInput = false;
+                    proc.Start();
+                    proc.WaitForExit();
+                    string error = proc.StandardError.ReadToEnd();
+                    Console.WriteLine(error);
+                    string output = proc.StandardOutput.ReadToEnd();
+                    Console.WriteLine(output);
+                    onlineSeverStarted = true;
+                    onlineSeverId = proc.Id;
+                }
+            }
+            Console.WriteLine("Online server already started with Process ID: {0}.", onlineSeverId);
         }
     }
 

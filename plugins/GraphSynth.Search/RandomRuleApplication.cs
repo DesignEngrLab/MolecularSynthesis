@@ -8,9 +8,6 @@ using GraphSynth.Search.Tools;
 using OpenBabelFunctions;
 
 
-
-
-
 namespace GraphSynth.Search
 {
     public class RandomRuleApplication: SearchProcess
@@ -27,25 +24,20 @@ namespace GraphSynth.Search
         private const int NUM_TRAIL = 10;
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 16;
+        private const string CARBOXTYPE = "estimator";
         
-        private static Mutex mutex = new Mutex();
+        //private static Mutex mutex = new Mutex();
 
 
-        /// <inheritdoc />
-        /// <summary>
-        /// Initializes SearchProcess properties.
-        /// </summary>
         public RandomRuleApplication(GlobalSettings settings): base(settings) 
         {
             RequireSeed = true;
             RequiredNumRuleSets = 1;
             AutoPlay = true;
-            var carboxType = "randomCarbox";
-            
             
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             
-            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", carboxType);
+            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", CARBOXTYPE);
             
             if (Directory.Exists(_runDirectory))
                 Directory.Delete(_runDirectory, true);
@@ -55,11 +47,16 @@ namespace GraphSynth.Search
             
             var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             server = new LearningServer(_runDirectory, learnDirectory, "point", "stiff");
-            sw = new StreamWriter(Path.Combine(_runDirectory, carboxType + ".txt"));
+            sw = new StreamWriter(Path.Combine(_runDirectory, CARBOXTYPE + ".txt"));
         }
 
         protected override void Run()
         {
+            if (CARBOXTYPE == "estimator")
+            {
+                server.StartOnlineServer();
+            }
+            Environment.Exit(0);
             Thread generateLinkers = new Thread(Generate);
             Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
             
@@ -87,13 +84,13 @@ namespace GraphSynth.Search
                     sw.Close();
                     break;
                 }
-
                 //mutex.ReleaseMutex();
             }
         }
 
         private void Generate()
         {
+
             var agent = new Algorithms.Random(settings);
             var linkerSet = new HashSet<string>();
             for (var e = 0; e < NUM_EPOCH; e++)

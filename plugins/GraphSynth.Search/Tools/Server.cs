@@ -43,6 +43,7 @@ namespace GraphSynth.Search.Tools
             Console.WriteLine(error);
             string output = onlineSeverProcess.StandardOutput.ReadLine();
             Console.WriteLine(output);
+            Environment.Exit(0);
 
         }
 

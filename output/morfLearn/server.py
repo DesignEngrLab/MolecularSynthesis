@@ -8,13 +8,9 @@ import learner
 class LearningServer(object):
     def __init__(self):
         self.server = SimpleServer.server_from_string("" if len(sys.argv) < 2 else sys.argv[1])
-        print("\n\t{}\n\tStarted {}\n".format(datetime.now(), self.server))
         self.carboxLearner = learner.carboxLearner.CarboxLearner(os.path.join(os.getcwd(), "computation", "data"), "Regression")
+		print("\n\t{}\n\tStarted {}\n".format(datetime.now(), self.server))
 
-    # def learn(self):
-    #     self.carboxLearner.learn()
-	def estimate(self):
-		
 
     def run(self):
         def clients_handel(client, server):

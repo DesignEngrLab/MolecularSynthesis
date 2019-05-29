@@ -36,7 +36,7 @@ class CarboxLearner(object):
 				
 			if pkl_file in os.listdir(os.path.join(self.data_dir, "features")):
 				self.data_set = pickle.load(open(os.path.join(self.data_dir, "features", pkl_file), "rb"))
-				print("BFS Dataset Loaded")
+				sys.stdout.writelines("BFS Dataset Loaded")
 			else:
 				self.data_set = {}
 				data_label = np.load(label_file)
@@ -47,7 +47,7 @@ class CarboxLearner(object):
 					y = data_label[key]
 					self.data_set[key] = (x,y)
 				pickle.dump(self.data_set, open(os.path.join(self.data_dir, "features", pkl_file), "wb"))
-				print("BFS Dataset Created")
+				sys.stdout.writelines("BFS Dataset Created")
 				
 		def save(task, net):
 			if task == "Classification":
@@ -57,7 +57,7 @@ class CarboxLearner(object):
 			if "model" not in os.listdir(os.getcwd()):
 				os.mkdir("model")
 			torch.save(net.state_dict(), model_file)
-			print("Save Model")
+			sys.stdout.writelines("Save Model")
 	
 		def load(task, net):
 			if task == "Classification":
@@ -65,7 +65,7 @@ class CarboxLearner(object):
 			elif task == "Regression":
 				model_file = os.path.join("model", "carbox_value_" + self.model + "_reg.pt")
 			net.load_state_dict(torch.load(model_file))
-			print("Model Loaded")
+			sys.stdout.writelines("Model Loaded")
 			
 		def evaluate(data_loader, task, net):
 			sum_loss = 0
@@ -112,7 +112,7 @@ class CarboxLearner(object):
 			if self.task == "Classification":
 				train_loss, train_acc = evaluate(train_loader, self.task)
 				valid_loss, valid_acc = evaluate(eval_loader, self.task)
-				print("Epoch %d: training loss %.3f, training acc %.3f, validation loss %.3f, validation acc %.3f." 
+				sys.stdout.writelines("Epoch %d: training loss %.3f, training acc %.3f, validation loss %.3f, validation acc %.3f." 
 			% (e, train_loss, train_acc, valid_loss, valid_acc))
 				if valid_acc > best_validation:
 					save(self.task, self.valueNet)
@@ -120,7 +120,7 @@ class CarboxLearner(object):
 			elif self.task == "Regression":
 				train_loss = evaluate(train_loader, self.task, self.valueNet)
 				valid_loss = evaluate(eval_loader, self.task, self.valueNet)
-				print("Epoch %d: training loss %.3f, validation loss %.3f." 
+				sys.stdout.writelines("Epoch %d: training loss %.3f, validation loss %.3f." 
 			% (e, train_loss, valid_loss))
 				if valid_loss < best_validation:
 					save(self.task, self.valueNet)

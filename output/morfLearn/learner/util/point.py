@@ -2,10 +2,10 @@ import torch
 from torch.utils.data import Dataset
 
 if torch.cuda.is_available():
-	print("Using GPU")
+	sys.stdout.writelines("Using GPU")
 	Tensor = torch.cuda.FloatTensor
 else:
-	print("Using CPU")
+	sys.stdout.writelines("Using CPU")
 	Tensor = torch.FloatTensor
 
 

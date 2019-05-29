@@ -11,6 +11,7 @@ import sys
 
 class CarboxLearner(object):
 	def __init__(self, data_dir, task, model='point'):
+		print("0")
 		self.data_dir = data_dir
 		self.task = task
 		self.model = model
@@ -125,15 +126,4 @@ class CarboxLearner(object):
 				if valid_loss < best_validation:
 					save(self.task, self.valueNet)
 					best_validation = valid_loss
-			
-
 			sys.stdout.flush()
-			
-		
-
-
-
-
-
-
-

@@ -18,7 +18,7 @@ namespace GraphSynth.Search
         private candidate Seed;
         private JobBuffer jobBuffer;
         private Computation computation;
-        private StreamWriter sw;
+        private StreamWriter writer;
         private LearningServer server;
         private MessageClient client;
 
@@ -87,7 +87,7 @@ namespace GraphSynth.Search
                 var allFinished = jobBuffer.Check_finised(computation, writer);
                 if (allFinished && allSubmitted)
                 {
-                    sw.Close();
+                    writer.Close();
                     break;
                 }
                 //mutex.ReleaseMutex();

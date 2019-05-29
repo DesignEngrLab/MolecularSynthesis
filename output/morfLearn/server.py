@@ -2,6 +2,7 @@ from simplesocket import SimpleServer
 from datetime import datetime
 import sys
 import os
+print("import learner")
 import learner
 
 

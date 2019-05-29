@@ -7,6 +7,7 @@ import learner
 
 class LearningServer(object):
 	def __init__(self):
+		print("Start Server")
 		self.server = SimpleServer.server_from_string("" if len(sys.argv) < 2 else sys.argv[1])
 		print("Init Carboxlearner")
 		self.carboxLearner = learner.carboxLearner.CarboxLearner(os.path.join(os.getcwd(), "computation", "data"), "Regression")
@@ -44,11 +45,7 @@ class LearningServer(object):
 
 
 
-def main():
+if __name__ == '__main__':
+	print("main")
 	mysever = LearningServer()
 	#mysever.run()
-
-
-
-if __name__ == '__main__':
-	main()

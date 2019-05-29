@@ -1,6 +1,7 @@
 ﻿using GraphSynth.Representation;
 using System;
 using OpenBabelFunctions;
+using GraphSynth.Search.Tools;
 
 
 
@@ -52,6 +53,14 @@ namespace GraphSynth.Search.Algorithms {
                 }
             }
             return bestOpt;
+        }
+
+        public option ChooseCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt)
+        {
+            Console.WriteLine("Using Estimator!");
+            Environment.Exit(0);
+            var options = GetCarboxylOptions(cand);
+            return options.Count > 0 ? options[Rand.Next(options.Count)] : null;
         }
 
 

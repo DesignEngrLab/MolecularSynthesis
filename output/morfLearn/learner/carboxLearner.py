@@ -20,6 +20,10 @@ class CarboxLearner(object):
 			self.valueNet = util.point.PointNet(self.task)
 		self.data_set = {}
 
+	def predict(self, linkerName):
+		arr = np.load(os.path.join(self.data_dir, "features", self.model, linkerName + ".npy"))
+		return arr.shape
+
 
 	def learn_fix(self, batch_size=200, epoch=50):
 		def create_dataset(task):

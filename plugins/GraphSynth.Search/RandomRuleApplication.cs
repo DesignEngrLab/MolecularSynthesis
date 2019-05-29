@@ -22,8 +22,8 @@ namespace GraphSynth.Search
         private LearningServer server;
         private MessageClient client;
 
-        private const int NUM_EPOCH = 100;
-        private const int NUM_TRAIL = 10;
+        private const int NUM_EPOCH = 10;
+        private const int NUM_TRAIL = 1;
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 16;
         private const string CARBOXTYPE = "estimator";
@@ -59,9 +59,8 @@ namespace GraphSynth.Search
         {
             server.StartOnlineServer();
             client.Connect();
-            client.SendMessage("time");
-            server.ShutDownOnlineServer();
-            Environment.Exit(0);
+            client.SendMessage("Time");
+
 
             Thread generateLinkers = new Thread(Generate);
             Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
@@ -71,6 +70,9 @@ namespace GraphSynth.Search
 
             generateLinkers.Join();
             autoReleaseBuffer.Join();
+
+            server.ShutDownOnlineServer();
+            
 
 
 
@@ -128,8 +130,9 @@ namespace GraphSynth.Search
                             }
                             if (successFlag == false)
                                 continue;
-                            var carboxOpt = agent.ChooseCarboxOption(cand);
+                            //var carboxOpt = agent.ChooseCarboxOption(cand);
                             //var carboxOpt = agent.ChooseCarboxOptionBestAngle(cand);
+                            var carboxOpt = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client);
                             if (carboxOpt == null)
                             {
                                 Console.WriteLine("Fail on finding final carbox");

@@ -37,13 +37,13 @@ namespace GraphSynth.Search.Tools
                 onlineSeverProcess.Start();
                 //onlineSeverProcess.WaitForExit();
             }
-            System.Threading.Thread.Sleep(5000);
+            //System.Threading.Thread.Sleep(5000);
             Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);
             //string error = onlineSeverProcess.StandardError.ReadToEnd();
             //Console.WriteLine(error);
             string output = onlineSeverProcess.StandardOutput.ReadLine();
             Console.WriteLine(output);
-            output = onlineSeverProcess.StandardOutput.ReadToEnd();
+            output = onlineSeverProcess.StandardOutput.ReadLine();
             Console.WriteLine(output);
             Environment.Exit(0);
 

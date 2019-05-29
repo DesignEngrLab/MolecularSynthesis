@@ -49,5 +49,5 @@ if __name__ == '__main__':
 	print("main")
 	mysever = LearningServer()
 	#mysever.run()
-else
+else:
 	print(__name__)

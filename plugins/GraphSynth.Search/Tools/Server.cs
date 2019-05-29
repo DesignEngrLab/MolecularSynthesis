@@ -37,16 +37,14 @@ namespace GraphSynth.Search.Tools
                 onlineSeverProcess.Start();
                 //onlineSeverProcess.WaitForExit();
             }
-            //System.Threading.Thread.Sleep(5000);
             Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);
             //string error = onlineSeverProcess.StandardError.ReadToEnd();
             //Console.WriteLine(error);
-            string output = onlineSeverProcess.StandardOutput.ReadLine();
-            Console.WriteLine(output);
-            output = onlineSeverProcess.StandardOutput.ReadLine();
-            Console.WriteLine(output);
-            Environment.Exit(0);
 
+            //Here the first output indicate using CPU or GPU
+            Console.WriteLine(onlineSeverProcess.StandardOutput.ReadLine());
+            //Here the first output indicate the time and host of the server, making sure the server has already started
+            Console.WriteLine(onlineSeverProcess.StandardOutput.ReadLine());
         }
 
         public void ShutDownOnlineServer()

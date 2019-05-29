@@ -22,6 +22,8 @@ namespace GraphSynth.Search
         private LearningServer server;
         private MessageClient client;
 
+
+        private const int PORT = 9996;
         private const int NUM_EPOCH = 10;
         private const int NUM_TRAIL = 1;
         private const int TOTAL_RULE_MIN = 6;
@@ -49,10 +51,9 @@ namespace GraphSynth.Search
             
             var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             computation = new Computation(_runDirectory, learnDirectory, "point", "stiff");
-            sw = new StreamWriter(Path.Combine(_runDirectory, CARBOXTYPE + ".txt"));
-            int port = 9996;
-            server = new LearningServer(learnDirectory, port);
-            client = new MessageClient(port);
+            writer = new StreamWriter(Path.Combine(_runDirectory, CARBOXTYPE + ".txt"));
+            server = new LearningServer(learnDirectory, PORT);
+            client = new MessageClient(PORT);
         }
 
         protected override void Run()
@@ -60,9 +61,6 @@ namespace GraphSynth.Search
             server.StartOnlineServer();
             client.Connect();
             client.SendMessage("[Time]");
-            server.ShutDownOnlineServer();
-            Environment.Exit(0);
-
 
             Thread generateLinkers = new Thread(Generate);
             Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
@@ -72,10 +70,7 @@ namespace GraphSynth.Search
 
             generateLinkers.Join();
             autoReleaseBuffer.Join();
-
-            
-
-
+            server.ShutDownOnlineServer();
 
         }
         
@@ -89,7 +84,7 @@ namespace GraphSynth.Search
                 {
                     allSubmitted = jobBuffer.Simulate();
                 }
-                var allFinished = jobBuffer.Check_finised(computation, sw);
+                var allFinished = jobBuffer.Check_finised(computation, writer);
                 if (allFinished && allSubmitted)
                 {
                     sw.Close();

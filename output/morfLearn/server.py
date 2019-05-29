@@ -9,7 +9,7 @@ class LearningServer(object):
     def __init__(self):
         self.server = SimpleServer.server_from_string("" if len(sys.argv) < 2 else sys.argv[1])
         self.carboxLearner = learner.carboxLearner.CarboxLearner(os.path.join(os.getcwd(), "computation", "data"), "Regression")
-		print("\n\t{}\n\tStarted {}\n".format(datetime.now(), self.server))
+        print("\n\t{}\n\tStarted {}\n".format(datetime.now(), self.server))
 
 
     def run(self):
@@ -24,9 +24,9 @@ class LearningServer(object):
                         if cmd[0] == "[Time]":
                             msg = 'Time is {}'.format(datetime.now().time())
                             client.send(msg)
-						elif cmd[0] == "[Predict]":
-							msg = self.carboxLearner.predict(cmd[1]).__str__()
-							client.send(msg)
+                        elif cmd[0] == "[Predict]":
+                            msg = self.carboxLearner.predict(cmd[1]).__str__()
+                            client.send(msg)
                         else:
                             msg = "Error : unknown command."
                             client.send(msg)

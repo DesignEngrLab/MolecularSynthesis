@@ -38,7 +38,7 @@ namespace GraphSynth.Search.Tools
             }
             System.Threading.Thread.Sleep(5000);
             Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);
-            string output = onlineSeverProcess.StandardOutput.ReadToEnd();
+            string output = onlineSeverProcess.StandardOutput.ReadLine();
             Console.WriteLine(output);
             string error = onlineSeverProcess.StandardError.ReadToEnd();
             Console.WriteLine(error);

@@ -10,6 +10,7 @@ class LearningServer(object):
 		self.server = SimpleServer.server_from_string("" if len(sys.argv) < 2 else sys.argv[1])
 		self.carboxLearner = learner.carboxLearner.CarboxLearner(os.path.join(os.getcwd(), "computation", "data"), "Regression")
 		sys.stdout.writelines("\n\t{}\n\tStarted {}\n".format(datetime.now(), self.server))
+		sys.stdout.flush()
 
 
 	def run(self):

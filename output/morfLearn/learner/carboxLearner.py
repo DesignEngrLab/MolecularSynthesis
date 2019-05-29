@@ -1,5 +1,4 @@
 from . import util
-print("import carbox")
 import numpy as np
 import os
 import random
@@ -7,13 +6,11 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 import pickle
 import sys
-print("import carbox success")
 
 
 
 class CarboxLearner(object):
 	def __init__(self, data_dir, task, model='point'):
-		print("0")
 		self.data_dir = data_dir
 		self.task = task
 		self.model = model

@@ -2,7 +2,6 @@ from simplesocket import SimpleServer
 from datetime import datetime
 import sys
 import os
-print("import learner")
 import learner
 
 
@@ -47,8 +46,6 @@ class LearningServer(object):
 
 
 if __name__ == '__main__':
-	print("main")
 	mysever = LearningServer()
-	#mysever.run()
-else:
-	print(__name__)
+	mysever.run()
+

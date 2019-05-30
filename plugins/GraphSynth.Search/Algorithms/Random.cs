@@ -14,7 +14,7 @@ namespace GraphSynth.Search.Algorithms {
     public class Random : AbstractAlgorithm
     {
 
-        public Random(GlobalSettings settings) : base(settings)
+        public Random(GlobalSettings settings, string converterOutputDir) : base(settings, converterOutputDir)
         {
             
         }
@@ -69,8 +69,9 @@ namespace GraphSynth.Search.Algorithms {
                 var coeff = Path.Combine("possible", "linker" + linkerName + ".coeff");
                 var lmpdat = Path.Combine("possible", "linker" + linkerName + ".lmpdat");
                 Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
-                computation.CalculateFeature(linkerName, true);
+                cpt.CalculateFeature(linkerName, true);
                 Environment.Exit(0);
+                var property = 0;
 
                 if (property > bestProperty)
                 {
@@ -78,6 +79,7 @@ namespace GraphSynth.Search.Algorithms {
                     bestOpt = opt;
                 }
             }
+            return bestOpt;
             
         }
 

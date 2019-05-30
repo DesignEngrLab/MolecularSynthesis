@@ -18,12 +18,13 @@ namespace LAMMPSnow
 
         public Dictionary<string, LAMMPSNow.parminf> parameters = new Dictionary<string, LAMMPSNow.parminf>();
         public static List<string[]> atomtypes = new List<string[]>();
+        private readonly string _outPutDataDir;
 
-        public graph2almostanything(string uffparmpath)
+        public graph2almostanything(string uffparmpath, string outPutDataDir)
         {
             new OBConversion(); //initialize open babel
             ParseUFFParamFile(Path.Combine(uffparmpath, "UFF4MOF.prm"));
-
+            _outPutDataDir = outPutDataDir;
 
         }
         public graph2almostanything()
@@ -31,8 +32,6 @@ namespace LAMMPSnow
             //assume that UFF parameters are in bin directory
             new OBConversion(); //initialize open babel
             ParseUFFParamFile();
-
-
         }
 
         public void designgraphtoCML(designGraph host, string filename)
@@ -46,6 +45,9 @@ namespace LAMMPSnow
 
         public void designgraphtoUFF(designGraph host, string coefficientfilename, string datafilename, bool contingency)
         {
+            coefficientfilename = Path.Combine(_outPutDataDir, coefficientfilename);
+            datafilename = Path.Combine(_outPutDataDir, datafilename);
+
             OBMol mol = new OBMol();
             OBFunctions.designgraphtomol(host, ref mol);
             LAMMPSNow lammpssetup = new LAMMPSNow(parameters, atomtypes, periodictable);
@@ -142,6 +144,9 @@ namespace LAMMPSnow
 
         public List<int> moltoUFF(OBMol mol, string coefficientfilename, string datafilename, bool contingency, double padding)
         {
+            coefficientfilename = Path.Combine(_outPutDataDir, coefficientfilename);
+            datafilename = Path.Combine(_outPutDataDir, datafilename);
+
             LAMMPSNow lammpssetup = new LAMMPSNow(parameters, atomtypes, periodictable);
 
             if (contingency)
@@ -167,6 +172,9 @@ namespace LAMMPSnow
         }
         public List<int> moltoUFF(OBMol mol, string coefficientfilename, string datafilename, double padding)
         {
+            coefficientfilename = Path.Combine(_outPutDataDir, coefficientfilename);
+            datafilename = Path.Combine(_outPutDataDir, datafilename);
+
             LAMMPSNow lammpssetup = new LAMMPSNow(parameters, atomtypes, periodictable);
 
             lammpssetup.setupUFF(mol, coefficientfilename, datafilename, padding);
@@ -177,8 +185,10 @@ namespace LAMMPSnow
 
         public List<int> moltoUFFPeriodic(OBMol mol, string coefficientfilename, string datafilename, int x_rep, int y_rep, int z_rep)
         {
-            LAMMPSNow lammpssetup = new LAMMPSNow(parameters, atomtypes, periodictable);
+            coefficientfilename = Path.Combine(_outPutDataDir, coefficientfilename);
+            datafilename = Path.Combine(_outPutDataDir, datafilename);
 
+            LAMMPSNow lammpssetup = new LAMMPSNow(parameters, atomtypes, periodictable);
 
             lammpssetup.setupUFFPeriodic(mol, coefficientfilename, datafilename, x_rep, y_rep, z_rep);
             List<int> esequence = lammpssetup.getesequence();
@@ -306,6 +316,9 @@ namespace LAMMPSnow
         }
         public List<int> moltoUFF_azo(OBMol mol, string coefficientfilename, string datafilename, double padding)
         {
+            coefficientfilename = Path.Combine(_outPutDataDir, coefficientfilename);
+            datafilename = Path.Combine(_outPutDataDir, datafilename);
+
             LAMMPSNow lammpssetup = new LAMMPSNow(parameters, atomtypes, periodictable);
             lammpssetup.setupUFF(mol, padding);
             lammpssetup.setupcalculationsUFF_azobenzene(mol, coefficientfilename, datafilename);

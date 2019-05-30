@@ -57,10 +57,27 @@ namespace GraphSynth.Search.Algorithms {
 
         public option ChooseCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt)
         {
-            Console.WriteLine("Using Estimator!");
-            Environment.Exit(0);
             var options = GetCarboxylOptions(cand);
-            return options.Count > 0 ? options[Rand.Next(options.Count)] : null;
+            option bestOpt = null;
+            var bestProperty = .0;
+            foreach (var opt in options) 
+            {
+                var evalcand = CopyAndApplyOption(opt, cand, true);
+                var mol = OBFunctions.designgraphtomol(evalcand.graph);
+                var linkerName = GetLinkerName(evalcand);
+                var coeff = Path.Combine("possible", "linker" + linkerName + ".coeff");
+                var lmpdat = Path.Combine("possible", "linker" + linkerName + ".lmpdat");
+                Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
+                computation.CalculateFeature(linkerName, true);
+                Environment.Exit(0);
+
+                if (property > bestProperty)
+                {
+                    bestProperty = property;
+                    bestOpt = opt;
+                }
+            }
+            
         }
 
 

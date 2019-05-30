@@ -22,9 +22,9 @@ namespace GraphSynth.Search.Algorithms {
         public readonly graph2almostanything Converter;
         
 
-        protected AbstractAlgorithm(GlobalSettings settings_) {
+        protected AbstractAlgorithm(GlobalSettings settings_, string outPutDataDir) {
             Settings = settings_;
-            Converter = new graph2almostanything(Settings.InputDirAbs);
+            Converter = new graph2almostanything(Settings.InputDirAbs, outPutDataDir);
         }
 
         public static string GetLinkerName(candidate cand)

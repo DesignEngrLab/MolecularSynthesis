@@ -126,7 +126,7 @@ namespace GraphSynth.Search
                                 continue;
                             //var carboxOpt = agent.ChooseCarboxOption(cand);
                             //var carboxOpt = agent.ChooseCarboxOptionBestAngle(cand);
-                            cand = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client);
+                            cand = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client, _runDirectory);
                             if (cand == null)
                             {
                                 Console.WriteLine("Fail on finding final carbox");

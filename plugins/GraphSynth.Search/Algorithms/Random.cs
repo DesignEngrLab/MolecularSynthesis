@@ -1,5 +1,6 @@
 ﻿using GraphSynth.Representation;
 using System;
+using System.IO;
 using OpenBabelFunctions;
 using GraphSynth.Search.Tools;
 
@@ -69,7 +70,7 @@ namespace GraphSynth.Search.Algorithms {
                 var coeff = Path.Combine(runDir, "data", "linker" + linkerName + ".coeff");
                 var lmpdat = Path.Combine(runDir, "data", "linker" + linkerName + ".lmpdat");
                 Converter.moltoUFF(OBFunctions.designgraphtomol(evalcand.graph), coeff, lmpdat, false, 100);
-                computation.CalculateFeature(linkerName);
+                cpt.CalculateFeature(linkerName);
 
                 var properpty = 0;
 

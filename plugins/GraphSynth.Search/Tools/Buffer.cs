@@ -31,7 +31,6 @@ namespace GraphSynth.Search.Tools
             if (Directory.Exists(_bufferDir))
                 Directory.Delete(_bufferDir, true);
             Directory.CreateDirectory(_bufferDir);
-            Directory.CreateDirectory(Path.Combine(_bufferDir, "possible"));
             onSimulationTuples = new Tuple<string, HashSet<string>>[]
             {
                 Tuple.Create("short", new HashSet<string>()), 

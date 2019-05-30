@@ -8,7 +8,7 @@ namespace GraphSynth.Search.Tools
 {
     public class Computation
     {
-        private readonly string _dataDir;
+        private readonly string _runDir;
         private readonly string _learnDir;
         private readonly string _featureDir;
         private readonly string _propertyDir;
@@ -27,12 +27,12 @@ namespace GraphSynth.Search.Tools
 
         public Computation(string runDir, string learnDir, string feature, string property)
         {
-            _dataDir = Path.Combine(runDir, "data");
+            _runDir = runDir;
             _learnDir = learnDir;
             _featureUsed = feature;
             _propertyUsed = property;
-            _featureDir = Path.Combine(runDir, "feature", feature);
-            _propertyDir = Path.Combine(runDir, "property", property);
+            _featureDir = Path.Combine(_runDir, "feature", feature);
+            _propertyDir = Path.Combine(_runDir, "property", property);
 
 
             if (Directory.Exists(_featureDir))
@@ -46,21 +46,13 @@ namespace GraphSynth.Search.Tools
         }
 
 
-        public void CalculateFeature(string linkerId, bool isPossible)
+        public void CalculateFeature(string linkerId)
         {
-            var actualDataDir = _dataDir;
-            var actualFeatureDir = _featureDir;
-            if (isPossible)
-            {
-                actualDataDir = Path.Combine(actualDataDir, "possible");
-                actualFeatureDir = Path.Combine(actualFeatureDir, "possible");
-            }
-
-            var lmpData = Path.Combine(actualDataDir, "linker" + linkerId + ".lmpdat");
+            var lmpData = Path.Combine(_runDir, "data", "linker" + linkerId + ".lmpdat");
             using (Process proc = new Process())
             {
                 proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
-                proc.StartInfo.Arguments = featureScriptLookup[_featureUsed] + " " + lmpData + " " + actualFeatureDir;
+                proc.StartInfo.Arguments = featureScriptLookup[_featureUsed] + " " + lmpData + " " + _featureDir;
                 proc.StartInfo.WorkingDirectory = Path.Combine(_learnDir, "computation");
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.UseShellExecute = false;
@@ -77,7 +69,7 @@ namespace GraphSynth.Search.Tools
 
         public string CalculateProperty(string linkerId)
         {
-            var aveData = Path.Combine(_dataDir, "linker" + linkerId + "_deformation", "linker" + linkerId + "-ave-force.d");
+            var aveData = Path.Combine(_runDir, "data", "linker" + linkerId + "_deformation", "linker" + linkerId + "-ave-force.d");
             using (Process proc = new Process())
             {
                 proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";

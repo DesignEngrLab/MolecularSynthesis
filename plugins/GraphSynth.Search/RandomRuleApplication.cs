@@ -96,7 +96,8 @@ namespace GraphSynth.Search
 
         private void Generate()
         {
-            var agent = new Algorithms.Random(settings, Path.Combine(_runDirectory, "data"));
+
+            var agent = new Algorithms.Random(settings);
             var linkerSet = new HashSet<string>();
             for (var e = 0; e < NUM_EPOCH; e++)
             {
@@ -150,10 +151,10 @@ namespace GraphSynth.Search
                             continue;
                         }
                         linkerSet.Add(linkerName);
-                        var coeff = Path.Combine("linker" + linkerName + ".coeff");
-                        var lmpdat = Path.Combine("linker" + linkerName + ".lmpdat");
+                        var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
+                        var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
                         agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
-                        computation.CalculateFeature(linkerName, false);
+                        computation.CalculateFeature(linkerName);
 
                         //mutex.WaitOne();
                         jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble(), e);
@@ -163,6 +164,8 @@ namespace GraphSynth.Search
             }
             jobBuffer.AllSubmitFlag = true;
         }
+        
         public override string text => "RandomTrail Search Runner";
+        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GraphSynth.Representation;
 using System;
+using System.IO;
 using OpenBabelFunctions;
 using GraphSynth.Search.Tools;
 

@@ -27,12 +27,12 @@ namespace GraphSynth.Search.Tools
 
         public Computation(string runDir, string learnDir, string feature, string property)
         {
-            _dataDir = Path.Combine(_runDir, "data");
+            _dataDir = Path.Combine(runDir, "data");
             _learnDir = learnDir;
             _featureUsed = feature;
             _propertyUsed = property;
-            _featureDir = Path.Combine(_runDir, "feature", feature);
-            _propertyDir = Path.Combine(_runDir, "property", property);
+            _featureDir = Path.Combine(runDir, "feature", feature);
+            _propertyDir = Path.Combine(runDir, "property", property);
 
 
             if (Directory.Exists(_featureDir))

@@ -118,7 +118,7 @@ namespace GraphSynth.Search
                                 {
                                     Console.WriteLine("Fail on step {0}", step+1);
                                     successFlag = false;
-                                    cand = Seed.copy(), 
+                                    cand = Seed.copy();
                                     break;
                                 }
                                 agent.ApplyOption(opt, cand, true);

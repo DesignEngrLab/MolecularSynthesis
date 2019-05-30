@@ -126,8 +126,8 @@ namespace GraphSynth.Search
                                 continue;
                             //var carboxOpt = agent.ChooseCarboxOption(cand);
                             //var carboxOpt = agent.ChooseCarboxOptionBestAngle(cand);
-                            var finalCand = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client);
-                            if (finalCand == null)
+                            var cand = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client);
+                            if (cand == null)
                             {
                                 Console.WriteLine("Fail on finding final carbox");
                                 Environment.Exit(0);
@@ -138,8 +138,8 @@ namespace GraphSynth.Search
                             break;
                         }
                         
-                        var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(finalCand.graph));
-                        var linkerName = AbstractAlgorithm.GetLinkerName(finalCand);
+                        var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
+                        var linkerName = AbstractAlgorithm.GetLinkerName(cand);
                         //Console.WriteLine(candSmile);
                         Console.WriteLine(linkerName);
                         if (linkerSet.Contains(linkerName))

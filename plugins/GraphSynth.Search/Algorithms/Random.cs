@@ -19,19 +19,19 @@ namespace GraphSynth.Search.Algorithms {
         }
 
 
-        public option ChooseOption(candidate cand)
+        public candidate ChooseOption(candidate cand)
         {
             var options = GetAvailableOptions(cand);
             return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
         }
 
-        public option ChooseCarboxOption(candidate cand)
+        public candidate ChooseCarboxOption(candidate cand)
         {
             var options = GetCarboxylOptions(cand);
             return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
         }
 
-        public option ChooseCarboxOptionBestAngle(candidate cand)
+        public candidate ChooseCarboxOptionBestAngle(candidate cand)
         {
             var options = GetCarboxylOptions(cand);
             option bestOpt = null;
@@ -60,6 +60,7 @@ namespace GraphSynth.Search.Algorithms {
             Console.WriteLine("Using Estimator!");
             option bestOpt = null;
             var bestProperty = .0;
+            var options = GetCarboxylOptions(cand);
             foreach (var opt in options) 
             {
                 var evalcand = CopyAndApplyOption(opt, cand, true);

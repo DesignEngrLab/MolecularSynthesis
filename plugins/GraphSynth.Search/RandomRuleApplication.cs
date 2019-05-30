@@ -107,10 +107,10 @@ namespace GraphSynth.Search
                     Console.WriteLine("Trail: {0}", t);
                     for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX; total_rule++)
                     {
-                        var cand = Seed.copy();
-                        while(true)
+                        var cand = null;
+                        while(cand == null)
                         {
-                            var successFlag = true;
+                            cand = Seed.copy();
                             Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
                             for (var step = 0; step < total_rule; step++)
                             {
@@ -118,24 +118,17 @@ namespace GraphSynth.Search
                                 if (cand == null)
                                 {
                                     Console.WriteLine("Fail on step {0}", step+1);
-                                    successFlag = false;
                                     break;
                                 }
                             }
-                            if (successFlag == false)
+                            if (cand == null)
                                 continue;
                             //var carboxOpt = agent.ChooseCarboxOption(cand);
                             //var carboxOpt = agent.ChooseCarboxOptionBestAngle(cand);
                             cand = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client, _runDirectory);
                             if (cand == null)
-                            {
                                 Console.WriteLine("Fail on finding final carbox");
-                                Environment.Exit(0);
-                                successFlag = false;
-                            }
-                            if (successFlag == false)
-                                continue;
-                            break;
+                            Environment.Exit(0);
                         }
                         
                         var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));

@@ -72,7 +72,7 @@ namespace GraphSynth.Search.Algorithms {
                 Converter.moltoUFF(OBFunctions.designgraphtomol(evalcand.graph), coeff, lmpdat, false, 100);
                 cpt.CalculateFeature(linkerName);
 
-                var properpty = 0;
+                var properpty = .0;
 
                 if (properpty > bestProperty)
                 {

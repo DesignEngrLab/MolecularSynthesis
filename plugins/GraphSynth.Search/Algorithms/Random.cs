@@ -22,13 +22,13 @@ namespace GraphSynth.Search.Algorithms {
         public option ChooseOption(candidate cand)
         {
             var options = GetAvailableOptions(cand);
-            return options.Count > 0 ? options[Rand.Next(options.Count)] : null;
+            return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
         }
 
         public option ChooseCarboxOption(candidate cand)
         {
             var options = GetCarboxylOptions(cand);
-            return options.Count > 0 ? options[Rand.Next(options.Count)] : null;
+            return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
         }
 
         public option ChooseCarboxOptionBestAngle(candidate cand)
@@ -52,15 +52,33 @@ namespace GraphSynth.Search.Algorithms {
                     bestOpt = opt;
                 }
             }
-            return bestOpt;
+            return bestOpt == null ? null : CopyAndApplyOption(bestOpt, cand, true);
         }
 
-        public option ChooseCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt)
+        public option ChooseCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt, string runDir)
         {
             Console.WriteLine("Using Estimator!");
-            Environment.Exit(0);
-            var options = GetCarboxylOptions(cand);
-            return options.Count > 0 ? options[Rand.Next(options.Count)] : null;
+            option bestOpt = null;
+            var bestProperty = .0;
+            foreach (var opt in options) 
+            {
+                var evalcand = CopyAndApplyOption(opt, cand, true);
+                var mol = OBFunctions.designgraphtomol(evalcand.graph);
+                var linkerName = AbstractAlgorithm.GetLinkerName(evalcand);
+                var coeff = Path.Combine(runDir, "data", "linker" + linkerName + ".coeff");
+                var lmpdat = Path.Combine(runDir, "data", "linker" + linkerName + ".lmpdat");
+                Converter.moltoUFF(OBFunctions.designgraphtomol(evalcand.graph), coeff, lmpdat, false, 100);
+                computation.CalculateFeature(linkerName);
+
+                var properpty = 0;
+
+                if (angle > bestProperty)
+                {
+                    bestProperty = properpty;
+                    bestOpt = opt;
+                }
+            }
+            return bestOpt == null ? null : CopyAndApplyOption(bestOpt, cand, true);
         }
 
 

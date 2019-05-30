@@ -114,35 +114,32 @@ namespace GraphSynth.Search
                             Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
                             for (var step = 0; step < total_rule; step++)
                             {
-                                var opt = agent.ChooseOption(cand);
-                                if (opt == null)
+                                var cand = agent.ChooseOption(cand);
+                                if (cand == null)
                                 {
                                     Console.WriteLine("Fail on step {0}", step+1);
                                     successFlag = false;
-                                    cand = Seed.copy();
                                     break;
                                 }
-                                agent.ApplyOption(opt, cand, true);
                             }
                             if (successFlag == false)
                                 continue;
                             //var carboxOpt = agent.ChooseCarboxOption(cand);
                             //var carboxOpt = agent.ChooseCarboxOptionBestAngle(cand);
-                            var carboxOpt = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client);
-                            if (carboxOpt == null)
+                            var finalCand = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client);
+                            if (finalCand == null)
                             {
                                 Console.WriteLine("Fail on finding final carbox");
+                                Environment.Exit(0);
                                 successFlag = false;
-                                cand = Seed.copy();
                             }
                             if (successFlag == false)
                                 continue;
-                            agent.ApplyOption(carboxOpt, cand, true);
                             break;
                         }
                         
-                        var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
-                        var linkerName = AbstractAlgorithm.GetLinkerName(cand);
+                        var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(finalCand.graph));
+                        var linkerName = AbstractAlgorithm.GetLinkerName(finalCand);
                         //Console.WriteLine(candSmile);
                         Console.WriteLine(linkerName);
                         if (linkerSet.Contains(linkerName))
@@ -153,7 +150,7 @@ namespace GraphSynth.Search
                         linkerSet.Add(linkerName);
                         var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                         var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
-                        agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
+                        agent.Converter.moltoUFF(OBFunctions.designgraphtomol(finalCand.graph), coeff, lmpdat, false, 100);
                         computation.CalculateFeature(linkerName);
 
                         //mutex.WaitOne();

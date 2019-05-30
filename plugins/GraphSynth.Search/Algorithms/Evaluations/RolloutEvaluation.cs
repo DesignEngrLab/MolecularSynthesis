@@ -26,6 +26,7 @@ namespace GraphSynth.Search.Algorithms.Evaluations {
         /// Do one rollout for the state.
         /// </summary>
         private double RunRolloutLocal(candidate cand) {
+            /*
             var candCopy = cand.copy();
             double bestRewardSoFar = 0;
             
@@ -66,7 +67,8 @@ namespace GraphSynth.Search.Algorithms.Evaluations {
 
 
             }
-            return bestRewardSoFar;
+            */
+            return .0;
         }
     }
 }

@@ -107,7 +107,7 @@ namespace GraphSynth.Search
                     Console.WriteLine("Trail: {0}", t);
                     for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX; total_rule++)
                     {
-                        var cand = null;
+                        candidate cand = null;
                         while(cand == null)
                         {
                             cand = Seed.copy();

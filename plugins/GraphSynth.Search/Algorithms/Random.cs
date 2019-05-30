@@ -55,7 +55,7 @@ namespace GraphSynth.Search.Algorithms {
             return bestOpt == null ? null : CopyAndApplyOption(bestOpt, cand, true);
         }
 
-        public option ChooseCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt, string runDir)
+        public candidate ChooseCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt, string runDir)
         {
             Console.WriteLine("Using Estimator!");
             option bestOpt = null;
@@ -73,7 +73,7 @@ namespace GraphSynth.Search.Algorithms {
 
                 var properpty = 0;
 
-                if (angle > bestProperty)
+                if (properpty > bestProperty)
                 {
                     bestProperty = properpty;
                     bestOpt = opt;

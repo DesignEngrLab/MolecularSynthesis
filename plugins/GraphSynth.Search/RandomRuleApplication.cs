@@ -114,7 +114,7 @@ namespace GraphSynth.Search
                             Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
                             for (var step = 0; step < total_rule; step++)
                             {
-                                var cand = agent.ChooseOption(cand);
+                                cand = agent.ChooseOption(cand);
                                 if (cand == null)
                                 {
                                     Console.WriteLine("Fail on step {0}", step+1);
@@ -126,7 +126,7 @@ namespace GraphSynth.Search
                                 continue;
                             //var carboxOpt = agent.ChooseCarboxOption(cand);
                             //var carboxOpt = agent.ChooseCarboxOptionBestAngle(cand);
-                            var cand = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client);
+                            cand = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client);
                             if (cand == null)
                             {
                                 Console.WriteLine("Fail on finding final carbox");
@@ -150,7 +150,7 @@ namespace GraphSynth.Search
                         linkerSet.Add(linkerName);
                         var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                         var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
-                        agent.Converter.moltoUFF(OBFunctions.designgraphtomol(finalCand.graph), coeff, lmpdat, false, 100);
+                        agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
                         computation.CalculateFeature(linkerName);
 
                         //mutex.WaitOne();

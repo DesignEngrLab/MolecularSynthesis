@@ -61,6 +61,8 @@ namespace GraphSynth.Search
             server.StartOnlineServer();
             client.Connect();
             client.SendMessage("[Time]");
+            server.ShutDownOnlineServer();
+            Environment.Exit(0);
 
             Thread generateLinkers = new Thread(GenerateFixed);
             //Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
@@ -70,7 +72,7 @@ namespace GraphSynth.Search
 
             generateLinkers.Join();
             //autoReleaseBuffer.Join();
-            server.ShutDownOnlineServer();
+
 
         }
         

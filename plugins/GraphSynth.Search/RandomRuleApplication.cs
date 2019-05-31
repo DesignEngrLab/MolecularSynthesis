@@ -58,9 +58,9 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
-            server.StartOnlineServer();
+            //server.StartOnlineServer();
             client.Connect();
-            server.CheckServerOutput();
+            //server.CheckServerOutput();
             client.SendMessage("[Time]");
             Thread.Sleep(5000);
             client.SendMessage("[Time]");
@@ -75,8 +75,8 @@ namespace GraphSynth.Search
             Thread.Sleep(5000);
             client.SendMessage("[Time]");
             client.DisConnect();
-            server.CheckServerOutput();
-            server.ShutDownOnlineServer();
+            //server.CheckServerOutput();
+            //server.ShutDownOnlineServer();
             Environment.Exit(0);
 
             Thread generateLinkers = new Thread(GenerateFixed);

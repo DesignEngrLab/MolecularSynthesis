@@ -47,6 +47,14 @@ namespace GraphSynth.Search.Tools
             Console.WriteLine(onlineSeverProcess.StandardOutput.ReadLine());
         }
 
+        public void MonitorOutput()
+        {
+            while (onlineSeverProcess != null)
+            {
+                Console.WriteLine(onlineSeverProcess.StandardOutput.ReadLine());
+            }
+        }
+
         public void ShutDownOnlineServer()
         {
             if (onlineSeverProcess != null)

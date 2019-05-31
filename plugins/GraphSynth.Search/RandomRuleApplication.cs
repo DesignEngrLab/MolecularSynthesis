@@ -65,6 +65,15 @@ namespace GraphSynth.Search
             client.SendMessage("[Time]");
             Thread.Sleep(5000);
             client.SendMessage("[Time]");
+            client.DisConnect();
+            Console.WriteLine("Reconnect!");
+            client.Connect();
+            client.SendMessage("[Time]");
+            Thread.Sleep(5000);
+            client.SendMessage("[Time]");
+            Thread.Sleep(5000);
+            client.SendMessage("[Time]");
+            client.DisConnect();
             server.ShutDownOnlineServer();
             Environment.Exit(0);
 

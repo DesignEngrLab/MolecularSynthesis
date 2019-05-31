@@ -45,6 +45,13 @@ namespace GraphSynth.Search.Tools
             }
         }
 
+        public void DisConnect()
+        {
+            // Close Socket using the method Close() 
+            sender.Shutdown(SocketShutdown.Both);
+            sender.Close();
+        }
+
         public void SendMessage(string msg)
         {
             try
@@ -63,9 +70,6 @@ namespace GraphSynth.Search.Tools
                 int byteRecv = sender.Receive(messageReceived);
                 Console.WriteLine("Message from Server -> {0}", Encoding.ASCII.GetString(messageReceived, 0, byteRecv));
 
-                // Close Socket using the method Close() 
-                sender.Shutdown(SocketShutdown.Both);
-                sender.Close();
             }
 
             // Manage of Socket's Exceptions 

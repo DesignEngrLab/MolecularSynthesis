@@ -61,6 +61,10 @@ namespace GraphSynth.Search
             server.StartOnlineServer();
             client.Connect();
             client.SendMessage("[Time]");
+            Thread.Sleep(5000);
+            client.SendMessage("[Time]");
+            Thread.Sleep(5000);
+            client.SendMessage("[Time]");
             server.ShutDownOnlineServer();
             Environment.Exit(0);
 

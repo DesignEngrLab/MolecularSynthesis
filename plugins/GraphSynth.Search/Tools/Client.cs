@@ -24,11 +24,11 @@ namespace GraphSynth.Search.Tools
             //Here ipHost contains two ip address, only the second one matches python server
             localEndPoint = new IPEndPoint(ipHost.AddressList[1], messagePort);
 
-            sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
         public void Connect()
         {
+            sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             // Connect Socket to the remote endpoint using method Connect() 
             try
             {

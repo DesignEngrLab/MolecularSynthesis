@@ -20,19 +20,19 @@ namespace GraphSynth.Search.Algorithms {
         }
 
 
-        public candidate ChooseOption(candidate cand)
+        public candidate ChooseAndApplyOption(candidate cand)
         {
             var options = GetAvailableOptions(cand);
             return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
         }
 
-        public candidate ChooseCarboxOption(candidate cand)
+        public candidate ChooseAndApplyCarboxOption(candidate cand)
         {
             var options = GetCarboxylOptions(cand);
             return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
         }
 
-        public candidate ChooseCarboxOptionBestAngle(candidate cand)
+        public candidate ChooseAndApplyCarboxOptionBestAngle(candidate cand)
         {
             var options = GetCarboxylOptions(cand);
             option bestOpt = null;
@@ -56,7 +56,7 @@ namespace GraphSynth.Search.Algorithms {
             return bestOpt == null ? null : CopyAndApplyOption(bestOpt, cand, true);
         }
 
-        public candidate ChooseCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt, string runDir)
+        public candidate ChooseAndApplyCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt, string runDir)
         {
             Console.WriteLine("Using Estimator!");
             option bestOpt = null;

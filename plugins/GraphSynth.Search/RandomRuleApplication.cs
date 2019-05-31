@@ -62,14 +62,14 @@ namespace GraphSynth.Search
             client.Connect();
             client.SendMessage("[Time]");
 
-            Thread generateLinkers = new Thread(Generate);
-            Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
+            Thread generateLinkers = new Thread(GenerateFixed);
+            //Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
             
             generateLinkers.Start();
-            autoReleaseBuffer.Start();
+            //autoReleaseBuffer.Start();
 
             generateLinkers.Join();
-            autoReleaseBuffer.Join();
+            //autoReleaseBuffer.Join();
             server.ShutDownOnlineServer();
 
         }
@@ -96,7 +96,6 @@ namespace GraphSynth.Search
 
         private void Generate()
         {
-
             var agent = new Algorithms.Random(settings);
             var linkerSet = new HashSet<string>();
             for (var e = 0; e < NUM_EPOCH; e++)
@@ -114,7 +113,7 @@ namespace GraphSynth.Search
                             Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
                             for (var step = 0; step < total_rule; step++)
                             {
-                                cand = agent.ChooseOption(cand);
+                                cand = agent.ChooseAndApplyOption(cand);
                                 if (cand == null)
                                 {
                                     Console.WriteLine("Fail on step {0}", step+1);
@@ -123,9 +122,9 @@ namespace GraphSynth.Search
                             }
                             if (cand == null)
                                 continue;
-                            //var carboxOpt = agent.ChooseCarboxOption(cand);
-                            //var carboxOpt = agent.ChooseCarboxOptionBestAngle(cand);
-                            cand = agent.ChooseCarboxOptionUsingEstimator(cand, computation, client, _runDirectory);
+                            //var carboxOpt = agent.ChooseAndApplyOption(cand);
+                            //var carboxOpt = agent.ChooseAndApplyCarboxOptionBestAngle(cand);
+                            cand = agent.ChooseAndApplyCarboxOptionUsingEstimator(cand, computation, client, _runDirectory);
                             if (cand == null)
                                 Console.WriteLine("Fail on finding final carbox");
                             Environment.Exit(0);
@@ -153,6 +152,43 @@ namespace GraphSynth.Search
                 }
             }
             jobBuffer.AllSubmitFlag = true;
+        }
+
+        private void GenerateFixed()
+        {
+            var agent = new Algorithms.Random(settings);
+            var linkerBeforeCarboxSet = new HashSet<string>();
+            for (var t = 0; t < NUM_TRAIL; t++)
+            {
+                Console.WriteLine("Trail: {0}", t);
+                for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX; total_rule++)
+                {
+                    candidate cand = null;
+                    while(cand == null)
+                    {
+                        cand = Seed.copy();
+                        Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
+                        for (var step = 0; step < total_rule; step++)
+                        {
+                            cand = agent.ChooseAndApplyOption(cand);
+                            if (cand == null)
+                            {
+                                Console.WriteLine("Fail on step {0}", step+1);
+                                break;
+                            }
+                        }
+                    }
+                    var linkerName = AbstractAlgorithm.GetLinkerName(cand);
+                    Console.WriteLine(linkerName);
+                    if (linkerSet.Contains(linkerName))
+                    {
+                        total_rule--;
+                        continue;
+                    }
+                    linkerBeforeCarboxSet.Add(linkerName);
+                }
+            }
+            Console.WriteLine(linkerBeforeCarboxSet.Count);
         }
         
         public override string text => "RandomTrail Search Runner";

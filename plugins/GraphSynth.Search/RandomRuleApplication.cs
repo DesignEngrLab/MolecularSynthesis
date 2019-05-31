@@ -60,7 +60,7 @@ namespace GraphSynth.Search
         {
             server.StartOnlineServer();
             client.Connect();
-            server.CheckSeverOutput();
+            server.CheckServerOutput();
             client.SendMessage("[Time]");
             Thread.Sleep(5000);
             client.SendMessage("[Time]");
@@ -75,7 +75,7 @@ namespace GraphSynth.Search
             Thread.Sleep(5000);
             client.SendMessage("[Time]");
             client.DisConnect();
-            server.CheckSeverOutput();
+            server.CheckServerOutput();
             server.ShutDownOnlineServer();
             monitorServer.Join();
             Environment.Exit(0);

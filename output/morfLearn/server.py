@@ -15,7 +15,8 @@ class LearningServer(object):
 
 	def run(self):
 		def clients_handel(client, server):
-			print("{} joined. # clients : {}".format(client, len(server.clients)))
+			msg = "{} joined. # clients : {}".format(client, len(server.clients))
+			client.send(msg)
 			while True:
 				try:
 					cmd = client.receive()
@@ -32,9 +33,10 @@ class LearningServer(object):
 							msg = "Error : unknown command."
 							client.send(msg)
 					else:
+						msg = """{} left. #Clients : {}""".format(client, len(server.clients))
+						client.send(msg)
 						client.close()
 						server.clients.remove(client)
-						print("""{} left. #Clients : {}""".format(client, len(server.clients)))
 						break
 				except:
 					pass

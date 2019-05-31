@@ -180,7 +180,7 @@ namespace GraphSynth.Search
                     }
                     var linkerName = AbstractAlgorithm.GetLinkerName(cand);
                     Console.WriteLine(linkerName);
-                    if (linkerSet.Contains(linkerName))
+                    if (linkerBeforeCarboxSet.Contains(linkerName))
                     {
                         total_rule--;
                         continue;

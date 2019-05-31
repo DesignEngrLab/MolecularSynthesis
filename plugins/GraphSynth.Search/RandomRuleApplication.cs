@@ -77,7 +77,6 @@ namespace GraphSynth.Search
             client.DisConnect();
             server.CheckServerOutput();
             server.ShutDownOnlineServer();
-            monitorServer.Join();
             Environment.Exit(0);
 
             Thread generateLinkers = new Thread(GenerateFixed);

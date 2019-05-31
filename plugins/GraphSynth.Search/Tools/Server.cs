@@ -51,7 +51,9 @@ namespace GraphSynth.Search.Tools
         {
             while (onlineSeverProcess != null)
             {
-                Console.WriteLine(onlineSeverProcess.StandardOutput.ReadLine());
+                var line = onlineSeverProcess.StandardOutput.ReadLine();
+                if (line != "")
+                    Console.WriteLine(line);
             }
         }
 

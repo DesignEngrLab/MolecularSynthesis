@@ -10,7 +10,7 @@ namespace GraphSynth.Search.Tools
     {
 
         private readonly int messagePort;
-        private readonly Socket sender;
+        private Socket sender;
         private readonly IPEndPoint localEndPoint;
 
 

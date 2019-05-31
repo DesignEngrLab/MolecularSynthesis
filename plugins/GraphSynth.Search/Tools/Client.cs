@@ -37,7 +37,10 @@ namespace GraphSynth.Search.Tools
 
                 // We print EndPoint information  
                 // that we are connected 
+                SendMessage("[Time]");
                 Console.WriteLine("Socket connected to -> {0} ", sender.RemoteEndPoint.ToString());
+
+                
             }
             catch (Exception e)
             {
@@ -47,6 +50,7 @@ namespace GraphSynth.Search.Tools
 
         public void DisConnect()
         {
+            SendMessage("[Exit]");
             // Close Socket using the method Close() 
             sender.Shutdown(SocketShutdown.Both);
             sender.Close();

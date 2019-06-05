@@ -33,12 +33,13 @@ class LearningServer(object):
 							msg = "Error : unknown command."
 							client.send(msg)
 					else:
+						server.clients.remove(client)
 						print("""{} left. #Clients : {}""".format(client, len(server.clients)))
 						sys.stdout.flush()
-						#msg = """{} left. #Clients : {}""".format(client, len(server.clients))
-						#client.send(msg)
+						msg = """{} left. #Clients : {}""".format(client, len(server.clients))
+						client.send(msg)
 						client.close()
-						server.clients.remove(client)
+
 						break
 				except:
 					pass

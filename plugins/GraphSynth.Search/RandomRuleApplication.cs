@@ -79,14 +79,14 @@ namespace GraphSynth.Search
             //server.ShutDownOnlineServer();
             Environment.Exit(0);
 
-            Thread generateLinkers = new Thread(GenerateFixed);
-            //Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
+            Thread generateLinkers = new Thread(Generate);
+            Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
             
             generateLinkers.Start();
-            //autoReleaseBuffer.Start();
+            autoReleaseBuffer.Start();
 
             generateLinkers.Join();
-            //autoReleaseBuffer.Join();
+            autoReleaseBuffer.Join();
 
 
         }

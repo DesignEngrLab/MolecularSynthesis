@@ -16,14 +16,15 @@ class LearningServer(object):
 	def run(self):
 		def clients_handel(client, server):
 			cmd = client.receive()
+			print("""{} >>> {}""".format(client, cmd))
 			assert cmd == "[Join]"
 			msg = "{} joined. # clients : {}".format(client, len(server.clients))
 			client.send(msg)
 			while True:
 				try:
 					cmd = client.receive()
+					print("""{} >>> {}""".format(client, cmd))
 					if cmd != "[Exit]":
-						print("""{} >>> {}""".format(client, cmd))
 						cmd = cmd.split()
 						if cmd[0] == "[Time]":
 							msg = 'Time is {}'.format(datetime.now().time())

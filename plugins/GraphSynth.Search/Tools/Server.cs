@@ -49,7 +49,7 @@ namespace GraphSynth.Search.Tools
 
         public void CheckServerOutput()
         {
-            Console.WriteLine(onlineSeverProcess.StandardOutput.ReadToEnd());
+            Console.WriteLine(onlineSeverProcess.StandardOutput.ReadLine());
         }
 
         public void ShutDownOnlineServer()

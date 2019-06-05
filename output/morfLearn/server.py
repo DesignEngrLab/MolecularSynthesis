@@ -36,7 +36,7 @@ class LearningServer(object):
 						server.clients.remove(client)
 						print("""{} left. #Clients : {}""".format(client, len(server.clients)))
 						sys.stdout.flush()
-						msg = """{} left. #Clients : {}""".format(client, len(server.clients))
+						msg = "Client has exited"
 						client.send(msg)
 						client.close()
 

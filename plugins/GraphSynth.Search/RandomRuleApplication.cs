@@ -60,21 +60,30 @@ namespace GraphSynth.Search
         {
             server.StartOnlineServer();
             client.Connect();
+            server.CheckServerOutput();
             client.SendMessage("[Time]");
+            server.CheckServerOutput();
             Thread.Sleep(5000);
             client.SendMessage("[Time]");
+            server.CheckServerOutput();
             Thread.Sleep(5000);
             client.SendMessage("[Time]");
+            server.CheckServerOutput();
             client.DisConnect();
+            server.CheckServerOutput();
             Console.WriteLine("Reconnect!");
             client.Connect();
+            server.CheckServerOutput();
             client.SendMessage("[Time]");
+            server.CheckServerOutput();
             Thread.Sleep(5000);
             client.SendMessage("[Time]");
+            server.CheckServerOutput();
             Thread.Sleep(5000);
             client.SendMessage("[Time]");
+            server.CheckServerOutput();
             client.DisConnect();
-            //server.CheckServerOutput();
+            server.CheckServerOutput();
             server.ShutDownOnlineServer();
             Environment.Exit(0);
 

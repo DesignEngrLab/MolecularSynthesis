@@ -18,7 +18,7 @@ class LearningServer(object):
 			cmd = client.receive()
 			print("""{} >>> {}""".format(client, cmd))
 			assert cmd == "[Join]"
-			msg = "{} joined. # clients : {}".format(client, len(server.clients))
+			msg = "{} joined. #Clients : {}".format(client, len(server.clients))
 			client.send(msg)
 			while True:
 				try:
@@ -37,7 +37,7 @@ class LearningServer(object):
 							client.send(msg)
 					else:
 						server.clients.remove(client)
-						msg = """{} left. #Clients : {}""".format(client, len(server.clients))
+						msg = "{} left. #Clients : {}".format(client, len(server.clients))
 						client.send(msg)
 						client.close()
 						break

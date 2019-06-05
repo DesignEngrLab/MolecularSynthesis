@@ -52,7 +52,7 @@ namespace GraphSynth.Search
             computation = new Computation(_runDirectory, learnDirectory, "point", "stiff");
             writer = new StreamWriter(Path.Combine(_runDirectory, CARBOXTYPE + ".txt"));
 
-            System.Random Rand = new System.Random();
+            System.Random rnd = new System.Random();
 
             var port = rnd.Next(1, 65535);
             server = new LearningServer(learnDirectory, port);

@@ -15,6 +15,8 @@ class LearningServer(object):
 
 	def run(self):
 		def clients_handel(client, server):
+			cmd = client.receive()
+			assert cmd == "[Join]"
 			msg = "{} joined. # clients : {}".format(client, len(server.clients))
 			client.send(msg)
 			while True:

@@ -23,7 +23,6 @@ namespace GraphSynth.Search
         private MessageClient client;
 
 
-        private const int PORT = 9996;
         private const int NUM_EPOCH = 10;
         private const int NUM_TRAIL = 1;
         private const int TOTAL_RULE_MIN = 6;
@@ -52,8 +51,12 @@ namespace GraphSynth.Search
             var learnDirectory = Path.Combine(settings.OutputDirAbs, "morfLearn");
             computation = new Computation(_runDirectory, learnDirectory, "point", "stiff");
             writer = new StreamWriter(Path.Combine(_runDirectory, CARBOXTYPE + ".txt"));
-            server = new LearningServer(learnDirectory, PORT);
-            client = new MessageClient(PORT);
+
+            System.Random Rand = new System.Random();
+
+            var port = rnd.Next(1, 65535);
+            server = new LearningServer(learnDirectory, port);
+            client = new MessageClient(port);
         }
 
         protected override void Run()

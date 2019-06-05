@@ -38,6 +38,15 @@ namespace GraphSynth.Search.Tools
                 // We print EndPoint information  
                 // that we are connected
                 Console.WriteLine("Socket connected to -> {0} ", sender.RemoteEndPoint.ToString());
+
+                // Data buffer 
+                byte[] messageReceived = new byte[1024];
+
+                // We receive the messagge using the method Receive(). 
+                // This method returns number of bytes received, 
+                // that we'll use to convert them to string
+                int byteRecv = sender.Receive(messageReceived);
+                Console.WriteLine("Message from Server -> {0}", Encoding.ASCII.GetString(messageReceived, 0, byteRecv));
             }
             catch (Exception e)
             {

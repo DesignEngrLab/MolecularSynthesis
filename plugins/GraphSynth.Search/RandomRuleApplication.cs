@@ -94,6 +94,7 @@ namespace GraphSynth.Search
         
         private void AutoSubmitSimulation()
         {
+
             var allSubmitted = false;
             while (true)
             {

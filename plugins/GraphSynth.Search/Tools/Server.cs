@@ -10,13 +10,15 @@ namespace GraphSynth.Search.Tools
     {
 
         private readonly string _learnDir;
+        private readonly string _runDir;
         private Process onlineSeverProcess;
         private readonly int portUsed;
         
 
-        public LearningServer(string learnDir, int port)
+        public LearningServer(string learnDir, int port, string runDir)
         {
             _learnDir = learnDir;
+            _runDir = runDir;
             portUsed = port;
             onlineSeverProcess = null;
         }
@@ -28,7 +30,7 @@ namespace GraphSynth.Search.Tools
             {
                 onlineSeverProcess = new Process();
                 onlineSeverProcess.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
-                onlineSeverProcess.StartInfo.Arguments = "server.py" + " " + portUsed.ToString();
+                onlineSeverProcess.StartInfo.Arguments = "server.py" + " " + portUsed.ToString() + " " + _runDir;
                 onlineSeverProcess.StartInfo.WorkingDirectory = Path.Combine(_learnDir);
                 onlineSeverProcess.StartInfo.RedirectStandardError = true;
                 onlineSeverProcess.StartInfo.UseShellExecute = false;

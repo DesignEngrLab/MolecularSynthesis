@@ -7,7 +7,7 @@ import learner
 
 class LearningServer(object):
 	def __init__(self):
-		assert len(sys.argv == 3)
+		assert len(sys.argv) == 3
 		self.server = SimpleServer.server_from_string(sys.argv[1])
 		runDir = sys.argv[2]
 		self.carboxLearner = learner.carboxLearner.CarboxLearner(runDir, "Regression")

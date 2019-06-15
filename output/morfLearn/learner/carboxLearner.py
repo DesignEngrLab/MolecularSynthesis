@@ -21,8 +21,10 @@ class CarboxLearner(object):
 		self.data_set = {}
 
 	def predict(self, linkerName):
-		print(linkerName)
-		arr = np.load(os.path.join(self.data_dir, "features", self.model, linkerName + ".npy"))
+		feature_file = os.path.join(self.data_dir, "features", self.model, linkerName + ".npy")
+		print(feature_file)
+		print(type(feature_file))
+		arr = np.load(feature_file)
 		print("123!")
 		return arr.shape
 

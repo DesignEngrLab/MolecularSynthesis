@@ -57,6 +57,7 @@ namespace GraphSynth.Search.Tools
 
         public string SendMessage(string msg)
         {
+            string response = null;
             try
             {
                 // Creation of messagge that 
@@ -71,10 +72,8 @@ namespace GraphSynth.Search.Tools
                 // This method returns number of bytes received, 
                 // that we'll use to convert them to string
                 int byteRecv = sender.Receive(messageReceived);
-                var response = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);
+                response = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);
                 Console.WriteLine("Message from Server -> {0}", response);
-                return response;
-
             }
 
             // Manage of Socket's Exceptions 
@@ -92,6 +91,7 @@ namespace GraphSynth.Search.Tools
             {
                 Console.WriteLine("Unexpected exception : {0}", e.ToString());
             }
+            return response;
         }
 
 

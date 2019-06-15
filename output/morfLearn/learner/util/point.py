@@ -64,7 +64,6 @@ class PointNet(torch.nn.Module):
 	def forward(self, batch_x):
 		out = []
 		for i,x in enumerate(batch_x):
-			print(x.shape)
 			p, t = x[:,:3], x[:,3:]
 			trans = self.transform1(p)
 			p = torch.mm(p, trans)

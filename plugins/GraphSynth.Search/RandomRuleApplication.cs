@@ -56,7 +56,7 @@ namespace GraphSynth.Search
 
             var port = rnd.Next(1, 65535);
             port = 9999;
-            server = new LearningServer(learnDirectory, _runDirectory, port);
+            server = new LearningServer(learnDirectory, port, _runDirectory);
             client = new MessageClient(port);
         }
 

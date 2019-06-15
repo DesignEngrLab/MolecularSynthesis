@@ -64,8 +64,6 @@ class PointNet(torch.nn.Module):
 	def forward(self, batch_x):
 		out = []
 		for i,x in enumerate(batch_x):
-			valid = torch.nonzero(torch.sum(x != 0, dim=1)).squeeze()#padding are lines with all zeros	
-			x = x[valid]#revome the padding
 			p, t = x[:,:3], x[:,3:]
 			trans = self.transform1(p)
 			p = torch.mm(p, trans)
@@ -83,17 +81,6 @@ class PointNet(torch.nn.Module):
 		return torch.stack(out)
 		
 
-class Point_dataset(Dataset):
-	def __init__(self, numpy_x, numpy_y):
-		assert len(numpy_x) == len(numpy_y)
-		self.x = Tensor(numpy_x)
-		self.y = Tensor(numpy_y)
-		
-	def __getitem__(self, index):
-		return self.x[index], self.y[index]
-		
-	def __len__(self):
-		return len(self.x)
 
 
 

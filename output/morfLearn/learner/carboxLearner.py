@@ -23,8 +23,8 @@ class CarboxLearner(object):
 	def predict(self, linkerName):
 		feature_file = os.path.join(self.data_dir, "feature", self.model, linkerName + ".npy")
 		arr = np.load(feature_file)
-		print("estimate")
 		np.expand_dims(arr, axis=0)
+		print(arr.shape)
 		est = self.valueNet(arr)
 		return est
 

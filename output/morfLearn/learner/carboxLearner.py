@@ -22,6 +22,7 @@ class CarboxLearner(object):
 
 	def predict(self, linkerName):
 		arr = np.load(os.path.join(self.data_dir, "features", self.model, linkerName + ".npy"))
+		print("123!")
 		return arr.shape
 
 

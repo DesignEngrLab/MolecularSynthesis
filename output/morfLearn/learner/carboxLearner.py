@@ -21,7 +21,7 @@ class CarboxLearner(object):
 		self.data_set = {}
 
 	def predict(self, linkerName):
-		feature_file = os.path.join(self.data_dir, "features", self.model, linkerName + ".npy")
+		feature_file = os.path.join(self.data_dir, "feature", self.model, linkerName + ".npy")
 		print(feature_file)
 		print(type(feature_file))
 		arr = np.load(feature_file)
@@ -38,19 +38,19 @@ class CarboxLearner(object):
 				pkl_file = "pointBFSReg.pkl"
 				label_file = os.path.join(self.data_dir, "property", "stiff.npy")
 				
-			if pkl_file in os.listdir(os.path.join(self.data_dir, "features")):
-				self.data_set = pickle.load(open(os.path.join(self.data_dir, "features", pkl_file), "rb"))
+			if pkl_file in os.listdir(os.path.join(self.data_dir, "feature")):
+				self.data_set = pickle.load(open(os.path.join(self.data_dir, "feature", pkl_file), "rb"))
 				print("BFS Dataset Loaded")
 			else:
 				self.data_set = {}
 				data_label = np.load(label_file)
-				point_dir = os.path.join(self.data_dir, "features", "pointBFS")
+				point_dir = os.path.join(self.data_dir, "feature", "pointBFS")
 				for npArray in os.listdir(point_dir):
 					key = int(npArray[npArray.find("pointCloud") + len("pointCloud") : npArray.find(".npy")])
 					x = np.load(os.path.join(point_dir, npArray))
 					y = data_label[key]
 					self.data_set[key] = (x,y)
-				pickle.dump(self.data_set, open(os.path.join(self.data_dir, "features", pkl_file), "wb"))
+				pickle.dump(self.data_set, open(os.path.join(self.data_dir, "feature", pkl_file), "wb"))
 				print("BFS Dataset Created")
 				
 		def save(task, net):

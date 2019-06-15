@@ -132,6 +132,9 @@ namespace GraphSynth.Search
                             cand = agent.ChooseAndApplyCarboxOptionUsingEstimator(cand, computation, client, _runDirectory);
                             if (cand == null)
                                 Console.WriteLine("Fail on finding final carbox");
+
+                            client.DisConnect();
+                            server.ShutDownOnlineServer();
                             Environment.Exit(0);
                         }
                         

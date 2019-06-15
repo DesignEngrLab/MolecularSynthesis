@@ -66,11 +66,8 @@ class PointNet(torch.nn.Module):
 		for i,x in enumerate(batch_x):
 			print(x.shape)
 			p, t = x[:,:3], x[:,3:]
-			print(1)
 			trans = self.transform1(p)
-			print(2)
 			p = torch.mm(p, trans)
-			print(3)
 			p = torch.relu(self.fc1(p))
 			p = torch.relu(self.fc2(p))
 			x = torch.cat((p,t), dim=1)

@@ -31,7 +31,6 @@ class LearningServer(object):
 							client.send(msg)
 						elif cmd[0] == "[Predict]":
 							assert len(cmd) == 2
-							print("Call learner!")
 							msg = str(self.carboxLearner.predict(cmd[1]))
 							client.send(msg)
 						else:

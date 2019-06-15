@@ -66,26 +66,7 @@ namespace GraphSynth.Search
             client.Connect();
             client.SendMessage("[Time]");
             Thread.Sleep(5000);
-            client.SendMessage("[Time]");
-            Thread.Sleep(5000);
-            client.SendMessage("[Time]");
-            Thread.Sleep(5000);
-            client.SendMessage("[Time]");
-            client.DisConnect();
 
-            Console.WriteLine("Reconnect!");
-
-            client.Connect();
-            client.SendMessage("[Time]");
-            Thread.Sleep(5000);
-            client.SendMessage("[Time]");
-            Thread.Sleep(5000);
-            client.SendMessage("[Time]");
-            Thread.Sleep(5000);
-            client.SendMessage("[Time]");
-            client.DisConnect();
-            server.ShutDownOnlineServer();
-            Environment.Exit(0);
 
             Thread generateLinkers = new Thread(Generate);
             Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);

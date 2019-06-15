@@ -55,7 +55,7 @@ namespace GraphSynth.Search.Tools
             sender.Close();
         }
 
-        public void SendMessage(string msg)
+        public string SendMessage(string msg)
         {
             try
             {
@@ -71,7 +71,9 @@ namespace GraphSynth.Search.Tools
                 // This method returns number of bytes received, 
                 // that we'll use to convert them to string
                 int byteRecv = sender.Receive(messageReceived);
-                Console.WriteLine("Message from Server -> {0}", Encoding.ASCII.GetString(messageReceived, 0, byteRecv));
+                var response = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);
+                Console.WriteLine("Message from Server -> {0}", response);
+                return response;
 
             }
 

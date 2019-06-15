@@ -30,7 +30,7 @@ class LearningServer(object):
 							msg = 'Time is {}'.format(datetime.now().time())
 							client.send(msg)
 						elif cmd[0] == "[Predict]":
-							msg = str(self.carboxLearner.predict(cmd[1]))
+							msg = self.carboxLearner.predict(cmd[1]).__str__()
 							client.send(msg)
 						else:
 							msg = "Error : unknown command."

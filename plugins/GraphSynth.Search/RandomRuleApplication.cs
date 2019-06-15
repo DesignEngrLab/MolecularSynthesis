@@ -55,13 +55,14 @@ namespace GraphSynth.Search
             System.Random rnd = new System.Random();
 
             var port = rnd.Next(1, 65535);
+            var port = 9999;
             server = new LearningServer(learnDirectory, port);
             client = new MessageClient(port);
         }
 
         protected override void Run()
         {
-            server.StartOnlineServer();
+            //server.StartOnlineServer();
 
             client.Connect();
             client.SendMessage("[Time]");
@@ -134,7 +135,7 @@ namespace GraphSynth.Search
                                 Console.WriteLine("Fail on finding final carbox");
 
                             client.DisConnect();
-                            server.ShutDownOnlineServer();
+                            //server.ShutDownOnlineServer();
                             Environment.Exit(0);
                         }
                         

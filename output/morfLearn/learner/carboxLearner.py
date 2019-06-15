@@ -7,7 +7,12 @@ from torch.utils.data import Dataset, DataLoader
 import pickle
 import sys
 
-
+if torch.cuda.is_available():
+	print("Using GPU")
+	Tensor = torch.cuda.FloatTensor
+else:
+	print("Using CPU")
+	Tensor = torch.FloatTensor
 
 class CarboxLearner(object): 
 	def __init__(self, data_dir, task, model='point'):
@@ -25,8 +30,9 @@ class CarboxLearner(object):
 		arr = np.load(feature_file)
 		arr = np.expand_dims(arr, axis=0)
 		print(arr.shape)
-		est = self.valueNet(arr)
-		return est
+		est = self.valueNet(Tensor(arr))
+		print(est)
+		return est.detach().cpu().numpy()
 
 
 	

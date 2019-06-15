@@ -1,12 +1,7 @@
 import torch
 from torch.utils.data import Dataset
 
-if torch.cuda.is_available():
-	print("Using GPU")
-	Tensor = torch.cuda.FloatTensor
-else:
-	print("Using CPU")
-	Tensor = torch.FloatTensor
+
 
 
 class Tnet(torch.nn.Module):
@@ -80,7 +75,9 @@ class PointNet(torch.nn.Module):
 			x = self.fc7(x)
 			out.append(x)
 		return torch.stack(out)
-		
+
+
+
 
 
 

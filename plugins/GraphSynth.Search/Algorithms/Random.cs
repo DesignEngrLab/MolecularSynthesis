@@ -71,9 +71,8 @@ namespace GraphSynth.Search.Algorithms {
                 var lmpdat = Path.Combine(runDir, "data", "linker" + linkerName + ".lmpdat");
                 Converter.moltoUFF(OBFunctions.designgraphtomol(evalcand.graph), coeff, lmpdat, false, 100);
                 cpt.CalculateFeature(linkerName);
-                var response = clt.SendMessage("[Predict]" + " " + linkerName);
-                Console.WriteLine(response);
-                var properpty = .0;
+                var properpty = Convert.ToDouble(clt.SendMessage("[Predict]" + " " + linkerName));
+                Console.WriteLine(properpty);
 
                 if (properpty > bestProperty)
                 {

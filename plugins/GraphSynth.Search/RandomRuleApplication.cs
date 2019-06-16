@@ -161,7 +161,6 @@ namespace GraphSynth.Search
                             piority = AbstractAlgorithm.Rand.NextDouble();
                             computation.CalculateFeature(linkerName);
                         }
-                        Console.WriteLine(piority);
 
                         //mutex.WaitOne();
                         jobBuffer.Add(linkerName, piority, e);

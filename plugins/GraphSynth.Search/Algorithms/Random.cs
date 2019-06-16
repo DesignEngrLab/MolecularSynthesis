@@ -71,7 +71,6 @@ namespace GraphSynth.Search.Algorithms {
                 Converter.moltoUFF(OBFunctions.designgraphtomol(evalcand.graph), coeff, lmpdat, false, 100);
                 cpt.CalculateFeature(linkerName);
                 var properpty = Convert.ToDouble(clt.SendMessage("[Predict]" + " " + linkerName));
-                Console.WriteLine(properpty);
 
                 if (properpty > bestProperty)
                 {

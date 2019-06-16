@@ -77,6 +77,8 @@ namespace GraphSynth.Search
 
             generateLinkers.Join();
             autoReleaseBuffer.Join();
+
+            client.DisConnect();
         }
         
         private void AutoSubmitSimulation()
@@ -148,11 +150,24 @@ namespace GraphSynth.Search
                         var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                         var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
                         agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
-                        if (CARBOXTYPE != "estimator")
+
+                        double piority = 0;
+                        if (CARBOXTYPE == "estimator")
+                        {
+                            piority = - Convert.ToDouble(client.SendMessage("[Predict]" + " " + linkerName));
+                        }
+                        else
+                        {
+                            piority = AbstractAlgorithm.Rand.NextDouble();
                             computation.CalculateFeature(linkerName);
+                        }
+                        Console.WriteLine(piority);
+
+
+
 
                         //mutex.WaitOne();
-                        jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble(), e);
+                        jobBuffer.Add(linkerName, piority, e);
                         //mutex.ReleaseMutex();
                     }
                 }

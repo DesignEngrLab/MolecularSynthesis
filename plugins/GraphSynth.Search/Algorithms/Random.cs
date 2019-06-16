@@ -58,7 +58,6 @@ namespace GraphSynth.Search.Algorithms {
 
         public candidate ChooseAndApplyCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt, string runDir)
         {
-            Console.WriteLine("Using Estimator!");
             option bestOpt = null;
             var bestProperty = .0;
             var options = GetCarboxylOptions(cand);
@@ -80,6 +79,7 @@ namespace GraphSynth.Search.Algorithms {
                     bestOpt = opt;
                 }
             }
+            Console.WriteLine("Best {0}", bestProperty);
             return bestOpt == null ? null : CopyAndApplyOption(bestOpt, cand, true);
         }
 

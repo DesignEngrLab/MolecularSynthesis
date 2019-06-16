@@ -73,7 +73,7 @@ namespace GraphSynth.Search.Tools
                 // that we'll use to convert them to string
                 int byteRecv = sender.Receive(messageReceived);
                 response = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);
-                Console.WriteLine("Message from Server -> {0}", response);
+                //Console.WriteLine("Message from Server -> {0}", response);
             }
 
             // Manage of Socket's Exceptions 

@@ -23,7 +23,7 @@ namespace GraphSynth.Search
         private MessageClient client;
 
 
-        private const int NUM_EPOCH = 5;
+        private const int NUM_EPOCH = 2;
         private const int NUM_TRAIL = 2;
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 16;
@@ -162,9 +162,6 @@ namespace GraphSynth.Search
                             computation.CalculateFeature(linkerName);
                         }
                         Console.WriteLine(piority);
-
-
-
 
                         //mutex.WaitOne();
                         jobBuffer.Add(linkerName, piority, e);

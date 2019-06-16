@@ -59,7 +59,7 @@ namespace GraphSynth.Search.Algorithms {
         public candidate ChooseAndApplyCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt, string runDir)
         {
             option bestOpt = null;
-            var bestProperty = .0;
+            var bestProperty = Double.NegativeInfinity;
             var options = GetCarboxylOptions(cand);
             foreach (var opt in options) 
             {

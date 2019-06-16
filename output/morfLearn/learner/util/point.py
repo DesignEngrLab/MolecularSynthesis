@@ -47,8 +47,7 @@ class PointNet(torch.nn.Module):
 		elif task == "Regression":
 			self.fc7 = torch.nn.Linear(in_features=64, out_features=1)
 			self.criterion = torch.nn.MSELoss()
-			
-				
+
 		self.optimizer = torch.optim.Adam(params=self.parameters())
 		if torch.cuda.is_available():
 			self.cuda()

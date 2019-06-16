@@ -23,8 +23,8 @@ namespace GraphSynth.Search
         private MessageClient client;
 
 
-        private const int NUM_EPOCH = 10;
-        private const int NUM_TRAIL = 1;
+        private const int NUM_EPOCH = 5;
+        private const int NUM_TRAIL = 2;
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 16;
         private const string CARBOXTYPE = "estimator";
@@ -65,8 +65,8 @@ namespace GraphSynth.Search
             //server.StartOnlineServer();
 
             client.Connect();
-            client.SendMessage("[Time]");
-            Thread.Sleep(5000);
+            //client.SendMessage("[Time]");
+            //Thread.Sleep(5000);
 
 
             Thread generateLinkers = new Thread(Generate);
@@ -133,10 +133,6 @@ namespace GraphSynth.Search
                             cand = agent.ChooseAndApplyCarboxOptionUsingEstimator(cand, computation, client, _runDirectory);
                             if (cand == null)
                                 Console.WriteLine("Fail on finding final carbox");
-
-                            client.DisConnect();
-                            //server.ShutDownOnlineServer();
-                            Environment.Exit(0);
                         }
                         
                         var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
@@ -152,7 +148,8 @@ namespace GraphSynth.Search
                         var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                         var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
                         agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
-                        computation.CalculateFeature(linkerName);
+                        if (CARBOXTYPE != "estimator")
+                            computation.CalculateFeature(linkerName);
 
                         //mutex.WaitOne();
                         jobBuffer.Add(linkerName, AbstractAlgorithm.Rand.NextDouble(), e);

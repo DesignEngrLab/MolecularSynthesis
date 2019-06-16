@@ -39,7 +39,6 @@ class PointNet(torch.nn.Module):
 		self.transform2 = Tnet(68)
 		self.fc3 = torch.nn.Linear(in_features=68, out_features=128)
 		self.fc4 = torch.nn.Linear(in_features=128, out_features=256)
-
 		self.fc5 = torch.nn.Linear(in_features=256, out_features=256)
 		self.fc6 = torch.nn.Linear(in_features=256, out_features=64)
 		if task == "Classification":

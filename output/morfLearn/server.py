@@ -35,6 +35,10 @@ class LearningServer(object):
 							assert len(cmd) == 2
 							msg = str(self.carboxLearner.predict(cmd[1]))
 							client.send(msg)
+						elif cmd[0] == "[AddData]":
+							assert len(cmd) == 2
+							msg = str(self.carboxLearner.addData(cmd[1]))
+							client.send(msg)
 						else:
 							msg = "Error : unknown command."
 							client.send(msg)

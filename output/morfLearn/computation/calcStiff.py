@@ -114,7 +114,7 @@ def singleTask(file, propertyDir):
 	
 	arr = np.array(features[0], dtype=np.float32)
 	np.save(os.path.join(propertyDir, id + ".npy"), arr)
-	print("%.3f" % features[0])
+	sys.stdout.write("%.3f" % features[0])
 
 	
 

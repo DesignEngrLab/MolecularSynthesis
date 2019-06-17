@@ -32,5 +32,10 @@ class CarboxLearner(object):
 		est = self.valueNet(Tensor(arr))
 		return est.detach().cpu().numpy().squeeze()
 
+	def addData(self, linkerName)
+		property_file = os.path.join(self.data_dir, "property", self.model, linkerName + ".npy")
+		self.dataset[linkerName] = np.load(property_file)
+		return self.dataset
+
 
 	

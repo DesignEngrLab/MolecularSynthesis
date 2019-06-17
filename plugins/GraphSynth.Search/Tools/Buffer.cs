@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using GraphSynth.Search.Tools;
 
 
 namespace GraphSynth.Search.Tools
@@ -47,7 +48,7 @@ namespace GraphSynth.Search.Tools
             epochLookUp[linkerName] = epoch;
         }
 
-        public bool Check_finised(Computation computation, StreamWriter sw)
+        public bool Check_finised(Computation computation, StreamWriter sw, MessageClient clt)
         {
             foreach (var onSimulationInfo in onSimulationTuples)
             {
@@ -68,6 +69,7 @@ namespace GraphSynth.Search.Tools
                     {
                         set.Remove(linkerName);
                         var property = computation.CalculateProperty(linkerName);
+                        clt.SendMessage("[AddData]" + " " + linkerName);
                         Console.WriteLine("linker " + linkerName + " finished, with property " + property);
                         Console.WriteLine("Current "  + queue + " on simulation " + set.Count);
                         sw.WriteLine("Epoch " + epochLookUp[linkerName] + "," + linkerName + "," + property);
@@ -113,7 +115,7 @@ namespace GraphSynth.Search.Tools
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.RedirectStandardInput = false;
                 proc.Start();
-                proc.WaitForExit();
+                //proc.WaitForExit();
             }
 
         }

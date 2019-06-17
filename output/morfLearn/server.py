@@ -5,7 +5,7 @@ import os
 import learner
 
 
-	
+
 
 
 class LearningServer(object):
@@ -62,7 +62,7 @@ class LearningServer(object):
 if __name__ == '__main__':
 	mysever = LearningServer()
 	#mysever.run()
-	msg = str(mysever.carboxLearner.addData("0-8-17-35-12-53-18-2-0"))
+	msg = str(mysever.carboxLearner.addData("1-17-0-4-28-25-15-84-61-129-121-152-7"))
 	print(msg)
 
 

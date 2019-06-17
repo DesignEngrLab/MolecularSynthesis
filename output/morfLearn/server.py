@@ -55,12 +55,10 @@ class LearningServer(object):
 		self.server.run(clients_handel)
 
 
-
-
 if __name__ == '__main__':
 	mysever = LearningServer()
 	mysever.run()
-	#msg = str(mysever.carboxLearner.addData("1-6-0-10-20-49-33-0"))
-	#print(msg)
+	msg = str(mysever.carboxLearner.addData("0-8-17-35-12-53-18-2-0"))
+	print(msg)
 
 

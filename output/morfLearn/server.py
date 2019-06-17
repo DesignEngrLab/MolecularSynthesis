@@ -57,8 +57,8 @@ class LearningServer(object):
 
 if __name__ == '__main__':
 	mysever = LearningServer()
-	#mysever.run()
-	msg = str(mysever.carboxLearner.addData("0-8-17-35-12-53-18-2-0"))
-	print(msg)
+	mysever.run()
+	#msg = str(mysever.carboxLearner.addData("0-8-17-35-12-53-18-2-0"))
+	#print(msg)
 
 

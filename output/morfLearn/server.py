@@ -59,5 +59,8 @@ class LearningServer(object):
 
 if __name__ == '__main__':
 	mysever = LearningServer()
-	mysever.run()
+	#mysever.run()
+	msg = str(mysever.addData("1-6-0-10-20-49-33-0"))
+	print(msg)
+
 

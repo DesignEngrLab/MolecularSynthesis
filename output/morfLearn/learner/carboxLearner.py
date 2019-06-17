@@ -40,10 +40,6 @@ class CarboxLearner(object):
 		return self.dataset
 
 
-if __name__ == "__main__":
-	learner = CarboxLearner(sys.argv[2], "Regression")
-	msg = str(learner.addData("1-6-0-10-20-49-33-0"))
-	print(msg)
 
 
 	

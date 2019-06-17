@@ -1,11 +1,5 @@
 import sys
-import os
-
-assert len(sys.argv) == 3
-port = sys.argv[1]
-searchOutputDir = sys.argv[2]
-redirect = open(os.path.join(searchOutputDir, "serverOut.txt"), "w")
-sys.stdout = redirect
+sys.stdout = open("/bigdata/greaneylab/shared/CleanMORF/search/MORFSynthLearning/bin/server.out", "w")
 
 
 from simplesocket import SimpleServer
@@ -15,8 +9,9 @@ import learner
 
 class LearningServer(object):
 	def __init__(self):
-		self.server = SimpleServer.server_from_string(port)
-		self.carboxLearner = learner.carboxLearner.CarboxLearner(searchOutputDir, "Regression")
+		assert len(sys.argv) == 3
+		self.server = SimpleServer.server_from_string(sys.argv[1])
+		self.carboxLearner = learner.carboxLearner.CarboxLearner(sys.argv[2], "Regression")
 		print("Time:{}\t Started:{}".format(datetime.now(), self.server))
 		sys.stdout.flush()
 

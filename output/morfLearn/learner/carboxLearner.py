@@ -38,7 +38,7 @@ class CarboxLearner(object):
 		feature_file = os.path.join(self.data_dir, "feature", self.feature, linkerName + ".npy")
 		property_file = os.path.join(self.data_dir, "property", self.property, linkerName + ".npy")
 		self.data_set[linkerName] = (np.load(feature_file), np.load(property_file))
-		return self.data_set
+		return len(self.data_set)
 
 
 

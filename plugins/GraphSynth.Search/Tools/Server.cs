@@ -33,9 +33,9 @@ namespace GraphSynth.Search.Tools
                 onlineSeverProcess.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
                 onlineSeverProcess.StartInfo.Arguments = "server.py" + " " + portUsed.ToString() + " " + _runDir;
                 onlineSeverProcess.StartInfo.WorkingDirectory = Path.Combine(_learnDir);
-                onlineSeverProcess.StartInfo.RedirectStandardError = true;
+                onlineSeverProcess.StartInfo.RedirectStandardError = false;
                 onlineSeverProcess.StartInfo.UseShellExecute = false;
-                onlineSeverProcess.StartInfo.RedirectStandardOutput = true;
+                onlineSeverProcess.StartInfo.RedirectStandardOutput = false;
                 onlineSeverProcess.StartInfo.RedirectStandardInput = false;
                 onlineSeverProcess.Start();
                 //onlineSeverProcess.WaitForExit();

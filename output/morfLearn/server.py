@@ -1,3 +1,4 @@
+import sys
 assert len(sys.argv) == 3
 port = sys.argv[1]
 searchOutputDir = sys.argv[2]
@@ -7,7 +8,6 @@ sys.stdout = redirect
 
 from simplesocket import SimpleServer
 from datetime import datetime
-import sys
 import os
 import learner
 

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using GraphSynth.Search.Tools;
 
-
 namespace GraphSynth.Search.Tools
 {
     public class JobBuffer

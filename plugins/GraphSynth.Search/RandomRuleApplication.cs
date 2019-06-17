@@ -29,7 +29,7 @@ namespace GraphSynth.Search
         private const int TOTAL_RULE_MAX = 16;
         private const string CARBOXTYPE = "estimator";
         
-        //private static Mutex mutex = new Mutex();
+        //private static Mutex sendMessageMutex = new Mutex();
 
 
         public RandomRuleApplication(GlobalSettings settings): base(settings) 
@@ -65,8 +65,6 @@ namespace GraphSynth.Search
             //server.StartOnlineServer();
 
             client.Connect();
-            //client.SendMessage("[Time]");
-            //Thread.Sleep(5000);
 
 
             Thread generateLinkers = new Thread(Generate);

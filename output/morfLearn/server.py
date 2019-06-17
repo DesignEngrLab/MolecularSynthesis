@@ -1,3 +1,10 @@
+assert len(sys.argv) == 3
+port = sys.argv[1]
+searchOutputDir = sys.argv[2]
+redirect = open(os.path.join(searchOutputDir, "serverOut.txt"), "w")
+sys.stdout = redirect
+
+
 from simplesocket import SimpleServer
 from datetime import datetime
 import sys
@@ -7,13 +14,8 @@ import learner
 
 class LearningServer(object):
 	def __init__(self):
-		assert len(sys.argv) == 3
-		self.server = SimpleServer.server_from_string(sys.argv[1])
-		runDir = sys.argv[2]
-		redirect = open(os.path.join(runDir, "serverOut.txt"), "w")
-		sys.stdout = redirect
-		print(sys.__stdout__)
-		self.carboxLearner = learner.carboxLearner.CarboxLearner(runDir, "Regression")
+		self.server = SimpleServer.server_from_string(port)
+		self.carboxLearner = learner.carboxLearner.CarboxLearner(searchOutputDir, "Regression")
 		print("Time:{}\t Started:{}".format(datetime.now(), self.server))
 		sys.stdout.flush()
 

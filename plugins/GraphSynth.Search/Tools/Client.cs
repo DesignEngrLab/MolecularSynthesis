@@ -33,21 +33,16 @@ namespace GraphSynth.Search.Tools
         {
             sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             // Connect Socket to the remote endpoint using method Connect() 
-            try
-            {
-                Console.WriteLine("Try to connect to server.....");
-                sender.Connect(localEndPoint);
 
-                // We print EndPoint information  
-                // that we are connected
-                Console.WriteLine("Socket connected to -> {0} ", sender.RemoteEndPoint.ToString());
+            Console.WriteLine("Try to connect to server.....");
+            sender.Connect(localEndPoint);
 
-                SendMessage("[Join]");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
+            // We print EndPoint information  
+            // that we are connected
+            Console.WriteLine("Socket connected to -> {0} ", sender.RemoteEndPoint.ToString());
+
+            SendMessage("[Join]");
+
         }
 
         public void DisConnect()

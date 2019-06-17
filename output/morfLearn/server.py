@@ -5,6 +5,9 @@ import os
 import learner
 
 
+print(sys.__stdout__)
+
+
 
 
 

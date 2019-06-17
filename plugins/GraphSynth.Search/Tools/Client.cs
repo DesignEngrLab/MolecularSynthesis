@@ -70,14 +70,14 @@ namespace GraphSynth.Search.Tools
                 // Data buffer 
                 byte[] messageReceived = new byte[1024];
 
-                sendMessageMutex.WaitOne();
+                //sendMessageMutex.WaitOne();
                 sender.Send(messageSent);
 
                 // We receive the messagge using the method Receive(). 
                 // This method returns number of bytes received, 
                 // that we'll use to convert them to string
                 int byteRecv = sender.Receive(messageReceived);
-                sendMessageMutex.ReleaseMutex();
+                //sendMessageMutex.ReleaseMutex();
 
 
                 response = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);

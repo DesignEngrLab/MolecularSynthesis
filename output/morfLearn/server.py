@@ -23,6 +23,7 @@ class LearningServer(object):
 			msg = "{} joined. #Clients : {}".format(client, len(server.clients))
 			client.send(msg)
 			while True:
+				sys.stdout.flush()
 				try:
 					cmd = client.receive()
 					print("""{} >>> {}""".format(client, cmd))

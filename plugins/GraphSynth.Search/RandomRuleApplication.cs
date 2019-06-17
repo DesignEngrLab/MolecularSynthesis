@@ -62,10 +62,8 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
-            //server.StartOnlineServer();
-
+            server.StartOnlineServer();
             client.Connect();
-
 
             Thread generateLinkers = new Thread(Generate);
             Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
@@ -77,6 +75,7 @@ namespace GraphSynth.Search
             autoReleaseBuffer.Join();
 
             client.DisConnect();
+            server.ShutDownOnlineServer();
         }
         
         private void AutoSubmitSimulation()

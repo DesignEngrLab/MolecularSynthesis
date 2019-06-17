@@ -5,17 +5,14 @@ import os
 import learner
 
 
-print(sys.__stdout__)
-
-
-
-
-
 class LearningServer(object):
 	def __init__(self):
 		assert len(sys.argv) == 3
 		self.server = SimpleServer.server_from_string(sys.argv[1])
 		runDir = sys.argv[2]
+		redirect = open(os.path.join(runDir, "serverOut.txt"), "w")
+		sys.stdout = redirect
+		print(sys.__stdout__)
 		self.carboxLearner = learner.carboxLearner.CarboxLearner(runDir, "Regression")
 		print("Time:{}\t Started:{}".format(datetime.now(), self.server))
 		sys.stdout.flush()
@@ -29,7 +26,6 @@ class LearningServer(object):
 			msg = "{} joined. #Clients : {}".format(client, len(server.clients))
 			client.send(msg)
 			while True:
-				sys.stdout.flush()
 				try:
 					cmd = client.receive()
 					print("""{} >>> {}""".format(client, cmd))
@@ -58,6 +54,7 @@ class LearningServer(object):
 						break
 				except:
 					pass
+				sys.stdout.flush()
 
 		self.server.run(clients_handel)
 

@@ -36,8 +36,8 @@ class CarboxLearner(object):
 
 	def addData(self, linkerName):
 		property_file = os.path.join(self.data_dir, "property", self.property, linkerName + ".npy")
-		self.dataset[linkerName] = np.load(property_file)
-		return self.dataset
+		self.data_set[linkerName] = np.load(property_file)
+		return self.data_set
 
 
 

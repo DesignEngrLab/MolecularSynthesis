@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 
 namespace GraphSynth.Search.Tools
@@ -39,7 +40,9 @@ namespace GraphSynth.Search.Tools
                 onlineSeverProcess.Start();
                 //onlineSeverProcess.WaitForExit();
             }
+            Thread.Sleep(5000);
             Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);
+
 
         }
 

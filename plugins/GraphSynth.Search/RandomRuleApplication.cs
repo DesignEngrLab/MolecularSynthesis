@@ -92,7 +92,7 @@ namespace GraphSynth.Search
                 {
                     allSubmitted = jobBuffer.Simulate();
                 }
-                var allFinished = jobBuffer.Check_finised(computation, writer);
+                var allFinished = jobBuffer.Check_finised(computation, writer, client);
                 if (allFinished && allSubmitted)
                 {
                     writer.Close();

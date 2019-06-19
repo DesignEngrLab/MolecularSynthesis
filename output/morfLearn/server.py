@@ -1,5 +1,5 @@
 import sys
-sys.stdout = open("/bigdata/greaneylab/shared/CleanMORF/search/MORFSynthLearning/bin/server.out", "w")
+#sys.stdout = open("/bigdata/greaneylab/shared/CleanMORF/search/MORFSynthLearning/bin/server.out", "w")
 
 
 from simplesocket import SimpleServer

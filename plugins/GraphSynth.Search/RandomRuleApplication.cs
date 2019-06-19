@@ -55,14 +55,14 @@ namespace GraphSynth.Search
             System.Random rnd = new System.Random();
 
             var port = rnd.Next(1, 65535);
-            port = 9999;
+            //port = 9999;
             server = new LearningServer(learnDirectory, port, _runDirectory);
             client = new MessageClient(port);
         }
 
         protected override void Run()
         {
-            //server.StartOnlineServer();
+            server.StartOnlineServer();
             client.Connect();
 
             Thread generateLinkers = new Thread(Generate);
@@ -75,7 +75,7 @@ namespace GraphSynth.Search
             autoReleaseBuffer.Join();
 
             client.DisConnect();
-            //server.ShutDownOnlineServer();
+            server.ShutDownOnlineServer();
         }
         
         private void AutoSubmitSimulation()

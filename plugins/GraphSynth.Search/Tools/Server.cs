@@ -40,7 +40,7 @@ namespace GraphSynth.Search.Tools
                 onlineSeverProcess.Start();
                 //onlineSeverProcess.WaitForExit();
             }
-            Thread.Sleep(5000);
+            Thread.Sleep(15000);
             Console.WriteLine("Online server already started with Process ID: {0}", onlineSeverProcess.Id);
 
 

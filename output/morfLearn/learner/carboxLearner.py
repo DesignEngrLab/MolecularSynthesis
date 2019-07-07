@@ -41,17 +41,14 @@ class CarboxLearner(object):
 
 
 	def fitModel(self):
-		if len(self.data_set) < 2:
-			return
+		#if len(self.data_set) < 2:
+		#	return
 		batch_size = len(self.data_set) if len(self.data_set) < 32 else 32
 		batch_keys = np.random.choice(list(self.data_set.keys()), batch_size, replace=False)
 		batch_feature = [Tensor(self.data_set[key][0]) for key in batch_keys]
 		batch_target = self.valueNet(batch_feature)
 		print(batch_target.size())
-		list_property = [Tensor(self.data_set[key][1]) for key in batch_keys]
-		print(list_property[0])
-		print(list_property[0].size())
-		batch_property = torch.cat(list_property)
+		batch_property = torch.stack([Tensor(self.data_set[key][1]) for key in batch_keys])
 		print(batch_property.size())
 
 

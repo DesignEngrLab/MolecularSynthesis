@@ -22,11 +22,13 @@ namespace GraphSynth.Search
         private LearningServer server;
         private MessageClient client;
 
+        private bool allSubmitFlag;
 
-        private const int NUM_EPOCH = 2;
+
+        private const int NUM_EPOCH = 1;
         private const int NUM_TRAIL = 2;
         private const int TOTAL_RULE_MIN = 3;
-        private const int TOTAL_RULE_MAX = 12;
+        private const int TOTAL_RULE_MAX = 5;
         private const string CARBOXTYPE = "estimator";
         
         //private static Mutex sendMessageMutex = new Mutex();
@@ -87,10 +89,10 @@ namespace GraphSynth.Search
                 //mutex.WaitOne();
                 if (jobBuffer.CanFeedIn())
                 {
-                    allSubmitted = jobBuffer.Simulate();
+                    jobBuffer.Simulate();
                 }
                 var allFinished = jobBuffer.Check_finised(computation, writer, client);
-                if (allFinished && allSubmitted)
+                if (allFinished && allSubmitFlag)
                 {
                     writer.Close();
                     break;
@@ -174,7 +176,7 @@ namespace GraphSynth.Search
                 }
                 client.SendMessage("[FitModel]");
             }
-            jobBuffer.AllSubmitFlag = true;
+            allSubmitFlag = true;
         }
 
         private void GenerateFixed()

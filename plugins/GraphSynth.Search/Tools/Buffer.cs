@@ -16,7 +16,7 @@ namespace GraphSynth.Search.Tools
         private readonly string _bufferDir;
         private Tuple<string, HashSet<string>>[] onSimulationTuples;
         private readonly Dictionary<string,int> epochLookUp;
-        private bool allSubmitFlag;
+
 
         public bool AllSubmitFlag
         {
@@ -85,7 +85,7 @@ namespace GraphSynth.Search.Tools
             return onSimulationTuples.Select(x => x.Item2.Count).ToArray().Sum();
         }
 
-        public bool Simulate()
+        public void Simulate()
         {
             var priority = buffer.GetPriority(buffer.First);
             var linkerName = buffer.Dequeue();
@@ -99,7 +99,6 @@ namespace GraphSynth.Search.Tools
 
             Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
             Console.WriteLine("Current "  + target_queue + " on simulation " + target_set.Count);
-            return allSubmitFlag;
         }
 
 

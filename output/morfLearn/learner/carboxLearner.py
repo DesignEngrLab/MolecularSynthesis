@@ -48,7 +48,7 @@ class CarboxLearner(object):
 		print(batch_keys)
 		batch_feature = np.concatenate([self.data_set[key][0] for key in batch_keys], axis=0)
 		print(batch_feature.shape)
-		batch_property = np.concatenate([self.data_set[key][1] for key in batch_keys] axis=0)
+		batch_property = np.concatenate([self.data_set[key][1] for key in batch_keys], axis=0)
 		print(batch_property.shape)
 
 

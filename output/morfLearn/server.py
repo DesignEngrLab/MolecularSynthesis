@@ -43,8 +43,6 @@ class LearningServer(object):
 							print(msg)
 							print("Fitting Model")
 							self.carboxLearner.fitModel()
-
-
 							client.send(msg)
 						else:
 							msg = "Error : unknown command."
@@ -56,7 +54,7 @@ class LearningServer(object):
 						client.close()
 						break
 				except Exception as e:
-					print(str(e))
+					print(e)
 					sys.stdout.flush()
 					sys.stderr.flush()
 					exit(0)

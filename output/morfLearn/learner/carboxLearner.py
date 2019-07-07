@@ -44,7 +44,7 @@ class CarboxLearner(object):
 		print(self.data_set)
 		batch_size = len(self.data_set) if len(self.data_set) < 32 else 32
 		print(batch_size)
-		batch_keys = np.random.choice(self.data_set.keys(), batch_size, replace=False)
+		batch_keys = np.random.choice(list(self.data_set.keys()), batch_size, replace=False)
 		print(batch_keys)
 		batch_feature = np.array([self.data_set[key][0] for key in batch_keys])
 		print(batch_feature.shape)

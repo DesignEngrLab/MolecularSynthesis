@@ -37,6 +37,8 @@ namespace GraphSynth.Search.Tools
             var failure = 0;
             var INTERVAL = 3;
 
+            Console.WriteLine("Will give maximun {0} tires to connect to the server for every {1} seconds.", max_tries, INTERVAL);
+
             while(true)
             {
                 try
@@ -59,7 +61,8 @@ namespace GraphSynth.Search.Tools
                         Environment.Exit(0);
                     }
                     failure++;
-                    Console.WriteLine("Fail, number of failures: {0}. Server may not be ready, wait for {1} seconds and reconnect", failure, INTERVAL);
+                    Console.WriteLine("Fail, number of failures: {0}. Server may not be ready, wait for {1} seconds and will try reconnecting", 
+                        failure, INTERVAL);
                     Thread.Sleep(INTERVAL*1000);
                 }
 

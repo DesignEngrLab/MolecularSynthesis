@@ -23,10 +23,10 @@ namespace GraphSynth.Search
         private MessageClient client;
 
 
-        private const int NUM_EPOCH = 1;
-        private const int NUM_TRAIL = 1;
+        private const int NUM_EPOCH = 2;
+        private const int NUM_TRAIL = 2;
         private const int TOTAL_RULE_MIN = 6;
-        private const int TOTAL_RULE_MAX = 8;
+        private const int TOTAL_RULE_MAX = 15;
         private const string CARBOXTYPE = "estimator";
         
         //private static Mutex sendMessageMutex = new Mutex();
@@ -109,7 +109,7 @@ namespace GraphSynth.Search
                 for (var t = 0; t < NUM_TRAIL; t++)
                 {
                     Console.WriteLine("Trail: {0}", t);
-                    for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX; total_rule++)
+                    for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX + 1; total_rule++)
                     {
                         candidate cand = null;
                         while(cand == null)

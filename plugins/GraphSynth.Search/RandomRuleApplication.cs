@@ -23,10 +23,10 @@ namespace GraphSynth.Search
         private MessageClient client;
 
 
-        private const int NUM_EPOCH = 2;
-        private const int NUM_TRAIL = 2;
+        private const int NUM_EPOCH = 1;
+        private const int NUM_TRAIL = 1;
         private const int TOTAL_RULE_MIN = 6;
-        private const int TOTAL_RULE_MAX = 16;
+        private const int TOTAL_RULE_MAX = 8;
         private const string CARBOXTYPE = "estimator";
         
         //private static Mutex sendMessageMutex = new Mutex();

@@ -77,7 +77,12 @@ namespace GraphSynth.Search.Tools
                 }
             }
             
-            return onSimulationTuples.Select(x => x.Item2.Count).ToArray().Sum() == 0;
+            return Num_simulating() == 0;
+        }
+
+        public int Num_simulating()
+        {
+            return onSimulationTuples.Select(x => x.Item2.Count).ToArray().Sum();
         }
 
         public bool Simulate()

@@ -41,9 +41,10 @@ class LearningServer(object):
 							assert len(cmd) == 2
 							msg = "Current size of data set: " + str(self.carboxLearner.addData(cmd[1]))
 							print(msg)
-							print("Fitting Model")
-							self.carboxLearner.fitModel()
 							client.send(msg)
+						elif cmd[0] == "[FitModel]":
+							assert len(cmd) == 12
+							self.carboxLearner.fitModel()		
 						else:
 							msg = "Error : unknown command."
 							client.send(msg)

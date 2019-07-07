@@ -164,6 +164,15 @@ namespace GraphSynth.Search
                         //mutex.ReleaseMutex();
                     }
                 }
+                while(true)
+                {
+                    var on_simulation = jobBuffer.Num_simulating();
+                    if (on_simulation == 0)
+                        break;
+                    Console.WriteLine("Wait for current {0} linkers to finish simulation....", on_simulation);
+                    Thread.Sleep(10000);
+                }
+                clt.SendMessage("[FitModel]");
             }
             jobBuffer.AllSubmitFlag = true;
         }

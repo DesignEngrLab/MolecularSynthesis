@@ -55,7 +55,7 @@ class CarboxLearner(object):
 
 			
 			loss = criterion(batch_target, batch_property)
-			sum_loss += loss.cpu().numpy()
+			sum_loss += loss.detach().cpu().numpy()
 			self.valueNet.optimizer.zero_grad()
 			loss.backward()
 			self.valueNet.optimizer.step()

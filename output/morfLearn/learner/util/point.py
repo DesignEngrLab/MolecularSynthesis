@@ -71,7 +71,10 @@ class PointNet(torch.nn.Module):
 			x = torch.relu(self.fc6(x))
 			x = self.fc7(x)
 			out.append(x)
-		return torch.stack(out)
+		out = torch.stack(out)
+		if task == "Regression":
+			out = out.squeeze()
+		return out
 
 
 

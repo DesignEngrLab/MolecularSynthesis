@@ -31,7 +31,7 @@ class CarboxLearner(object):
 		arr = np.load(feature_file)
 		#arr = np.expand_dims(arr, axis=0)
 		est = self.valueNet([Tensor(arr)])
-		return est.detach().cpu().numpy().squeeze()
+		return est.detach().cpu().numpy()
 
 	def addData(self, linkerName):
 		feature_file = os.path.join(self.data_dir, "feature", self.feature, linkerName + ".npy")
@@ -41,20 +41,12 @@ class CarboxLearner(object):
 
 
 	def fitModel(self):
-		print(self.data_set)
 		batch_size = len(self.data_set) if len(self.data_set) < 32 else 32
-		print(batch_size)
 		batch_keys = np.random.choice(list(self.data_set.keys()), batch_size, replace=False)
-		print(batch_keys)
 		batch_feature = [Tensor(self.data_set[key][0]) for key in batch_keys]
-		print(len(batch_feature))
 		batch_target = self.valueNet(batch_feature)
 		print(batch_target.size())
-
-		print("Property")
-		print(self.data_set[key][1].shape)
-		print(np.stack([self.data_set[key][1] for key in batch_keys]).shape)
-		batch_property = Tensor(np.stack([self.data_set[key][1] for key in batch_keys]))
+		batch_property = Tensor(np.concatenate([self.data_set[key][1] for key in batch_keys]))
 		print(batch_property.size())
 
 

@@ -29,8 +29,8 @@ class CarboxLearner(object):
 	def predict(self, linkerName):
 		feature_file = os.path.join(self.data_dir, "feature", self.feature, linkerName + ".npy")
 		arr = np.load(feature_file)
-		arr = np.expand_dims(arr, axis=0)
-		est = self.valueNet(Tensor(arr))
+		#arr = np.expand_dims(arr, axis=0)
+		est = self.valueNet([Tensor(arr)])
 		return est.detach().cpu().numpy().squeeze()
 
 	def addData(self, linkerName):
@@ -46,10 +46,12 @@ class CarboxLearner(object):
 		print(batch_size)
 		batch_keys = np.random.choice(list(self.data_set.keys()), batch_size, replace=False)
 		print(batch_keys)
-		batch_feature = np.stack([self.data_set[key][0] for key in batch_keys])
-		print(batch_feature.shape)
-		batch_property = np.stack([self.data_set[key][1] for key in batch_keys])
-		print(batch_property.shape)
+		batch_feature = [Tensor(self.data_set[key][0]) for key in batch_keys]
+		print(len(batch_feature))
+		batch_target = self.valueNet(batch_feature)
+		print(batch_target.size())
+		batch_property = Tensor(np.stack([self.data_set[key][1] for key in batch_keys]))
+		print(batch_property.size())
 
 
 

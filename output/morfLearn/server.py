@@ -25,40 +25,44 @@ class LearningServer(object):
 			msg = "{} joined. #Clients : {}".format(client, len(server.clients))
 			client.send(msg)
 			while True:
-				cmd = client.receive()
-				print("""{} >>> {}""".format(client, cmd))
-				if cmd != "[Exit]":
-					cmd = cmd.split()
-					if cmd[0] == "[Time]":
-						msg = 'Time is {}'.format(datetime.now().time())
-						client.send(msg)
-					elif cmd[0] == "[Predict]":
-						assert len(cmd) == 2
-						msg = str(self.carboxLearner.predict(cmd[1]))
-						client.send(msg)
-					elif cmd[0] == "[AddData]":
-						assert len(cmd) == 2
-						msg = "Current size of data set: " + str(self.carboxLearner.addData(cmd[1]))
-						print(msg)
-						print("Fitting Model")
-						a, b, c, d = self.carboxLearner.fitModel()
-						print(a)
-						print(b)
-						print(c)
-						print(d)
-						exit(0)
+				try:
+					cmd = client.receive()
+					print("""{} >>> {}""".format(client, cmd))
+					if cmd != "[Exit]":
+						cmd = cmd.split()
+						if cmd[0] == "[Time]":
+							msg = 'Time is {}'.format(datetime.now().time())
+							client.send(msg)
+						elif cmd[0] == "[Predict]":
+							assert len(cmd) == 2
+							msg = str(self.carboxLearner.predict(cmd[1]))
+							client.send(msg)
+						elif cmd[0] == "[AddData]":
+							assert len(cmd) == 2
+							msg = "Current size of data set: " + str(self.carboxLearner.addData(cmd[1]))
+							print(msg)
+							print("Fitting Model")
+							a, b, c, d = self.carboxLearner.fitModel()
+							print(a)
+							print(b)
+							print(c)
+							print(d)
+							exit(0)
 
-						client.send(msg)
+							client.send(msg)
+						else:
+							msg = "Error : unknown command."
+							client.send(msg)
 					else:
-						msg = "Error : unknown command."
+						server.clients.remove(client)
+						msg = "{} left. #Clients : {}".format(client, len(server.clients))
 						client.send(msg)
-				else:
-					server.clients.remove(client)
-					msg = "{} left. #Clients : {}".format(client, len(server.clients))
-					client.send(msg)
-					client.close()
-					break
-
+						client.close()
+						break
+				except:
+					sys.stdout.flush()
+					sys.stdout.flush()
+					exit(0)
 				sys.stdout.flush()
 
 		self.server.run(clients_handel)

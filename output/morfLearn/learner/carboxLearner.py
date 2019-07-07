@@ -50,6 +50,10 @@ class CarboxLearner(object):
 		print(len(batch_feature))
 		batch_target = self.valueNet(batch_feature)
 		print(batch_target.size())
+
+		print("Property")
+		print(self.data_set[key][1].shape)
+		print(np.stack([self.data_set[key][1] for key in batch_keys]).shape)
 		batch_property = Tensor(np.stack([self.data_set[key][1] for key in batch_keys]))
 		print(batch_property.size())
 

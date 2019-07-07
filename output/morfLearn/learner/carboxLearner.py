@@ -46,7 +46,7 @@ class CarboxLearner(object):
 		batch_feature = np.array([self.data_set[key][0] for key in batch_keys])
 		batch_property = np.array([self.data_set[key][1] for key in batch_keys])
 
-		retuen self.data_set, batch_keys, batch_feature.shape, batch_property.shape
+		return self.data_set, batch_keys, batch_feature.shape, batch_property.shape
 
 
 

@@ -1,7 +1,6 @@
 from . import util
 import numpy as np
 import os
-import random
 import torch
 from torch.utils.data import Dataset, DataLoader
 import pickle
@@ -39,6 +38,20 @@ class CarboxLearner(object):
 		property_file = os.path.join(self.data_dir, "property", self.property, linkerName + ".npy")
 		self.data_set[linkerName] = (np.load(feature_file), np.load(property_file))
 		return len(self.data_set)
+
+
+	def fitModel(self):
+		batch_size = len(data_set) if len(data_set) < 32 else 32
+		batch_keys = np.random.choice(data_set.keys(), batch_size, replace=False)
+		batch_feature = np.array([self.data_set[key][0] for key in batch_keys])
+		batch_property = np.array([self.data_set[key][1] for key in batch_keys])
+
+		print(self.data_set)
+		print(batch_keys)
+		print(batch_feature.shape)
+		print(batch_property.shape)
+
+
 
 
 

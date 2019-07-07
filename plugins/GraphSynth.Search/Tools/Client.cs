@@ -43,6 +43,12 @@ namespace GraphSynth.Search.Tools
                 {
                     Console.WriteLine("Try to connect to server.....");
                     sender.Connect(localEndPoint);
+
+                    // We print EndPoint information  
+                    // that we are connected
+                    Console.WriteLine("Socket connected to -> {0} ", sender.RemoteEndPoint.ToString());
+                    SendMessage("[Join]");
+                    break;
                 }
                 catch (Exception e)
                 {
@@ -55,15 +61,13 @@ namespace GraphSynth.Search.Tools
                     Console.WriteLine("Fail, number of failures: {0}. Server may not be ready, wait for {1} seconds and reconnect", failure, INTERVAL);
                     Thread.Sleep(INTERVAL*1000);
                 }
-                break;
+
             }
 
 
-            // We print EndPoint information  
-            // that we are connected
-            Console.WriteLine("Socket connected to -> {0} ", sender.RemoteEndPoint.ToString());
 
-            SendMessage("[Join]");
+
+
 
         }
 

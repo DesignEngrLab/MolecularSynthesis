@@ -41,8 +41,8 @@ class CarboxLearner(object):
 
 
 	def fitModel(self):
-		batch_size = len(data_set) if len(data_set) < 32 else 32
-		batch_keys = np.random.choice(data_set.keys(), batch_size, replace=False)
+		batch_size = len(self.data_set) if len(self.data_set) < 32 else 32
+		batch_keys = np.random.choice(self.data_set.keys(), batch_size, replace=False)
 		batch_feature = np.array([self.data_set[key][0] for key in batch_keys])
 		batch_property = np.array([self.data_set[key][1] for key in batch_keys])
 

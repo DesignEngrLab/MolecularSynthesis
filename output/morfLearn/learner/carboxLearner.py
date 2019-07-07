@@ -45,8 +45,8 @@ class CarboxLearner(object):
 		batch_keys = np.random.choice(self.data_set.keys(), batch_size, replace=False)
 		batch_feature = np.array([self.data_set[key][0] for key in batch_keys])
 		batch_property = np.array([self.data_set[key][1] for key in batch_keys])
-
-		return self.data_set, batch_keys, batch_feature.shape, batch_property.shape
+		print(self.data_set)
+		return batch_keys, batch_feature.shape, batch_property.shape
 
 
 

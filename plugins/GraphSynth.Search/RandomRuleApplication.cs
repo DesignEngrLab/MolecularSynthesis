@@ -172,7 +172,7 @@ namespace GraphSynth.Search
                     Console.WriteLine("Wait for current {0} linkers to finish simulation....", on_simulation);
                     Thread.Sleep(10000);
                 }
-                clt.SendMessage("[FitModel]");
+                client.SendMessage("[FitModel]");
             }
             jobBuffer.AllSubmitFlag = true;
         }

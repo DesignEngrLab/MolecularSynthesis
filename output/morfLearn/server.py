@@ -61,7 +61,7 @@ class LearningServer(object):
 						break
 				except:
 					sys.stdout.flush()
-					sys.stdout.flush()
+					sys.stderr.flush()
 					exit(0)
 				sys.stdout.flush()
 

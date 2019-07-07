@@ -33,6 +33,7 @@ class Tnet(torch.nn.Module):
 class PointNet(torch.nn.Module):
 	def __init__(self, task):
 		super(PointNet, self).__init__()
+		self.task = task
 		self.transform1 = Tnet(3)
 		self.fc1 = torch.nn.Linear(in_features=3, out_features=32)
 		self.fc2 = torch.nn.Linear(in_features=32, out_features=64)
@@ -41,10 +42,10 @@ class PointNet(torch.nn.Module):
 		self.fc4 = torch.nn.Linear(in_features=128, out_features=256)
 		self.fc5 = torch.nn.Linear(in_features=256, out_features=256)
 		self.fc6 = torch.nn.Linear(in_features=256, out_features=64)
-		if task == "Classification":
+		if self.task == "Classification":
 			self.fc7 = torch.nn.Linear(in_features=64, out_features=2)
 			self.criterion = torch.nn.BCEWithLogitsLoss()
-		elif task == "Regression":
+		elif self.task == "Regression":
 			self.fc7 = torch.nn.Linear(in_features=64, out_features=1)
 			self.criterion = torch.nn.MSELoss()
 
@@ -72,7 +73,7 @@ class PointNet(torch.nn.Module):
 			x = self.fc7(x)
 			out.append(x)
 		out = torch.stack(out)
-		if task == "Regression":
+		if self.task == "Regression":
 			out = out.squeeze()
 		return out
 

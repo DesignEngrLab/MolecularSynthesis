@@ -31,6 +31,7 @@ class LearningServer(object):
 					if cmd != "[Exit]":
 						cmd = cmd.split()
 						if cmd[0] == "[Time]":
+							assert len(cmd) == 1
 							msg = 'Time is {}'.format(datetime.now().time())
 							client.send(msg)
 						elif cmd[0] == "[Predict]":
@@ -44,7 +45,9 @@ class LearningServer(object):
 							client.send(msg)
 						elif cmd[0] == "[FitModel]":
 							assert len(cmd) == 1
-							self.carboxLearner.fitModel()		
+							msg = "Average loss across %d fit: %.3f"  % (self.carboxLearner.n_fit, self.carboxLearner.fitModel())
+							print(msg)
+							client.send(msg)
 						else:
 							msg = "Error : unknown command."
 							client.send(msg)

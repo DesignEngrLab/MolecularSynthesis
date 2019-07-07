@@ -25,6 +25,7 @@ class CarboxLearner(object):
 		if feature == "point":
 			self.valueNet = util.point.PointNet(self.task)
 		self.data_set = {}
+		self.n_fit = 1000
 
 	def predict(self, linkerName):
 		feature_file = os.path.join(self.data_dir, "feature", self.feature, linkerName + ".npy")
@@ -42,10 +43,24 @@ class CarboxLearner(object):
 
 	def fitModel(self):
 		batch_size = len(self.data_set) if len(self.data_set) < 32 else 32
-		batch_keys = np.random.choice(list(self.data_set.keys()), batch_size, replace=False)
-		batch_feature = [Tensor(self.data_set[key][0]) for key in batch_keys]
-		batch_target = self.valueNet(batch_feature)
-		batch_property = torch.stack([Tensor(self.data_set[key][1]) for key in batch_keys])
+		criterion = torch.nn.MSELoss()
+
+		
+		sum_loss = 0
+		for _ in range(self.n_fit):
+			batch_keys = np.random.choice(list(self.data_set.keys()), batch_size, replace=False)
+			batch_feature = [Tensor(self.data_set[key][0]) for key in batch_keys]
+			batch_target = self.valueNet(batch_feature)
+			batch_property = torch.stack([Tensor(self.data_set[key][1]) for key in batch_keys])
+
+			
+			loss = criterion(batch_target, batch_property)
+			sum_loss += loss.cpu().numpy()
+			self.valueNet.optimizer.zero_grad()
+			loss.backward()
+			self.valueNet.optimizer.step()
+
+		return sum_loss / self.n_fit
 
 
 

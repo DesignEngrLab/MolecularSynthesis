@@ -59,7 +59,8 @@ class LearningServer(object):
 						client.send(msg)
 						client.close()
 						break
-				except:
+				except Exception as e:
+					print(str(e))
 					sys.stdout.flush()
 					sys.stderr.flush()
 					exit(0)

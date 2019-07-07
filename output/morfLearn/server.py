@@ -42,11 +42,8 @@ class LearningServer(object):
 							msg = "Current size of data set: " + str(self.carboxLearner.addData(cmd[1]))
 							print(msg)
 							print("Fitting Model")
-							b, c, d = self.carboxLearner.fitModel()
-							print(b)
-							print(c)
-							print(d)
-							exit(0)
+							self.carboxLearner.fitModel()
+
 
 							client.send(msg)
 						else:

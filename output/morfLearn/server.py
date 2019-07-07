@@ -43,7 +43,7 @@ class LearningServer(object):
 							print(msg)
 							client.send(msg)
 						elif cmd[0] == "[FitModel]":
-							assert len(cmd) == 12
+							assert len(cmd) == 1
 							self.carboxLearner.fitModel()		
 						else:
 							msg = "Error : unknown command."

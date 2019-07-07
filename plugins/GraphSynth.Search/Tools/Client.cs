@@ -29,13 +29,35 @@ namespace GraphSynth.Search.Tools
 
         }
 
-        public void Connect()
+        public void Connect(int max_tries)
         {
             sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             // Connect Socket to the remote endpoint using method Connect() 
 
-            Console.WriteLine("Try to connect to server.....");
-            sender.Connect(localEndPoint);
+            var failure = 0;
+            var INTERVAL = 3;
+
+            while(true)
+            {
+                try
+                {
+                    Console.WriteLine("Try to connect to server.....");
+                    sender.Connect(localEndPoint);
+                }
+                catch (Exception e)
+                {
+                    if (failure == max_tries)
+                    {
+                        Console.WriteLine("Already tried {0} times, cannot connect to the server. Programe will terminate.");
+                        Environment.Exit(0);
+                    }
+                    failure++;
+                    Console.WriteLine("Fail, number of failures: {0}. Server may not be ready, wait for {1} seconds and reconnect", failure, INTERVAL);
+                    Thread.Sleep(INTERVAL*1000);
+                }
+                break;
+            }
+
 
             // We print EndPoint information  
             // that we are connected

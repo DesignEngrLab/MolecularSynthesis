@@ -44,6 +44,7 @@ namespace GraphSynth.Search.Tools
                     Console.WriteLine("Try to connect to server.....");
                     sender.Connect(localEndPoint);
 
+
                     // We print EndPoint information  
                     // that we are connected
                     Console.WriteLine("Socket connected to -> {0} ", sender.RemoteEndPoint.ToString());
@@ -63,11 +64,6 @@ namespace GraphSynth.Search.Tools
                 }
 
             }
-
-
-
-
-
 
         }
 

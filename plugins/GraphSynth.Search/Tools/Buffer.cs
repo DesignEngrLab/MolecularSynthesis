@@ -16,12 +16,6 @@ namespace GraphSynth.Search.Tools
         private readonly string _bufferDir;
         private Tuple<string, HashSet<string>>[] onSimulationTuples;
         private readonly Dictionary<string,int> epochLookUp;
-
-
-        public bool AllSubmitFlag
-        {
-            set{this.allSubmitFlag = value;}
-        }
         
         public JobBuffer(string runDir)
         {
@@ -38,7 +32,6 @@ namespace GraphSynth.Search.Tools
             };
 
             epochLookUp = new Dictionary<string, int>();
-            allSubmitFlag = false;
         }
 
         public void Add(string linkerName, double priority, int epoch)

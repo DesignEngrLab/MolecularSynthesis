@@ -48,7 +48,10 @@ class CarboxLearner(object):
 		batch_feature = [Tensor(self.data_set[key][0]) for key in batch_keys]
 		batch_target = self.valueNet(batch_feature)
 		print(batch_target.size())
-		batch_property = torch.cat([Tensor(self.data_set[key][1]) for key in batch_keys])
+		list_property = [Tensor(self.data_set[key][1]) for key in batch_keys]
+		print(list_property[0])
+		print(list_property[0].size())
+		batch_property = torch.cat(list_property)
 		print(batch_property.size())
 
 

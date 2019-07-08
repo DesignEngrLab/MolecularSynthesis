@@ -209,7 +209,7 @@ namespace GraphSynth.Search
                         }
                         if (cand == null)
                             continue;
-                        var finalCand = agent.ChooseAndApplyCarboxOption(cand);
+                        finalCand = agent.ChooseAndApplyCarboxOption(cand);
                         if (finalCand == null)
                             Console.WriteLine("Fail on finding final carbox");
                     }
@@ -229,10 +229,10 @@ namespace GraphSynth.Search
                 Console.WriteLine("Epoch: {0}", e);
                 foreach(var item in linkerBeforeCarboxDict)
                 {
-                    cand = agent.ChooseAndApplyCarboxOption(item.Value());
+                    var submitCand = agent.ChooseAndApplyCarboxOption(item.Value());
                     //cand = agent.ChooseAndApplyCarboxOptionBestAngle(item.Value());
                     //cand = agent.ChooseAndApplyCarboxOptionUsingEstimator(item.Value(), computation, client, _runDirectory);
-                    if (cand == null)
+                    if (submitCand == null)
                     {
                         Console.WriteLine("Fail on finding final carbox, should never happen");
                         Environment.Exit(0);
@@ -240,7 +240,7 @@ namespace GraphSynth.Search
 
                     var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                     var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
-                    agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
+                    agent.Converter.moltoUFF(OBFunctions.designgraphtomol(submitCand.graph), coeff, lmpdat, false, 100);
 
                     double piority = 0;
                     if (CARBOXTYPE == "estimator")

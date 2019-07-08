@@ -215,7 +215,7 @@ namespace GraphSynth.Search
                     }
                     var linkerName = AbstractAlgorithm.GetLinkerName(cand);
                     Console.WriteLine(linkerName);
-                    if (linkerBeforeCarboxDict.Contains(linkerName))
+                    if (linkerBeforeCarboxDict.ContainsKey(linkerName))
                     {
                         total_rule--;
                         continue;
@@ -223,13 +223,13 @@ namespace GraphSynth.Search
                     linkerBeforeCarboxDict[linkerName] = cand;
                 }
             }
-            Console.WriteLine(linkerBeforeCarboxSet.Count);
+            Console.WriteLine(linkerBeforeCarboxDict.Count);
             for (var e = 0; e < NUM_EPOCH; e++)
             {
                 Console.WriteLine("Epoch: {0}", e);
                 foreach(var item in linkerBeforeCarboxDict)
                 {
-                    var submitCand = agent.ChooseAndApplyCarboxOption(item.Value());
+                    var submitCand = agent.ChooseAndApplyCarboxOption(item.Value);
                     //cand = agent.ChooseAndApplyCarboxOptionBestAngle(item.Value());
                     //cand = agent.ChooseAndApplyCarboxOptionUsingEstimator(item.Value(), computation, client, _runDirectory);
                     if (submitCand == null)
@@ -237,7 +237,7 @@ namespace GraphSynth.Search
                         Console.WriteLine("Fail on finding final carbox, should never happen");
                         Environment.Exit(0);
                     }
-
+                    var linkerName = AbstractAlgorithm.GetLinkerName(submitCand);
                     var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                     var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
                     agent.Converter.moltoUFF(OBFunctions.designgraphtomol(submitCand.graph), coeff, lmpdat, false, 100);

@@ -83,8 +83,6 @@ namespace GraphSynth.Search
         
         private void AutoSubmitSimulation()
         {
-
-            var allSubmitted = false;
             while (true)
             {
                 //mutex.WaitOne();
@@ -237,7 +235,7 @@ namespace GraphSynth.Search
                         Console.WriteLine("Fail on finding final carbox, should never happen");
                         Environment.Exit(0);
                     }
-                    var linkerName = AbstractAlgorithm.GetLinkerName(submitCand);
+                    var linkerName = AbstractAlgorithm.GetLinkerName(submitCand) + "-E" + e.ToString();
                     var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                     var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
                     agent.Converter.moltoUFF(OBFunctions.designgraphtomol(submitCand.graph), coeff, lmpdat, false, 100);

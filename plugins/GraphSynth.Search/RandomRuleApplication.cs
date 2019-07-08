@@ -67,7 +67,8 @@ namespace GraphSynth.Search
             server.StartOnlineServer();
             client.Connect(10);
 
-            Thread generateLinkers = new Thread(Generate);
+            //Thread generateLinkers = new Thread(Generate);
+            Thread generateLinkers = new Thread(GenerateFixed);
             Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
             
             generateLinkers.Start();
@@ -214,6 +215,7 @@ namespace GraphSynth.Search
                 }
             }
             Console.WriteLine(linkerBeforeCarboxSet.Count);
+            allSubmitFlag = true;
         }
         
         public override string text => "RandomTrail Search Runner";

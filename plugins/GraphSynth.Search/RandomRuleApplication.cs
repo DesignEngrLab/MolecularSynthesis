@@ -29,7 +29,7 @@ namespace GraphSynth.Search
         private const int NUM_TRAIL = 10;
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 15;
-        private const string CARBOXTYPE = "estimator";
+        private const string CARBOXTYPE = "randomCarbox";
         
         //private static Mutex sendMessageMutex = new Mutex();
 
@@ -167,15 +167,18 @@ namespace GraphSynth.Search
                         //mutex.ReleaseMutex();
                     }
                 }
-                while(true)
+                if (CARBOXTYPE == "estimator")
                 {
-                    var on_simulation = jobBuffer.Num_simulating();
-                    if (on_simulation == 0)
-                        break;
-                    Console.WriteLine("Wait for current {0} linkers to finish simulation....", on_simulation);
-                    Thread.Sleep(10000);
+                    while(true)
+                    {
+                        var on_simulation = jobBuffer.Num_simulating();
+                        if (on_simulation == 0)
+                            break;
+                        Console.WriteLine("Wait for current {0} linkers to finish simulation....", on_simulation);
+                        Thread.Sleep(10000);
+                    }
+                    client.SendMessage("[FitModel]");
                 }
-                client.SendMessage("[FitModel]");
             }
             allSubmitFlag = true;
         }
@@ -183,14 +186,15 @@ namespace GraphSynth.Search
         private void GenerateFixed()
         {
             var agent = new Algorithms.Random(settings);
-            var linkerBeforeCarboxSet = new HashSet<string>();
+            var linkerBeforeCarboxDict = new Dictionary<string, candidate>();
             for (var t = 0; t < NUM_TRAIL; t++)
             {
                 Console.WriteLine("Trail: {0}", t);
-                for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX; total_rule++)
+                for (var total_rule = TOTAL_RULE_MIN; total_rule < TOTAL_RULE_MAX + 1; total_rule++)
                 {
                     candidate cand = null;
-                    while(cand == null)
+                    candidate finalCand = null;
+                    while(cand == null || finalCand == null)
                     {
                         cand = Seed.copy();
                         Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
@@ -203,18 +207,60 @@ namespace GraphSynth.Search
                                 break;
                             }
                         }
+                        if (cand == null)
+                            continue;
+                        var finalCand = agent.ChooseAndApplyCarboxOption(cand);
+                        if (finalCand == null)
+                            Console.WriteLine("Fail on finding final carbox");
                     }
                     var linkerName = AbstractAlgorithm.GetLinkerName(cand);
                     Console.WriteLine(linkerName);
-                    if (linkerBeforeCarboxSet.Contains(linkerName))
+                    if (linkerBeforeCarboxDict.Contains(linkerName))
                     {
                         total_rule--;
                         continue;
                     }
-                    linkerBeforeCarboxSet.Add(linkerName);
+                    linkerBeforeCarboxDict[linkerName] = cand;
                 }
             }
             Console.WriteLine(linkerBeforeCarboxSet.Count);
+            for (var e = 0; e < NUM_EPOCH; e++)
+            {
+                Console.WriteLine("Epoch: {0}", e);
+                foreach(var item in linkerBeforeCarboxDict)
+                {
+                    cand = agent.ChooseAndApplyCarboxOption(item.Value());
+                    //cand = agent.ChooseAndApplyCarboxOptionBestAngle(item.Value());
+                    //cand = agent.ChooseAndApplyCarboxOptionUsingEstimator(item.Value(), computation, client, _runDirectory);
+                    if (cand == null)
+                    {
+                        Console.WriteLine("Fail on finding final carbox, should never happen");
+                        Environment.Exit(0);
+                    }
+
+                    var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
+                    var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
+                    agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
+
+                    double piority = 0;
+                    if (CARBOXTYPE == "estimator")
+                    {
+                        piority = - Convert.ToDouble(client.SendMessage("[Predict]" + " " + linkerName));
+                    }
+                    else
+                    {
+                        piority = AbstractAlgorithm.Rand.NextDouble();
+                        computation.CalculateFeature(linkerName);
+                    }
+
+                    //mutex.WaitOne();
+                    jobBuffer.Add(linkerName, piority, e);
+                    //mutex.ReleaseMutex();
+
+                    
+                }
+            }
+
             allSubmitFlag = true;
         }
         

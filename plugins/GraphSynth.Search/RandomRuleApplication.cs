@@ -254,8 +254,18 @@ namespace GraphSynth.Search
                     //mutex.WaitOne();
                     jobBuffer.Add(linkerName, piority, e);
                     //mutex.ReleaseMutex();
-
-                    
+                }
+                if (CARBOXTYPE == "estimator")
+                {
+                    while(true)
+                    {
+                        var on_simulation = jobBuffer.Num_simulating();
+                        if (on_simulation == 0)
+                            break;
+                        Console.WriteLine("Wait for current {0} linkers to finish simulation....", on_simulation);
+                        Thread.Sleep(10000);
+                    }
+                    client.SendMessage("[FitModel]");
                 }
             }
 

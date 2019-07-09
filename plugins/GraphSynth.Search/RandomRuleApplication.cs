@@ -129,7 +129,7 @@ namespace GraphSynth.Search
                             if (cand == null)
                                 continue;
                             //var carboxOpt = agent.ChooseAndApplyOption(cand);
-                            cand carboxOpt = agent.ChooseAndApplyCarboxOptionBestAngle(cand);
+                            cand = agent.ChooseAndApplyCarboxOptionBestAngle(cand);
                             //cand = agent.ChooseAndApplyCarboxOptionUsingEstimator(cand, computation, client, _runDirectory);
                             if (cand == null)
                                 Console.WriteLine("Fail on finding final carbox");

@@ -207,7 +207,7 @@ namespace GraphSynth.Search
                         }
                         if (cand == null)
                             continue;
-                        finalCand = agent.ChooseAndApplyCarboxOptionUsingEstimator(cand);
+                        finalCand = agent.ChooseAndApplyCarboxOptionUsingEstimator(cand, computation, client, _runDirectory);
                         if (finalCand == null)
                             Console.WriteLine("Fail on finding final carbox");
                     }

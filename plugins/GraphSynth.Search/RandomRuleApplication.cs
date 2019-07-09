@@ -29,7 +29,7 @@ namespace GraphSynth.Search
         private const int NUM_TRAIL = 10;
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 15;
-        private const string CARBOXTYPE = "randomCarbox";
+        private const string CARBOXTYPE = "estimator";
         
         //private static Mutex sendMessageMutex = new Mutex();
 
@@ -207,7 +207,7 @@ namespace GraphSynth.Search
                         }
                         if (cand == null)
                             continue;
-                        finalCand = agent.ChooseAndApplyCarboxOption(cand);
+                        finalCand = agent.ChooseAndApplyCarboxOptionUsingEstimator(cand);
                         if (finalCand == null)
                             Console.WriteLine("Fail on finding final carbox");
                     }

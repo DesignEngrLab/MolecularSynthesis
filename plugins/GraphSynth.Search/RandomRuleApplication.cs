@@ -207,7 +207,7 @@ namespace GraphSynth.Search
                         }
                         if (cand == null)
                             continue;
-                        finalCand = agent.ChooseAndApplyCarboxOptionUsingEstimator(cand, computation, client, _runDirectory);
+                        finalCand = agent.ChooseAndApplyCarboxOption(cand);
                         if (finalCand == null)
                             Console.WriteLine("Fail on finding final carbox");
                     }
@@ -227,7 +227,7 @@ namespace GraphSynth.Search
                 Console.WriteLine("Epoch: {0}", e);
                 foreach(var item in linkerBeforeCarboxDict)
                 {
-                    var submitCand = agent.ChooseAndApplyCarboxOption(item.Value);
+                    var submitCand = agent.ChooseAndApplyCarboxOptionUsingEstimator(item.Value, computation, client, _runDirectory, e);
                     //cand = agent.ChooseAndApplyCarboxOptionBestAngle(item.Value());
                     //cand = agent.ChooseAndApplyCarboxOptionUsingEstimator(item.Value(), computation, client, _runDirectory);
                     if (submitCand == null)

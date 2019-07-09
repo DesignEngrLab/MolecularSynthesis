@@ -56,7 +56,7 @@ namespace GraphSynth.Search.Algorithms {
             return bestOpt == null ? null : CopyAndApplyOption(bestOpt, cand, true);
         }
 
-        public candidate ChooseAndApplyCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt, string runDir)
+        public candidate ChooseAndApplyCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt, string runDir, int epoch)
         {
             option bestOpt = null;
             var bestProperty = Double.NegativeInfinity;
@@ -65,7 +65,7 @@ namespace GraphSynth.Search.Algorithms {
             {
                 var evalcand = CopyAndApplyOption(opt, cand, true);
                 var mol = OBFunctions.designgraphtomol(evalcand.graph);
-                var linkerName = AbstractAlgorithm.GetLinkerName(evalcand);
+                var linkerName = AbstractAlgorithm.GetLinkerName(evalcand) + "-E" + epoch.ToString();
                 var coeff = Path.Combine(runDir, "data", "linker" + linkerName + ".coeff");
                 var lmpdat = Path.Combine(runDir, "data", "linker" + linkerName + ".lmpdat");
                 Converter.moltoUFF(OBFunctions.designgraphtomol(evalcand.graph), coeff, lmpdat, false, 100);

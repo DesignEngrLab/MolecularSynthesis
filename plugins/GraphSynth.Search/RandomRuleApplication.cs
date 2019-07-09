@@ -29,7 +29,7 @@ namespace GraphSynth.Search
         private const int NUM_TRAIL = 10;
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 15;
-        private const string CARBOXTYPE = "bestAngle";
+        private const string CARBOXTYPE = "randomCarbox";
         
         //private static Mutex sendMessageMutex = new Mutex();
 
@@ -227,7 +227,7 @@ namespace GraphSynth.Search
                 Console.WriteLine("Epoch: {0}", e);
                 foreach(var item in linkerBeforeCarboxDict)
                 {
-                    var submitCand = agent.ChooseAndApplyCarboxOptionBestAngle(item.Value);
+                    var submitCand = agent.ChooseAndApplyCarboxOption(item.Value);
                     //cand = agent.ChooseAndApplyCarboxOptionBestAngle(item.Value());
                     //cand = agent.ChooseAndApplyCarboxOptionUsingEstimator(item.Value(), computation, client, _runDirectory);
                     if (submitCand == null)

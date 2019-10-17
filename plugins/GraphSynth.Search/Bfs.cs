@@ -51,8 +51,6 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
-            
-            
             var agent = new Algorithms.Deterministic(settings);
             BFSNode seedNode = new BFSNode(Seed, 0);
             QueueBFS.Enqueue(seedNode);

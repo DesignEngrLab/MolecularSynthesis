@@ -10,7 +10,7 @@ using OpenBabelFunctions;
 
 namespace GraphSynth.Search
 {
-    public class RandomRuleApplication: SearchProcess
+    public class DifferentCarbox: SearchProcess
     {
         
         private readonly string _runDirectory;
@@ -34,7 +34,7 @@ namespace GraphSynth.Search
         //private static Mutex sendMessageMutex = new Mutex();
 
 
-        public RandomRuleApplication(GlobalSettings settings): base(settings) 
+        public DifferentCarbox(GlobalSettings settings): base(settings) 
         {
             RequireSeed = true;
             RequiredNumRuleSets = 1;

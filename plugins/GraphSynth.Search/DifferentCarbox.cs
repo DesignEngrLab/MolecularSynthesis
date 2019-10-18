@@ -64,6 +64,7 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
+            Console.WriteLine("Fall 2019.");
             server.StartOnlineServer();
             client.Connect(10);
 

@@ -64,7 +64,7 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
-            Console.WriteLine("Fall 2019 One Drive.");
+            Console.WriteLine("Fall 2019 One Drive....");
             server.StartOnlineServer();
             client.Connect(10);
 

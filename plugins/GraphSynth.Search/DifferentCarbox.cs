@@ -42,7 +42,7 @@ namespace GraphSynth.Search
             
             Seed = new candidate(OBFunctions.tagconvexhullpoints(settings.seed), settings.numOfRuleSets);
             
-            _runDirectory = Path.Combine(settings.OutputDirAbs, "RandomRuleApplication", CARBOXTYPE);
+            _runDirectory = Path.Combine(settings.OutputDirAbs, "DifferentCarbox", CARBOXTYPE);
             
             if (Directory.Exists(_runDirectory))
                 Directory.Delete(_runDirectory, true);
@@ -273,7 +273,7 @@ namespace GraphSynth.Search
             allSubmitFlag = true;
         }
         
-        public override string text => "RandomTrail Search Runner";
+        public override string text => "DifferentCarbox Search Runner";
         
     }
 }

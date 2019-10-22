@@ -93,8 +93,9 @@ namespace GraphSynth.Search.Tools
             }
             else
             {
-                return "0";
+                output = "0";
             }
+            return output;
 
 
         }

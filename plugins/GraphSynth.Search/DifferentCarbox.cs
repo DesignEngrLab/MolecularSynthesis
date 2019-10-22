@@ -72,11 +72,15 @@ namespace GraphSynth.Search
             Thread generateLinkers = new Thread(GenerateFixed);
             Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
             
+            Console.WriteLine("Start Search...");
             generateLinkers.Start();
-            autoReleaseBuffer.Start();
-
             generateLinkers.Join();
+            Console.WriteLine("End Search...");
+
+            Console.WriteLine("Start Simulation...");
+            autoReleaseBuffer.Start();
             autoReleaseBuffer.Join();
+            Console.WriteLine("End Simulation...");
 
             client.DisConnect();
             server.ShutDownOnlineServer();

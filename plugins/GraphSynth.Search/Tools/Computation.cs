@@ -70,24 +70,33 @@ namespace GraphSynth.Search.Tools
         public string CalculateProperty(string linkerId)
         {
             var aveData = Path.Combine(_runDir, "data", "linker" + linkerId + "_deformation", "linker" + linkerId + "-ave-force.d");
-            using (Process proc = new Process())
+            string output;
+            if(File.Exists(aveData))
             {
-                proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
-                proc.StartInfo.Arguments = propertyScriptLookup[_propertyUsed] + " " + aveData + " " + _propertyDir;
-                proc.StartInfo.WorkingDirectory = Path.Combine(_learnDir, "computation");
-                proc.StartInfo.RedirectStandardError = true;
-                proc.StartInfo.UseShellExecute = false;
-                proc.StartInfo.RedirectStandardOutput = true;
-                proc.StartInfo.RedirectStandardInput = false;
-                proc.Start();
-                proc.WaitForExit();
-                //string error = proc.StandardError.ReadToEnd();
-                //Console.WriteLine(error);
-                string output = proc.StandardOutput.ReadToEnd();
-                //Console.WriteLine(output);
-                return output;
-
+                using (Process proc = new Process())
+                {
+                    proc.StartInfo.FileName = "/rhome/yangchen/.conda/envs/yangchenPython3/bin/python";
+                    proc.StartInfo.Arguments = propertyScriptLookup[_propertyUsed] + " " + aveData + " " + _propertyDir;
+                    proc.StartInfo.WorkingDirectory = Path.Combine(_learnDir, "computation");
+                    proc.StartInfo.RedirectStandardError = true;
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.StartInfo.RedirectStandardInput = false;
+                    proc.Start();
+                    proc.WaitForExit();
+                    //string error = proc.StandardError.ReadToEnd();
+                    //Console.WriteLine(error);
+                    output = proc.StandardOutput.ReadToEnd();
+                    //Console.WriteLine(output);
+                    output;
+                }
             }
+            else
+            {
+                return "0";
+            }
+
+
         }
     }
 

@@ -69,7 +69,6 @@ namespace GraphSynth.Search.Tools
                     }
                 }
             }
-            
             return Num_simulating() == 0;
         }
 

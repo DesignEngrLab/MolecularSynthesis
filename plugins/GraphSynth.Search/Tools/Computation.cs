@@ -88,7 +88,6 @@ namespace GraphSynth.Search.Tools
                     //Console.WriteLine(error);
                     output = proc.StandardOutput.ReadToEnd();
                     //Console.WriteLine(output);
-                    output;
                 }
             }
             else

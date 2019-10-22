@@ -25,10 +25,10 @@ namespace GraphSynth.Search
         private bool allSubmitFlag;
 
 
-        private const int NUM_EPOCH = 5;
-        private const int NUM_TRAIL = 5;
+        private const int NUM_EPOCH = 3;
+        private const int NUM_TRAIL = 3;
         private const int TOTAL_RULE_MIN = 6;
-        private const int TOTAL_RULE_MAX = 15;
+        private const int TOTAL_RULE_MAX = 8;
         private const string CARBOXTYPE = "estimator";
         
         //private static Mutex sendMessageMutex = new Mutex();

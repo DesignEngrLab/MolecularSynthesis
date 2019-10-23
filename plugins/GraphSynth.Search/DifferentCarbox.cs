@@ -29,9 +29,6 @@ namespace GraphSynth.Search
         private const int TOTAL_RULE_MIN = 6;
         private const int TOTAL_RULE_MAX = 8;
         private const string CARBOXTYPE = "estimator";
-        
-        //private static Mutex sendMessageMutex = new Mutex();
-
 
         public DifferentCarbox(GlobalSettings settings): base(settings) 
         {

@@ -262,7 +262,6 @@ namespace GraphSynth.Search
                         if (on_simulation == 0)
                             break;
                         Console.WriteLine("Wait for current {0} linkers to finish simulation....", on_simulation);
-                        Thread.Sleep(10000);
                     }
                     client.SendMessage("[FitModel]");
                 }

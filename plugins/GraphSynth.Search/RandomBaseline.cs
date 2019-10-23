@@ -57,11 +57,11 @@ namespace GraphSynth.Search
 
         }
 
-        private candidate step(candidate cand)
-        {
-            var randFloat = 
-            return cand;
-        }
+        //private candidate step(candidate cand)
+        //{
+        //    var randFloat = 
+        //    return cand;
+        //}
 
 
         public override string text => "RandomBaseline Search Runner";

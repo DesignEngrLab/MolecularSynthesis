@@ -43,6 +43,7 @@ namespace GraphSynth.Search
             writer = new StreamWriter(Path.Combine(_runDirectory, "RandomBaseline.txt"));
             jobBuffer = new JobBuffer(_runDirectory);
 
+
         }
 
         protected override void Run()

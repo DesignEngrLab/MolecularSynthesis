@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using GraphSynth.Representation;
 using GraphSynth.Search.Algorithms;
 using GraphSynth.Search.Tools;
@@ -69,19 +68,14 @@ namespace GraphSynth.Search
             client.Connect(10);
 
             //Thread generateLinkers = new Thread(Generate);
-            Thread generateLinkers = new Thread(GenerateFixed);
-            Thread autoReleaseBuffer = new Thread(AutoSubmitSimulation);
-            
             Console.WriteLine("Start Search...");
-            generateLinkers.Start();
-            generateLinkers.Join();
+            GenerateFixed();
             Console.WriteLine("End Search...");
 
             Console.WriteLine("Start Simulation...");
-            autoReleaseBuffer.Start();
-            autoReleaseBuffer.Join();
+            AutoSubmitSimulation();
             Console.WriteLine("End Simulation...");
-
+         
             client.DisConnect();
             server.ShutDownOnlineServer();
         }

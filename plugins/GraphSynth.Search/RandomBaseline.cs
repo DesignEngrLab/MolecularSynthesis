@@ -52,6 +52,7 @@ namespace GraphSynth.Search
             {
                 var rand = rnd.NextDouble();
                 Console.WriteLine("{}", rand);
+
             }
 
 

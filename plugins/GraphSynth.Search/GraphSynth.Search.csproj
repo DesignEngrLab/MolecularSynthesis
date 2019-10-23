@@ -87,6 +87,7 @@
     <Compile Include="RandomBaseline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DifferentCarbox.cs" />
+	<Compile Include="RandomBaseline.cs" />
     <Compile Include="Tools\Buffer.cs" />
     <Compile Include="Tools\Server.cs" />
     <Compile Include="Tools\Client.cs" />

@@ -58,10 +58,10 @@ namespace GraphSynth.Search
                 candidate cand = null;
                 while (cand == null)
                 {
+                    var step = 0;
                     while (true)
                     {
                         cand = Seed.copy();
-                        var step = 0;
                         if (rnd.NextDouble() > PROB_TEM_INIT + step * PROB_INC)
                         {
                             Console.WriteLine("Choose non-terminal rule.");

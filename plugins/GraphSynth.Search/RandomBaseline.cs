@@ -58,10 +58,10 @@ namespace GraphSynth.Search
                 candidate cand = null;
                 while (cand == null)
                 {
+                    cand = Seed.copy();
                     var step = 0;
                     while (true)
                     {
-                        cand = Seed.copy();
                         if (rnd.NextDouble() > PROB_TEM_INIT + step * PROB_INC)
                         {
                             Console.WriteLine("Choose non-terminal rule.");
@@ -81,7 +81,6 @@ namespace GraphSynth.Search
                     if (cand == null)
                     {
                         Console.WriteLine("Fail, rebuild");
-                        Environment.Exit(0);
                     }
                 }
                 var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Remoting.Channels;
 using GraphSynth.Representation;
 using GraphSynth.Search.Algorithms;
 using GraphSynth.Search.Tools;
@@ -18,11 +19,12 @@ namespace GraphSynth.Search
         private Computation computation;
         private StreamWriter writer;
 
-        private const double PROB_DEC = 0.1;
-        private const double PROB_NON_TEM_INIT = 1;
-        private const double PROB_TEM_INIT = 1 - PROB_NON_TEM_INIT;
+        private const double PROB_INC = 0.1;
+        private const double PROB_TEM_INIT = 0;
         private const int NUM_EPOCH = 20;
         private System.Random rnd = new System.Random();
+        
+
 
 
         // Baseline: With probability distribution [1-0.1*steps, 0.1*steps]
@@ -44,28 +46,45 @@ namespace GraphSynth.Search
             computation = new Computation(_runDirectory, learnDirectory, "point", "stiff");
             writer = new StreamWriter(Path.Combine(_runDirectory, "RandomBaseline.txt"));
             jobBuffer = new JobBuffer(_runDirectory);
-
-
         }
 
         protected override void Run()
         {
             Console.WriteLine("Fall 2019 One Drive New Mac....");
+            var agent = new Algorithms.Random(settings);
             for (var e = 0; e < NUM_EPOCH; e++)
             {
-                var rand = rnd.NextDouble();
-                Console.WriteLine("{0}", rand);
-
+                Console.WriteLine("Epoch: {0}", e);
+                candidate cand = null;
+                while (cand == null)
+                {
+                    while (true)
+                    {
+                        cand = Seed.copy();
+                        if (rnd.NextDouble() > PROB_TEM_INIT + e * PROB_INC)
+                        {
+                            Console.WriteLine("Choose non-terminal rule.");
+                            cand = agent.ChooseAndApplyOption(cand);
+                            if (cand == null)
+                                break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Choose terminal rule.");
+                            cand = agent.ChooseAndApplyCarboxOption(cand);
+                            break;
+                        }
+                    }
+                    if (cand == null)
+                        Console.WriteLine("Fail, rebuild");
+                }
+                var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
+                var linkerName = AbstractAlgorithm.GetLinkerName(cand);
+                Console.WriteLine(candSmile);
+                Console.WriteLine(linkerName);
             }
-
-
         }
-
-        //private candidate step(candidate cand)
-        //{
-        //    var randFloat = 
-        //    return cand;
-        //}
+        
         public override string text => "RandomBaseline Search Runner";
 
     }

@@ -10,8 +10,7 @@ namespace GraphSynth
     public static partial class GSApp
     {
         private static readonly List<SearchProcess> SearchAlgorithms = new List<SearchProcess>();
-
-
+        
         public static void LoadPlugins()
         {
             Assembly searchAssembly = null;
@@ -131,11 +130,12 @@ namespace GraphSynth
                     Console.Write(" >");
                     break;
             }
-            //Key response;
-            //var readKey = Console.ReadKey().Key.ToString();
-            //readKey = readKey.Replace("D", "");
-            //int choice = Enum.TryParse(readKey, out response) ? (int)response : -1;
-            int choice = 1;
+            Key response;
+            var readKey = Console.ReadKey().Key.ToString();
+            readKey = readKey.Replace("D", "");
+            int choice = Enum.TryParse(readKey, out response) ? (int)response : -1;
+            choice -= 1;
+
             Console.Write("\n");
             if (choice == 30) HelpDialog();
             else if (choice == 31) VerbosityDialog();

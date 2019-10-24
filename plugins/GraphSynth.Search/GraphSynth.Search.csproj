@@ -60,7 +60,7 @@
       <HintPath>..\..\Tools\lib\OBDotNet.dll</HintPath>
     </Reference>
     <Reference Include="Priority Queue, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\assembly lib\Priority Queue.dll</HintPath>
+      <HintPath>..\..\assembly\Priority Queue.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

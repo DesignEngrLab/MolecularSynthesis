@@ -36,13 +36,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MIConvexHull, Version=1.0.10.1021, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\assembly lib\MIConvexHull.dll</HintPath>
+      <HintPath>..\assembly\MIConvexHull.dll</HintPath>
     </Reference>
     <Reference Include="OBDotNet, Version=0.5.0.0, Culture=neutral, PublicKeyToken=3069c9c4f488e4bd">
       <HintPath>..\Tools\lib\OBDotNet.dll</HintPath>
     </Reference>
     <Reference Include="StarMath, Version=1.0.11.729, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\assembly lib\StarMath.dll</HintPath>
+      <HintPath>..\assembly\StarMath.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

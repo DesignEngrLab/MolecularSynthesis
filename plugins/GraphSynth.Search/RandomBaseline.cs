@@ -77,13 +77,18 @@ namespace GraphSynth.Search
                         }
                         step++;
                     }
+
                     if (cand == null)
+                    {
                         Console.WriteLine("Fail, rebuild");
+                        Environment.Exit(0);
+                    }
                 }
                 var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
                 var linkerName = AbstractAlgorithm.GetLinkerName(cand);
                 Console.WriteLine(candSmile);
                 Console.WriteLine(linkerName);
+
             }
         }
         

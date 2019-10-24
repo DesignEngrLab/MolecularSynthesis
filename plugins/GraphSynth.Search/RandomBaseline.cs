@@ -5,9 +5,11 @@ using GraphSynth.Representation;
 using GraphSynth.Search.Algorithms;
 using GraphSynth.Search.Tools;
 using OpenBabelFunctions;
+
+
 namespace GraphSynth.Search
 {
-    class RandomBaseline : SearchProcess
+    public class RandomBaseline : SearchProcess
     {
         private readonly string _runDirectory;
 
@@ -48,11 +50,11 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
-            Console.WriteLine("Fall 2019 One Drive....");
+            Console.WriteLine("Fall 2019 One Drive New Mac....");
             for (var e = 0; e < NUM_EPOCH; e++)
             {
                 var rand = rnd.NextDouble();
-                Console.WriteLine("{}", rand);
+                Console.WriteLine("{0}", rand);
 
             }
 
@@ -64,12 +66,7 @@ namespace GraphSynth.Search
         //    var randFloat = 
         //    return cand;
         //}
-
-
-
         public override string text => "RandomBaseline Search Runner";
 
     }
-
-
 }

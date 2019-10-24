@@ -50,7 +50,7 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
-            Console.WriteLine("Fall 2019 One Drive New Mac....");
+            Console.WriteLine("Fall 2019 One Drive New Mac Matt....");
             var agent = new Algorithms.Random(settings);
             for (var e = 0; e < NUM_EPOCH; e++)
             {
@@ -87,7 +87,6 @@ namespace GraphSynth.Search
                 var linkerName = AbstractAlgorithm.GetLinkerName(cand);
                 Console.WriteLine(candSmile);
                 Console.WriteLine(linkerName);
-
             }
         }
         

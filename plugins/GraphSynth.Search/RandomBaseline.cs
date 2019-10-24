@@ -61,7 +61,8 @@ namespace GraphSynth.Search
                     while (true)
                     {
                         cand = Seed.copy();
-                        if (rnd.NextDouble() > PROB_TEM_INIT + e * PROB_INC)
+                        var step = 0;
+                        if (rnd.NextDouble() > PROB_TEM_INIT + step * PROB_INC)
                         {
                             Console.WriteLine("Choose non-terminal rule.");
                             cand = agent.ChooseAndApplyOption(cand);
@@ -74,6 +75,7 @@ namespace GraphSynth.Search
                             cand = agent.ChooseAndApplyCarboxOption(cand);
                             break;
                         }
+                        step++;
                     }
                     if (cand == null)
                         Console.WriteLine("Fail, rebuild");

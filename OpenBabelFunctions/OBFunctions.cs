@@ -52,13 +52,7 @@ namespace OpenBabelFunctions {
                 dest.AddAtom(atom);
                 //var foooo = dest.Atoms ();
             }
-            //writeatominfotoscreen (dest);
-            foreach (OBBond bond in source.Bonds()) {
-                bond.SetId(0);
 
-                dest.AddBond((int) (bond.GetBeginAtomIdx() + prevatms), (int) (bond.GetEndAtomIdx() + prevatms),
-                    (int) bond.GetBO(), (int) bond.GetFlags());
-            }
 
             //don't really understand what they mean by residues
             //I think it's an amino acid or nucleotide so you can build up proteins and stuff?
@@ -94,52 +88,11 @@ namespace OpenBabelFunctions {
 
             return dest;
         }
+        
+        
 
-        public static OBMol addmol2(OBMol source, OBMol dest) {
-            //combines two OBMols into one molecule
-            // this is designed to do the same thing as the += operator in mol.cpp, in other words this implements functionality present in openbabel, but not in the C# api
-            //modifies atom and bond indices in the process
-            //dest.BeginModify();
-            uint prevatms = dest.NumAtoms();
-            uint nextatms = source.NumAtoms();
-            uint acount = prevatms;
-            uint bcount = dest.NumBonds();
-
-            // First, handle atoms and bonds
-            foreach (OBAtom atom in source.Atoms()) {
-                atom.SetId(acount); ////Need to remove ID which relates to source mol rather than this mol// But in the C++ it had a NoId thing I couldn't figure out
-                dest.AddAtom(atom);
-                acount++;
-                //var foooo = dest.Atoms ();
-            }
-            //writeatominfotoscreen (dest);
-            foreach (OBBond bond in source.Bonds()) {
-                bond.SetId(bcount);
-                OBBond b = new OBBond();
-                //b.SetBegin(dest.GetAtom((int)(bond.GetBeginAtomIdx() + prevatms)));
-                //b.SetEnd(dest.GetAtom((int)(bond.GetEndAtomIdx() + prevatms)));
-                b.Set(0, dest.GetAtom((int) (bond.GetBeginAtomIdx() + prevatms)),
-                    dest.GetAtom((int) (bond.GetEndAtomIdx() + prevatms)), (int) bond.GetBO(), (int) bond.GetFlags());
-                if (bond.HasData("trueBO")) {
-                    b.CloneData(bond.GetData("trueBO")); //clone true bond order so we can eventually do MOF-UFF
-                }
-                dest.AddBond(b);
-                //dest.AddBond( (int)bond.GetBO(), (int)bond.GetFlags());
-
-                bcount++;
-            }
-
-            //don't really understand what they mean by residues
-            //I think it's an amino acid or nucleotide so you can build up proteins and stuff?
-            //don't think I'm going to use them either, but it might be useful      
-
-
-            //dest.EndModify(); this tends to mangle up all the atom ids, which is bad
-
-            return dest;
-        }
-
-        public static OBMol molecule_merge(OBMol mol1, OBAtom tokeep, OBAtom todelete) {
+        public static OBMol molecule_merge(OBMol mol1, OBAtom tokeep, OBAtom todelete)
+        {
             //takes a molecule and two atoms in the molecule and 
             //assuming atoms are in the same place, delete one atom and copy bond to the other
 
@@ -149,11 +102,13 @@ namespace OpenBabelFunctions {
 
 
             List<OBBond> bondlist = new List<OBBond>();
-            foreach (OBBond bon in todelete.Bonds()) {
+            foreach (OBBond bon in todelete.Bonds())
+            {
                 bondlist.Add(bon);
             }
 
-            foreach (OBBond bon in bondlist) {
+            foreach (OBBond bon in bondlist)
+            {
                 mol1.AddBond((int) tokeep.GetIdx(), (int) bon.GetNbrAtomIdx(todelete), (int) bon.GetBondOrder());
             }
             //writeatominfotoscreen(mol1);
@@ -172,55 +127,7 @@ namespace OpenBabelFunctions {
             mol1.EndModify();
             return mol1;
         }
-
-        public static OBMol molecule_merge(OBMol mol1, OBAtom a, OBMol mol2, OBAtom b) {
-            //takes two molecules and two atoms in each molecule and 
-            //assuming atoms are in the same place, delete one atom and copy bond to the other
-            //a
-            //foreach(OBBond bond in b.Bonds())
-            //{
-
-            //}
-
-            int keepid = Convert.ToInt32(a.GetIdx());
-            int todeleteid = Convert.ToInt32(b.GetIdx());
-            //var bonds = b.Bonds();
-            List<OBBond> bondlist = new List<OBBond>();
-            foreach (OBBond bon in b.Bonds()) {
-                bondlist.Add(bon);
-            }
-            OBBond bond = bondlist[0];
-            int connectid = (int) bond.GetNbrAtomIdx(b);
-            int prevatms = (int) mol1.NumAtoms(); //number of atoms before we combine things
-            //OBMol mol3 = new OBMol ();
-
-            mol1 = addmol(mol2, mol1);
-            mol1.BeginModify();
-            OBAtom keep = mol1.GetAtom(keepid);
-            OBAtom todelete = mol1.GetAtom(todeleteid + prevatms);
-            OBAtom toconnect = mol1.GetAtom(connectid + prevatms);
-            OBBond newbond = new OBBond();
-            newbond.SetBegin(keep);
-            newbond.SetEnd(toconnect);
-            newbond.SetBO(1);
-            mol1.AddBond(newbond);
-            mol1.DeleteAtom(todelete);
-            //OBAtom= atom1
-            //var a = map2[0];
-            //int c1 = (int)(map1[1]);
-            //int c2 = (int)(map2[1] + prevatms);
-            //int h1 = (int)(map1[0]);
-            ///int h2 = (int)(map2[0] + prevatms);
-            //OBAtom carbon1 = mol1.GetAtom(c1);
-            //OBAtom carbon2 = mol1.GetAtom(c2);
-            //OBAtom hydrogen1 = mol1.GetAtom(h1);
-            ///OBAtom hydrogen2 = mol1.GetAtom(h2);
-            //OBBuilder.Connect(mol1, c1, c2);//connect fragments
-            //mol1.DeleteAtom(hydrogen1);
-            //mol1.DeleteAtom(hydrogen2);
-            mol1.EndModify();
-            return mol1;
-        }
+        
 
         public static OBMol merge_atoms_at_same_location(OBMol mol) {
             double radius = 0.1;
@@ -270,61 +177,10 @@ namespace OpenBabelFunctions {
 
         #region debugging functions: it's hard to read openbabel data in the debugger(swigptr does not help me much) so these functions print stuff to the console
 
-        public static void writeatominfotoscreen(OBMol mol) {
-            Console.WriteLine("new");
-            foreach (OBAtom a in mol.Atoms()) {
-                Console.WriteLine("atomtype: " + a.GetAtomType() + " id " + a.GetIdx() + " index " + a.GetIndex() +
-                                  " CIdx" + a.GetCIdx() + " title" + a.GetTitle() + " hash" + a.GetHashCode());
-                var ddd = OpenBabel.OBBuilder.GetNewBondVector(a);
-                string foobar = ddd.GetX() + " " + ddd.GetY() + " " + ddd.GetZ();
-                Console.WriteLine(foobar);
-            }
-            Console.WriteLine("");
-        }
-
-        public static void writeatominfotoscreen(OBAtom a) {
-            Console.WriteLine("atomtype: " + a.GetAtomType() + " id " + a.GetIdx() + " index " + a.GetIndex() +
-                              " CIdx" + a.GetCIdx() + " title" + a.GetTitle() + " hash" + a.GetHashCode());
-            var ddd = OpenBabel.OBBuilder.GetNewBondVector(a);
-            string foobar = ddd.GetX() + " " + ddd.GetY() + " " + ddd.GetZ();
-            Console.WriteLine(foobar);
-        }
-
-        public static void writemaplisttoconsole(VectorVecInt maplist) {
-            foreach (VectorInt vi in maplist) {
-                string line = "";
-                ///Console.WriteLine("begin");
-                foreach (int i in vi) {
-                    //Console.WriteLine(i);
-                    line = line + " " + i;
-                }
-                Console.WriteLine(line);
-                //Console.WriteLine("end");
-            }
-        }
+        
 
         #endregion
-
-
-        public static List<double[]> readLammpsData(string file, int columns) {
-            List<double[]> data = new List<double[]>();
-
-            using (var reader = new StreamReader(file)) {
-                while (!reader.EndOfStream) {
-                    string line = reader.ReadLine();
-                    if (line.First() == '#')
-                        continue;
-
-                    string[] split = line.Split((char[]) null, StringSplitOptions.RemoveEmptyEntries);
-                    double[] dubs = new double [columns];
-                    
-                    for (var i = 0; i < Math.Min(columns, split.Length); i++) 
-                        dubs[i] = Convert.ToDouble(split[i]);
-                    data.Add(dubs);
-                }
-            }
-            return data;
-        }
+        
 
         public static double[] spacedStringToDoubleArray(string line) {
             string[] split = line.Split((char[]) null, StringSplitOptions.RemoveEmptyEntries);

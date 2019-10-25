@@ -231,58 +231,7 @@ namespace OpenBabelFunctions {
             return false;
         }
 
-        public static double syntheticaccessability(OBMol mol) {
-            mol.FindChiralCenters();
-            VectorpRing ringdata = mol.GetSSSR();
-            double fring = 0;
-            //int rings = (double)ringdata.Count;
-            foreach (OBRing r in ringdata) {
-                var n = r.Size();
-                fring = fring + n * 6;
-            }
-            double ftype = 0;
-            double fconnect = 0;
-            int nchiral = 0;
-
-            foreach (OBAtom a in mol.Atoms()) {
-                if (a.GetAtomicNum() == 6) {
-                    ftype = ftype + 3;
-                } else {
-                    ftype = ftype + 6;
-                }
-
-                int bcount = 0;
-                foreach (OBBond b in a.Bonds()) {
-                    bcount++; //get the atom degree by counting bonds
-                }
-                switch (bcount) {
-                    case 4: {
-                        fconnect = fconnect + 24;
-                        break;
-                    }
-                    case 3: {
-                        fconnect = fconnect + 12;
-                        break;
-                    }
-                    case 2: {
-                        fconnect = fconnect + 6;
-                        break;
-                    }
-                    case 1: {
-                        fconnect = fconnect + 3;
-                        break;
-                    }
-                }
-                if (a.IsChiral()) {
-                    nchiral++;
-                }
-            }
-            //for indole() ftype= 72, fring = 66, fconnect = 129
-            //fring
-            double fchiral = nchiral * 20;
-            double score = fchiral + fconnect + ftype + fring;
-            return score;
-        }
+        
 
         public static double atom2linedistance(OBAtom x0, OBAtom a1, OBAtom a2) {
             //a1 and a2 are atoms that define the axis in question, x0 is the atom that we want to know the distance from the axis

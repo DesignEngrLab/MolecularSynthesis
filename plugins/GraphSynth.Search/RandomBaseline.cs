@@ -24,9 +24,6 @@ namespace GraphSynth.Search
         private const int NUM_EPOCH = 20;
         private System.Random rnd = new System.Random();
         
-
-
-
         // Baseline: With probability distribution [1-0.1*steps, 0.1*steps]
         // Choose to a non-terminal rule or a terminal rule
         // If any one is infeasible at current moment, choose the other. If both are infeasible, restart.

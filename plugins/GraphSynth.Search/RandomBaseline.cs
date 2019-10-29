@@ -17,8 +17,8 @@ namespace GraphSynth.Search
         private Computation computation;
         private StreamWriter writer;
         
-        private const int NUM_EPOCH = 10;
-        private const int NUM_RUNS = 1;
+        private const int NUM_EPOCH = 100;
+        private const int NUM_RUNS = 20;
         private System.Random rnd = new System.Random();
         
         // Baseline: With probability distribution [1-0.1*steps, 0.1*steps]

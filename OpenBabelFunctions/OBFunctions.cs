@@ -32,7 +32,6 @@ namespace OpenBabelFunctions {
         /// <param name="host"></param>
         /// <returns></returns>
         public static OBMol designgraphtomol(designGraph host) {
-            
             var mol = new OBMol();
             Dictionary<string, int> nodeatomlookup = new Dictionary<string, int>(); //dictionary for looking up which nodes go to which atoms by their names
             int i = 0;
@@ -58,7 +57,6 @@ namespace OpenBabelFunctions {
                 mol.AddAtom(atom);
             }
             foreach (arc a in host.arcs) {
-                
                 int bondorder = 0;
                 bool hassingle = a.localLabels.Contains("s");
                 bool hasdouble = a.localLabels.Contains("d");
@@ -66,15 +64,12 @@ namespace OpenBabelFunctions {
                 //although we could have dative bonds
                 if (hassingle ^ hasdouble ^ hastriple) //we do not want more than one bond type
                 {
-                    if (hassingle) {
+                    if (hassingle) 
                         bondorder = 1;
-                    }
-                    if (hasdouble) {
+                    if (hasdouble) 
                         bondorder = 2;
-                    }
-                    if (hastriple) {
+                    if (hastriple) 
                         bondorder = 3;
-                    }
                 }
                 mol.AddBond(nodeatomlookup[a.To.name], nodeatomlookup[a.From.name], bondorder);
             }
@@ -108,16 +103,20 @@ namespace OpenBabelFunctions {
                 points.Add(pos);
                 
                 var tpl = Tuple.Create(n.X, n.Y, n.Z);
-                lookup.Add(tpl, i);
-//                try
-//                {
-//                    lookup.Add(tpl, i);
-//                }
-//                catch (Exception e)
-//                {
-//                    Console.WriteLine("{0}, {1}", tpl, i);
-//                    throw e;
-//                }
+                try
+                {
+                    lookup.Add(tpl, i);
+                }
+                catch (Exception e)
+                {
+                    foreach (KeyValuePair<Tuple<double, double, double>, int> kvp in lookup)
+                    {
+                        Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+                    }
+                    Console.WriteLine("{0}, {1}", tpl, i);
+                    Environment.Exit(0);
+                    throw e;
+                }
             }
 
             var chull = ConvexHull.Create(points);

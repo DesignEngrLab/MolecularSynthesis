@@ -57,7 +57,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="OBDotNet, Version=0.5.0.0, Culture=neutral, PublicKeyToken=3069c9c4f488e4bd">
-      <HintPath>..\..\csharp_binding\lib\OBDotNet.dll</HintPath>
+      <HintPath>..\..\openbabelTools\lib\OBDotNet.dll</HintPath>
     </Reference>
     <Reference Include="Priority Queue, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\assembly\Priority Queue.dll</HintPath>
@@ -81,7 +81,6 @@
     <Compile Include="Algorithms\Deterministic.cs" />
     <Compile Include="Algorithms\Evaluations\AbstractEvaluation.cs" />
     <Compile Include="Algorithms\Evaluations\RolloutEvaluation.cs" />
-    <Compile Include="Algorithms\MCTS.cs" />
     <Compile Include="Algorithms\Random.cs" />
     <Compile Include="Bfs.cs" />
     <Compile Include="RandomBaseline.cs" />

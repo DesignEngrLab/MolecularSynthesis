@@ -115,18 +115,17 @@ namespace GraphSynth.Search
                             Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
                             for (var step = 0; step < total_rule; step++)
                             {
-                                cand = agent.ChooseAndApplyOption(cand);
+                                cand = agent.ChooseAndApplyNonTerminalOption(cand);
                                 if (cand == null)
                                 {
                                     Console.WriteLine("Fail on step {0}", step+1);
                                     break;
                                 }
                             }
+
                             if (cand == null)
                                 continue;
-                            //var carboxOpt = agent.ChooseAndApplyOption(cand);
-                            cand = agent.ChooseAndApplyCarboxOptionBestAngle(cand);
-                            //cand = agent.ChooseAndApplyCarboxOptionUsingEstimator(cand, computation, client, _runDirectory);
+                            cand = agent.ChooseAndApplyTerminalOption(cand);
                             if (cand == null)
                                 Console.WriteLine("Fail on finding final carbox");
                         }
@@ -143,7 +142,6 @@ namespace GraphSynth.Search
                         linkerSet.Add(linkerName);
                         var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                         var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
-                        agent.Converter.moltoUFF(OBFunctions.designgraphtomol(cand.graph), coeff, lmpdat, false, 100);
 
                         double piority = 0;
                         if (CARBOXTYPE == "estimator")
@@ -194,7 +192,7 @@ namespace GraphSynth.Search
                         Console.WriteLine("Total Intermediate Rules: {0}", total_rule);
                         for (var step = 0; step < total_rule; step++)
                         {
-                            cand = agent.ChooseAndApplyOption(cand);
+                            cand = agent.ChooseAndApplyNonTerminalOption(cand);
                             if (cand == null)
                             {
                                 Console.WriteLine("Fail on step {0}", step+1);
@@ -203,7 +201,7 @@ namespace GraphSynth.Search
                         }
                         if (cand == null)
                             continue;
-                        finalCand = agent.ChooseAndApplyCarboxOption(cand);
+                        finalCand = agent.ChooseAndApplyTerminalOption(cand);
                         if (finalCand == null)
                             Console.WriteLine("Fail on finding final carbox");
                     }
@@ -234,7 +232,6 @@ namespace GraphSynth.Search
                     var linkerName = AbstractAlgorithm.GetLinkerName(submitCand) + "-E" + e.ToString();
                     var coeff = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".coeff");
                     var lmpdat = Path.Combine(_runDirectory, "data", "linker" + linkerName + ".lmpdat");
-                    agent.Converter.moltoUFF(OBFunctions.designgraphtomol(submitCand.graph), coeff, lmpdat, false, 100);
 
                     double piority = 0;
                     if (CARBOXTYPE == "estimator")

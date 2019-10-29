@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Remoting.Channels;
 using GraphSynth.Representation;
 using GraphSynth.Search.Algorithms;
 using GraphSynth.Search.Tools;
@@ -18,10 +16,9 @@ namespace GraphSynth.Search
         private JobBuffer jobBuffer;
         private Computation computation;
         private StreamWriter writer;
-
-        private const double PROB_INC = 0.1;
-        private const double PROB_TEM_INIT = 0;
-        private const int NUM_EPOCH = 20;
+        
+        private const int NUM_EPOCH = 10;
+        private const int NUM_RUNS = 1;
         private System.Random rnd = new System.Random();
         
         // Baseline: With probability distribution [1-0.1*steps, 0.1*steps]
@@ -49,42 +46,43 @@ namespace GraphSynth.Search
         {
             Console.WriteLine("Fall 2019 One Drive New Mac Matt....");
             var agent = new Algorithms.Random(settings);
-            for (var e = 0; e < NUM_EPOCH; e++)
-            {
-                Console.WriteLine("Epoch: {0}", e);
-                candidate cand = null;
-                while (cand == null)
-                {
-                    cand = Seed.copy();
-                    var step = 0;
-                    while (true)
-                    {
-                        if (rnd.NextDouble() > PROB_TEM_INIT + step * PROB_INC)
-                        {
-                            Console.WriteLine("Choose non-terminal rule.");
-                            cand = agent.ChooseAndApplyOption(cand);
-                            if (cand == null)
-                                break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Choose terminal rule.");
-                            cand = agent.ChooseAndApplyCarboxOption(cand);
-                            break;
-                        }
-                        step++;
-                    }
 
-                    if (cand == null)
+            for (var r = 0; r < NUM_RUNS; r++)
+            {
+                for (var e = 0; e < NUM_EPOCH; e++)
+                {
+                    Console.WriteLine("Epoch: {0}", e);
+                    candidate cand = null;
+                    while (cand == null)
                     {
-                        Console.WriteLine("Fail, rebuild");
+                        cand = Seed.copy();
+                        while (true)
+                        {
+                            cand = agent.ChooseAndApplyAnyOption(cand);
+                            if (cand == null)
+                            {
+                                Console.WriteLine("Fail, Rebuild");
+                                break;
+                            }
+                            if (agent.IsTerminalCandidate(cand))
+                            {
+                                Console.WriteLine("Choose terminal rule.");
+                                break;
+                            }
+                            Console.WriteLine("Choose non-terminal rule.");
+                        }
                     }
+                    var linkerName = AbstractAlgorithm.GetLinkerName(cand);
+                    Console.WriteLine(linkerName);
+                    var atomCount = AbstractAlgorithm.CountAtoms(cand);
+                    Console.WriteLine(atomCount);
+                    var smi = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
+                    Console.WriteLine(smi);
+                    writer.Write("{0} ", atomCount);
                 }
-                var candSmile = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
-                var linkerName = AbstractAlgorithm.GetLinkerName(cand);
-                Console.WriteLine(candSmile);
-                Console.WriteLine(linkerName);
+                writer.WriteLine();
             }
+            writer.Close();
         }
         
         public override string text => "RandomBaseline Search Runner";

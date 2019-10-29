@@ -139,7 +139,7 @@ namespace GraphSynth.Search
 
         public BFSNode[] getChildren(Deterministic agent)
         {
-            var opts = AbstractAlgorithm.GetAvailableOptions(Cand);
+            var opts = AbstractAlgorithm.GetNoneTerminalOptions(Cand);
             var nodes = new BFSNode[opts.Count];
             for (var i = 0; i < nodes.Length; i++)
             {
@@ -151,7 +151,7 @@ namespace GraphSynth.Search
 
         public candidate[] getFinalCand(Deterministic agent)
         {
-            var opts = AbstractAlgorithm.GetCarboxylOptions(Cand);
+            var opts = AbstractAlgorithm.GetTerminalOptions(Cand);
             var finals = new candidate[opts.Count];
             for (var i = 0; i < finals.Length; i++)
             {

@@ -1,6 +1,8 @@
 ﻿using GraphSynth.Representation;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using OpenBabelFunctions;
 using GraphSynth.Search.Tools;
 
@@ -13,54 +15,43 @@ namespace GraphSynth.Search.Algorithms {
     /// </summary>
     public class Random : AbstractAlgorithm
     {
-
         public Random(GlobalSettings settings) : base(settings)
         {
             
         }
-
-
-        public candidate ChooseAndApplyOption(candidate cand)
+        
+        public candidate ChooseAndApplyNonTerminalOption(candidate cand)
         {
-            var options = GetAvailableOptions(cand);
+            var options = GetNoneTerminalOptions(cand);
             return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
         }
 
-        public candidate ChooseAndApplyCarboxOption(candidate cand)
+        public candidate ChooseAndApplyTerminalOption(candidate cand)
         {
-            var options = GetCarboxylOptions(cand);
+            var options = GetTerminalOptions(cand);
             return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
         }
-
-        public candidate ChooseAndApplyCarboxOptionBestAngle(candidate cand)
+        
+        public candidate ChooseAndApplyAnyOption(candidate cand)
         {
-            var options = GetCarboxylOptions(cand);
-            option bestOpt = null;
-            var bestAngle = .0;
-            foreach (var opt in options) 
-            {
-                var evalcand = CopyAndApplyOption(opt, cand, true);
-                var mol = OBFunctions.designgraphtomol(evalcand.graph);
-                var angle = CalAngle(mol);
-                if (angle > 180)
-                {
-                    Console.WriteLine(angle + " too large");
-                    Environment.Exit(0);
-                }
-                if (angle > bestAngle)
-                {
-                    bestAngle = angle;
-                    bestOpt = opt;
-                }
-            }
-            return bestOpt == null ? null : CopyAndApplyOption(bestOpt, cand, true);
+            var nonTerminalOptions = GetNoneTerminalOptions(cand);
+            var terminalOptions = GetTerminalOptions(cand);
+            var options = nonTerminalOptions.Concat(terminalOptions).ToList();
+            return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
         }
+        
+        public bool IsTerminalCandidate(candidate cand)
+        {
+            var numRule = cand.recipe.Count;
+            return cand.recipe[numRule - 1].ruleSetIndex == 1;
+        }
+        
 
         public candidate ChooseAndApplyCarboxOptionUsingEstimator(candidate cand, Computation cpt, MessageClient clt, string runDir, int epoch)
         {
             option bestOpt = null;
             var bestProperty = Double.NegativeInfinity;
-            var options = GetCarboxylOptions(cand);
+            var options = GetTerminalOptions(cand);
             foreach (var opt in options) 
             {
                 var evalcand = CopyAndApplyOption(opt, cand, true);
@@ -68,7 +59,6 @@ namespace GraphSynth.Search.Algorithms {
                 var linkerName = AbstractAlgorithm.GetLinkerName(evalcand) + "-E" + epoch.ToString();
                 var coeff = Path.Combine(runDir, "data", "linker" + linkerName + ".coeff");
                 var lmpdat = Path.Combine(runDir, "data", "linker" + linkerName + ".lmpdat");
-                Converter.moltoUFF(OBFunctions.designgraphtomol(evalcand.graph), coeff, lmpdat, false, 100);
                 cpt.CalculateFeature(linkerName);
                 var properpty = Convert.ToDouble(clt.SendMessage("[Predict]" + " " + linkerName));
 

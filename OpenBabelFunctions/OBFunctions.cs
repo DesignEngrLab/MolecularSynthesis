@@ -114,7 +114,7 @@ namespace OpenBabelFunctions {
                         Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
                     }
                     Console.WriteLine("{0}, {1}", tpl, i);
-                    Environment.Exit(0);
+//                    Environment.Exit(0);
                     throw e;
                 }
             }
@@ -144,9 +144,9 @@ namespace OpenBabelFunctions {
 
         public static string GetRamDir() {
             //different linux distributions have different locations for temporary files. 
-            string iodir = "/run/shm/";
+            string iodir = "/Users/yangchen/RiderProjects/MorfFall2019/iodir";
             if (!Directory.Exists(iodir)) {
-                iodir = "/dev/shm/";
+                Directory.CreateDirectory(iodir);
             }
             return iodir;
         }

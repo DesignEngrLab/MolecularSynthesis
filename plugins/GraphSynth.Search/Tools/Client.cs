@@ -63,9 +63,7 @@ namespace GraphSynth.Search.Tools
                         failure, INTERVAL);
                     Thread.Sleep(INTERVAL*1000);
                 }
-
             }
-
         }
 
         public void DisConnect()

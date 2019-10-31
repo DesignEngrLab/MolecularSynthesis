@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using library;
+using LAMMPSnow;
 
 
 
@@ -14,13 +15,13 @@ namespace GraphSynth.Search.Algorithms {
     public abstract class AbstractAlgorithm {
         public static GlobalSettings Settings;
         public static readonly System.Random Rand = new System.Random();
-        //private static readonly string IODir = OBFunctions.GetRamDir();
-        
+        private static readonly string IODir = OBFunctions.GetRamDir();
         private const double AngleFloor = 155; // minimum acceptable angle between carboxylates
-        
+        public readonly graph2almostanything Converter;
         
         protected AbstractAlgorithm(GlobalSettings settings_) {
             Settings = settings_;
+            Converter = new graph2almostanything(Settings.InputDirAbs);
         }
 
         public static string GetLinkerName(candidate cand)
@@ -65,8 +66,8 @@ namespace GraphSynth.Search.Algorithms {
             cand.graph.globalVariables.Add(cand.f0); // track fitness values of previous states
             opt.apply(cand.graph, null);
             cand.addToRecipe(opt);
-//            if(doMinimize)
-//                cand.graph = Minimize(cand.graph);
+            if(doMinimize)
+                cand.graph = Minimize(cand.graph);
             cand.graph = OBFunctions.tagconvexhullpoints(cand.graph);
         }
 
@@ -86,14 +87,13 @@ namespace GraphSynth.Search.Algorithms {
         /// Clean way to minimize a graph.
         /// </summary>
         private designGraph Minimize(designGraph graph) {
-//            var mol = QuickMinimization(OBFunctions.designgraphtomol(graph), IODir + "rank" + ".lmpdat",
-//                IODir + "rank" + ".coeff", false, 0);
-//            OBFunctions.updatepositions(graph, mol);
+            var mol = QuickMinimization(OBFunctions.designgraphtomol(graph), IODir + "rank" + ".lmpdat",
+                IODir + "rank" + ".coeff", false, 0);
+            OBFunctions.updatepositions(graph, mol);
             return graph;
         }
 
         private OBMol QuickMinimization(OBMol mol, string coeff, string lmpdat, bool periodic, int rankMe) {
-            double padding = 50;
             const double etol = 0.0;
             const double ftol = 1.0e-6;
             const int maxiter = 40000;
@@ -102,7 +102,6 @@ namespace GraphSynth.Search.Algorithms {
             var minSettings = new lammps.LAMMPSsettings();
             if (periodic) {
                 minSettings.boundary = "p p p";
-                padding = 0;
             }
 
             if (File.Exists(coeff))

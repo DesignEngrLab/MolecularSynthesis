@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using library;
-using LAMMPSnow;
 
 
 
@@ -17,11 +15,10 @@ namespace GraphSynth.Search.Algorithms {
         public static readonly System.Random Rand = new System.Random();
         private static readonly string IODir = OBFunctions.GetRamDir();
         private const double AngleFloor = 155; // minimum acceptable angle between carboxylates
-        public readonly graph2almostanything Converter;
+
         
         protected AbstractAlgorithm(GlobalSettings settings_) {
             Settings = settings_;
-            Converter = new graph2almostanything(Settings.InputDirAbs);
         }
 
         public static string GetLinkerName(candidate cand)
@@ -87,36 +84,10 @@ namespace GraphSynth.Search.Algorithms {
         /// Clean way to minimize a graph.
         /// </summary>
         private designGraph Minimize(designGraph graph) {
-            var mol = QuickMinimization(OBFunctions.designgraphtomol(graph), IODir + "rank" + ".lmpdat",
-                IODir + "rank" + ".coeff", false, 0);
+            var mol = new OBMol();
             OBFunctions.updatepositions(graph, mol);
             return graph;
         }
-
-        private OBMol QuickMinimization(OBMol mol, string coeff, string lmpdat, bool periodic, int rankMe) {
-            const double etol = 0.0;
-            const double ftol = 1.0e-6;
-            const int maxiter = 40000;
-            const int maxeval = 20000;
-            
-            var minSettings = new lammps.LAMMPSsettings();
-            if (periodic) {
-                minSettings.boundary = "p p p";
-            }
-
-            if (File.Exists(coeff))
-                File.Delete(coeff);
-            if (File.Exists(lmpdat))
-                File.Delete(lmpdat);
-            
-            string[] lmparg = {"", "-screen", "none", "-log", "log.lammps." + rankMe};
-            using (var lmps = new lammps(minSettings, lmparg)) {
-                lmps.runCommand("read_data " + lmpdat);
-                lmps.openFile(coeff);
-                lmps.minimize(etol, ftol, maxiter, maxeval, "cg");
-                OBFunctions.updatexyz(mol, lmps.getAtomPos());
-            }
-            return mol;
-        }
+        
     }
 }

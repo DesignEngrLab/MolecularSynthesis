@@ -20,7 +20,6 @@ namespace GraphSynth.Search
         private Computation computation;
         private StreamWriter writer;
         private Algorithms.Random agent;
-
         private const int GEN_SET_SIZE = 10;
         private const int NUM_EPOCH = 100;
         private const int NUM_RUNS = 20;

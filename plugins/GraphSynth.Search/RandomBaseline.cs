@@ -49,7 +49,6 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
-            
             Console.WriteLine("Fall 2019 One Drive New Mac Matt....");
             for (var r = 0; r < NUM_RUNS; r++)
             {

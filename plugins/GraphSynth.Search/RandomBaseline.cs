@@ -6,7 +6,6 @@ using GraphSynth.Representation;
 using GraphSynth.Search.Algorithms;
 using GraphSynth.Search.Tools;
 using OpenBabelFunctions;
-using Random = System.Random;
 
 
 namespace GraphSynth.Search

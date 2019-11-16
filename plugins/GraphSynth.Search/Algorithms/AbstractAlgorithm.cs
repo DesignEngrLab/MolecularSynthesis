@@ -63,8 +63,8 @@ namespace GraphSynth.Search.Algorithms {
             cand.graph.globalVariables.Add(cand.f0); // track fitness values of previous states
             opt.apply(cand.graph, null);
             cand.addToRecipe(opt);
-            if(doMinimize)
-                cand.graph = Minimize(cand.graph);
+/*            if(doMinimize)
+                cand.graph = Minimize(cand.graph);*/
             cand.graph = OBFunctions.tagconvexhullpoints(cand.graph);
         }
 

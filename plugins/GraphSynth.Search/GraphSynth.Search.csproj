@@ -103,14 +103,6 @@
       <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
       <Name>GraphSynth.BaseClasses</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSharp\LAMMPSharp.csproj">
-      <Project>{e04b4a78-6007-4ec3-ad43-01ab61184896}</Project>
-      <Name>LAMMPSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LAMMPSnow\LAMMPSnow.csproj">
-      <Project>{c5a4fd4e-9797-4e15-9e94-651c3b5bb77c}</Project>
-      <Name>LAMMPSnow</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\OpenBabelFunctions\OpenBabelFunctions.csproj">
       <Project>{efaa61e4-be78-496f-9846-4464bea08f98}</Project>
       <Name>OpenBabelFunctions</Name>

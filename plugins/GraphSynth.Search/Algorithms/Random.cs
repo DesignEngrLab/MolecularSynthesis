@@ -20,23 +20,10 @@ namespace GraphSynth.Search.Algorithms {
             
         }
         
-        public candidate ChooseAndApplyNonTerminalOption(candidate cand)
-        {
-            var options = GetNoneTerminalOptions(cand);
-            return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
-        }
-
-        public candidate ChooseAndApplyTerminalOption(candidate cand)
-        {
-            var options = GetTerminalOptions(cand);
-            return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
-        }
         
         public candidate ChooseAndApplyAnyOption(candidate cand)
         {
-            var nonTerminalOptions = GetNoneTerminalOptions(cand);
-            var terminalOptions = GetTerminalOptions(cand);
-            var options = nonTerminalOptions.Concat(terminalOptions).ToList();
+            var options = GetAllOptions(cand);
             return options.Count > 0 ? CopyAndApplyOption(options[Rand.Next(options.Count)], cand, true) : null;
         }
         

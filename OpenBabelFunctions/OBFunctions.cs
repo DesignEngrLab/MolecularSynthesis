@@ -109,13 +109,7 @@ namespace OpenBabelFunctions {
                 }
                 catch (Exception e)
                 {
-                    foreach (KeyValuePair<Tuple<double, double, double>, int> kvp in lookup)
-                    {
-                        Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-                    }
-                    Console.WriteLine("{0}, {1}", tpl, i);
-//                    Environment.Exit(0);
-                    throw e;
+
                 }
             }
 

@@ -39,7 +39,7 @@
       <HintPath>..\assembly\MIConvexHull.dll</HintPath>
     </Reference>
     <Reference Include="OBDotNet, Version=0.5.0.0, Culture=neutral, PublicKeyToken=3069c9c4f488e4bd">
-      <HintPath>..\openbabelTools\lib\OBDotNet.dll</HintPath>
+      <HintPath>..\csharp_binding\lib\OBDotNet.dll</HintPath>
     </Reference>
     <Reference Include="StarMath, Version=1.0.11.729, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\assembly\StarMath.dll</HintPath>
@@ -54,7 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework-constructor.cs" />
     <Compile Include="graph2almostanything.cs" />
+    <Compile Include="LAMMPSnow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

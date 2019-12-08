@@ -27,21 +27,18 @@ namespace GraphSynth.Search.Algorithms {
             return String.Join("-", arr);
         }
         
-        public static int CountAtoms(candidate cand)
-        {
-            return cand.graph.nodes.Count;
-        }
-
-
+        
         /// <summary>
         /// Get all available options for the given graph.
         /// </summary>
         /// <param name="cand"></param>
         /// <returns></returns>
-        public static List<option> GetNoneTerminalOptions(candidate cand) {
-            var options = new List<option>();
-            options.AddRange(Settings.rulesets[0].recognize(cand.graph, false));
-            return options;
+        public static List<option> GetAllOptions(candidate cand) {
+            var options0 = new List<option>();
+            options0.AddRange(Settings.rulesets[0].recognize(cand.graph, false));
+            var options1 = new List<option>();
+            options1.AddRange(Settings.rulesets[1].recognize(cand.graph, false));
+            return options0.Concat(options1).ToList();
         }
         
 

@@ -4,6 +4,7 @@ using System.IO;
 using GraphSynth.Representation;
 using System.Collections.Generic;
 using MIConvexHull;
+using System.Diagnostics;
 
 
 namespace OpenBabelFunctions {
@@ -101,16 +102,9 @@ namespace OpenBabelFunctions {
                 n.localLabels.RemoveAll(s => s == "hullpt");
                 double[] pos = new double[] {n.X, n.Y, n.Z};
                 points.Add(pos);
-                
-                var tpl = Tuple.Create(n.X, n.Y, n.Z);
-                try
-                {
-                    lookup.Add(tpl, i);
-                }
-                catch (Exception e)
-                {
 
-                }
+                var tpl = Tuple.Create(n.X, n.Y, n.Z);
+                lookup.Add(tpl, i);
             }
 
             var chull = ConvexHull.Create(points);
@@ -134,6 +128,28 @@ namespace OpenBabelFunctions {
                 //a.SetVector(vec);
             }
             return true;
+        }
+        
+        public static OBMol InterStepMinimize(OBMol mol)
+        {
+            var conv = new OBConversion();
+            conv.SetInAndOutFormats("pdb", "mol");
+            conv.WriteFile(mol, Path.Combine(GetRamDir(), "minimize.mol"));
+            string minimizeOutput;
+            using (Process proc = new Process()) {
+                proc.StartInfo.FileName = "/Users/yangchen/RiderProjects/MorfFall2019/openbabelTool/bin/obminimize";
+                proc.StartInfo.Arguments = "minimize.mol";
+                proc.StartInfo.WorkingDirectory = GetRamDir();
+                proc.StartInfo.RedirectStandardError = true;
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.RedirectStandardInput = false;
+                proc.Start();
+                proc.WaitForExit();
+                minimizeOutput = proc.StandardOutput.ReadToEnd();
+            }
+            conv.ReadString(mol, minimizeOutput);
+            return mol;
         }
 
         public static string GetRamDir() {

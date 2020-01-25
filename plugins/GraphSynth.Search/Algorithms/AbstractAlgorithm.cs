@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenBabelFunctions;
 
 
 
@@ -60,8 +61,8 @@ namespace GraphSynth.Search.Algorithms {
             cand.graph.globalVariables.Add(cand.f0); // track fitness values of previous states
             opt.apply(cand.graph, null);
             cand.addToRecipe(opt);
-/*            if(doMinimize)
-                cand.graph = Minimize(cand.graph);*/
+            if(doMinimize)
+                cand.graph = Minimize(cand.graph);
             cand.graph = OBFunctions.tagconvexhullpoints(cand.graph);
         }
 
@@ -81,8 +82,9 @@ namespace GraphSynth.Search.Algorithms {
         /// Clean way to minimize a graph.
         /// </summary>
         private designGraph Minimize(designGraph graph) {
-            var mol = new OBMol();
-            OBFunctions.updatepositions(graph, mol);
+            var mol = OBFunctions.designgraphtomol(graph);
+            var newMol = OBFunctions.InterStepMinimize(mol);
+            OBFunctions.updatepositions(graph, newMol);
             return graph;
         }
         

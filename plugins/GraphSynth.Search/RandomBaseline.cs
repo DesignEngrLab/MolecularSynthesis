@@ -22,7 +22,7 @@ namespace GraphSynth.Search
         private Algorithms.Random agent;
         private const int GEN_SET_SIZE = 10;
         private const int NUM_EPOCH = 100;
-        private const int NUM_RUNS = 20;
+        private const int NUM_RUNS = 1;
 
 
         public RandomBaseline(GlobalSettings settings) : base(settings)
@@ -81,26 +81,18 @@ namespace GraphSynth.Search
                 cand = Seed.copy();
                 while (true)
                 {
-                    try
+                    cand = agent.ChooseAndApplyAnyOption(cand);
+                    if (cand == null)
                     {
-                        cand = agent.ChooseAndApplyAnyOption(cand);
-                        if (cand == null)
-                        {
-                            //Console.WriteLine("Fail, Rebuild");
-                            break;
-                        }
-
-                        if (agent.IsTerminalCandidate(cand))
-                        {
-                            //Console.WriteLine("Choose terminal rule.");
-                            break;
-                        }
-                        //Console.WriteLine("Choose non-terminal rule.");
+                        //Console.WriteLine("Fail, Rebuild");
+                        break;
                     }
-                    catch (Exception e)
+                    if (agent.IsTerminalCandidate(cand))
                     {
-                        cand = Seed.copy();
+                        //Console.WriteLine("Choose terminal rule.");
+                        break;
                     }
+                    //Console.WriteLine("Choose non-terminal rule.");
                 }
             }
             return cand;

@@ -110,6 +110,10 @@
       <Project>{7c4dd63b-8d3d-4678-a4f9-7773609779f2}</Project>
       <Name>PropertyEvaluation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TinkerFunctions\TinkerFunctions.csproj">
+      <Project>{28e24dc5-d4d4-47b3-b0b1-5b557cd678df}</Project>
+      <Name>TinkerFunctions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

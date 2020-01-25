@@ -84,7 +84,7 @@ namespace GraphSynth.Search
                     cand = agent.ChooseAndApplyAnyOption(cand);
                     if (cand == null)
                     {
-                        //Console.WriteLine("Fail, Rebuild");
+                        Console.WriteLine("Fail, Rebuild");
                         break;
                     }
                     if (agent.IsTerminalCandidate(cand))

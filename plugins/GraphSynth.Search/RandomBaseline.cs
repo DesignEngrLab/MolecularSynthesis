@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using GraphSynth.Representation;
-using GraphSynth.Search.Algorithms;
+using PropertyEvaluation;
 using GraphSynth.Search.Tools;
 using OpenBabelFunctions;
 using PropertyEvaluation;
@@ -23,8 +23,7 @@ namespace GraphSynth.Search
         private const int GEN_SET_SIZE = 10;
         private const int NUM_EPOCH = 100;
         private const int NUM_RUNS = 1;
-
-
+        
         public RandomBaseline(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
@@ -53,9 +52,10 @@ namespace GraphSynth.Search
                     var cand = GenerateCand();
                     var atomNum = Evaluation.CountAtoms(cand);
                     var smi = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
-                    Console.WriteLine(smi);
                     if (!MolSet.ContainsKey(smi))
                         MolSet.Add(smi, atomNum);
+                        Console.WriteLine("Candidate Found {0}", smi);
+                        Console.WriteLine("Candidate moment {0}", string.Join(", ", Evaluation.CalcMoment(cand)));
                 }
                 for (var e = 0; e < NUM_EPOCH; e++)
                 {

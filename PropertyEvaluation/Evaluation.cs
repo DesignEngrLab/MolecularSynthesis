@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using GraphMolWrap;
 
 
-
 namespace PropertyEvaluation
 {
     public class Evaluation
@@ -61,7 +60,7 @@ namespace PropertyEvaluation
 
         private void TestRDKit()
         {
-            
+            var mol = RWMol.MolFromSmiles("CC1COC(c2cccn2Cc2ccccc2Cl)=N1");
         }
 
 

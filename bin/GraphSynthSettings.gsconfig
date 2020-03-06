@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GlobalSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" WorkingDirAbsolute="C:\Users\Owner\Desktop\MORF\" WorkingDirRelative="">
+  <MaxRulesToDisplay>1000</MaxRulesToDisplay>
+  <MaxRulesToApply>500</MaxRulesToApply>
+  <InputDir>../input</InputDir>
+  <OutputDir>../output</OutputDir>
+  <RulesDir>../rules</RulesDir>
+  <LocalHelpDir />
+  <OnlineHelpURL>http://graphsynth.com/help/</OnlineHelpURL>
+  <GraphLayoutDir />
+  <SearchDir>../plugins/GraphSynth.Search</SearchDir>
+  <ErrorLogFile>ErrorLog.txt</ErrorLogFile>
+  <DefaultSeedFileName>linkerseed.gxml</DefaultSeedFileName>
+  <DefaultRuleSets>cvx_chemistry_ruleset.rsxml, carboxylate_ruleset.rsxml</DefaultRuleSets>
+  <CustomShapesFile>../plugins/customShapeDescriptors.xaml</CustomShapesFile>
+  <CompiledRuleFunctions>ruleEditing.dll</CompiledRuleFunctions>
+  <SearchControllerPlayOnStart>true</SearchControllerPlayOnStart>
+  <GetHelpFromOnline>false</GetHelpFromOnline>
+  <RecompileRuleConditions>false</RecompileRuleConditions>
+  <DefaultVerbosity>4</DefaultVerbosity>
+</GlobalSettings>

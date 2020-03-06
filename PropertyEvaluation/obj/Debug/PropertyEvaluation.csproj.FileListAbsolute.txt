@@ -7,3 +7,12 @@
 /Users/yangchen/RiderProjects/MorfFall2019/PropertyEvaluation/obj/Debug/PropertyEvaluation.dll
 /Users/yangchen/RiderProjects/MorfFall2019/PropertyEvaluation/obj/Debug/PropertyEvaluation.pdb
 /Users/yangchen/RiderProjects/MorfFall2019/PropertyEvaluation/bin/Debug/StarMath.dll
+C:\Users\campmatt\source\repos\cyclone923\MorfFall2019\PropertyEvaluation\bin\Debug\PropertyEvaluation.dll
+C:\Users\campmatt\source\repos\cyclone923\MorfFall2019\PropertyEvaluation\bin\Debug\PropertyEvaluation.pdb
+C:\Users\campmatt\source\repos\cyclone923\MorfFall2019\PropertyEvaluation\bin\Debug\GraphSynth.BaseClasses.dll
+C:\Users\campmatt\source\repos\cyclone923\MorfFall2019\PropertyEvaluation\bin\Debug\StarMath.dll
+C:\Users\campmatt\source\repos\cyclone923\MorfFall2019\PropertyEvaluation\bin\Debug\GraphSynth.BaseClasses.pdb
+C:\Users\campmatt\source\repos\cyclone923\MorfFall2019\PropertyEvaluation\obj\Debug\PropertyEvaluation.csprojAssemblyReference.cache
+C:\Users\campmatt\source\repos\cyclone923\MorfFall2019\PropertyEvaluation\obj\Debug\PropertyEvaluation.csproj.CopyComplete
+C:\Users\campmatt\source\repos\cyclone923\MorfFall2019\PropertyEvaluation\obj\Debug\PropertyEvaluation.dll
+C:\Users\campmatt\source\repos\cyclone923\MorfFall2019\PropertyEvaluation\obj\Debug\PropertyEvaluation.pdb

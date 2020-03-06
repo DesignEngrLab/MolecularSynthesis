@@ -137,7 +137,7 @@ namespace OpenBabelFunctions {
             conv.WriteFile(mol, Path.Combine(GetRamDir(), "minimize.mol"));
             string minimizeOutput;
             using (Process proc = new Process()) {
-                proc.StartInfo.FileName = "/Users/yangchen/RiderProjects/MorfFall2019/openbabelTool/bin/obminimize";
+                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.0.0\\obminimize.exe";
                 proc.StartInfo.Arguments = "minimize.mol";
                 proc.StartInfo.WorkingDirectory = GetRamDir();
                 proc.StartInfo.RedirectStandardError = true;
@@ -154,7 +154,7 @@ namespace OpenBabelFunctions {
 
         public static string GetRamDir() {
             //different linux distributions have different locations for temporary files. 
-            string iodir = "/Users/yangchen/RiderProjects/MorfFall2019/iodir";
+            string iodir = "../../iodir";
             if (!Directory.Exists(iodir)) {
                 Directory.CreateDirectory(iodir);
             }

@@ -57,14 +57,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Resource Include="..\Resources\GraphSynth2.ico">
-      <Link>Properties\GraphSynth2.ico</Link>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Resources\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Initialization\PluginLoader.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -117,10 +109,37 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OpenBabelFunctions\OpenBabelFunctions.csproj">
+      <Project>{efaa61e4-be78-496f-9846-4464bea08f98}</Project>
+      <Name>OpenBabelFunctions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\plugins\GraphSynth.Search\GraphSynth.Search.csproj">
+      <Project>{ce5aa992-fbab-43f8-9f4f-4e639f8726e2}</Project>
+      <Name>GraphSynth.Search</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PropertyEvaluation\PropertyEvaluation.csproj">
+      <Project>{7c4dd63b-8d3d-4678-a4f9-7773609779f2}</Project>
+      <Name>PropertyEvaluation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj">
       <Project>{b2fc51bb-c6fd-4c33-b827-bdebb77adc75}</Project>
       <Name>GraphSynth.BaseClasses</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\GraphSynth2.ico" />
+    <Content Include="Resources\GraphSynth2_Installer.xml" />
+    <Content Include="Resources\GS2Graph.ico" />
+    <Content Include="Resources\GS2Rule.ico" />
+    <Content Include="Resources\GS2RuleSet.ico" />
+    <Content Include="Resources\GSConfig.ico" />
+    <Content Include="Resources\hyperArcToDo.txt" />
+    <Content Include="Resources\readme.txt" />
+    <Content Include="Resources\RunningGSFromSource.htm" />
+    <Content Include="Resources\todo.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

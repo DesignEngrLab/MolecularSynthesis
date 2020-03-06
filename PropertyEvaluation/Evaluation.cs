@@ -3,7 +3,7 @@ using System.Linq;
 using System.Xml.Schema;
 using GraphSynth.Representation;
 using System.Collections.Generic;
-using GraphMolWrap;
+//using GraphMolWrap;
 
 
 namespace PropertyEvaluation
@@ -60,7 +60,7 @@ namespace PropertyEvaluation
 
         private void TestRDKit()
         {
-            var mol = RWMol.MolFromSmiles("CC1COC(c2cccn2Cc2ccccc2Cl)=N1");
+       //     var mol = RWMol.MolFromSmiles("CC1COC(c2cccn2Cc2ccccc2Cl)=N1");
         }
 
 

@@ -1,0 +1,18 @@
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\MolecularSynthesisConsole.exe
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\MolecularSynthesisConsole.deps.json
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\MolecularSynthesisConsole.runtimeconfig.json
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\MolecularSynthesisConsole.runtimeconfig.dev.json
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\MolecularSynthesisConsole.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\MolecularSynthesisConsole.pdb
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\MIConvexHull.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\Priority Queue.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\System.CodeDom.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\GraphSynth.BaseClasses.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\OBDotNet.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netcoreapp3.1\GraphSynth.BaseClasses.pdb
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netcoreapp3.1\MolecularSynthesisConsole.csprojAssemblyReference.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netcoreapp3.1\MolecularSynthesisConsole.AssemblyInfoInputs.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netcoreapp3.1\MolecularSynthesisConsole.AssemblyInfo.cs
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netcoreapp3.1\MolecularSynthesisConsole.csproj.CopyComplete
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netcoreapp3.1\MolecularSynthesisConsole.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netcoreapp3.1\MolecularSynthesisConsole.pdb

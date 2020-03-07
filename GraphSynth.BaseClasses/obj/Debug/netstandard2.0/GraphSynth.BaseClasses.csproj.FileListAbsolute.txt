@@ -1,0 +1,8 @@
+C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\bin\Debug\netstandard2.0\GraphSynth.BaseClasses.deps.json
+C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\bin\Debug\netstandard2.0\GraphSynth.BaseClasses.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\bin\Debug\netstandard2.0\GraphSynth.BaseClasses.pdb
+C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.csprojAssemblyReference.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.AssemblyInfoInputs.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.AssemblyInfo.cs
+C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.pdb

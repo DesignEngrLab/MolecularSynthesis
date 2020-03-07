@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OptimizedPriorityQueue" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Reference Include="OBDotNet">
+      <HintPath>..\..\..\..\..\..\Program Files\OpenBabel-3.0.0\OBDotNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+
+</Project>

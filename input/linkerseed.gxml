@@ -99,7 +99,7 @@ mc:Ignorable="GraphSynth" xmlns:GraphSynth="ignorableUri" Tag="Graph" ><Border B
       </localVariables>
       <X>0</X>
       <Y>100</Y>
-      <Z>0</Z>
+      <Z>10</Z>
     </node>
   </nodes>
   <hyperarcs />

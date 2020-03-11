@@ -13,7 +13,6 @@
     <ProjectReference Include="..\GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj" />
   </ItemGroup>
 
-
   <ItemGroup>
     <Reference Include="OBDotNet">
       <HintPath>..\..\..\..\..\..\Program Files\OpenBabel-3.0.0\OBDotNet.dll</HintPath>

@@ -81,7 +81,8 @@ namespace GraphSynth.Search.Algorithms {
         /// <summary>
         /// Clean way to minimize a graph.
         /// </summary>
-        private designGraph Minimize(designGraph graph) {
+        private designGraph Minimize(designGraph graph) 
+        {
             var mol = OBFunctions.designgraphtomol(graph);
             var newMol = OBFunctions.InterStepMinimize(mol);
             OBFunctions.updatepositions(graph, newMol);

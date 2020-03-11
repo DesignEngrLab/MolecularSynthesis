@@ -148,6 +148,8 @@ namespace OpenBabelFunctions
 
         public static OBMol InterStepMinimize(OBMol mol)
         {
+            const int waitTime = 10000; // time for waiting in milliseconds
+            var stopwatch = new Stopwatch();
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
             conv.WriteFile(mol, Path.Combine(GetRamDir(), "minimize.mol"));
@@ -156,14 +158,23 @@ namespace OpenBabelFunctions
             {
                 proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.0.0\\obminimize.exe";
                 proc.StartInfo.Arguments = "minimize.mol";
+                //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
+                // or '-c' convergence criteria
                 proc.StartInfo.WorkingDirectory = GetRamDir();
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.RedirectStandardInput = false;
+                Console.Write("starting OBMinimize...");
+                stopwatch.Restart();
                 proc.Start();
-                proc.WaitForExit();
+                proc.WaitForExit(waitTime); //wait up to 10 seconds. OB will return best result
+                // but maybe you want to scale this based on molecule size
+                var elapsed =  stopwatch.Elapsed;
+                Console.WriteLine("completed in {0}", elapsed);
                 minimizeOutput = proc.StandardOutput.ReadToEnd();
+               if (elapsed.TotalMilliseconds> waitTime)
+                    Console.WriteLine(minimizeOutput);
             }
             conv.ReadString(mol, minimizeOutput);
             return mol;

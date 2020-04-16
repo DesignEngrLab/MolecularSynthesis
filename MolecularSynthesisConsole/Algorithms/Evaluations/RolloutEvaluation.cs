@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using GraphSynth.Representation;
 using OpenBabelFunctions;
 
-namespace GraphSynth.Search.Algorithms.Evaluations {
+namespace MolecularSynthesis
+{
     public class RolloutEvaluation : AbstractEvaluation {
         private Random _random;
         

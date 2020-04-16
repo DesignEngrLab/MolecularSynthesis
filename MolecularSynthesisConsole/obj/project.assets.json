@@ -1,16 +1,7 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {
-      "MIConvexHull/1.1.19.1019": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/MIConvexHull.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/MIConvexHull.dll": {}
-        }
-      },
+    ".NETStandard,Version=v2.1": {
       "OptimizedPriorityQueue/4.2.0": {
         "type": "package",
         "compile": {
@@ -19,50 +10,10 @@
         "runtime": {
           "lib/netstandard1.0/Priority Queue.dll": {}
         }
-      },
-      "System.CodeDom/4.7.0": {
-        "type": "package",
-        "compile": {
-          "ref/netstandard2.0/System.CodeDom.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/System.CodeDom.dll": {}
-        }
-      },
-      "GraphSynth.BaseClasses/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "MIConvexHull": "1.1.19.1019",
-          "System.CodeDom": "4.7.0"
-        },
-        "compile": {
-          "bin/placeholder/GraphSynth.BaseClasses.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/GraphSynth.BaseClasses.dll": {}
-        }
       }
     }
   },
   "libraries": {
-    "MIConvexHull/1.1.19.1019": {
-      "sha512": "Qz0BIRVyflj9jMkIKG1tpON5Xz1lFEA9XyRH0Pw5qIsCE75heHF4cHrBr8RqvQJRaaNXH+5jdWAfFP3m3OfTOA==",
-      "type": "package",
-      "path": "miconvexhull/1.1.19.1019",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/netstandard1.0/MIConvexHull.deps.json",
-        "lib/netstandard1.0/MIConvexHull.dll",
-        "lib/netstandard1.0/MIConvexHull.pdb",
-        "lib/netstandard2.0/MIConvexHull.deps.json",
-        "lib/netstandard2.0/MIConvexHull.dll",
-        "lib/netstandard2.0/MIConvexHull.pdb",
-        "miconvexhull.1.1.19.1019.nupkg.sha512",
-        "miconvexhull.nuspec"
-      ]
-    },
     "OptimizedPriorityQueue/4.2.0": {
       "sha512": "/Sr/OfCFnff7zFe6HoDyWRU8pEvJbOCE9ZjFCSH0EcfETjgvZJ2kUoqlTgVR7cgTPexOGhNATdBKQigqbYn43w==",
       "type": "package",
@@ -91,39 +42,10 @@
         "optimizedpriorityqueue.4.2.0.nupkg.sha512",
         "optimizedpriorityqueue.nuspec"
       ]
-    },
-    "System.CodeDom/4.7.0": {
-      "sha512": "Hs9pw/kmvH3lXaZ1LFKj3pLQsiGfj2xo3sxSzwiLlRL6UcMZUTeCfoJ9Udalvn3yq5dLlPEZzYegrTQ1/LhPOQ==",
-      "type": "package",
-      "path": "system.codedom/4.7.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/System.CodeDom.dll",
-        "lib/net461/System.CodeDom.xml",
-        "lib/netstandard2.0/System.CodeDom.dll",
-        "lib/netstandard2.0/System.CodeDom.xml",
-        "ref/net461/System.CodeDom.dll",
-        "ref/net461/System.CodeDom.xml",
-        "ref/netstandard2.0/System.CodeDom.dll",
-        "ref/netstandard2.0/System.CodeDom.xml",
-        "system.codedom.4.7.0.nupkg.sha512",
-        "system.codedom.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
-      ]
-    },
-    "GraphSynth.BaseClasses/1.0.0": {
-      "type": "project",
-      "path": "../GraphSynth.BaseClasses/GraphSynth.BaseClasses.csproj",
-      "msbuildProject": "../GraphSynth.BaseClasses/GraphSynth.BaseClasses.csproj"
     }
   },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": [
-      "GraphSynth.BaseClasses >= 1.0.0",
+    ".NETStandard,Version=v2.1": [
       "OptimizedPriorityQueue >= 4.2.0"
     ]
   },
@@ -133,9 +55,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
-      "projectName": "MolecularSynthesisConsole",
-      "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
+      "projectUniqueName": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesis.csproj",
+      "projectName": "MolecularSynthesis",
+      "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesis.csproj",
       "packagesPath": "C:\\Users\\campmatt\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\obj\\",
       "projectStyle": "PackageReference",
@@ -144,19 +66,15 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "netcoreapp3.1"
+        "netstandard2.1"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "netcoreapp3.1": {
-          "projectReferences": {
-            "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj": {
-              "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj"
-            }
-          }
+        "netstandard2.1": {
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -166,7 +84,7 @@
       }
     },
     "frameworks": {
-      "netcoreapp3.1": {
+      "netstandard2.1": {
         "dependencies": {
           "OptimizedPriorityQueue": {
             "target": "Package",
@@ -184,11 +102,11 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
-          "Microsoft.NETCore.App": {
+          "NETStandard.Library": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

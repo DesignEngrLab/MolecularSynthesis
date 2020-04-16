@@ -1,4 +1,4 @@
-namespace GraphSynth.Search
+namespace MolecularSynthesis
 {
     public class ChemBO
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 
 
-namespace GraphSynth.Search.Tools
+namespace MolecularSynthesis.Tools
 {
     public class MessageClient
     {

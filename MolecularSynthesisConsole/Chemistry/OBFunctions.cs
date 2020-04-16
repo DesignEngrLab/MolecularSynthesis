@@ -7,7 +7,7 @@ using MIConvexHull;
 using System.Diagnostics;
 
 
-namespace OpenBabelFunctions
+namespace MolecularSynthesis
 {
     public static partial class OBFunctions
     {
@@ -148,7 +148,7 @@ namespace OpenBabelFunctions
 
         public static OBMol InterStepMinimize(OBMol mol)
         {
-            const int waitTime = 10000; // time for waiting in milliseconds
+            const int waitTime = 1000; // time for waiting in milliseconds
             var stopwatch = new Stopwatch();
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
@@ -170,11 +170,16 @@ namespace OpenBabelFunctions
                 proc.Start();
                 proc.WaitForExit(waitTime); //wait up to 10 seconds. OB will return best result
                 // but maybe you want to scale this based on molecule size
-                var elapsed =  stopwatch.Elapsed;
+                var elapsed = stopwatch.Elapsed;
+                if (elapsed.TotalMilliseconds > waitTime)
+                    proc.Kill();
                 Console.WriteLine("completed in {0}", elapsed);
+                Console.Write("reading simulation data...");
                 minimizeOutput = proc.StandardOutput.ReadToEnd();
-               if (elapsed.TotalMilliseconds> waitTime)
-                    Console.WriteLine(minimizeOutput);
+                Console.WriteLine("completed");
+                //if (elapsed.TotalMilliseconds > waitTime)
+                //    Console.WriteLine(minimizeOutput.Substring(0, 
+                //        Math.Min(500, minimizeOutput.Length)));
             }
             conv.ReadString(mol, minimizeOutput);
             return mol;
@@ -183,12 +188,12 @@ namespace OpenBabelFunctions
         public static string GetRamDir()
         {
             //different linux distributions have different locations for temporary files. 
-            string iodir = "../../iodir";
-            if (!Directory.Exists(iodir))
+            string OpenBabelStorage = "../../OpenBabelStorage";
+            if (!Directory.Exists(OpenBabelStorage))
             {
-                Directory.CreateDirectory(iodir);
+                Directory.CreateDirectory(OpenBabelStorage);
             }
-            return iodir;
+            return OpenBabelStorage;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 //using GraphMolWrap;
 
 
-namespace PropertyEvaluation
+namespace MolecularSynthesis
 {
     public class Evaluation
     {

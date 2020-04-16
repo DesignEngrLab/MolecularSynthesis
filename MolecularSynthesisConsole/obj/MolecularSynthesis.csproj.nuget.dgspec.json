@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj": {}
+    "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesis.csproj": {}
   },
   "projects": {
-    "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj": {
+    "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesis.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
+        "projectUniqueName": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesis.csproj",
         "projectName": "MolecularSynthesis",
-        "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
+        "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesis.csproj",
         "packagesPath": "C:\\Users\\campmatt\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\obj\\",
         "projectStyle": "PackageReference",

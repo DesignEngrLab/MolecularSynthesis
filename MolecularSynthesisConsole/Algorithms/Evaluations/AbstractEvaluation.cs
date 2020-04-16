@@ -1,6 +1,7 @@
 using GraphSynth.Representation;
 
-namespace GraphSynth.Search.Algorithms.Evaluations {
+namespace MolecularSynthesis
+{
     /// <summary>
     /// The main class for implementing state evaluation functions.
     /// </summary>

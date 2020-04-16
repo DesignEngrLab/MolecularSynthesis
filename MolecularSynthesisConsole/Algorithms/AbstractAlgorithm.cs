@@ -9,12 +9,13 @@ using OpenBabelFunctions;
 
 
 
-namespace GraphSynth.Search.Algorithms {
+namespace MolecularSynthesis.Algorithms
+{
     
     public abstract class AbstractAlgorithm {
         public static GlobalSettings Settings;
         public static readonly System.Random Rand = new System.Random();
-        private static readonly string IODir = OBFunctions.GetRamDir();
+        private static readonly string OpenBabelStorage = OBFunctions.GetRamDir();
         private const double AngleFloor = 155; // minimum acceptable angle between carboxylates
 
         
@@ -83,8 +84,8 @@ namespace GraphSynth.Search.Algorithms {
         /// </summary>
         private designGraph Minimize(designGraph graph) 
         {
-            var mol = OBFunctions.designgraphtomol(graph);
-            var newMol = OBFunctions.InterStepMinimize(mol);
+            OBMol mol = OBFunctions.designgraphtomol(graph);
+            OBMol newMol = OBFunctions.InterStepMinimize(mol);
             OBFunctions.updatepositions(graph, newMol);
             return graph;
         }

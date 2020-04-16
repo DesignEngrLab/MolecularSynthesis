@@ -8,7 +8,7 @@ using GraphSynth.Search.Tools;
 
 
 
-namespace GraphSynth.Search.Algorithms {
+namespace MolecularSynthesis.Algorithms {
 
     /// <summary>
     /// Randomly select a valid option at any step.

@@ -2,7 +2,8 @@
 using System.Linq;
 
 
-namespace GraphSynth.Search.Algorithms.Bandits {
+namespace MolecularSynthesis.Algorithms
+{
     public abstract class AbstractBandit {
         protected readonly int NumArms;
         protected int TotalPulls;

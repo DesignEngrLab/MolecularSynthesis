@@ -1,6 +1,7 @@
 using System;
 
-namespace GraphSynth.Search.Algorithms.Bandits {
+namespace MolecularSynthesis.Algorithms
+{
     public class UCTBandit : AbstractBandit {
 
         private const double empiricalC = 1;

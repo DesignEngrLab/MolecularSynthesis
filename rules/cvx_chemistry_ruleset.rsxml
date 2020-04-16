@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ruleSet xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <nextGenerationStep>
-    <nextGenerationSteps>Loop</nextGenerationSteps>
-    <nextGenerationSteps>Stop</nextGenerationSteps>
-    <nextGenerationSteps>Stop</nextGenerationSteps>
-    <nextGenerationSteps>Stop</nextGenerationSteps>
-    <nextGenerationSteps>Stop</nextGenerationSteps>
-  </nextGenerationStep>
   <ruleFileNames>
     <string>add_benzenering_cvx.grxml</string>
     <string>make_acene2_cvx.grxml</string>
@@ -17,9 +10,8 @@
     <string>turnsp3carbonintosp2oxygen2.grxml</string>
     <string>fuseringcyclopentane_cvx.grxml</string>
     <string>doublebondsp3carbon.grxml</string>
-   <!-- <string>add_carboxylate_cvx.grxml</string> -->
   </ruleFileNames>
-  <name>hybrid_chemistry_ruleset</name>
+  <name>cvx_chemistry_ruleset</name>
   <TriggerRuleNum>0</TriggerRuleNum>
   <choiceMethod>Design</choiceMethod>
   <interimCandidates>Unspecified</interimCandidates>

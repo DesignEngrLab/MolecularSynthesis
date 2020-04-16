@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 
 
-namespace GraphSynth.Search.Tools
+namespace MolecularSynthesis.Tools
 {
     public class Computation
     {

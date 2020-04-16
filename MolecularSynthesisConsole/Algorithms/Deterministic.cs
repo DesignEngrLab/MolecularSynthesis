@@ -1,7 +1,7 @@
 ﻿using GraphSynth.Representation;
 
 
-namespace GraphSynth.Search.Algorithms
+namespace MolecularSynthesis.Algorithms
 {
     public class Deterministic: AbstractAlgorithm
     {

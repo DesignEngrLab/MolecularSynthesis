@@ -9,7 +9,7 @@ using OpenBabelFunctions;
 using PropertyEvaluation;
 
 
-namespace GraphSynth.Search
+namespace MolecularSynthesis
 {
     public class RandomBaseline : SearchProcess
     {
@@ -43,7 +43,7 @@ namespace GraphSynth.Search
 
         protected override void Run()
         {
-            Console.WriteLine("Fall 2019 One Drive New Mac Matt....");
+            Console.WriteLine("Fall 2019 random....");
             for (var r = 0; r < NUM_RUNS; r++)
             {
                 Dictionary<string, int> MolSet = new Dictionary<string, int>();

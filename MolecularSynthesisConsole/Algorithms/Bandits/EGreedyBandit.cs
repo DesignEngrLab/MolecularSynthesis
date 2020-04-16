@@ -1,6 +1,7 @@
 ﻿using System;
 
-namespace GraphSynth.Search.Algorithms.Bandits {
+namespace MolecularSynthesis.Algorithms
+{
     public class EGreedyBandit : AbstractBandit {
         private readonly double _epsilon;
         private readonly System.Random _rand = new System.Random();

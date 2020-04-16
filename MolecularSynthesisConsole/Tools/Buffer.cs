@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 
 
-namespace GraphSynth.Search.Tools
+namespace MolecularSynthesis.Tools
 {
     public class JobBuffer
     {

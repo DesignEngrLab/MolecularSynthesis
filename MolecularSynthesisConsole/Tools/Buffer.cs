@@ -61,8 +61,8 @@ namespace MolecularSynthesis.Tools
                         set.Remove(linkerName);
                         var property = computation.CalculateProperty(linkerName);
                         clt.SendMessage("[AddData]" + " " + linkerName);
-                        Console.WriteLine("linker " + linkerName + " finished, with property " + property);
-                        Console.WriteLine("Current "  + queue + " on simulation " + set.Count);
+                        Debug.WriteLine("linker " + linkerName + " finished, with property " + property);
+                        Debug.WriteLine("Current "  + queue + " on simulation " + set.Count);
                         sw.WriteLine("Epoch " + epochLookUp[linkerName] + "," + linkerName + "," + property);
                         epochLookUp.Remove(linkerName);
                     }
@@ -88,8 +88,8 @@ namespace MolecularSynthesis.Tools
             target_set.Add(linkerName);
             Submitlammps(linkerName, target_queue);
 
-            Console.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
-            Console.WriteLine("Current "  + target_queue + " on simulation " + target_set.Count);
+            Debug.WriteLine("Job " + linkerName + " Submmitted with Priority " + priority);
+            Debug.WriteLine("Current "  + target_queue + " on simulation " + target_set.Count);
         }
 
 

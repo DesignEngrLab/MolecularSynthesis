@@ -1,0 +1,4 @@
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisPlugIn\obj\Debug\netcoreapp3.1\MolecularSynthesisPlugIn.csprojAssemblyReference.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisPlugIn\obj\Debug\netcoreapp3.1\MolecularSynthesisPlugIn.csproj.CoreCompileInputs.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisPlugIn\obj\Debug\netcoreapp3.1\MolecularSynthesisPlugIn.AssemblyInfoInputs.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisPlugIn\obj\Debug\netcoreapp3.1\MolecularSynthesisPlugIn.AssemblyInfo.cs

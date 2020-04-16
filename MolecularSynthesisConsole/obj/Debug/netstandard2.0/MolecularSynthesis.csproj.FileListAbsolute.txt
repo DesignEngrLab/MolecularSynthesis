@@ -1,0 +1,14 @@
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard2.0\MolecularSynthesis.csprojAssemblyReference.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard2.0\MolecularSynthesis.csproj.CoreCompileInputs.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard2.0\MolecularSynthesis.AssemblyInfoInputs.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard2.0\MolecularSynthesis.AssemblyInfo.cs
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netstandard2.0\MolecularSynthesis.deps.json
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netstandard2.0\MolecularSynthesis.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netstandard2.0\MolecularSynthesis.pdb
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netstandard2.0\GraphSynth.BaseClasses.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netstandard2.0\OBDotNet.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netstandard2.0\GraphSynth.BaseClasses.pdb
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netstandard2.0\GraphSynth.BaseClasses.xml
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard2.0\MolecularSynthesis.csproj.CopyComplete
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard2.0\MolecularSynthesis.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard2.0\MolecularSynthesis.pdb

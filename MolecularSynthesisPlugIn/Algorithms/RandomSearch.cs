@@ -1,10 +1,10 @@
-﻿using GraphSynth.Representation;
+﻿using GraphSynth;
+using GraphSynth.Representation;
+using MolecularSynthesis.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenBabelFunctions;
-using GraphSynth.Search.Tools;
 
 
 
@@ -13,9 +13,9 @@ namespace MolecularSynthesis.Algorithms {
     /// <summary>
     /// Randomly select a valid option at any step.
     /// </summary>
-    public class Random : AbstractAlgorithm
+    public class RandomSearch : AbstractAlgorithm
     {
-        public Random(GlobalSettings settings) : base(settings)
+        public RandomSearch(GlobalSettings settings) : base(settings)
         {
              
         }

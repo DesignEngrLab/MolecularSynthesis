@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 
@@ -68,7 +69,7 @@ namespace MolecularSynthesis.Algorithms
         /// </summary>
         public void PrintOptInfo() {
             for (var i = 0; i < _averageReward.Length; i++) {
-                Console.WriteLine("Opt {0}: reward {1}, #tries {2}", i, _averageReward[i], _numPulls[i]);
+                Debug.WriteLine("Opt {0}: reward {1}, #tries {2}", i, _averageReward[i], _numPulls[i]);
             }
         }
 

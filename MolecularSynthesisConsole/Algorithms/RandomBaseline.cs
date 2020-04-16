@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using GraphSynth;
 using GraphSynth.Representation;
-using PropertyEvaluation;
-using GraphSynth.Search.Tools;
-using OpenBabelFunctions;
-using PropertyEvaluation;
-
+using GraphSynth.Search;
+using MolecularSynthesis.Tools;
 
 namespace MolecularSynthesis
 {
@@ -19,7 +18,7 @@ namespace MolecularSynthesis
         private JobBuffer jobBuffer;
         private Computation computation;
         private StreamWriter writer;
-        private Algorithms.Random agent;
+        private Algorithms.RandomAlgorithm agent;
         private const int GEN_SET_SIZE = 10;
         private const int NUM_EPOCH = 100;
         private const int NUM_RUNS = 1;
@@ -38,12 +37,12 @@ namespace MolecularSynthesis
             computation = new Computation(_runDirectory, learnDirectory, "point", "stiff");
             writer = new StreamWriter(Path.Combine(_runDirectory, "RandomBaseline.txt"));
             jobBuffer = new JobBuffer(_runDirectory);
-            agent = new Algorithms.Random(settings);
+            agent = new Algorithms.RandomAlgorithm(settings);
         }
 
         protected override void Run()
         {
-            Console.WriteLine("Fall 2019 random....");
+            Debug.WriteLine("Fall 2019 random....");
             for (var r = 0; r < NUM_RUNS; r++)
             {
                 Dictionary<string, int> MolSet = new Dictionary<string, int>();
@@ -54,16 +53,16 @@ namespace MolecularSynthesis
                     var smi = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
                     if (!MolSet.ContainsKey(smi))
                         MolSet.Add(smi, atomNum);
-                        Console.WriteLine("Candidate Found {0}", smi);
-                        Console.WriteLine("Candidate moment {0}", string.Join(", ", Evaluation.CalcMoment(cand)));
+                        Debug.WriteLine("Candidate Found {0}", smi);
+                        Debug.WriteLine("Candidate moment {0}", string.Join(", ", Evaluation.CalcMoment(cand)));
                 }
                 for (var e = 0; e < NUM_EPOCH; e++)
                 {
-                    Console.WriteLine("Epoch: {0}", e);
+                    Debug.WriteLine("Epoch: {0}", e);
                     var cand = GenerateCand();
                     var atomNum = Evaluation.CountAtoms(cand);
                     var smi = OBFunctions.moltoSMILES(OBFunctions.designgraphtomol(cand.graph));
-                    Console.WriteLine(smi);
+                    Debug.WriteLine(smi);
                     if (!MolSet.ContainsKey(smi))
                         MolSet.Add(smi, atomNum);
                     writer.Write("{0} ", MolSet.Values.ToList().Max());
@@ -84,15 +83,15 @@ namespace MolecularSynthesis
                     cand = agent.ChooseAndApplyAnyOption(cand);
                     if (cand == null)
                     {
-                        Console.WriteLine("Fail, Rebuild");
+                        Debug.WriteLine("Fail, Rebuild");
                         break;
                     }
                     if (agent.IsTerminalCandidate(cand))
                     {
-                        //Console.WriteLine("Choose terminal rule.");
+                        //Debug.WriteLine("Choose terminal rule.");
                         break;
                     }
-                    //Console.WriteLine("Choose non-terminal rule.");
+                    //Debug.WriteLine("Choose non-terminal rule.");
                 }
             }
             return cand;

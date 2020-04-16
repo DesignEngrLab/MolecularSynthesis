@@ -173,12 +173,12 @@ namespace MolecularSynthesis
                 var elapsed = stopwatch.Elapsed;
                 if (elapsed.TotalMilliseconds > waitTime)
                     proc.Kill();
-                Console.WriteLine("completed in {0}", elapsed);
+                Debug.WriteLine("completed in {0}", elapsed);
                 Console.Write("reading simulation data...");
                 minimizeOutput = proc.StandardOutput.ReadToEnd();
-                Console.WriteLine("completed");
+                Debug.WriteLine("completed");
                 //if (elapsed.TotalMilliseconds > waitTime)
-                //    Console.WriteLine(minimizeOutput.Substring(0, 
+                //    Debug.WriteLine(minimizeOutput.Substring(0, 
                 //        Math.Min(500, minimizeOutput.Length)));
             }
             conv.ReadString(mol, minimizeOutput);

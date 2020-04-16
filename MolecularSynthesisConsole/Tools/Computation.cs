@@ -62,8 +62,8 @@ namespace MolecularSynthesis.Tools
                 proc.WaitForExit();
                 //string output = proc.StandardOutput.ReadToEnd();
                 //string error = proc.StandardError.ReadToEnd();
-                //Console.WriteLine(error);
-                //Console.WriteLine(output);
+                //Debug.WriteLine(error);
+                //Debug.WriteLine(output);
             }
         }
 
@@ -85,9 +85,9 @@ namespace MolecularSynthesis.Tools
                     proc.Start();
                     proc.WaitForExit();
                     //string error = proc.StandardError.ReadToEnd();
-                    //Console.WriteLine(error);
+                    //Debug.WriteLine(error);
                     output = proc.StandardOutput.ReadToEnd();
-                    //Console.WriteLine(output);
+                    //Debug.WriteLine(output);
                 }
             }
             else

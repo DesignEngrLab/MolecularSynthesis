@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -36,18 +37,18 @@ namespace MolecularSynthesis.Tools
             var failure = 0;
             var INTERVAL = 3;
 
-            Console.WriteLine("Will give maximun {0} tires to connect to the server for every {1} seconds.", max_tries, INTERVAL);
+            Debug.WriteLine("Will give maximun {0} tires to connect to the server for every {1} seconds.", max_tries, INTERVAL);
 
             while(true)
             {
                 try
                 {
-                    Console.WriteLine("Try to connect to server.....");
+                    Debug.WriteLine("Try to connect to server.....");
                     sender.Connect(localEndPoint);
                     
                     // We print EndPoint information
                     // that we are connected
-                    Console.WriteLine("Socket connected to -> {0} ", sender.RemoteEndPoint.ToString());
+                    Debug.WriteLine("Socket connected to -> {0} ", sender.RemoteEndPoint.ToString());
                     SendMessage("[Join]");
                     break;
                 }
@@ -55,11 +56,11 @@ namespace MolecularSynthesis.Tools
                 {
                     if (failure == max_tries)
                     {
-                        Console.WriteLine("Already tried {0} times, cannot connect to the server. Programe will terminate.");
+                        Debug.WriteLine("Already tried {0} times, cannot connect to the server. Programe will terminate.");
                         Environment.Exit(0);
                     }
                     failure++;
-                    Console.WriteLine("Fail, number of failures: {0}. Server may not be ready, wait for {1} seconds and will try reconnecting", 
+                    Debug.WriteLine("Fail, number of failures: {0}. Server may not be ready, wait for {1} seconds and will try reconnecting", 
                         failure, INTERVAL);
                     Thread.Sleep(INTERVAL*1000);
                 }
@@ -97,23 +98,23 @@ namespace MolecularSynthesis.Tools
 
 
                 response = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);
-                //Console.WriteLine("Message from Server -> {0}", response);
+                //Debug.WriteLine("Message from Server -> {0}", response);
             }
 
             // Manage of Socket's Exceptions 
             catch (ArgumentNullException ane)
             {
-                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+                Debug.WriteLine("ArgumentNullException : {0}", ane.ToString());
             }
 
             catch (SocketException se)
             {
-                Console.WriteLine("SocketException : {0}", se.ToString());
+                Debug.WriteLine("SocketException : {0}", se.ToString());
             }
 
             catch (Exception e)
             {
-                Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                Debug.WriteLine("Unexpected exception : {0}", e.ToString());
             }
             return response;
         }

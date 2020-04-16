@@ -41,7 +41,7 @@ namespace MolecularSynthesis.Tools
                 //onlineSeverProcess.WaitForExit();
             }
             Thread.Sleep(2000);
-            Console.WriteLine("Online server already started with Process ID: {0}, using port {1}", onlineSeverProcess.Id, portUsed);
+            Debug.WriteLine("Online server already started with Process ID: {0}, using port {1}", onlineSeverProcess.Id, portUsed);
 
 
         }
@@ -51,7 +51,7 @@ namespace MolecularSynthesis.Tools
         {
             if (onlineSeverProcess != null)
                 onlineSeverProcess.Kill();
-            Console.WriteLine("Online server with Process ID: {0} has already shutted down", onlineSeverProcess.Id);
+            Debug.WriteLine("Online server with Process ID: {0} has already shutted down", onlineSeverProcess.Id);
             onlineSeverProcess = null;
         }
     }

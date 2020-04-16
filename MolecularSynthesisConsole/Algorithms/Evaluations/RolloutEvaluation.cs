@@ -2,21 +2,24 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using GraphSynth.Representation;
-using OpenBabelFunctions;
+using MolecularSynthesis.Algorithms;
 
 namespace MolecularSynthesis
 {
-    public class RolloutEvaluation : AbstractEvaluation {
-        private Random _random;
-        
-        public RolloutEvaluation(int width, int depth, AbstractAlgorithm parent) : base(width, depth, parent) {
-            _random = new Random(AbstractAlgorithm.Settings);
+    public class RolloutEvaluation : AbstractEvaluation
+    {
+        private RandomAlgorithm _random;
+
+        public RolloutEvaluation(int width, int depth, AbstractAlgorithm parent) : base(width, depth, parent)
+        {
+            _random = new RandomAlgorithm(AbstractAlgorithm.Settings);
         }
 
 
-        public override double Evaluate(candidate state) {
+        public override double Evaluate(candidate state)
+        {
             double reward = 0;
-            
+
             for (var i = 0; i < Width; i++)  // do Width simulations
                 reward += RunRolloutLocal(state);
             return reward / Width;
@@ -26,7 +29,8 @@ namespace MolecularSynthesis
         /// <summary>
         /// Do one rollout for the state.
         /// </summary>
-        private double RunRolloutLocal(candidate cand) {
+        private double RunRolloutLocal(candidate cand)
+        {
             /*
             var candCopy = cand.copy();
             double bestRewardSoFar = 0;

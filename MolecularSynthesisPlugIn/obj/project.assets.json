@@ -1,0 +1,132 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "OptimizedPriorityQueue/4.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.0/Priority Queue.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/Priority Queue.dll": {}
+        }
+      },
+      "GraphSynth.BaseClasses/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/GraphSynth.BaseClasses.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GraphSynth.BaseClasses.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "OptimizedPriorityQueue/4.2.0": {
+      "sha512": "/Sr/OfCFnff7zFe6HoDyWRU8pEvJbOCE9ZjFCSH0EcfETjgvZJ2kUoqlTgVR7cgTPexOGhNATdBKQigqbYn43w==",
+      "type": "package",
+      "path": "optimizedpriorityqueue/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/Priority Queue.dll",
+        "lib/net20/Priority Queue.pdb",
+        "lib/net20/Priority Queue.xml",
+        "lib/net35-unity full v3.5/Priority Queue.dll",
+        "lib/net35-unity full v3.5/Priority Queue.pdb",
+        "lib/net35-unity full v3.5/Priority Queue.xml",
+        "lib/net35-unity subset v3.5/Priority Queue.dll",
+        "lib/net35-unity subset v3.5/Priority Queue.pdb",
+        "lib/net35-unity subset v3.5/Priority Queue.xml",
+        "lib/net45/Priority Queue.dll",
+        "lib/net45/Priority Queue.pdb",
+        "lib/net45/Priority Queue.xml",
+        "lib/netstandard1.0/Priority Queue.dll",
+        "lib/netstandard1.0/Priority Queue.pdb",
+        "lib/netstandard1.0/Priority Queue.xml",
+        "lib/portable-net40+sl5+win8+wpa81+wp8/Priority Queue.dll",
+        "lib/portable-net40+sl5+win8+wpa81+wp8/Priority Queue.pdb",
+        "lib/portable-net40+sl5+win8+wpa81+wp8/Priority Queue.xml",
+        "optimizedpriorityqueue.4.2.0.nupkg.sha512",
+        "optimizedpriorityqueue.nuspec"
+      ]
+    },
+    "GraphSynth.BaseClasses/1.0.0": {
+      "type": "project",
+      "path": "../GraphSynth.BaseClasses/GraphSynth.BaseClasses.csproj",
+      "msbuildProject": "../GraphSynth.BaseClasses/GraphSynth.BaseClasses.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "GraphSynth.BaseClasses >= 1.0.0",
+      "OptimizedPriorityQueue >= 4.2.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\campmatt\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisPlugIn\\MolecularSynthesisPlugIn.csproj",
+      "projectName": "MolecularSynthesisPlugIn",
+      "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisPlugIn\\MolecularSynthesisPlugIn.csproj",
+      "packagesPath": "C:\\Users\\campmatt\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisPlugIn\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\campmatt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "projectReferences": {
+            "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj": {
+              "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "dependencies": {
+          "OptimizedPriorityQueue": {
+            "target": "Package",
+            "version": "[4.2.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

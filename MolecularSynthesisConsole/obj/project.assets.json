@@ -20,6 +20,15 @@
           "lib/netstandard1.0/Priority Queue.dll": {}
         }
       },
+      "StarMath/2.0.17.1019": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.0/StarMath.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/StarMath.dll": {}
+        }
+      },
       "System.CodeDom/4.7.0": {
         "type": "package",
         "compile": {
@@ -92,6 +101,23 @@
         "optimizedpriorityqueue.nuspec"
       ]
     },
+    "StarMath/2.0.17.1019": {
+      "sha512": "yh9B09rBYRYo7a+9htzVtM/gpvJaL6UHMbzEu3/VNbjv4iJ5tivavjiDfojYUUKnYJcZTo3Ko9lf8LaLXxPMAw==",
+      "type": "package",
+      "path": "starmath/2.0.17.1019",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/StarMath.XML",
+        "lib/netstandard1.0/StarMath.deps.json",
+        "lib/netstandard1.0/StarMath.dll",
+        "lib/netstandard1.0/StarMath.pdb",
+        "lib/portable-net4+sl5+wp8+win8/StarMath.dll",
+        "lib/portable-net4+sl5+wp8+win8/StarMath.pdb",
+        "starmath.2.0.17.1019.nupkg.sha512",
+        "starmath.nuspec"
+      ]
+    },
     "System.CodeDom/4.7.0": {
       "sha512": "Hs9pw/kmvH3lXaZ1LFKj3pLQsiGfj2xo3sxSzwiLlRL6UcMZUTeCfoJ9Udalvn3yq5dLlPEZzYegrTQ1/LhPOQ==",
       "type": "package",
@@ -124,23 +150,24 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "GraphSynth.BaseClasses >= 1.0.0",
-      "OptimizedPriorityQueue >= 4.2.0"
+      "OptimizedPriorityQueue >= 4.2.0",
+      "StarMath >= 2.0.17.1019"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\campmatt\\.nuget\\packages\\": {}
+    "C:\\Users\\zhang\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
+      "projectUniqueName": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
       "projectName": "MolecularSynthesisConsole",
-      "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
-      "packagesPath": "C:\\Users\\campmatt\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\obj\\",
+      "projectPath": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
+      "packagesPath": "C:\\Users\\zhang\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\campmatt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\zhang\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -153,8 +180,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj": {
-              "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj"
+            "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj": {
+              "projectPath": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj"
             }
           }
         }
@@ -171,6 +198,10 @@
           "OptimizedPriorityQueue": {
             "target": "Package",
             "version": "[4.2.0, )"
+          },
+          "StarMath": {
+            "target": "Package",
+            "version": "[2.0.17.1019, )"
           }
         },
         "imports": [
@@ -188,7 +219,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

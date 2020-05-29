@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj": {}
+    "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj": {}
   },
   "projects": {
-    "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj": {
+    "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj",
+        "projectUniqueName": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj",
         "projectName": "GraphSynth.BaseClasses",
-        "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj",
-        "packagesPath": "C:\\Users\\campmatt\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\obj\\",
+        "projectPath": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj",
+        "packagesPath": "C:\\Users\\zhang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\campmatt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\zhang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -63,21 +63,21 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj": {
+    "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
+        "projectUniqueName": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
         "projectName": "MolecularSynthesisConsole",
-        "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
-        "packagesPath": "C:\\Users\\campmatt\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\obj\\",
+        "projectPath": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\MolecularSynthesisConsole.csproj",
+        "packagesPath": "C:\\Users\\zhang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\MolecularSynthesisConsole\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\campmatt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\zhang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -90,8 +90,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj": {
-                "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj"
+              "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj": {
+                "projectPath": "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj"
               }
             }
           }
@@ -108,6 +108,10 @@
             "OptimizedPriorityQueue": {
               "target": "Package",
               "version": "[4.2.0, )"
+            },
+            "StarMath": {
+              "target": "Package",
+              "version": "[2.0.17.1019, )"
             }
           },
           "imports": [
@@ -125,7 +129,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

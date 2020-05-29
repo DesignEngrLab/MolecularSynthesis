@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml.Schema;
 using GraphSynth.Representation;
 using System.Collections.Generic;
+using StarMathLib;
 //using GraphMolWrap;
 
 
@@ -26,16 +27,16 @@ namespace PropertyEvaluation
         {
             var result = new double[10];
             // call openBabel functions to get x, y, z's into
-            
+
             foreach (var n in cand.graph.nodes)
             {
                 var mass = GetAtomMass(n);// OBFunctions.
                 result[0] += mass;
-                
+
                 result[1] += mass * n.X;
                 result[2] += mass * n.Y;
                 result[3] += mass * n.Z;
-                
+
                 result[4] += mass * n.X * n.X;
                 result[5] += mass * n.Y * n.Y;
                 result[6] += mass * n.Z * n.Z;
@@ -60,11 +61,22 @@ namespace PropertyEvaluation
 
         private void TestRDKit()
         {
-       //     var mol = RWMol.MolFromSmiles("CC1COC(c2cccn2Cc2ccccc2Cl)=N1");
+            //     var mol = RWMol.MolFromSmiles("CC1COC(c2cccn2Cc2ccccc2Cl)=N1");
         }
 
+        internal static double distance(candidate child, double[] desiredMoment)
+        {
+            var childMoment = CalcMoment(child);
+            //var difference = StarMath.norm1(StarMath.subtract(desiredMoment, childMoment));
+            // this can be simplified using extensions...
+            //var difference = desiredMoment.subtract(childMoment).norm1()/desiredMoment.add(childMoment).norm1();
+            double[] difference = new double[10];
+            for (int i = 0; i < 10; i++)
+            {
+                difference[i] = Math.Abs(desiredMoment[i] - childMoment[i]) / Math.Abs(desiredMoment[i] + childMoment[i]);
+            }
 
-
-
+            return difference.norm1(); 
+        }
     }
 }

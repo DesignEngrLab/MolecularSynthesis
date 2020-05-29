@@ -10,6 +10,7 @@
         "dependencies": {
           "GraphSynth.BaseClasses": "1.0.0",
           "OptimizedPriorityQueue": "4.2.0",
+          "StarMath": "2.0.17.1019",
           "OBDotNet": "0.5.0.0"
         },
         "runtime": {
@@ -29,6 +30,14 @@
           "lib/netstandard1.0/Priority Queue.dll": {
             "assemblyVersion": "4.2.0.0",
             "fileVersion": "4.2.0.0"
+          }
+        }
+      },
+      "StarMath/2.0.17.1019": {
+        "runtime": {
+          "lib/netstandard1.0/StarMath.dll": {
+            "assemblyVersion": "1.0.17.725",
+            "fileVersion": "1.0.17.725"
           }
         }
       },
@@ -78,6 +87,13 @@
       "sha512": "sha512-/Sr/OfCFnff7zFe6HoDyWRU8pEvJbOCE9ZjFCSH0EcfETjgvZJ2kUoqlTgVR7cgTPexOGhNATdBKQigqbYn43w==",
       "path": "optimizedpriorityqueue/4.2.0",
       "hashPath": "optimizedpriorityqueue.4.2.0.nupkg.sha512"
+    },
+    "StarMath/2.0.17.1019": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-yh9B09rBYRYo7a+9htzVtM/gpvJaL6UHMbzEu3/VNbjv4iJ5tivavjiDfojYUUKnYJcZTo3Ko9lf8LaLXxPMAw==",
+      "path": "starmath/2.0.17.1019",
+      "hashPath": "starmath.2.0.17.1019.nupkg.sha512"
     },
     "System.CodeDom/4.7.0": {
       "type": "package",

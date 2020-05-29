@@ -6,3 +6,12 @@ C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Deb
 C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.AssemblyInfo.cs
 C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.dll
 C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.pdb
+C:\Users\zhang\Source\Repos\MolecularSynthesis\GraphSynth.BaseClasses\bin\Debug\netstandard2.0\GraphSynth.BaseClasses.deps.json
+C:\Users\zhang\Source\Repos\MolecularSynthesis\GraphSynth.BaseClasses\bin\Debug\netstandard2.0\GraphSynth.BaseClasses.dll
+C:\Users\zhang\Source\Repos\MolecularSynthesis\GraphSynth.BaseClasses\bin\Debug\netstandard2.0\GraphSynth.BaseClasses.pdb
+C:\Users\zhang\Source\Repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.csprojAssemblyReference.cache
+C:\Users\zhang\Source\Repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.csproj.CoreCompileInputs.cache
+C:\Users\zhang\Source\Repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.AssemblyInfoInputs.cache
+C:\Users\zhang\Source\Repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.AssemblyInfo.cs
+C:\Users\zhang\Source\Repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.dll
+C:\Users\zhang\Source\Repos\MolecularSynthesis\GraphSynth.BaseClasses\obj\Debug\netstandard2.0\GraphSynth.BaseClasses.pdb

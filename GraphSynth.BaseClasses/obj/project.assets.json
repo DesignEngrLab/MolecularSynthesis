@@ -240,19 +240,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\campmatt\\.nuget\\packages\\": {}
+    "C:\\Users\\zhang\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj",
+      "projectUniqueName": "C:\\Users\\zhang\\Source\\Repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj",
       "projectName": "GraphSynth.BaseClasses",
-      "projectPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj",
-      "packagesPath": "C:\\Users\\campmatt\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\campmatt\\source\\repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\obj\\",
+      "projectPath": "C:\\Users\\zhang\\Source\\Repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\GraphSynth.BaseClasses.csproj",
+      "packagesPath": "C:\\Users\\zhang\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\zhang\\Source\\Repos\\MolecularSynthesis\\GraphSynth.BaseClasses\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\campmatt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\zhang\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -301,7 +301,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

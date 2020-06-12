@@ -9,3 +9,4 @@ C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesis.GS.Plugin\o
 C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesis.GS.Plugin\obj\Debug\netstandard2.1\MolecularSynthesis.GS.Plugin.csproj.CopyComplete
 C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesis.GS.Plugin\obj\Debug\netstandard2.1\MolecularSynthesis.GS.Plugin.dll
 C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesis.GS.Plugin\obj\Debug\netstandard2.1\MolecularSynthesis.GS.Plugin.pdb
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesis.GS.Plugin\obj\Debug\netstandard2.1\MolecularSynthesis.GS.Plugin.csprojAssemblyReference.cache

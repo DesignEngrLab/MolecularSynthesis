@@ -3,49 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphSynth.BaseClasses", "GraphSynth.BaseClasses\GraphSynth.BaseClasses.csproj", "{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MolecularSynthesisConsole", "MolecularSynthesisConsole\MolecularSynthesisConsole.csproj", "{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MolecularSynthesis.GS.Plugin", "MolecularSynthesis.GS.Plugin\MolecularSynthesis.GS.Plugin.csproj", "{FBD57B08-28E9-4133-A626-7CD66D8AAF5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Console Debug|Any CPU = Console Debug|Any CPU
-		Console Release|Any CPU = Console Release|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		test|Any CPU = test|Any CPU
-		WPF GUI Debug|Any CPU = WPF GUI Debug|Any CPU
-		WPF GUI Release|Any CPU = WPF GUI Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.Console Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.Console Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.Console Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.Console Release|Any CPU.Build.0 = Debug|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.test|Any CPU.ActiveCfg = Release|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.test|Any CPU.Build.0 = Release|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.WPF GUI Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.WPF GUI Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.WPF GUI Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2FC51BB-C6FD-4C33-B827-BDEBB77ADC75}.WPF GUI Release|Any CPU.Build.0 = Debug|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.Console Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.Console Debug|Any CPU.Build.0 = Debug|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.Console Release|Any CPU.ActiveCfg = Release|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.Console Release|Any CPU.Build.0 = Release|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.test|Any CPU.ActiveCfg = Debug|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.test|Any CPU.Build.0 = Debug|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.WPF GUI Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.WPF GUI Debug|Any CPU.Build.0 = Debug|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.WPF GUI Release|Any CPU.ActiveCfg = Release|Any CPU
-		{452463A3-01A9-4D8B-9238-A8AA3B9CD0D0}.WPF GUI Release|Any CPU.Build.0 = Release|Any CPU
+		{FBD57B08-28E9-4133-A626-7CD66D8AAF5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBD57B08-28E9-4133-A626-7CD66D8AAF5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBD57B08-28E9-4133-A626-7CD66D8AAF5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBD57B08-28E9-4133-A626-7CD66D8AAF5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

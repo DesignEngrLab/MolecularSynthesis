@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MIConvexHull" Version="1.1.19.1019" />
+    <PackageReference Include="OptimizedPriorityQueue" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="GraphSynth.Base">
+      <HintPath>..\..\GraphSynth\GraphSynthSourceFiles\GraphSynth.Base\bin\Debug\netstandard2.1\GraphSynth.Base.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,5 @@
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesis.GS.Plugin\bin\Debug\netstandard2.0\MolecularSynthesis.GS.Plugin.deps.json
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesis.GS.Plugin\bin\Debug\netstandard2.0\MolecularSynthesis.GS.Plugin.dll
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesis.GS.Plugin\obj\Debug\netstandard2.0\MolecularSynthesis.GS.Plugin.csprojAssemblyReference.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesis.GS.Plugin\obj\Debug\netstandard2.0\MolecularSynthesis.GS.Plugin.AssemblyInfoInputs.cache
+C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesis.GS.Plugin\obj\Debug\netstandard2.0\MolecularSynthesis.GS.Plugin.AssemblyInfo.cs

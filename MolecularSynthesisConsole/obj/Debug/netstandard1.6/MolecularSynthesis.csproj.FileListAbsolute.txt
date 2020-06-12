@@ -1,8 +1,0 @@
-C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard1.6\MolecularSynthesis.csprojAssemblyReference.cache
-C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard1.6\MolecularSynthesis.csproj.CoreCompileInputs.cache
-C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard1.6\MolecularSynthesis.AssemblyInfoInputs.cache
-C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard1.6\MolecularSynthesis.AssemblyInfo.cs
-C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netstandard1.6\MolecularSynthesis.deps.json
-C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netstandard1.6\MolecularSynthesis.dll
-C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\bin\Debug\netstandard1.6\OBDotNet.dll
-C:\Users\campmatt\source\repos\MolecularSynthesis\MolecularSynthesisConsole\obj\Debug\netstandard1.6\MolecularSynthesis.csproj.CopyComplete

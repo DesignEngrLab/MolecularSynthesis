@@ -1,9 +1,0 @@
-C:\Users\campmatt\source\repos\GraphSynth\bin\GraphSynth.exe
-C:\Users\campmatt\source\repos\GraphSynth\bin\GraphSynth.pdb
-C:\Users\campmatt\source\repos\GraphSynth\GraphSynthSourceFiles\GraphSynthConsole\obj\Console Debug\GraphSynthConsole.csprojAssemblyReference.cache
-C:\Users\campmatt\source\repos\GraphSynth\GraphSynthSourceFiles\GraphSynthConsole\obj\Console Debug\GraphSynth.g.resources
-C:\Users\campmatt\source\repos\GraphSynth\GraphSynthSourceFiles\GraphSynthConsole\obj\Console Debug\GraphSynthConsole.csproj.CopyComplete
-C:\Users\campmatt\source\repos\GraphSynth\GraphSynthSourceFiles\GraphSynthConsole\obj\Console Debug\GraphSynth.exe
-C:\Users\campmatt\source\repos\GraphSynth\GraphSynthSourceFiles\GraphSynthConsole\obj\Console Debug\GraphSynth.pdb
-C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynthConsole\obj\Console Debug\GraphSynth.exe
-C:\Users\campmatt\source\repos\MolecularSynthesis\GraphSynthConsole\obj\Console Debug\GraphSynth.pdb

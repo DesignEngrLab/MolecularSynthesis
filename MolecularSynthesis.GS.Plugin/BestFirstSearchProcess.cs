@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using GraphSynth;
 using GraphSynth.Representation;
 using GraphSynth.Search;
@@ -62,8 +63,8 @@ namespace MolecularSynthesis.Plugin
                     //child.f3 = Evaluation.CalcMoment(child);
                     child.f0 = Evaluation.distance(child, desiredMoment);
                     candidates.Enqueue(child, child.f0);
-                    System.Console.WriteLine(child.f0);
-
+                    SearchIO.output(child.f0,3);
+                    //Thread.Sleep(500);
 
                     /* f0 is mass/weight in lbs.
                      * f1 is inefficiency. 0 is 100% efficient, and 100 is 95 is 5% efficient

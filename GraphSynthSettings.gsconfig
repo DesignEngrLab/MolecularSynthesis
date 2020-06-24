@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GlobalSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" WorkingDirAbsolute="C:\Users\campmatt\source\repos\MolecularSynthesis\" WorkingDirRelative="..\..\..\source\repos\MolecularSynthesis\">
-
+<GlobalSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" WorkingDirAbsolute="C:\Users\kgeri\Documents\GitHub\MolecularSynthesis\" WorkingDirRelative="">
+  <MaxRulesToDisplay>1000</MaxRulesToDisplay>
+  <MaxRulesToApply>500</MaxRulesToApply>
   <InputDir>input\</InputDir>
-  <OutputDir>output\</OutputDir>
+  <OutputDir>..\..\..\Desktop\GraphSynth\output\</OutputDir>
   <RulesDir>rules\</RulesDir>
-
+  <LocalHelpDir>..\..\..\Desktop\GraphSynth\</LocalHelpDir>
+  <OnlineHelpURL>http://graphsynth.com/help/</OnlineHelpURL>
+  <GraphLayoutDir />
+  <SearchDir>MolecularSynthesis.GS.Plugin\</SearchDir>
+  <ErrorLogFile>..\..\..\AppData\Roaming\GraphSynth\ErrorLog.txt</ErrorLogFile>
+  <DefaultSeedFileName>linkerseed.gxml</DefaultSeedFileName>
+  <DefaultRuleSets>rulse_set_0.rsxml, rulse_set_1.rsxml</DefaultRuleSets>
+  <CustomShapesFile>..\..\..\Desktop\GraphSynth\plugins\customShapeDescriptors.xaml</CustomShapesFile>
+  <CompiledRuleFunctions>..\..\..\..\Desktop\GraphSynth\rules\CompiledRuleFunctions.dll</CompiledRuleFunctions>
+  <SearchControllerPlayOnStart>false</SearchControllerPlayOnStart>
+  <GetHelpFromOnline>false</GetHelpFromOnline>
+  <RecompileRuleConditions>false</RecompileRuleConditions>
+  <DefaultVerbosity>3</DefaultVerbosity>
 </GlobalSettings>

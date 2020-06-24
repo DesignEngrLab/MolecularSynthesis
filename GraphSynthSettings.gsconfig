@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GlobalSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" WorkingDirAbsolute="C:\Users\kgeri\Documents\GitHub\MolecularSynthesis\" WorkingDirRelative="">
+<GlobalSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" WorkingDirAbsolute="C:\Users\zhang\source\repos\MolecularSynthesis\" WorkingDirRelative="">
   <MaxRulesToDisplay>1000</MaxRulesToDisplay>
   <MaxRulesToApply>500</MaxRulesToApply>
   <InputDir>input\</InputDir>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ruleSet xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ruleFileNames>
+    <string>F1.grxml</string>
+    <string>F2.grxml</string>
+    <string>F3.grxml</string>
+    <string>F4.grxml</string>
+    <string>F5.grxml</string>
+    <string>F6.grxml</string>
+    <string>F7.grxml</string>
+    <string>F8.grxml</string>
+    <string>F9.grxml</string>
+  </ruleFileNames>
+  <name>rulse_set_1</name>
+  <TriggerRuleNum>0</TriggerRuleNum>
+  <choiceMethod>Design</choiceMethod>
+  <interimCandidates>Unspecified</interimCandidates>
+  <finalCandidates>Unspecified</finalCandidates>
+  <recognizeSourceFiles />
+  <applySourceFiles />
+  <generationAfterNormal>Loop</generationAfterNormal>
+  <generationAfterChoice>Stop</generationAfterChoice>
+  <generationAfterCycleLimit>Stop</generationAfterCycleLimit>
+  <generationAfterNoRules>Stop</generationAfterNoRules>
+  <generationAfterTriggerRule>Stop</generationAfterTriggerRule>
+</ruleSet>

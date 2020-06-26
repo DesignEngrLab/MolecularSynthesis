@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml.Schema;
 using GraphSynth.Representation;
 using System.Collections.Generic;
+using OpenBabelFunctions;
 //using GraphMolWrap;
 
 
@@ -22,10 +23,16 @@ namespace MolecularSynthesis.Plugin
             return cand.graph.nodes.Count;
         }
 
+
+
         public static double[] CalcMoment(candidate cand)
         {
             var result = new double[10];
+
             // call openBabel functions to get x, y, z's into
+            var mol = OBFunctions.designgraphtomol(cand.graph);
+            var newMol = OBFunctions.InterStepMinimize(mol);
+            OBFunctions.updatepositions(cand.graph, newMol);
 
             foreach (var n in cand.graph.nodes)
             {

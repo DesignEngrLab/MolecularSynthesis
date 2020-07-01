@@ -7,6 +7,7 @@
     <string>L4.grxml</string>
     <string>L5.grxml</string>
     <string>L6.grxml</string>
+    <string>L12.grxml</string>
   </ruleFileNames>
   <name>rulse_set_0</name>
   <TriggerRuleNum>0</TriggerRuleNum>

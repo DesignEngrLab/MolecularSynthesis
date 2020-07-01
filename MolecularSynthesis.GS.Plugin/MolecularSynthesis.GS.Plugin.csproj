@@ -13,6 +13,9 @@
     <Reference Include="GraphSynth.Base">
       <HintPath>..\..\GraphSynth\GraphSynthSourceFiles\GraphSynth.Base\bin\Debug\netstandard2.1\GraphSynth.Base.dll</HintPath>
     </Reference>
+    <Reference Include="OBDotNet">
+      <HintPath>..\..\..\..\..\..\Program Files\OpenBabel-3.0.0\OBDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

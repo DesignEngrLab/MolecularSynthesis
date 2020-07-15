@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ruleSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<ruleSet xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ruleFileNames>
-    <string>L1.grxml</string>
-    <string>L2.grxml</string>
-    <string>L3.grxml</string>
-    <string>L4.grxml</string>
-    <string>L5.grxml</string>
-    <string>L6.grxml</string>
-    <string>L12.grxml</string>
+    <string>End.grxml</string>
   </ruleFileNames>
-  <name>rulse_set_0</name>
+  <name>rule_set_2</name>
   <TriggerRuleNum>0</TriggerRuleNum>
   <choiceMethod>Design</choiceMethod>
   <interimCandidates>Unspecified</interimCandidates>
@@ -18,7 +12,7 @@
   <applySourceFiles />
   <generationAfterNormal>Loop</generationAfterNormal>
   <generationAfterChoice>Stop</generationAfterChoice>
-  <generationAfterCycleLimit>GoToRuleSet1</generationAfterCycleLimit>
+  <generationAfterCycleLimit>Stop</generationAfterCycleLimit>
   <generationAfterNoRules>Stop</generationAfterNoRules>
   <generationAfterTriggerRule>Stop</generationAfterTriggerRule>
 </ruleSet>

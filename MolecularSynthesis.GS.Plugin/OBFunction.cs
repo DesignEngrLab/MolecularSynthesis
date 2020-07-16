@@ -5,7 +5,7 @@ using GraphSynth.Representation;
 using System.Collections.Generic;
 using MIConvexHull;
 using System.Diagnostics;
-
+using System.Linq;
 
 namespace OpenBabelFunctions
 {
@@ -20,24 +20,27 @@ namespace OpenBabelFunctions
             {"O", 8}
         };
 
-        public static string moltoSMILES(OBMol mol)
-        {
-            OBConversion obConv = new OBConversion();
-            obConv.SetOutFormat("can");
-            string smi = obConv.WriteString(mol);
-            smi = smi.Replace("\t", "");
-            smi = smi.Replace("\n", "");
-            return smi;
-        }
+        //public static string moltoSMILES(OBMol mol)
+        //{
+        //    OBConversion obConv = new OBConversion();
+        //    obConv.SetOutFormat("can");
+        //    string smi = obConv.WriteString(mol);
+        //    smi = smi.Replace("\t", "");
+        //    smi = smi.Replace("\n", "");
+        //    return smi;
+        //}
 
         /// <summary>
         /// A variant which returns an OBMol based on host.
         /// </summary>
         /// <param name="host"></param>
         /// <returns></returns>
+        /// 
+        
         public static OBMol designgraphtomol(designGraph host)
         {
             var mol = new OBMol();
+            
             Dictionary<string, int> nodeatomlookup = new Dictionary<string, int>(); //dictionary for looking up which nodes go to which atoms by their names
             int i = 0;
             foreach (node n in host.nodes)
@@ -62,23 +65,32 @@ namespace OpenBabelFunctions
                 nodeatomlookup.Add(n.name, i); //add the atom to dictionary and mol
                 mol.AddAtom(atom);
             }
+
             foreach (arc a in host.arcs)
             {
                 int bondorder = 0;
-                bool hassingle = a.localLabels.Contains("s");
-                bool hasdouble = a.localLabels.Contains("d");
-                bool hastriple = a.localLabels.Contains("t"); //bonds will probably not be anything other than single, double, or triple
-                //although we could have dative bonds
-                if (hassingle ^ hasdouble ^ hastriple) //we do not want more than one bond type
-                {
-                    if (hassingle)
-                        bondorder = 1;
-                    if (hasdouble)
-                        bondorder = 2;
-                    if (hastriple)
-                        bondorder = 3;
-                }
+                /// need to add a if to check if there is a aromatic ring here
+                if (a.localLabels.Contains("b"))
+                    bondorder = 5;
+                else if (a.localLabels.Contains("s"))
+                    bondorder = 1;
+                else if (a.localLabels.Contains("d"))
+                    bondorder = 2;
+                else if (a.localLabels.Contains("t"))
+                    bondorder = 3;
+
                 mol.AddBond(nodeatomlookup[a.To.name], nodeatomlookup[a.From.name], bondorder);
+                
+                //var bonds = mol.Bonds();
+                //mol.SetAromaticPerceived()
+
+                //var test1 = new OBAtom();
+                //test1.SetAromatic();
+                //var test2 = new OBBond();
+                //test2.SetAromatic();
+                                            
+                
+                //mol.NewBond().;
             }
             return mol;
         }

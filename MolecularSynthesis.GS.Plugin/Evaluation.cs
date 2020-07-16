@@ -31,8 +31,8 @@ namespace MolecularSynthesis.Plugin
 
             // call openBabel functions to get x, y, z's into
             var mol = OBFunctions.designgraphtomol(cand.graph);
-            var newMol = OBFunctions.InterStepMinimize(mol);
-            OBFunctions.updatepositions(cand.graph, newMol);
+            //var newMol = OBFunctions.InterStepMinimize(mol);
+            //OBFunctions.updatepositions(cand.graph, newMol);
 
             foreach (var n in cand.graph.nodes)
             {

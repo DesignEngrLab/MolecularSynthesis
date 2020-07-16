@@ -21,6 +21,8 @@ namespace TestOpenBabel
         {
             var resultMol= OBFunctions.designgraphtomol(seedGraph);
             resultMol = OBFunctions.InterStepMinimize(resultMol);
+            OBFunctions.updatepositions(seedGraph, resultMol);
+            
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
             conv.WriteFile(resultMol, @"C:\Users\zhang\source\repos\MolecularSynthesis\output\minimize.mol");

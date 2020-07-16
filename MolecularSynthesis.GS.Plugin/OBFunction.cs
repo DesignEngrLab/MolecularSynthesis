@@ -95,7 +95,7 @@ namespace OpenBabelFunctions
             return mol;
         }
 
-        public static designGraph updatepositions(designGraph graph, OBMol mol)
+        public static void updatepositions(designGraph graph, OBMol mol)
         {
             int count = graph.nodes.Count;
             for (int i = 0; i <= count - 1; i++)
@@ -107,7 +107,7 @@ namespace OpenBabelFunctions
                 n.Y = a.GetY() / scale;
                 n.Z = a.GetZ() / scale;
             }
-            return graph;
+            
         }
 
         public static designGraph tagconvexhullpoints(designGraph host)

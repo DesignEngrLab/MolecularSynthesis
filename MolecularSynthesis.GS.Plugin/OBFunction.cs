@@ -79,18 +79,9 @@ namespace OpenBabelFunctions
                 else if (a.localLabels.Contains("t"))
                     bondorder = 3;
 
-                mol.AddBond(nodeatomlookup[a.To.name], nodeatomlookup[a.From.name], bondorder);
+                mol.AddBond(nodeatomlookup[a.To.name], nodeatomlookup[a.From.name], bondorder);                                   
                 
-                //var bonds = mol.Bonds();
-                //mol.SetAromaticPerceived()
-
-                //var test1 = new OBAtom();
-                //test1.SetAromatic();
-                //var test2 = new OBBond();
-                //test2.SetAromatic();
-                                            
                 
-                //mol.NewBond().;
             }
             return mol;
         }
@@ -166,7 +157,7 @@ namespace OpenBabelFunctions
             string minimizeOutput;
             using (Process proc = new Process())
             {
-                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.0.0\\obminimize.exe";
+                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obminimize.exe";
                 proc.StartInfo.Arguments = "minimize.mol";
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria

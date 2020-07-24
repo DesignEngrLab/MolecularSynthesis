@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<candidate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <GenerationStatus>
+    <GenerationStatuses>Choice</GenerationStatuses>
+    <GenerationStatuses>NoRules</GenerationStatuses>
+    <GenerationStatuses>Unspecified</GenerationStatuses>
+  </GenerationStatus>
+  <performanceParams />
+  <recipe>
+    <option>
+      <parameters />
+      <arcs />
+      <nodes>
+        <node>
+          <name>n4</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables>
+            <double>4</double>
+            <double>4</double>
+          </localVariables>
+          <X>96</X>
+          <Y>100</Y>
+          <Z>0</Z>
+        </node>
+      </nodes>
+      <hyperarcs />
+      <optionNumber>1</optionNumber>
+      <ruleSetIndex>0</ruleSetIndex>
+      <ruleNumber>2</ruleNumber>
+      <globalLabelStartLoc>0</globalLabelStartLoc>
+      <probability>0</probability>
+    </option>
+    <option>
+      <parameters />
+      <arcs>
+        <arc>
+          <name>a5</name>
+          <localLabels>
+            <string>s</string>
+          </localLabels>
+          <localVariables />
+          <From>n5</From>
+          <To>n6</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+      </arcs>
+      <nodes>
+        <node>
+          <name>n6</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>184.57523529786806</X>
+          <Y>237.5704714771851</Y>
+          <Z>-0</Z>
+        </node>
+        <node>
+          <name>n5</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>175.0101839026628</X>
+          <Y>198.71716422657693</Y>
+          <Z>0</Z>
+        </node>
+      </nodes>
+      <hyperarcs />
+      <optionNumber>6</optionNumber>
+      <ruleSetIndex>0</ruleSetIndex>
+      <ruleNumber>7</ruleNumber>
+      <globalLabelStartLoc>0</globalLabelStartLoc>
+      <probability>0</probability>
+    </option>
+    <option>
+      <parameters />
+      <arcs>
+        <arc>
+          <name>a10</name>
+          <localLabels>
+            <string>d</string>
+            <string>b</string>
+          </localLabels>
+          <localVariables />
+          <From>n6</From>
+          <To>n10</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+        <arc>
+          <name>a11</name>
+          <localLabels>
+            <string>s</string>
+            <string>b</string>
+          </localLabels>
+          <localVariables />
+          <From>n13</From>
+          <To>n10</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+        <arc>
+          <name>a13</name>
+          <localLabels>
+            <string>s</string>
+          </localLabels>
+          <localVariables />
+          <From>n12</From>
+          <To>n10</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+      </arcs>
+      <nodes>
+        <node>
+          <name>n13</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>125.41053070960977</X>
+          <Y>304.80355398455293</Y>
+          <Z>0</Z>
+        </node>
+        <node>
+          <name>n6</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>184.57523529786806</X>
+          <Y>237.5704714771851</Y>
+          <Z>-0</Z>
+        </node>
+        <node>
+          <name>n10</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>125.693018777535</X>
+          <Y>304.681797566247</Y>
+          <Z>-0</Z>
+        </node>
+        <node>
+          <name>n12</name>
+          <localLabels>
+            <string>F</string>
+          </localLabels>
+          <localVariables />
+          <X>123.33178756284485</X>
+          <Y>233.70163376268792</Y>
+          <Z>0</Z>
+        </node>
+      </nodes>
+      <hyperarcs />
+      <optionNumber>2</optionNumber>
+      <ruleSetIndex>1</ruleSetIndex>
+      <ruleNumber>1</ruleNumber>
+      <globalLabelStartLoc>0</globalLabelStartLoc>
+      <probability>0</probability>
+    </option>
+    <option>
+      <parameters />
+      <arcs>
+        <arc>
+          <name>a18</name>
+          <localLabels>
+            <string>s</string>
+            <string>b</string>
+          </localLabels>
+          <localVariables />
+          <From>n16</From>
+          <To>n6</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+        <arc>
+          <name>a17</name>
+          <localLabels>
+            <string>d</string>
+            <string>b</string>
+          </localLabels>
+          <localVariables />
+          <From>n15</From>
+          <To>n16</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+        <arc>
+          <name>a7</name>
+          <localLabels>
+            <string>s</string>
+          </localLabels>
+          <localVariables />
+          <From>n18</From>
+          <To>n16</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+      </arcs>
+      <nodes>
+        <node>
+          <name>n15</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>194.45063775511062</X>
+          <Y>235.06578898545578</Y>
+          <Z>-0</Z>
+        </node>
+        <node>
+          <name>n6</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>184.57523529786806</X>
+          <Y>237.5704714771851</Y>
+          <Z>-0</Z>
+        </node>
+        <node>
+          <name>n18</name>
+          <localLabels>
+            <string>Cl</string>
+          </localLabels>
+          <localVariables />
+          <X>207.66899661088237</X>
+          <Y>233.20638789438968</Y>
+          <Z>0</Z>
+        </node>
+        <node>
+          <name>n16</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>205.81109371097796</X>
+          <Y>256.1478627318403</Y>
+          <Z>-0</Z>
+        </node>
+      </nodes>
+      <hyperarcs />
+      <optionNumber>12</optionNumber>
+      <ruleSetIndex>1</ruleSetIndex>
+      <ruleNumber>2</ruleNumber>
+      <globalLabelStartLoc>0</globalLabelStartLoc>
+      <probability>0</probability>
+    </option>
+    <option>
+      <parameters />
+      <arcs>
+        <arc>
+          <name>a17</name>
+          <localLabels>
+            <string>d</string>
+            <string>b</string>
+          </localLabels>
+          <localVariables />
+          <From>n15</From>
+          <To>n16</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+        <arc>
+          <name>a16</name>
+          <localLabels>
+            <string>s</string>
+            <string>b</string>
+          </localLabels>
+          <localVariables />
+          <From>n14</From>
+          <To>n15</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+        <arc>
+          <name>a8</name>
+          <localLabels>
+            <string>s</string>
+          </localLabels>
+          <localVariables />
+          <From>n19</From>
+          <To>n15</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+      </arcs>
+      <nodes>
+        <node>
+          <name>n14</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>125.99352169808175</X>
+          <Y>304.1747584637898</Y>
+          <Z>-0</Z>
+        </node>
+        <node>
+          <name>n16</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>205.81109371097796</X>
+          <Y>256.1478627318403</Y>
+          <Z>-0</Z>
+        </node>
+        <node>
+          <name>n19</name>
+          <localLabels>
+            <string>Cl</string>
+          </localLabels>
+          <localVariables />
+          <X>221.46723056565293</X>
+          <Y>274.0956422374797</Y>
+          <Z>0</Z>
+        </node>
+        <node>
+          <name>n15</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>194.45063775511062</X>
+          <Y>235.06578898545578</Y>
+          <Z>-0</Z>
+        </node>
+      </nodes>
+      <hyperarcs />
+      <optionNumber>15</optionNumber>
+      <ruleSetIndex>1</ruleSetIndex>
+      <ruleNumber>2</ruleNumber>
+      <globalLabelStartLoc>0</globalLabelStartLoc>
+      <probability>0</probability>
+    </option>
+    <option>
+      <parameters />
+      <arcs>
+        <arc>
+          <name>a15</name>
+          <localLabels>
+            <string>d</string>
+            <string>b</string>
+          </localLabels>
+          <localVariables />
+          <From>n13</From>
+          <To>n14</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+        <arc>
+          <name>a11</name>
+          <localLabels>
+            <string>s</string>
+            <string>b</string>
+          </localLabels>
+          <localVariables />
+          <From>n13</From>
+          <To>n10</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+        <arc>
+          <name>a12</name>
+          <localLabels>
+            <string>s</string>
+          </localLabels>
+          <localVariables />
+          <From>n11</From>
+          <To>n13</To>
+          <directed>false</directed>
+          <doublyDirected>false</doublyDirected>
+        </arc>
+      </arcs>
+      <nodes>
+        <node>
+          <name>n10</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>125.693018777535</X>
+          <Y>304.681797566247</Y>
+          <Z>-0</Z>
+        </node>
+        <node>
+          <name>n14</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>125.99352169808175</X>
+          <Y>304.1747584637898</Y>
+          <Z>-0</Z>
+        </node>
+        <node>
+          <name>n13</name>
+          <localLabels>
+            <string>C</string>
+          </localLabels>
+          <localVariables />
+          <X>125.41053070960977</X>
+          <Y>304.80355398455293</Y>
+          <Z>0</Z>
+        </node>
+        <node>
+          <name>n11</name>
+          <localLabels>
+            <string>Br</string>
+          </localLabels>
+          <localVariables />
+          <X>125.5902277992041</X>
+          <Y>304.6515724748949</Y>
+          <Z>0</Z>
+        </node>
+      </nodes>
+      <hyperarcs />
+      <optionNumber>18</optionNumber>
+      <ruleSetIndex>1</ruleSetIndex>
+      <ruleNumber>3</ruleNumber>
+      <globalLabelStartLoc>0</globalLabelStartLoc>
+      <probability>0</probability>
+    </option>
+  </recipe>
+  <designParameters />
+  <graph>ResultFrom..2020.7.24.9.14.59.256.gxml</graph>
+  <activeRuleSetIndex>1</activeRuleSetIndex>
+  <age>0</age>
+</candidate>

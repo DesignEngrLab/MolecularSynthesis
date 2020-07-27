@@ -47,8 +47,9 @@ namespace TestOpenBabel
 
             var result = new double[2];
             result=Evaluation.FindLengthAndRadius(seedGraph);
-            //[0] is Length, [1] is Radius
-            SearchIO.output(result[0]+ " " +result[1]);
+            //[0] is Length, [1] is Radius, unit is 
+            SearchIO.output("Length is: "+ result[0]);
+            SearchIO.output("Radius is: "+ result[1]);
 
             //var conv = new OBConversion();
             //conv.SetInAndOutFormats("pdb", extension);

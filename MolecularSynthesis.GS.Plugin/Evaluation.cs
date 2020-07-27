@@ -43,8 +43,8 @@ namespace MolecularSynthesis.Plugin
                 if (m == 2)
                 {
                     EndingAtom[0] = n.X;
-                    EndingAtom[0] = n.Y;
-                    EndingAtom[0] = n.Z;
+                    EndingAtom[1] = n.Y;
+                    EndingAtom[2] = n.Z;
                 }
             }
             //Length of the cylinder
@@ -76,7 +76,7 @@ namespace MolecularSynthesis.Plugin
                 //FarestPointToBeginningVector[2] * AxisVector[0] - FarestPointToBeginningVector[0] * AxisVector[2]
                 //FarestPointToBeginningVector[0] * AxisVector[1] - FarestPointToBeginningVector[1] * AxisVector[0]
                 area = Math.Sqrt(Math.Pow(FarestPointToBeginningVector[1] * AxisVector[2] - FarestPointToBeginningVector[2] * AxisVector[1], 2) + Math.Pow(FarestPointToBeginningVector[2] * AxisVector[0] - FarestPointToBeginningVector[0] * AxisVector[2], 2) + Math.Pow(FarestPointToBeginningVector[0] * AxisVector[1] - FarestPointToBeginningVector[1] * AxisVector[0], 2));
-                max = area / LengthAndRadius[1];
+                max = area / LengthAndRadius[0];
                 if (LengthAndRadius[1] < max)
                     LengthAndRadius[1] = max;
 

@@ -157,6 +157,7 @@ namespace OpenBabelFunctions
             string minimizeOutput;
             using (Process proc = new Process())
             {
+                
                 proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obminimize.exe";
                 proc.StartInfo.Arguments = "minimize.mol";
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,

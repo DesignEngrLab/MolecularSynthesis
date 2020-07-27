@@ -6,14 +6,14 @@ using GraphSynth;
 using MolecularSynthesis.Plugin;
 using System.Xml.XPath;
 using System.IO;
-
+using System.Diagnostics;
 
 namespace TestOpenBabel
 {
     public class TestBenzRing : SearchProcess
     {
         public override string text => "TestBenz";
-        public string filename = @"..\..\..\..\test";
+        public string filename = @"..\..\..\..\HaHa";
         public string extension = "mol";
         //deault constructor
         public TestBenzRing(GlobalSettings settings) : base(settings)
@@ -25,6 +25,22 @@ namespace TestOpenBabel
         protected override void Run()
         {
             var resultMol = OBFunctions.designgraphtomol(seedGraph);
+            // after convert from designgraph to .mol file
+            // save the result as .mol file
+            // call minimize.exe to do the energy minimization
+            //var conv = new OBConversion();
+            //conv.SetInAndOutFormats("pdb", extension);
+            //conv.WriteFile(resultMol, filename + "." + extension);
+            //SearchIO.output("file has been writen");
+            
+            //using (Process MiniProcess = new Process())
+            //{
+            //    MiniProcess.StartInfo.FileName = "C:\\Program Files\\OpenBabel - 3.0.0\\obminimize.exe";
+            //    MiniProcess.StartInfo.Arguments = "C:\\Users\\zhang\\source\repos\\MolecularSynthesis\\HaHa.mol";
+            //    MiniProcess.Start();
+                
+            //}
+
             resultMol = OBFunctions.InterStepMinimize(resultMol);
             OBFunctions.updatepositions(seedGraph, resultMol);
             SearchIO.addAndShowGraphWindow(seedGraph);
@@ -34,9 +50,9 @@ namespace TestOpenBabel
             //[0] is Length, [1] is Radius
             SearchIO.output(result[0]+ " " +result[1]);
 
-            var conv = new OBConversion();
-            conv.SetInAndOutFormats("pdb", extension);
-            conv.WriteFile(resultMol, filename + "." + extension);
+            //var conv = new OBConversion();
+            //conv.SetInAndOutFormats("pdb", extension);
+            //conv.WriteFile(resultMol, filename + "." + extension);
             //File.AppendText()
         }
     }

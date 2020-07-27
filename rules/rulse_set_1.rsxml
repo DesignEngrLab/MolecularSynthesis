@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ruleSet xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ruleSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ruleFileNames>
     <string>F1.grxml</string>
     <string>F2.grxml</string>
@@ -19,7 +19,7 @@
   <recognizeSourceFiles />
   <applySourceFiles />
   <generationAfterNormal>Loop</generationAfterNormal>
-  <generationAfterChoice>Stop</generationAfterChoice>
+  <generationAfterChoice>GoToRuleSet2</generationAfterChoice>
   <generationAfterCycleLimit>Stop</generationAfterCycleLimit>
   <generationAfterNoRules>Stop</generationAfterNoRules>
   <generationAfterTriggerRule>Stop</generationAfterTriggerRule>

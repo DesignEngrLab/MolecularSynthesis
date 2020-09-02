@@ -8,7 +8,7 @@ using OpenBabel;
 //using GraphMolWrap;
 
 
-namespace MolecularSynthesis.Plugin
+namespace MolecularSynthesis.GS.Plugin
 {
     public static class Evaluation
     {

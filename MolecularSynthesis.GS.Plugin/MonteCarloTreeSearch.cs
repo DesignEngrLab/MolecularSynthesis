@@ -8,8 +8,9 @@ using System;
 using System.Collections;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using MolecularSynthesis.GS.Plugin;
 
-namespace MolecularSynthesis.Plugin
+namespace MolecularSynthesis.GS.Plugin
 {
     public class MCTS : SearchProcess
     {
@@ -79,93 +80,6 @@ namespace MolecularSynthesis.Plugin
 
         //}
 
-        public class TreeCandidate : candidate
-        {
-            public TreeCandidate Parent; //as a field
-            public List<TreeCandidate> Children;
-            public double s;
-            public double N;
-            public double UCB;
-
-            public TreeCandidate(candidate seedCandidate)
-            {
-                this.activeRuleSetIndex = seedCandidate.activeRuleSetIndex;
-                this.age = seedCandidate.age;
-                this.designParameters = seedCandidate.designParameters;
-                this.GenerationStatus = seedCandidate.GenerationStatus;
-                this.graph = seedCandidate.graph;
-                this.graphFileName = seedCandidate.graphFileName;
-                this.performanceParams = seedCandidate.performanceParams;
-            }
-
-            public double CalculateUcb(TreeCandidate child)
-            {
-                return child.s / (double)child.N + 2 * Math.Sqrt(Math.Log(Parent.N) / child.N);
-            }
-            public TreeCandidate SelectPromisingNode()
-            {
-                TreeCandidate bestChild = null;
-                double bestUcb = double.MinValue;
-
-                foreach (TreeCandidate child in Children)
-                {
-                    if (child.N == 0)
-                        return child;
-
-                    double Ucb = CalculateUcb(child);
-                    if (Ucb > bestUcb)
-                    {
-                        bestUcb = Ucb;
-                        bestChild = child;
-                    }
-                }
-
-                return bestChild;
-            }
-
-            public void BackPropogation(List<TreeCandidate> path)
-            {
-                foreach (var treeCandidate in path)
-                {
-                    treeCandidate.N++;
-                    treeCandidate.s++;
-
-                }
-            }
-
-            public double Rollout(TreeCandidate candidate, List<TreeCandidate> path)
-            {
-                double score;
-                int RS0 = 0;
-                //var childrenCandidate = RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true);
-
-                foreach (var treecandidate in path)
-                {
-                    // need to recognize how many Rules from Ruleset0 exist
-                    RS0 = RS0 + 1;
-
-                }
-
-                while (RS0 != 5)
-                {
-                    Random rnd = new Random();
-                    //rnd.Next(0, 2); // generate 0 or 1
-                    if (rnd.Next(0, 2) == 0)
-                    {
-                        RS0 = RS0 + 1;
-                    }
-                    //candidate=RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true)
-                }
-
-                score = Evaluation.distance(candidate, desiredLenghtAndRadius);
-                return score;
-            }
-
-            public override candidate copy()
-            {
-                return new TreeCandidate(base.copy());
-            }
-        }
         protected override void Run()
         {
             //var candidates = new SimplePriorityQueue<candidate, double>();
@@ -184,19 +98,84 @@ namespace MolecularSynthesis.Plugin
             // 3. do random simulation
             // 4. update S,n,UCB value for the whole tree
             TreeCandidate current = (TreeCandidate)seedCandidate;
-            current.s = 0;
-            current.N = 0;
+            current.S = 0;
+            current.n = 0;
             current.UCB = int.MaxValue;
             current.Children = null;
 
             for (int i = 0; i < iteration; i++)
             {
-                current.SelectPromisingNode();
-                current.Rollout(current, current.Children);
-                current.BackPropogation(current.Children);
+                SelectPromisingNode(current.Children);
+                Rollout(current, current.Children);
+                BackPropogation(current.Children);
+
+            }
+        }
+        public double CalculateUcb(TreeCandidate child)
+        {
+            return child.S / (double)child.n + 2 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
+        }
+        public TreeCandidate SelectPromisingNode(List<TreeCandidate> children)
+        {
+            TreeCandidate bestChild = null;
+            double bestUcb = double.MinValue;
+
+            foreach (TreeCandidate child in children)
+            {
+                if (child.n == 0)
+                    return child;
+
+                double Ucb = CalculateUcb(child);
+                if (Ucb > bestUcb)
+                {
+                    bestUcb = Ucb;
+                    bestChild = child;
+                }
+            }
+
+            return bestChild;
+        }
+
+        public void BackPropogation(List<TreeCandidate> path)
+        {
+            foreach (var treeCandidate in path)
+            {
+                treeCandidate.n++;
+                treeCandidate.S++;
+
+            }
+        }
+
+        public double Rollout(TreeCandidate candidate, List<TreeCandidate> path)
+        {
+            double score;
+            int RS0 = 0;
+            var options = rulesets;
+            //candidate.ruleSetIndicesInRecipe();
+            //var childrenCandidate = RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true);
+
+            foreach (var treecandidate in path)
+            {
+                // need to recognize how many Rules from Ruleset0 exist
+                RS0 = RS0 + 1;
 
             }
 
+            while (RS0 != 5)
+            {
+                Random rnd = new Random();
+                //rnd.Next(0, 2); // generate 0 or 1
+                if (rnd.Next(0, 2) == 0)
+                {
+                    RS0 = RS0 + 1;
+                }
+                //candidate=RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true)
+            }
+
+            score = Evaluation.distance(candidate, desiredLenghtAndRadius);
+            return score;
         }
+
     }
+}
 }

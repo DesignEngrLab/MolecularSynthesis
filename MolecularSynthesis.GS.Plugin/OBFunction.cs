@@ -147,19 +147,21 @@ namespace OpenBabelFunctions
             return true;
         }
 
+
+        // Watch out the input "ForTest.mol" is from where
         public static OBMol InterStepMinimize(OBMol mol)
         {
             const int waitTime = 10000; // time for waiting in milliseconds
             var stopwatch = new Stopwatch();
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
-            conv.WriteFile(mol, Path.Combine(GetRamDir(), "minimize.mol"));
+            conv.WriteFile(mol, Path.Combine(GetRamDir(), "ForTest.mol"));
             string minimizeOutput;
             using (Process proc = new Process())
             {
                 
                 proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obminimize.exe";
-                proc.StartInfo.Arguments = "minimize.mol";
+                proc.StartInfo.Arguments = "ForTest.mol";
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
                 proc.StartInfo.WorkingDirectory = GetRamDir();

@@ -17,8 +17,8 @@
   <recognizeSourceFiles />
   <applySourceFiles />
   <generationAfterNormal>Loop</generationAfterNormal>
-  <generationAfterChoice>Stop</generationAfterChoice>
-  <generationAfterCycleLimit>GoToRuleSet1</generationAfterCycleLimit>
+  <generationAfterChoice>GoToRuleSet1</generationAfterChoice>
+  <generationAfterCycleLimit>Unspecified</generationAfterCycleLimit>
   <generationAfterNoRules>Stop</generationAfterNoRules>
   <generationAfterTriggerRule>Stop</generationAfterTriggerRule>
 </ruleSet>

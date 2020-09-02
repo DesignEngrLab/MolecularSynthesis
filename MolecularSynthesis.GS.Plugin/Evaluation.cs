@@ -24,7 +24,10 @@ namespace MolecularSynthesis.Plugin
             return cand.graph.nodes.Count;
         }
 
-        public static double[] FindLengthAndRadius(designGraph host)
+
+
+        
+        public static double[] FindLengthAndRadius(designGraph host)// The input is host right now, need to be changed into cand in search process, because distance function need to input cand
         {
             var LengthAndRadius = new double[2];
             var BeginningAtom = new double[3];
@@ -125,23 +128,27 @@ namespace MolecularSynthesis.Plugin
             throw new Exception("Error!: Node does not have a element label!");
         }
 
-        internal static double distance(candidate child, double[] desiredMoment)
+        internal static double distance(candidate child, double[] desiredLenghtAndRadius)
         {
-            var childMoment = CalcMoment(child);
-            //var difference = StarMath.norm1(StarMath.subtract(desiredMoment, childMoment));
-            // this can be simplified using extensions...
-            //var difference = desiredMoment.subtract(childMoment).norm1()/desiredMoment.add(childMoment).norm1();
-            double[] difference = new double[10];
-            for (int i = 0; i < 10; i++)
-            {
-                difference[i] = Math.Abs(desiredMoment[i] - childMoment[i]) / Math.Abs(desiredMoment[i] + childMoment[i]);
-            }
+            //var childMoment = CalcMoment(child);
+            var childLenghtAndRadius = FindLengthAndRadius(child.graph);
+
+            double[] difference = new double[2];
+                      
+            difference[0] = Math.Abs(childLenghtAndRadius[0] - desiredLenghtAndRadius[0]);
+            difference[1] = Math.Abs(childLenghtAndRadius[1] - desiredLenghtAndRadius[1]);
 
             return difference.norm1();
         }
         public static double norm1(this IEnumerable<double> x)
         {
             return x.Sum(Math.Abs);
+        }
+
+
+        public static void CifToTabacco()
+        { 
+            
         }
 
     }

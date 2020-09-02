@@ -10,7 +10,8 @@ namespace MolecularSynthesis.Plugin
     public class BestFirstSearch : SearchProcess
     {
         // give desiredMoment
-        double[] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        double[] desiredLenghtAndRadius = new double[] { 300, 50 };
 
         public BestFirstSearch(GlobalSettings settings) : base(settings)
         {
@@ -38,6 +39,7 @@ namespace MolecularSynthesis.Plugin
             var candidates = new SimplePriorityQueue<candidate, double>();
             var current = seedCandidate;
             candidates.Enqueue(current, 0);
+            //candidates.Enqueue(current, -1);
             int iteration = 0;
             while (!SearchIO.terminateRequest && (candidates.Count != 0))
             {
@@ -49,28 +51,18 @@ namespace MolecularSynthesis.Plugin
                 SearchIO.iteration = iteration++;
                 SearchIO.miscObject = current.recipe.Count;
                 //RECOGNIZE
-                var options = rulesets[0].recognize(current.graph);
+                //var options = rulesets[0].recognize(current.graph);
+                //rulesets[0].nextRuleSet(GenerationStatuses.Unspecified);
+                //current.activeRuleSetIndex;
 
-
-                for (var i = 0; i != options.Count; i++)
+                var childrenCandidate=RecognizeChooseApply.GenerateAllNeighbors(current,rulesets,false,false,true);
+                foreach (var child in childrenCandidate)
                 {
-                    var child = current.copy();
-                    transferLmappingToChild(child.graph, current.graph, options[i]);
-                    options[i].apply(child.graph, null);
-                    child.addToRecipe(options[i]);
-                    //SearchIO.output("...done.", 3);
-                    //need to have the desird moment and the distance function
-                    //child.f3 = Evaluation.CalcMoment(child);
-                    child.f0 = Evaluation.distance(child, desiredMoment);
+                    child.f0 = Evaluation.distance(child, desiredLenghtAndRadius);
                     candidates.Enqueue(child, child.f0);
                     SearchIO.output(child.f0,3);
-                    //Thread.Sleep(500);
-
-                    /* f0 is mass/weight in lbs.
-                     * f1 is inefficiency. 0 is 100% efficient, and 100 is 95 is 5% efficient
-                     * f2 is the amount of constraint violation.
-                     * f3 is a weighted sum of these two based on value in UserDefinedGoals */
                 }
+                
             }
             SearchIO.addAndShowGraphWindow(current.graph, "Here is your gear train.");
             Save(settings.OutputDir + "testTuned", current);
@@ -86,9 +78,7 @@ namespace MolecularSynthesis.Plugin
         /// </returns>
         private static bool isCurrentTheGoal(candidate current)
         {
-            /* f2 represents the amount of infeasibility in the design. We are seeking
-             * the first design that is feasible. Following the negative-null form
-             * convention, feasibility occurs at zero or below. */
+         
             return (current.f2 <= 0);
         }
     }

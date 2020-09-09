@@ -155,16 +155,16 @@ namespace OpenBabelFunctions
             var stopwatch = new Stopwatch();
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
-            conv.WriteFile(mol, Path.Combine(GetRamDir(), "ForTest.mol"));
+            conv.WriteFile(mol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test101.mol"));
             string minimizeOutput;
             using (Process proc = new Process())
             {
                 
                 proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obminimize.exe";
-                proc.StartInfo.Arguments = "ForTest.mol";
+                proc.StartInfo.Arguments = "Test101.mol";
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
-                proc.StartInfo.WorkingDirectory = GetRamDir();
+                proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output";
                 proc.StartInfo.RedirectStandardError = true;
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;

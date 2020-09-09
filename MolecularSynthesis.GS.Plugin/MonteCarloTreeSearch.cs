@@ -9,6 +9,9 @@ using System.Collections;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using MolecularSynthesis.GS.Plugin;
+using System.Linq;
+using OpenBabel;
+using OpenBabelFunctions;
 
 namespace MolecularSynthesis.GS.Plugin
 {
@@ -85,7 +88,7 @@ namespace MolecularSynthesis.GS.Plugin
             //var candidates = new SimplePriorityQueue<candidate, double>();
 
             // generate a random number 0 or 1 to decide the next rule is from RS0 or RS1
-            Random rnd = new Random();
+            //Random rnd = new Random();
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
@@ -100,45 +103,86 @@ namespace MolecularSynthesis.GS.Plugin
             TreeCandidate current = (TreeCandidate)seedCandidate;
             current.S = 0;
             current.n = 0;
-            current.UCB = int.MaxValue;
-            current.Children = null;
+            current.UCB = double.MaxValue;
+            current.Children = new List<TreeCandidate>();
+            //current.option = 0;
 
             for (int i = 0; i < iteration; i++)
             {
-                SelectPromisingNode(current.Children);
-                Rollout(current, current.Children);
-                BackPropogation(current.Children);
+                if (current.Children == null)
+                {
+                    if (current.n == 0)
+                    {
+                        Rollout(current);
+                    }
+                    else
+                    {
+                        current = AddNewNode(current);
+                        Rollout(current);
+
+                    }
+                }
+                else
+                {
+                    current = SelectPromisingNode(current);
+                }
+
+                //current = SelectPromisingNode(current);
+
+                //Rollout(current);
+
+                BackPropogation(FindAllParents(current));
 
             }
+
+            TreeCandidate seed = (TreeCandidate)seedCandidate;
+            var FinalResult=SelectPromisingNode(seed);
+            SearchIO.output(FinalResult.recipe);
         }
         public double CalculateUcb(TreeCandidate child)
         {
             return child.S / (double)child.n + 2 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
-        public TreeCandidate SelectPromisingNode(List<TreeCandidate> children)
+        public TreeCandidate SelectPromisingNode(TreeCandidate current)
         {
             TreeCandidate bestChild = null;
             double bestUcb = double.MinValue;
 
-            foreach (TreeCandidate child in children)
+            while (current.Children != null)
             {
-                if (child.n == 0)
-                    return child;
-
-                double Ucb = CalculateUcb(child);
-                if (Ucb > bestUcb)
+                foreach (TreeCandidate child in current.Children)
                 {
-                    bestUcb = Ucb;
-                    bestChild = child;
+                    double Ucb = CalculateUcb(child);
+                    if (Ucb > bestUcb)
+                    {
+                        bestUcb = Ucb;
+                        bestChild = child;
+                    }
                 }
+                current = bestChild;
             }
 
+            //return SelectPromisingNode(bestChild);
             return bestChild;
         }
 
-        public void BackPropogation(List<TreeCandidate> path)
+        public TreeCandidate AddNewNode(TreeCandidate current)
         {
-            foreach (var treeCandidate in path)
+            //is this right?
+            var child = new TreeCandidate(current);
+            child.Parent = current;
+            child.Children = null;
+            child.n = 0;
+            child.S = 0;
+            child.UCB = double.MinValue;
+
+            current.Children.Add(child);
+            return child;
+        }
+
+        public void BackPropogation(List<TreeCandidate> parentpath)
+        {
+            foreach (var treeCandidate in parentpath)
             {
                 treeCandidate.n++;
                 treeCandidate.S++;
@@ -146,20 +190,32 @@ namespace MolecularSynthesis.GS.Plugin
             }
         }
 
-        public double Rollout(TreeCandidate candidate, List<TreeCandidate> path)
+        public double Rollout(TreeCandidate candidate)
         {
             double score;
             int RS0 = 0;
             var options = rulesets;
             //candidate.ruleSetIndicesInRecipe();
             //var childrenCandidate = RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true);
+            //var a = candidate.recipe[1];
 
-            foreach (var treecandidate in path)
+            //option
+            //public int ruleSetIndex { get; set; }
+            //public int optionNumber { get; set; }
+            foreach (var option in candidate.recipe)
             {
                 // need to recognize how many Rules from Ruleset0 exist
-                RS0 = RS0 + 1;
+                if (option.ruleSetIndex == 0)
+                {
+                    RS0 = RS0 + 1;
+                }
 
+                //var options = rulesets[0].recognize(current.graph)
             }
+
+            var option0 = rulesets[0].recognize(candidate.graph);
+            var option1 = rulesets[1].recognize(candidate.graph);
+            var option2 = rulesets[2].recognize(candidate.graph);
 
             while (RS0 != 5)
             {
@@ -168,14 +224,57 @@ namespace MolecularSynthesis.GS.Plugin
                 if (rnd.Next(0, 2) == 0)
                 {
                     RS0 = RS0 + 1;
+                    option0[rnd.Next(option0.Count)].apply(candidate.graph, null);
+                    candidate.addToRecipe(option0[option0.Count]);
                 }
+                else
+                {
+                    option1[rnd.Next(option1.Count)].apply(candidate.graph, null);
+                    candidate.addToRecipe(option1[option1.Count]);
+                }
+
                 //candidate=RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true)
             }
+            option2[0].apply(candidate.graph, null);
+            var resultMol = OBFunctions.designgraphtomol(candidate.graph);
+            resultMol = OBFunctions.InterStepMinimize(resultMol);
+            OBFunctions.updatepositions(seedGraph, resultMol);
 
-            score = Evaluation.distance(candidate, desiredLenghtAndRadius);
+            // distance is less the better, do we need to add a negative before score 
+            score = -Evaluation.distance(candidate, desiredLenghtAndRadius);
             return score;
         }
 
+        public List<TreeCandidate> FindAllParents(TreeCandidate current)
+        {
+            var parents = new List<TreeCandidate>();
+            int height = GetHeight(current);
+
+            for (int i = 0; i < height; i++)
+            {
+                parents.Add(current.Parent);
+            }
+
+            return parents;
+        }
+
+        public int GetHeight(TreeCandidate current)
+        {
+            int height = 0;
+            while (current.Parent != null)
+            {
+                height = height + 1;
+                current = current.Parent;
+            }
+
+            return height;
+        }
     }
+
 }
-}
+
+
+
+
+
+

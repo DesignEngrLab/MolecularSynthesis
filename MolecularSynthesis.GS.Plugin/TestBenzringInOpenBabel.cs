@@ -3,7 +3,7 @@ using System;
 using OpenBabelFunctions;
 using GraphSynth.Search;
 using GraphSynth;
-using MolecularSynthesis.Plugin;
+using MolecularSynthesis.GS.Plugin;
 using System.Xml.XPath;
 using System.IO;
 using System.Diagnostics;
@@ -14,7 +14,7 @@ namespace TestOpenBabel
     {
         public override string text => "TestBenz";
         public string filename = @"..\..\..\..\ForCiftest";
-        public string extension = "mol";
+        public string extension = "xyz";
         //deault constructor
         public TestBenzRing(GlobalSettings settings) : base(settings)
         {

@@ -54,11 +54,11 @@ namespace MolecularSynthesis.Plugin
                 //var options = rulesets[0].recognize(current.graph);
                 //rulesets[0].nextRuleSet(GenerationStatuses.Unspecified);
                 //current.activeRuleSetIndex;
-
+                
                 var childrenCandidate=RecognizeChooseApply.GenerateAllNeighbors(current,rulesets,false,false,true);
                 foreach (var child in childrenCandidate)
                 {
-                    child.f0 = Evaluation.distance(child, desiredLenghtAndRadius);
+                    //child.f0 = Evaluation.distance(child, desiredLenghtAndRadius);
                     candidates.Enqueue(child, child.f0);
                     SearchIO.output(child.f0,3);
                 }

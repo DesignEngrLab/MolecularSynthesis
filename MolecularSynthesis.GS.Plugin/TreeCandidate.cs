@@ -13,7 +13,7 @@ namespace MolecularSynthesis.GS.Plugin
         public double S;
         public double n;
         public double UCB;
-
+        
         public TreeCandidate(candidate seedCandidate) 
         {
             this.activeRuleSetIndex = seedCandidate.activeRuleSetIndex;

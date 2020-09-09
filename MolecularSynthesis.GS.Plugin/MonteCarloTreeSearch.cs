@@ -100,7 +100,8 @@ namespace MolecularSynthesis.GS.Plugin
             // 2. find the children who has the best UCB value
             // 3. do random simulation
             // 4. update S,n,UCB value for the whole tree
-            TreeCandidate current = (TreeCandidate)seedCandidate;
+            TreeCandidate current = new TreeCandidate(seedCandidate);
+
             current.S = 0;
             current.n = 0;
             current.UCB = double.MaxValue;
@@ -109,34 +110,28 @@ namespace MolecularSynthesis.GS.Plugin
 
             for (int i = 0; i < iteration; i++)
             {
-                if (current.Children == null)
+                while (current.Children.Count > 0)
                 {
-                    if (current.n == 0)
-                    {
-                        Rollout(current);
-                    }
-                    else
-                    {
-                        current = AddNewNode(current);
-                        Rollout(current);
+                    current = SelectPromisingNode(current);// until at leaf node
+                }
 
-                    }
+                if (current.n == 0)
+                {
+                    current.S = Rollout(current);
                 }
                 else
                 {
-                    current = SelectPromisingNode(current);
+                    current = AddNewNode(current);
+                    current.S = Rollout(current);
+
                 }
 
-                //current = SelectPromisingNode(current);
-
-                //Rollout(current);
-
-                BackPropogation(FindAllParents(current));
+                BackPropogation(FindAllParents(current),current.S);
 
             }
 
-            TreeCandidate seed = (TreeCandidate)seedCandidate;
-            var FinalResult=SelectPromisingNode(seed);
+            TreeCandidate seed = new TreeCandidate(seedCandidate);
+            var FinalResult = SelectPromisingNode(seed);
             SearchIO.output(FinalResult.recipe);
         }
         public double CalculateUcb(TreeCandidate child)
@@ -169,9 +164,9 @@ namespace MolecularSynthesis.GS.Plugin
         public TreeCandidate AddNewNode(TreeCandidate current)
         {
             //is this right?
-            var child = new TreeCandidate(current);
+            var child = (TreeCandidate)current.copy();
             child.Parent = current;
-            child.Children = null;
+            child.Children = new List<TreeCandidate>();
             child.n = 0;
             child.S = 0;
             child.UCB = double.MinValue;
@@ -180,12 +175,12 @@ namespace MolecularSynthesis.GS.Plugin
             return child;
         }
 
-        public void BackPropogation(List<TreeCandidate> parentpath)
+        public void BackPropogation(List<TreeCandidate> parentpath,double S)
         {
             foreach (var treeCandidate in parentpath)
             {
                 treeCandidate.n++;
-                treeCandidate.S++;
+                treeCandidate.S+=S;
 
             }
         }
@@ -194,7 +189,7 @@ namespace MolecularSynthesis.GS.Plugin
         {
             double score;
             int RS0 = 0;
-            var options = rulesets;
+            //var options = rulesets;
             //candidate.ruleSetIndicesInRecipe();
             //var childrenCandidate = RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true);
             //var a = candidate.recipe[1];
@@ -221,16 +216,18 @@ namespace MolecularSynthesis.GS.Plugin
             {
                 Random rnd = new Random();
                 //rnd.Next(0, 2); // generate 0 or 1
-                if (rnd.Next(0, 2) == 0)
+                if (rnd.Next(0, 2) == 0 && option0.Count > 0)
                 {
                     RS0 = RS0 + 1;
-                    option0[rnd.Next(option0.Count)].apply(candidate.graph, null);
-                    candidate.addToRecipe(option0[option0.Count]);
+                    var Randomoption0 = rnd.Next(option0.Count);
+                    option0[Randomoption0].apply(candidate.graph, null);
+                    candidate.addToRecipe(option0[Randomoption0]);
                 }
-                else
+                else if (option1.Count > 0)
                 {
-                    option1[rnd.Next(option1.Count)].apply(candidate.graph, null);
-                    candidate.addToRecipe(option1[option1.Count]);
+                    var Randomoption1 = rnd.Next(option1.Count);
+                    option1[Randomoption1].apply(candidate.graph, null);
+                    candidate.addToRecipe(option1[Randomoption1]);
                 }
 
                 //candidate=RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true)
@@ -238,9 +235,9 @@ namespace MolecularSynthesis.GS.Plugin
             option2[0].apply(candidate.graph, null);
             var resultMol = OBFunctions.designgraphtomol(candidate.graph);
             resultMol = OBFunctions.InterStepMinimize(resultMol);
+            var x = resultMol.GetAtom(51);
             OBFunctions.updatepositions(seedGraph, resultMol);
 
-            // distance is less the better, do we need to add a negative before score 
             score = -Evaluation.distance(candidate, desiredLenghtAndRadius);
             return score;
         }

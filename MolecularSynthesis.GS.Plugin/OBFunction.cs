@@ -91,6 +91,7 @@ namespace OpenBabelFunctions
             int count = graph.nodes.Count;
             for (int i = 0; i <= count - 1; i++)
             {
+
                 OBAtom a = mol.GetAtom(i + 1);
                 //a.GetVector
                 node n = graph.nodes[i];
@@ -180,7 +181,7 @@ namespace OpenBabelFunctions
                 if (elapsed.TotalMilliseconds > waitTime)
                     Console.WriteLine(minimizeOutput);
             }
-            conv.ReadString(mol, minimizeOutput);
+            //conv.ReadString(mol, minimizeOutput);
             return mol;
         }
 

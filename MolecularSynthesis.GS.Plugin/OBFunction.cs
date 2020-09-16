@@ -162,6 +162,7 @@ namespace OpenBabelFunctions
             {
                 
                 proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obminimize.exe";
+                //"C:\Program Files\OpenBabel-3.1.1\obminimize.exe"
                 proc.StartInfo.Arguments = "Test101.mol";
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria

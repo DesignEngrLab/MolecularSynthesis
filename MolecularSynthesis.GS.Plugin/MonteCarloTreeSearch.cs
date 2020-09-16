@@ -95,7 +95,6 @@ namespace MolecularSynthesis.GS.Plugin
             int iteration = 10000;
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
-
             // 1. check if this is the leaf node, if no go to step 2 until it is a leaf node,if yes go to step 3
             // 2. find the children who has the best UCB value
             // 3. do random simulation
@@ -107,26 +106,46 @@ namespace MolecularSynthesis.GS.Plugin
             current.UCB = double.MaxValue;
             current.Children = new List<TreeCandidate>();
             //current.option = 0;
+            int IterationTimes = 0;
 
             for (int i = 0; i < iteration; i++)
             {
+                IterationTimes = IterationTimes + 1;
+                SearchIO.output("Iteration times: " + IterationTimes);
+
                 while (current.Children.Count > 0)
                 {
-                    current = SelectPromisingNode(current);// until at leaf node
+                    current = SelectPromisingNode(current);// until at leaf node               
+
                 }
+
+                //code below is for testing for current in each step
+                SearchIO.output("S=" + current.S);
+                SearchIO.output("n=" + current.n);
+                SearchIO.output("current node recipe:");
+
+                for (int j = 0; j < current.recipe.Count; j++)
+                {
+                    SearchIO.output(current.recipe[j].ruleSetIndex + " " + current.recipe[j].optionNumber + "  ");
+
+                }
+
 
                 if (current.n == 0)
                 {
                     current.S = Rollout(current);
                 }
+
                 else
                 {
-                    current = AddNewNode(current);
+                    // add all possible actions under one parent node
+                    AddNewNode(current);
+                    current = SelectPromisingNode(current);
                     current.S = Rollout(current);
 
                 }
 
-                BackPropogation(FindAllParents(current),current.S);
+                BackPropogation(FindAllParents(current), current.S);
 
             }
 
@@ -136,14 +155,20 @@ namespace MolecularSynthesis.GS.Plugin
         }
         public double CalculateUcb(TreeCandidate child)
         {
-            return child.S / (double)child.n + 2 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
+            if (child.n == 0)
+                return double.MaxValue;
+            else
+                return child.S / child.n + 2 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
+
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
         {
+            //create the bestchild as an intermidiate variable
+
             TreeCandidate bestChild = null;
             double bestUcb = double.MinValue;
 
-            while (current.Children != null)
+            while (current.Children.Count != 0)
             {
                 foreach (TreeCandidate child in current.Children)
                 {
@@ -161,26 +186,51 @@ namespace MolecularSynthesis.GS.Plugin
             return bestChild;
         }
 
-        public TreeCandidate AddNewNode(TreeCandidate current)
+        public void AddNewNode(TreeCandidate current)
         {
-            //is this right?
-            var child = (TreeCandidate)current.copy();
-            child.Parent = current;
-            child.Children = new List<TreeCandidate>();
-            child.n = 0;
-            child.S = 0;
-            child.UCB = double.MinValue;
+            // need to add one avaiable option from current ,add options into recipe
 
-            current.Children.Add(child);
-            return child;
+            var option0 = rulesets[0].recognize(current.graph);
+            var option1 = rulesets[1].recognize(current.graph);
+            int PotenialOptionNumber = option1.Count + option0.Count;
+
+            //var option0 = rulesets[0].recognize(candidate.graph);
+            for (int i = 0; i < PotenialOptionNumber; i++)
+            {
+                var child = (TreeCandidate)current.copy();
+                child.Parent = current;
+                child.Children = new List<TreeCandidate>();
+                child.n = 0;
+                child.S = 0;
+                child.UCB = double.MinValue;
+
+                if (i < option0.Count)
+                {
+                    option0[i].apply(child.graph, null);
+                    child.addToRecipe(option0[i]);
+                }
+                else
+                {
+                    option1[i].apply(child.graph, null);
+                    child.addToRecipe(option1[i]);
+                }
+
+                current.Children.Add(child);
+
+
+            }
+
+
+
+
         }
 
-        public void BackPropogation(List<TreeCandidate> parentpath,double S)
+        public void BackPropogation(List<TreeCandidate> parentpath, double S)
         {
             foreach (var treeCandidate in parentpath)
             {
                 treeCandidate.n++;
-                treeCandidate.S+=S;
+                treeCandidate.S += S;
 
             }
         }
@@ -219,23 +269,26 @@ namespace MolecularSynthesis.GS.Plugin
                 if (rnd.Next(0, 2) == 0 && option0.Count > 0)
                 {
                     RS0 = RS0 + 1;
-                    var Randomoption0 = rnd.Next(option0.Count);
+                    var Randomoption0 = rnd.Next(0, option0.Count);
                     option0[Randomoption0].apply(candidate.graph, null);
-                    candidate.addToRecipe(option0[Randomoption0]);
+                    // dont need to add options into recipe in rollout process
+                    //candidate.addToRecipe(option0[Randomoption0]);
                 }
                 else if (option1.Count > 0)
                 {
-                    var Randomoption1 = rnd.Next(option1.Count);
+                    var Randomoption1 = rnd.Next(0, option1.Count);
                     option1[Randomoption1].apply(candidate.graph, null);
-                    candidate.addToRecipe(option1[Randomoption1]);
+                    //candidate.addToRecipe(option1[Randomoption1]);
                 }
 
                 //candidate=RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true)
+
             }
+            var x = option2.Count;
             option2[0].apply(candidate.graph, null);
             var resultMol = OBFunctions.designgraphtomol(candidate.graph);
             resultMol = OBFunctions.InterStepMinimize(resultMol);
-            var x = resultMol.GetAtom(51);
+            //var x = resultMol.GetAtom(51);
             OBFunctions.updatepositions(seedGraph, resultMol);
 
             score = -Evaluation.distance(candidate, desiredLenghtAndRadius);

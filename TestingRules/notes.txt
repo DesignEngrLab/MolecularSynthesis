@@ -1,0 +1,12 @@
+HaHa.mol can be used for minimize.exe
+Process start from:
+
+1. Atom types
+2. Formal charges
+3. Parial charges
+4. Setting up calculations
+5. Conjugate gradients
+
+end
+Time: ----   Iterations per second:-------
+ 

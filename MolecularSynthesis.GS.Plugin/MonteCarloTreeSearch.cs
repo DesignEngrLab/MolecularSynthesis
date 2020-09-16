@@ -99,17 +99,19 @@ namespace MolecularSynthesis.GS.Plugin
             // 2. find the children who has the best UCB value
             // 3. do random simulation
             // 4. update S,n,UCB value for the whole tree
-            TreeCandidate current = new TreeCandidate(seedCandidate);
+            TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
-            current.S = 0;
-            current.n = 0;
-            current.UCB = double.MaxValue;
-            current.Children = new List<TreeCandidate>();
-            //current.option = 0;
+            StartState.S = 0;
+            StartState.n = 0;
+            StartState.UCB = double.MaxValue;
+            StartState.Children = new List<TreeCandidate>();
+
             int IterationTimes = 0;
 
             for (int i = 0; i < iteration; i++)
             {
+                var current = StartState;
+
                 IterationTimes = IterationTimes + 1;
                 SearchIO.output("Iteration times: " + IterationTimes);
 
@@ -145,7 +147,7 @@ namespace MolecularSynthesis.GS.Plugin
 
                 }
 
-                BackPropogation(FindAllParents(current), current.S);
+                BackPropogation(FindAllParents(current), current);
 
             }
 
@@ -211,8 +213,8 @@ namespace MolecularSynthesis.GS.Plugin
                 }
                 else
                 {
-                    option1[i].apply(child.graph, null);
-                    child.addToRecipe(option1[i]);
+                    option1[i - option0.Count].apply(child.graph, null);
+                    child.addToRecipe(option1[i - option0.Count]);
                 }
 
                 current.Children.Add(child);
@@ -225,12 +227,14 @@ namespace MolecularSynthesis.GS.Plugin
 
         }
 
-        public void BackPropogation(List<TreeCandidate> parentpath, double S)
+        public void BackPropogation(List<TreeCandidate> parentpath, TreeCandidate current)
         {
+            current.n = current.n + 1;
+
             foreach (var treeCandidate in parentpath)
             {
                 treeCandidate.n++;
-                treeCandidate.S += S;
+                treeCandidate.S += current.S;
 
             }
         }

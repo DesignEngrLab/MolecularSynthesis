@@ -152,7 +152,7 @@ namespace OpenBabelFunctions
         // Watch out the input "ForTest.mol" is from where
         public static OBMol InterStepMinimize(OBMol mol)
         {
-            const int waitTime = 10000; // time for waiting in milliseconds
+            const int waitTime = 6000000; // time for waiting in milliseconds
             var stopwatch = new Stopwatch();
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");

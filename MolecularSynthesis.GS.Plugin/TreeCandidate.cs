@@ -1,4 +1,6 @@
-﻿using GraphSynth.Representation;
+﻿
+
+using GraphSynth.Representation;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,7 +28,25 @@ namespace MolecularSynthesis.GS.Plugin
         }
         public override candidate copy()
         {
-            return new TreeCandidate(base.copy());
+            var copytreecandidate= new TreeCandidate(base.copy());
+            copytreecandidate.Parent = this.Parent;
+            copytreecandidate.Children = new List<TreeCandidate>();
+            copytreecandidate.S = S;
+            copytreecandidate.n = n;
+            copytreecandidate.UCB = UCB;
+
+            return copytreecandidate;
         }
+
+        public TreeCandidate deepcopy()
+        {
+            TreeCandidate other = (TreeCandidate)this.MemberwiseClone();
+            //other.Parent = new TreeCandidate(IdInfo.IdNumber);
+            
+            return other;
+
+            
+        }
+             
     }
 }

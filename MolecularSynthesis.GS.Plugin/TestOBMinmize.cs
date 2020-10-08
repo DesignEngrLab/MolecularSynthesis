@@ -12,6 +12,7 @@ using MolecularSynthesis.GS.Plugin;
 using System.Linq;
 using OpenBabel;
 using OpenBabelFunctions;
+using MolecularSynthesis.GS.Plugin;
 
 namespace MolecularSynthesis.GS.Plugin
 {
@@ -47,65 +48,124 @@ namespace MolecularSynthesis.GS.Plugin
             StartState.Children = new List<TreeCandidate>();
 
             var option0 = rulesets[0].recognize(StartState.graph);
+            var option1 = rulesets[1].recognize(StartState.graph);
             var option2 = rulesets[2].recognize(StartState.graph);
-            
 
+            //option0[6].apply(StartState.graph, null);
 
-            // test for Rule from 1-6 from RS0 , no problem with this part
-            for (int i = 0; i < 6; i++)
-            {
-                TreeCandidate candidate = StartState;
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[0].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[0]);
 
-                option0[i].apply(candidate.graph, null);
-                //option1[].apply(candidate.graph, null);
-                option2[0].apply(candidate.graph, null);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[1].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[1]);
 
-                var resultMol0 = OBFunctions.designgraphtomol(candidate.graph);
-                resultMol0 = OBFunctions.InterStepMinimize(resultMol0);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[2].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[2]);
 
-                OBFunctions.updatepositions(seedGraph, resultMol0);
+            option0 = rulesets[0].recognize(StartState.graph);
+            option0[3].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[3]);
 
-                var score0 = Evaluation.distance(candidate, desiredLenghtAndRadius);
-                SearchIO.output(score0+"RS0");
-            }
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[4].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[4]);
 
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[5].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[5]);
 
-            // test for Rule from 1-9 from RS1 , no problem with this part except rule 9
+            option0 = rulesets[0].recognize(StartState.graph);
             option0[6].apply(StartState.graph, null);
             StartState.addToRecipe(option0[6]);
 
+            //option1 = rulesets[1].recognize(StartState.graph);
+            //option1[21].apply(StartState.graph, null);
+            //StartState.addToRecipe(option1[0]);
+
+            //option1 = rulesets[1].recognize(StartState.graph);
+            //option1[30].apply(StartState.graph, null);
+            //StartState.addToRecipe(option1[0]);
+
             option2 = rulesets[2].recognize(StartState.graph);
-            var option1 = rulesets[1].recognize(StartState.graph);
-            
-            for (int i = 0; i < 8; i++)
-            {
-                TreeCandidate candidate = StartState;
-
-                option1[i*8].apply(candidate.graph, null);
-                option2[0].apply(candidate.graph, null);
-
-                var resultMol1 = OBFunctions.designgraphtomol(candidate.graph);
-                resultMol1 = OBFunctions.InterStepMinimize(resultMol1);
-
-                OBFunctions.updatepositions(seedGraph, resultMol1);
-
-                var score1 = Evaluation.distance(candidate, desiredLenghtAndRadius);
-                SearchIO.output(score1 + "RS1");
-                                
-            }
-
-            option1[32].apply(StartState.graph,null);
-            option1[8].apply(StartState.graph, null);
-            option1[16].apply(StartState.graph, null);
-            option1[64].apply(StartState.graph, null);
             option2[0].apply(StartState.graph, null);
+            StartState.addToRecipe(option2[0]);
+
+
+
             var resultMol = OBFunctions.designgraphtomol(StartState.graph);
             resultMol = OBFunctions.InterStepMinimize(resultMol);
 
             OBFunctions.updatepositions(seedGraph, resultMol);
-
             var score = Evaluation.distance(StartState, desiredLenghtAndRadius);
-            SearchIO.output(score + "HAHA");
+
+            //double TotalMass = Evaluation.TotalAtomMass(StartState);
+
+            SearchIO.output(score + "  HAHA");
+
+            for (int j = 0; j < StartState.recipe.Count; j++)
+            {
+                SearchIO.output(StartState.recipe[j].ruleSetIndex + " " + StartState.recipe[j].optionNumber);
+
+            }
+
+            // test for Rule from 1-6 from RS0 , no problem with this part
+            //for (int i = 0; i < 6; i++)
+            //{
+            //    TreeCandidate candidate = StartState;
+
+            //    option0[i].apply(candidate.graph, null);
+            //    //option1[].apply(candidate.graph, null);
+            //    option2[0].apply(candidate.graph, null);
+
+            //    var resultMol0 = OBFunctions.designgraphtomol(candidate.graph);
+            //    resultMol0 = OBFunctions.InterStepMinimize(resultMol0);
+
+            //    OBFunctions.updatepositions(seedGraph, resultMol0);
+
+            //    var score0 = Evaluation.distance(candidate, desiredLenghtAndRadius);
+            //    SearchIO.output(score0+"RS0");
+            //}
+
+
+            // test for Rule from 1-9 from RS1 , no problem with this part except rule 9
+            //option0[6].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[6]);
+
+            //option2 = rulesets[2].recognize(StartState.graph);
+            //var option1 = rulesets[1].recognize(StartState.graph);
+
+            //for (int i = 0; i < 8; i++)
+            //{
+            //    TreeCandidate candidate = StartState;
+
+            //    option1[i*8].apply(candidate.graph, null);
+            //    option2[0].apply(candidate.graph, null);
+
+            //    var resultMol1 = OBFunctions.designgraphtomol(candidate.graph);
+            //    resultMol1 = OBFunctions.InterStepMinimize(resultMol1);
+
+            //    OBFunctions.updatepositions(seedGraph, resultMol1);
+
+            //    var score1 = Evaluation.distance(candidate, desiredLenghtAndRadius);
+            //    SearchIO.output(score1 + "RS1");
+
+            //}
+
+            //option1[32].apply(StartState.graph,null);
+            //option1[8].apply(StartState.graph, null);
+            //option1[16].apply(StartState.graph, null);
+            //option1[64].apply(StartState.graph, null);
+            //option2[0].apply(StartState.graph, null);
+            //var resultMol = OBFunctions.designgraphtomol(StartState.graph);
+            //resultMol = OBFunctions.InterStepMinimize(resultMol);
+
+            //OBFunctions.updatepositions(seedGraph, resultMol);
+
+            //var score = Evaluation.distance(StartState, desiredLenghtAndRadius);
+            //SearchIO.output(score + "HAHA");
 
             //for (int i = 0; i < iteration; i++)
             //{

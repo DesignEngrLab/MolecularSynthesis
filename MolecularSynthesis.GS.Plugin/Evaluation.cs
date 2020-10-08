@@ -5,6 +5,7 @@ using GraphSynth.Representation;
 using System.Collections.Generic;
 using OpenBabelFunctions;
 using OpenBabel;
+using MolecularSynthesis.GS.Plugin;
 //using GraphMolWrap;
 
 
@@ -17,16 +18,44 @@ namespace MolecularSynthesis.GS.Plugin
             {"H", 1},
             {"C", 12},
             {"N", 14},
-            {"O", 16}
+            {"O", 16},
+            {"Cl", 35.5},
+            {"Br", 80},
+            {"F", 19}
+
         };
         public static int CountAtoms(candidate cand)
         {
             return cand.graph.nodes.Count;
         }
 
+        public static double TotalAtomMass(TreeCandidate current)
+        {
+            double weight = 0;
+            foreach (node n in current.graph.nodes)
+            {
+                if (n.localLabels.Contains("H"))
+                    weight = weight + 1;
+                else if (n.localLabels.Contains("C"))
+                    weight = weight + 12;
+                else if (n.localLabels.Contains("N"))
+                    weight = weight + 14;
+                else if (n.localLabels.Contains("O"))
+                    weight = weight + 16;
+                else if (n.localLabels.Contains("Cl"))
+                    weight = weight + 35.5;
+                else if (n.localLabels.Contains("Br"))
+                    weight = weight + 80;
+                else if (n.localLabels.Contains("Br"))
+                    weight = weight + 19;
 
 
-        
+            }
+            return weight;
+
+        }
+
+
         public static double[] FindLengthAndRadius(designGraph host)// The input is host right now, need to be changed into cand in search process, because distance function need to input cand
         {
             var LengthAndRadius = new double[2];

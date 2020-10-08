@@ -17,7 +17,10 @@ namespace OpenBabelFunctions
             {"H", 1},
             {"C", 6},
             {"N", 7},
-            {"O", 8}
+            {"O", 8},
+            {"Cl", 17},
+            {"Br", 35},
+            {"F", 9}
         };
 
         //public static string moltoSMILES(OBMol mol)
@@ -82,6 +85,8 @@ namespace OpenBabelFunctions
                 mol.AddBond(nodeatomlookup[a.To.name], nodeatomlookup[a.From.name], bondorder);                                   
                 
                 
+
+
             }
             return mol;
         }
@@ -152,7 +157,7 @@ namespace OpenBabelFunctions
         // Watch out the input "ForTest.mol" is from where
         public static OBMol InterStepMinimize(OBMol mol)
         {
-            const int waitTime = 6000000; // time for waiting in milliseconds
+            const int waitTime = 60000000; // time for waiting in milliseconds
             var stopwatch = new Stopwatch();
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
@@ -162,13 +167,16 @@ namespace OpenBabelFunctions
             {
                 
                 proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obminimize.exe";
+                //proc.StartInfo.FileName = "C: \\Users\\zhang\\source\\repos\\MolecularSynthesis\\minimize.exe";
+                //C: \Users\zhang\source\repos\MolecularSynthesis
+
                 //"C:\Program Files\OpenBabel-3.1.1\obminimize.exe"
-                proc.StartInfo.Arguments = "Test101.mol";
+                proc.StartInfo.Arguments = "-cg -ff UFF Test101.mol";
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
                 proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output";
-                proc.StartInfo.RedirectStandardError = true;
-                proc.StartInfo.UseShellExecute = false;
+                //proc.StartInfo.RedirectStandardError = true;
+                //proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.RedirectStandardInput = false;
                 Console.Write("starting OBMinimize...");

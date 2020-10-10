@@ -201,6 +201,7 @@ namespace MolecularSynthesis.GS.Plugin
                 foreach (TreeCandidate child in current.Children)
                 {
                     double Ucb = CalculateUcb(child);
+                    child.UCB = Ucb;
                     if (Ucb > bestUcb)
                     {
                         bestUcb = Ucb;
@@ -208,6 +209,7 @@ namespace MolecularSynthesis.GS.Plugin
                     }
                 }
                 current = bestChild;
+                
             }
 
             //return SelectPromisingNode(bestChild);
@@ -272,7 +274,7 @@ namespace MolecularSynthesis.GS.Plugin
             int RS0 = 0;
             int RS1 = 0;
             TreeCandidate child = (TreeCandidate)candidate.copy();
-            child.Parent = candidate;
+            //child.Parent = candidate;
             //TreeCandidate child = candidate;
 
             //var options = rulesets;
@@ -356,18 +358,18 @@ namespace MolecularSynthesis.GS.Plugin
         public List<TreeCandidate> FindAllParents(TreeCandidate current)
         {
             var parents = new List<TreeCandidate>();
-            //TreeCandidate child = (TreeCandidate)current.copy();
+            TreeCandidate child = (TreeCandidate)current.copy();
             //child.Parent = current;
             //.Parent = current.Parent;
             //TreeCandidate child = current;
 
             //int height = GetHeight(child);
 
-            while (current.Parent != null)
+            while (child.Parent != null)
             //for (int i = 0; i < height; i++)
             {
-                parents.Add(current.Parent);
-                current = current.Parent;
+                parents.Add(child.Parent);
+                child = child.Parent;
             }
 
             return parents;

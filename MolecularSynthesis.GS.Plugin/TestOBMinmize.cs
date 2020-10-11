@@ -21,6 +21,7 @@ namespace MolecularSynthesis.GS.Plugin
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         static double[] desiredLenghtAndRadius = new double[] { 300, 50 };
+        static Random rnd = new Random(0);
 
         public TestOBMin(GlobalSettings settings) : base(settings)
         {
@@ -29,17 +30,17 @@ namespace MolecularSynthesis.GS.Plugin
             AutoPlay = true;
         }
 
-        
+
         public override string text
         {
             get { return "TestOBMin"; }
         }
-             
+
         protected override void Run()
         {
-            
+
             int iteration = 10000;
-            
+
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
             StartState.S = 0;
@@ -291,7 +292,6 @@ namespace MolecularSynthesis.GS.Plugin
 
             while (RS0 != 5)
             {
-                Random rnd = new Random();
                 //rnd.Next(0, 2); // generate 0 or 1
                 if (rnd.Next(0, 2) == 0 && option0.Count > 0)
                 {

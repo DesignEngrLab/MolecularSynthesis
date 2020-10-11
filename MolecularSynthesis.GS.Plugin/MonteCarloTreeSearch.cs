@@ -20,6 +20,7 @@ namespace MolecularSynthesis.GS.Plugin
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         static double[] desiredLenghtAndRadius = new double[] { 300, 50 };
+        static Random rnd = new Random(0);
 
         public MCTS(GlobalSettings settings) : base(settings)
         {
@@ -299,7 +300,6 @@ namespace MolecularSynthesis.GS.Plugin
 
             while (RS0 != 3)
             {
-                Random rnd = new Random();
                 //rnd.Next(0, 2); // generate 0 or 1
 
                 var option0 = rulesets[0].recognize(child.graph);

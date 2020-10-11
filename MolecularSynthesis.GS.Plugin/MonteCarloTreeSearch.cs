@@ -233,6 +233,7 @@ namespace MolecularSynthesis.GS.Plugin
                 child.n = 0;
                 child.S = 0;
                 child.UCB = double.MaxValue;
+                child.recipe = current.recipe;
 
                 if (i < option0.Count)
                 {

@@ -65,9 +65,9 @@ namespace MolecularSynthesis.GS.Plugin
             //option0[2].apply(StartState.graph, null);
             //StartState.addToRecipe(option0[2]);
 
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[3].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[3]);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[3].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[3]);
 
             //option0 = rulesets[0].recognize(StartState.graph);
             //option0[4].apply(StartState.graph, null);
@@ -81,7 +81,8 @@ namespace MolecularSynthesis.GS.Plugin
             option0[6].apply(StartState.graph, null);
             StartState.addToRecipe(option0[6]);
 
-            //option1 = rulesets[1].recognize(StartState.graph);
+
+            option1 = rulesets[1].recognize(StartState.graph);
             //option1[21].apply(StartState.graph, null);
             //StartState.addToRecipe(option1[0]);
 

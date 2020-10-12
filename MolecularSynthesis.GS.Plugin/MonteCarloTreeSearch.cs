@@ -108,32 +108,15 @@ namespace MolecularSynthesis.GS.Plugin
             StartState.Children = new List<TreeCandidate>();
             StartState.Parent = null;
 
+            
             int IterationTimes = 0;
+            
 
             var current = StartState;
 
             for (int i = 0; i < iteration; i++)
             {
-                // need to save S value and n value, delete the added graph, back to StartState
-
-                IterationTimes = IterationTimes + 1;
-                SearchIO.output("Iteration times: " + IterationTimes);
-                SearchIO.output("S = " + current.S);
-                SearchIO.output("n = " + current.n);
-                SearchIO.output("Children number = " + current.Children.Count + "*************");
-                SearchIO.output("number of recipe: " + current.recipe.Count);
-                SearchIO.output("current node recipe:");
-
-                foreach (var option in current.recipe)
-                {
-                    //SearchIO.output(current.recipe[j].ruleSetIndex + " " + current.recipe[j].optionNumber);
-                    SearchIO.output(option.ruleSetIndex + " " + option.ruleNumber + "------------");
-
-                }
-
-                //SearchIO.output("Children number = " + current.Children.Count +"**********");
-                //var allParents = FindAllParents(current);
-                //current=allParents[^1];
+                // need to save S value and n value, delete the added graph, back to StartState                                                  
 
                 current = StartState;
                 while (current.Children.Count > 0)
@@ -147,6 +130,7 @@ namespace MolecularSynthesis.GS.Plugin
                     current.S = Rollout(current);
                 }
 
+
                 else
                 {
                     // add all possible actions under one parent node
@@ -156,6 +140,11 @@ namespace MolecularSynthesis.GS.Plugin
                     current.S = Rollout(current);
 
                 }
+
+
+
+
+
 
                 BackPropogation(FindAllParents(current), current);
 
@@ -169,6 +158,29 @@ namespace MolecularSynthesis.GS.Plugin
                 //    SearchIO.output(current.recipe[j].ruleSetIndex + " " + current.recipe[j].optionNumber);
 
                 //}
+                IterationTimes = IterationTimes + 1;      
+                
+                SearchIO.output("Iteration times: " + IterationTimes);
+                SearchIO.output("S = " + current.S);
+                SearchIO.output("n = " + current.n);
+                SearchIO.output("Children number = " + current.Children.Count + "*************");
+                SearchIO.output("number of recipe: " + current.recipe.Count);
+                SearchIO.output("current node recipe:");
+
+                if (current.recipe.Count == 0)
+                {
+                    SearchIO.output("no recipe" + "------------");
+                }
+                else 
+                {
+                    foreach (var option in current.recipe)
+                    {
+                        //SearchIO.output(current.recipe[j].ruleSetIndex + " " + current.recipe[j].optionNumber);
+                        SearchIO.output(option.ruleSetIndex + " " + option.ruleNumber + "------------");
+
+                    }
+                }
+                
                 SearchIO.output("-------------------------------------------------------------------------");
             }
 
@@ -234,7 +246,8 @@ namespace MolecularSynthesis.GS.Plugin
                 child.n = 0;
                 child.S = 0;
                 child.UCB = double.MaxValue;
-                child.recipe = current.recipe;
+                //child.recipe = current.recipe;
+                //child.graph = current.graph;
 
                 if (i < option0.Count)
                 {
@@ -303,7 +316,7 @@ namespace MolecularSynthesis.GS.Plugin
                 //rnd.Next(0, 2); // generate 0 or 1
 
                 var option0 = rulesets[0].recognize(child.graph);
-                if (rnd.Next(0, 2) == 0 && option0.Count > 0)
+                if (rnd.Next(0, 1) == 0 && option0.Count > 0)
                 {
                     RS0 = RS0 + 1;
 

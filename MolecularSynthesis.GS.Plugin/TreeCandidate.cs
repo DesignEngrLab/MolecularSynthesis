@@ -25,6 +25,7 @@ namespace MolecularSynthesis.GS.Plugin
             this.graph = seedCandidate.graph;
             this.graphFileName = seedCandidate.graphFileName;
             this.performanceParams = seedCandidate.performanceParams;
+            this.recipe = seedCandidate.recipe;
         }
         public override candidate copy()
         {

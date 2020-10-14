@@ -17,6 +17,7 @@ mc:Ignorable="GraphSynth" xmlns:GraphSynth="ignorableUri" Tag="Rule" ><Border Bo
         xsi:type="ruleArc">
         <name>a2</name>
         <localLabels>
+          <string>s</string>
           <string>b</string>
         </localLabels>
         <localVariables />
@@ -35,6 +36,7 @@ mc:Ignorable="GraphSynth" xmlns:GraphSynth="ignorableUri" Tag="Rule" ><Border Bo
         xsi:type="ruleArc">
         <name>a3</name>
         <localLabels>
+          <string>d</string>
           <string>b</string>
         </localLabels>
         <localVariables />
@@ -144,6 +146,7 @@ mc:Ignorable="GraphSynth" xmlns:GraphSynth="ignorableUri" Tag="Rule" ><Border Bo
         xsi:type="ruleArc">
         <name>a2</name>
         <localLabels>
+          <string>s</string>
           <string>b</string>
         </localLabels>
         <localVariables />
@@ -162,6 +165,7 @@ mc:Ignorable="GraphSynth" xmlns:GraphSynth="ignorableUri" Tag="Rule" ><Border Bo
         xsi:type="ruleArc">
         <name>a3</name>
         <localLabels>
+          <string>d</string>
           <string>b</string>
         </localLabels>
         <localVariables />

@@ -93,7 +93,7 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 10000;
+            int iteration = 200;
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
             // 1. check if this is the leaf node, if no go to step 2 until it is a leaf node,if yes go to step 3
@@ -108,9 +108,10 @@ namespace MolecularSynthesis.GS.Plugin
             StartState.Children = new List<TreeCandidate>();
             StartState.Parent = null;
 
-            
+
+
             int IterationTimes = 0;
-            
+
 
             var current = StartState;
 
@@ -134,32 +135,24 @@ namespace MolecularSynthesis.GS.Plugin
                 else
                 {
                     // add all possible actions under one parent node
-                    AddNewNode(current);
-                    SearchIO.output("Children number = " + current.Children.Count + "**********");
-                    current = SelectPromisingNode(current);
-                    current.S = Rollout(current);
+                    if (current.recipe.Count < 5)
+                    {
+                        AddNewNode(current);
+                        SearchIO.output("Children number = " + current.Children.Count + "**********");
+                        current = SelectPromisingNode(current);
+                        current.S = Rollout(current);
+                    }
+                    else
+                    {
+                        current.S = Rollout(current);
+                    }
 
                 }
 
-
-
-
-
-
                 BackPropogation(FindAllParents(current), current);
 
+                IterationTimes = IterationTimes + 1;
 
-                //SearchIO.output("S = " + current.S);
-                //SearchIO.output("n = " + current.n);
-                //SearchIO.output("Children number = " + current.Children.Count+ "*************");
-
-                //    for (int j = 0; j < current.recipe.Count; j++)
-                //{
-                //    SearchIO.output(current.recipe[j].ruleSetIndex + " " + current.recipe[j].optionNumber);
-
-                //}
-                IterationTimes = IterationTimes + 1;      
-                
                 SearchIO.output("Iteration times: " + IterationTimes);
                 SearchIO.output("S = " + current.S);
                 SearchIO.output("n = " + current.n);
@@ -171,7 +164,7 @@ namespace MolecularSynthesis.GS.Plugin
                 {
                     SearchIO.output("no recipe" + "------------");
                 }
-                else 
+                else
                 {
                     foreach (var option in current.recipe)
                     {
@@ -180,7 +173,7 @@ namespace MolecularSynthesis.GS.Plugin
 
                     }
                 }
-                
+
                 SearchIO.output("-------------------------------------------------------------------------");
             }
 
@@ -207,12 +200,13 @@ namespace MolecularSynthesis.GS.Plugin
             //create the bestchild as an intermidiate variable
 
             TreeCandidate bestChild = null;
-            double bestUcb = double.MinValue;
+
 
             while (current.Children.Count != 0)
             {
                 foreach (TreeCandidate child in current.Children)
                 {
+                    double bestUcb = double.MinValue;
                     double Ucb = CalculateUcb(child);
                     child.UCB = Ucb;
                     if (Ucb > bestUcb)
@@ -222,7 +216,7 @@ namespace MolecularSynthesis.GS.Plugin
                     }
                 }
                 current = bestChild;
-                
+
             }
 
             //return SelectPromisingNode(bestChild);
@@ -234,8 +228,10 @@ namespace MolecularSynthesis.GS.Plugin
             // need to add one avaiable option from current ,add options into recipe
 
             var option0 = rulesets[0].recognize(current.graph);
-            var option1 = rulesets[1].recognize(current.graph);
-            int PotenialOptionNumber = option1.Count + option0.Count;
+            //var option1 = rulesets[1].recognize(current.graph);            
+            //int PotenialOptionNumber = option1.Count + option0.Count;
+            int PotenialOptionNumber = option0.Count;
+
 
             //var option0 = rulesets[0].recognize(candidate.graph);
             for (int i = 0; i < PotenialOptionNumber; i++)
@@ -254,11 +250,11 @@ namespace MolecularSynthesis.GS.Plugin
                     option0[i].apply(child.graph, null);
                     child.addToRecipe(option0[i]);
                 }
-                else
-                {
-                    option1[i - option0.Count].apply(child.graph, null);
-                    child.addToRecipe(option1[i - option0.Count]);
-                }
+                //else
+                //{
+                //    option1[i - option0.Count].apply(child.graph, null);
+                //    child.addToRecipe(option1[i - option0.Count]);
+                //}
 
                 current.Children.Add(child);
 
@@ -311,19 +307,25 @@ namespace MolecularSynthesis.GS.Plugin
                 //var options = rulesets[0].recognize(current.graph)
             }
 
-            while (RS0 != 3)
+            while (RS0 < 5)
             {
                 //rnd.Next(0, 2); // generate 0 or 1
 
                 var option0 = rulesets[0].recognize(child.graph);
-                if (rnd.Next(0, 1) == 0 && option0.Count > 0)
+                //if (option0.Count == 0)
+                //    Save("test.gxml", child.graph);
+                int WhichRuleset = 0;
+
+                if (WhichRuleset == 0)
                 {
                     RS0 = RS0 + 1;
-
-                    var Randomoption0 = rnd.Next(0, option0.Count);
-                    option0[Randomoption0].apply(child.graph, null);
-                    // dont need to add options into recipe in rollout process
-                    child.addToRecipe(option0[Randomoption0]);
+                    if (option0.Count > 0)
+                    {
+                        var Randomoption0 = rnd.Next(0, option0.Count);
+                        option0[Randomoption0].apply(child.graph, null);
+                        // dont need to add options into recipe in rollout process
+                        //.addToRecipe(option0[Randomoption0]);
+                    }
                 }
 
                 else
@@ -334,7 +336,7 @@ namespace MolecularSynthesis.GS.Plugin
                         RS1 = RS1 + 1;
                         var Randomoption1 = rnd.Next(0, option1.Count);
                         option1[Randomoption1].apply(child.graph, null);
-                        child.addToRecipe(option1[Randomoption1]);
+                        //child.addToRecipe(option1[Randomoption1]);
                     }
 
                     //candidate=RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true)
@@ -346,7 +348,7 @@ namespace MolecularSynthesis.GS.Plugin
             if (option2.Count == 0)
                 Console.WriteLine("how?!?");
             option2[0].apply(child.graph, null);
-            child.addToRecipe(option2[0]);
+            //child.addToRecipe(option2[0]);
 
             //if (!candidate.recipe.Contains(option2[0]))
             //{
@@ -392,9 +394,9 @@ namespace MolecularSynthesis.GS.Plugin
         public int GetHeight(TreeCandidate current)
         {
             int height = 0;
-            TreeCandidate child = current;
 
-            //TreeCandidate child = (TreeCandidate)current.copy();
+
+            TreeCandidate child = (TreeCandidate)current.copy();
             //child.Parent = current;
             //child.Parent = current.Parent;
 

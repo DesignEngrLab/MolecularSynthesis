@@ -54,21 +54,21 @@ namespace MolecularSynthesis.GS.Plugin
 
             //option0[6].apply(StartState.graph, null);
 
-            //option0 = rulesets[0].recognize(StartState.graph);
-            //option0[0].apply(StartState.graph, null);
-            //StartState.addToRecipe(option0[0]);
+            option0 = rulesets[0].recognize(StartState.graph);
+            option0[0].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[0]);
 
             //option0 = rulesets[0].recognize(StartState.graph);
             //option0[1].apply(StartState.graph, null);
             //StartState.addToRecipe(option0[1]);
 
-            //option0 = rulesets[0].recognize(StartState.graph);
-            //option0[2].apply(StartState.graph, null);
-            //StartState.addToRecipe(option0[2]);
+            option0 = rulesets[0].recognize(StartState.graph);
+            option0[2].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[2]);
 
-            //option0 = rulesets[0].recognize(StartState.graph);
-            //option0[3].apply(StartState.graph, null);
-            //StartState.addToRecipe(option0[3]);
+            option0 = rulesets[0].recognize(StartState.graph);
+            option0[3].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[3]);
 
             //option0 = rulesets[0].recognize(StartState.graph);
             //option0[4].apply(StartState.graph, null);
@@ -78,9 +78,9 @@ namespace MolecularSynthesis.GS.Plugin
             //option0[5].apply(StartState.graph, null);
             //StartState.addToRecipe(option0[5]);
 
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[6].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[6]);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[6].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[6]);
 
 
             //option1 = rulesets[1].recognize(StartState.graph);
@@ -99,8 +99,12 @@ namespace MolecularSynthesis.GS.Plugin
 
             var resultMol = OBFunctions.designgraphtomol(StartState.graph);
             resultMol = OBFunctions.InterStepMinimize(resultMol);
+            OBFunctions.updatepositions(StartState.graph, resultMol);
+            var FinalResultMol= OBFunctions.designgraphtomol(StartState.graph);
+            var conv = new OBConversion();
+            conv.SetInAndOutFormats("pdb", "mol");
+            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test102.mol"));
 
-            OBFunctions.updatepositions(seedGraph, resultMol);
             var score = Evaluation.distance(StartState, desiredLenghtAndRadius);
 
             //double TotalMass = Evaluation.TotalAtomMass(StartState);

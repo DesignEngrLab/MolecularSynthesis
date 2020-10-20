@@ -192,7 +192,7 @@ namespace MolecularSynthesis.GS.Plugin
             if (child.n == 0)
                 return double.MaxValue;
             else
-                return child.S / child.n + 2 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
+                return child.S / child.n + 1000 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
 
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
@@ -358,7 +358,6 @@ namespace MolecularSynthesis.GS.Plugin
             // use openbabel for evaluation
             //var resultMol = OBFunctions.designgraphtomol(child.graph);
             //resultMol = OBFunctions.InterStepMinimize(resultMol);
-
             //OBFunctions.updatepositions(seedGraph, resultMol);
 
             //score = -Evaluation.distance(child, desiredLenghtAndRadius);

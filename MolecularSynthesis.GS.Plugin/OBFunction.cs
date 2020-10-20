@@ -166,7 +166,7 @@ namespace OpenBabelFunctions
             using (Process proc = new Process())
             {
                 
-                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obminimize.exe";
+                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.0.0\\obminimize.exe";
                 //proc.StartInfo.FileName = "C: \\Users\\zhang\\source\\repos\\MolecularSynthesis\\minimize.exe";
                 //C: \Users\zhang\source\repos\MolecularSynthesis
 
@@ -178,7 +178,7 @@ namespace OpenBabelFunctions
                 //proc.StartInfo.RedirectStandardError = true;
                 //proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
-                proc.StartInfo.RedirectStandardInput = false;
+                //proc.StartInfo.RedirectStandardInput = false;
                 Console.Write("starting OBMinimize...");
                 stopwatch.Restart();
                 proc.Start();
@@ -190,7 +190,8 @@ namespace OpenBabelFunctions
                 if (elapsed.TotalMilliseconds > waitTime)
                     Console.WriteLine(minimizeOutput);
             }
-            //conv.ReadString(mol, minimizeOutput);
+            conv.ReadString(mol, minimizeOutput);
+
             return mol;
         }
 

@@ -39,9 +39,9 @@ namespace TestOpenBabel
             SearchIO.output("Length is: "+ result[0]);
             SearchIO.output("Radius is: "+ result[1]);
 
-            var conv = new OBConversion();
-            conv.SetInAndOutFormats("pdb", extension);
-            conv.WriteFile(resultMol, filename + "." + extension);
+            //var conv = new OBConversion();
+            //conv.SetInAndOutFormats("pdb", extension);
+            //conv.WriteFile(resultMol, filename + "." + extension);
             //File.AppendText()
         }
     }

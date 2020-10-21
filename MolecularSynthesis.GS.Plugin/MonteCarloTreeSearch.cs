@@ -93,7 +93,7 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 200;
+            int iteration = 10000;
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
             // 1. check if this is the leaf node, if no go to step 2 until it is a leaf node,if yes go to step 3
@@ -107,8 +107,6 @@ namespace MolecularSynthesis.GS.Plugin
             StartState.UCB = double.MaxValue;
             StartState.Children = new List<TreeCandidate>();
             StartState.Parent = null;
-
-
 
             int IterationTimes = 0;
 
@@ -177,8 +175,9 @@ namespace MolecularSynthesis.GS.Plugin
                 SearchIO.output("-------------------------------------------------------------------------");
             }
 
-            TreeCandidate seed = new TreeCandidate(seedCandidate);
-            var FinalResult = SelectPromisingNode(seed);
+            //TreeCandidate seed = new TreeCandidate(seedCandidate);
+            var FinalResult = FinalRecipe(StartState);
+            SearchIO.output("Solution is down below: ");
             foreach (var option in FinalResult.recipe)
             {
                 SearchIO.output(option.ruleSetIndex + " " + option.ruleNumber + "------------");
@@ -192,7 +191,7 @@ namespace MolecularSynthesis.GS.Plugin
             if (child.n == 0)
                 return double.MaxValue;
             else
-                return child.S / child.n + 1000 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
+                return child.S / child.n + 200 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
 
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
@@ -204,9 +203,9 @@ namespace MolecularSynthesis.GS.Plugin
 
             while (current.Children.Count != 0)
             {
+                double bestUcb = double.MinValue;
                 foreach (TreeCandidate child in current.Children)
                 {
-                    double bestUcb = double.MinValue;
                     double Ucb = CalculateUcb(child);
                     child.UCB = Ucb;
                     if (Ucb > bestUcb)
@@ -222,6 +221,29 @@ namespace MolecularSynthesis.GS.Plugin
             //return SelectPromisingNode(bestChild);
             return bestChild;
         }
+
+        public TreeCandidate FinalRecipe(TreeCandidate StartState)
+        {
+            TreeCandidate bestChild = null;
+            while (StartState.Children.Count != 0)
+            {
+                double bestS = double.MinValue;
+                foreach (TreeCandidate child in StartState.Children)
+                {
+                    
+                    if (child.S > bestS)
+                    {
+                        bestS = child.S;
+                        bestChild = child;
+                    }
+                }
+                StartState = bestChild;
+
+            }
+
+            return bestChild;
+        }
+
 
         public void AddNewNode(TreeCandidate current)
         {

@@ -54,56 +54,52 @@ namespace MolecularSynthesis.GS.Plugin
 
             //option0[6].apply(StartState.graph, null);
 
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[0].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[0]);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[0].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[0]);
 
             //option0 = rulesets[0].recognize(StartState.graph);
             //option0[1].apply(StartState.graph, null);
             //StartState.addToRecipe(option0[1]);
 
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[2].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[2]);
-
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[3].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[3]);
-
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[4].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[4]);
-
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[5].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[5]);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[2].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[2]);
 
             //option0 = rulesets[0].recognize(StartState.graph);
-            //option0[6].apply(StartState.graph, null);
-            //StartState.addToRecipe(option0[6]);
+            //option0[3].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[3]);
 
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[4].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[4]);
 
-            //option1 = rulesets[1].recognize(StartState.graph);
-            //option1[70].apply(StartState.graph, null);
-            //StartState.addToRecipe(option1[70]);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[5].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[5]);
 
-            //option1 = rulesets[1].recognize(StartState.graph);
-            //option1[30].apply(StartState.graph, null);
-            //StartState.addToRecipe(option1[0]);
+            option0 = rulesets[0].recognize(StartState.graph);
+            option0[6].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[6]);
+
+            // 3(1),7(2),10(3),12(4),16(5),22(6),*26(7),*31(8),*35(9)
+            option1 = rulesets[1].recognize(StartState.graph);
+            option1[35].apply(StartState.graph, null);
+            StartState.addToRecipe(option1[35]);
 
             option2 = rulesets[2].recognize(StartState.graph);
             option2[0].apply(StartState.graph, null);
             StartState.addToRecipe(option2[0]);
 
-
+            //Save("XYZ.gxml",StartState.graph);
 
             var resultMol = OBFunctions.designgraphtomol(StartState.graph);
             resultMol = OBFunctions.InterStepMinimize(resultMol);
             OBFunctions.updatepositions(StartState.graph, resultMol);
             var FinalResultMol= OBFunctions.designgraphtomol(StartState.graph);
             var conv = new OBConversion();
-            conv.SetInAndOutFormats("pdb", "mol");
-            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test102.mol"));
+            conv.SetInAndOutFormats("pdb", "xyz");
+            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test102.xyz"));
 
             var score = Evaluation.distance(StartState, desiredLenghtAndRadius);
 

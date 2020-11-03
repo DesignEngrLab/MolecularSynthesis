@@ -31,6 +31,13 @@ namespace TestOpenBabel
 
             resultMol = OBFunctions.InterStepMinimize(resultMol);
             OBFunctions.updatepositions(seedGraph, resultMol);
+            var FinalResultMol = OBFunctions.designgraphtomol(seedGraph);
+            var conv = new OBConversion();
+            conv.SetInAndOutFormats("pdb", "mol");
+            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test102.mol"));
+
+
+
             SearchIO.addAndShowGraphWindow(seedGraph);
 
             var result = new double[2];

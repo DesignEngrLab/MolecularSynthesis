@@ -93,7 +93,7 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 10000;
+            int iteration = 200;
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
             // 1. check if this is the leaf node, if no go to step 2 until it is a leaf node,if yes go to step 3
@@ -191,7 +191,7 @@ namespace MolecularSynthesis.GS.Plugin
             if (child.n == 0)
                 return double.MaxValue;
             else
-                return child.S / child.n + 200 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
+                return child.S / child.n + 2 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
 
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
@@ -250,7 +250,7 @@ namespace MolecularSynthesis.GS.Plugin
             // need to add one avaiable option from current ,add options into recipe
 
             var option0 = rulesets[0].recognize(current.graph);
-            //var option1 = rulesets[1].recognize(current.graph);            
+            //var option1 = rulesets[1].recognize(current.graph);
             //int PotenialOptionNumber = option1.Count + option0.Count;
             int PotenialOptionNumber = option0.Count;
 
@@ -380,7 +380,11 @@ namespace MolecularSynthesis.GS.Plugin
             // use openbabel for evaluation
             //var resultMol = OBFunctions.designgraphtomol(child.graph);
             //resultMol = OBFunctions.InterStepMinimize(resultMol);
-            //OBFunctions.updatepositions(seedGraph, resultMol);
+            //OBFunctions.updatepositions(child.graph, resultMol);
+            //var FinalResultMol = OBFunctions.designgraphtomol(child.graph);
+            //var conv = new OBConversion();
+            //conv.SetInAndOutFormats("pdb", "mol");
+            //conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test103.mol"));
 
             //score = -Evaluation.distance(child, desiredLenghtAndRadius);
             //return score;

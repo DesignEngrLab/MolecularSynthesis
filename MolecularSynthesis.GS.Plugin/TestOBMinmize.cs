@@ -13,6 +13,7 @@ using System.Linq;
 using OpenBabel;
 using OpenBabelFunctions;
 using MolecularSynthesis.GS.Plugin;
+using System.Diagnostics;
 
 namespace MolecularSynthesis.GS.Plugin
 {
@@ -37,22 +38,90 @@ namespace MolecularSynthesis.GS.Plugin
         }
 
         protected override void Run()
-        {
+        {                     
 
-            int iteration = 10000;
+            //TreeCandidate StartState = new TreeCandidate(seedCandidate);
+
+            //StartState.S = 0;
+            //StartState.n = 0;
+            //StartState.UCB = double.MaxValue;
+            //StartState.Children = new List<TreeCandidate>();
+
+            //var option0 = rulesets[0].recognize(StartState.graph);
+            //var option1 = rulesets[1].recognize(StartState.graph);
+            //var option2 = rulesets[2].recognize(StartState.graph);
+
+            ////option0[6].apply(StartState.graph, null);
+
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[6].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[6]);
+
+            int TotalNumber = 20;
+            var rand = new Random();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
+            
+            for (int i = 0; i < TotalNumber; i++)
+            {
+                var candidate = (TreeCandidate) StartState.copy();
+                
+                var option0 = rulesets[0].recognize(candidate.graph);
+                var option1 = rulesets[1].recognize(candidate.graph);
+                var option2 = rulesets[2].recognize(candidate.graph);
+                
+                option0 = rulesets[0].recognize(candidate.graph);
+                option0[6].apply(candidate.graph, null);
+                StartState.addToRecipe(option0[6]);
+                
+                for (int j = 0; j < 4; j++)
+                {
+                    //rnd.Next(0, 2); 0 or 1
+                    var RuleSetNumber = rand.Next(0, 2);
+                    var TotalOption = rulesets[RuleSetNumber].recognize(candidate.graph).Count;
+                    var OptionNumber = rand.Next(0, TotalOption);
+                    rulesets[RuleSetNumber].recognize(candidate.graph)[OptionNumber].apply(candidate.graph, null);
+                    //StartState.addToRecipe(rulesets[RuleSetNumber].recognize(StartState.graph)[OptionNumber]);                    
+                }
 
-            StartState.S = 0;
-            StartState.n = 0;
-            StartState.UCB = double.MaxValue;
-            StartState.Children = new List<TreeCandidate>();
+                option2 = rulesets[2].recognize(candidate.graph);
+                option2[0].apply(candidate.graph, null);
+                //StartState.addToRecipe(option2[0]);
 
-            var option0 = rulesets[0].recognize(StartState.graph);
-            var option1 = rulesets[1].recognize(StartState.graph);
-            var option2 = rulesets[2].recognize(StartState.graph);
+                var resultMol = OBFunctions.designgraphtomol(candidate.graph);
+                resultMol = OBFunctions.InterStepMinimize(resultMol);
+                OBFunctions.updatepositions(candidate.graph, resultMol);
+                var FinalResultMol = OBFunctions.designgraphtomol(candidate.graph);
 
-            //option0[6].apply(StartState.graph, null);
+                var conv = new OBConversion();
+                conv.SetInAndOutFormats("pdb", "mol");
+
+                string name = ".mol";
+                name = Convert.ToString(i) + name;
+                conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
+
+                string name2 = ".xyz";
+                name2 = Convert.ToString(i) + name2;
+
+                using (Process proc = new Process())
+                {
+                    //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
+                    proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
+                    proc.StartInfo.Arguments = name + " -O " + name2;
+                    proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples";
+
+                    //proc.StartInfo.RedirectStandardError = true;
+                    //proc.StartInfo.UseShellExecute = false;
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    //proc.StartInfo.RedirectStandardInput = false;
+
+                    Console.Write("starting Convert...");
+                    proc.Start();
+                                        
+                    //minimizeOutput = proc.StandardOutput.ReadToEnd();
+                    proc.WaitForExit();
+                }
+             }
 
             //option0 = rulesets[0].recognize(StartState.graph);
             //option0[0].apply(StartState.graph, null);
@@ -78,40 +147,46 @@ namespace MolecularSynthesis.GS.Plugin
             //option0[5].apply(StartState.graph, null);
             //StartState.addToRecipe(option0[5]);
 
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[6].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[6]);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[6].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[6]);
 
-            // 3(1),7(2),10(3),12(4),16(5),22(6),*26(7),*31(8),*35(9)
-            option1 = rulesets[1].recognize(StartState.graph);
-            option1[35].apply(StartState.graph, null);
-            StartState.addToRecipe(option1[35]);
+            //// 3(1),7(2),10(3),12(4),16(5),22(6),*26(7),*31(8),*35(9)
+            //option1 = rulesets[1].recognize(StartState.graph);
+            //option1[3].apply(StartState.graph, null);
+            //StartState.addToRecipe(option1[3]);
 
-            option2 = rulesets[2].recognize(StartState.graph);
-            option2[0].apply(StartState.graph, null);
-            StartState.addToRecipe(option2[0]);
+            //option1 = rulesets[1].recognize(StartState.graph);
+            //option1[25].apply(StartState.graph, null);
+            //StartState.addToRecipe(option1[25]);
 
-            //Save("XYZ.gxml",StartState.graph);
+            //option2 = rulesets[2].recognize(StartState.graph);
+            //option2[0].apply(StartState.graph, null);
+            //StartState.addToRecipe(option2[0]);
 
-            var resultMol = OBFunctions.designgraphtomol(StartState.graph);
-            resultMol = OBFunctions.InterStepMinimize(resultMol);
-            OBFunctions.updatepositions(StartState.graph, resultMol);
-            var FinalResultMol= OBFunctions.designgraphtomol(StartState.graph);
-            var conv = new OBConversion();
-            conv.SetInAndOutFormats("pdb", "xyz");
-            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test102.xyz"));
+            ////Save("XYZ.gxml",StartState.graph);
+                  
 
-            var score = Evaluation.distance(StartState, desiredLenghtAndRadius);
+
+            //var resultMol = OBFunctions.designgraphtomol(StartState.graph);
+            //resultMol = OBFunctions.InterStepMinimize(resultMol);
+            //OBFunctions.updatepositions(StartState.graph, resultMol);
+            //var FinalResultMol= OBFunctions.designgraphtomol(StartState.graph);
+            //var conv = new OBConversion();
+            //conv.SetInAndOutFormats("pdb", "xyz");
+            //conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test112.xyz"));
+
+            //var score = Evaluation.distance(StartState, desiredLenghtAndRadius);
 
             //double TotalMass = Evaluation.TotalAtomMass(StartState);
 
-            SearchIO.output(score + "  HAHA");
+            //SearchIO.output(score + "  HAHA");
 
-            for (int j = 0; j < StartState.recipe.Count; j++)
-            {
-                SearchIO.output(StartState.recipe[j].ruleSetIndex + " " + StartState.recipe[j].optionNumber);
+            //for (int j = 0; j < StartState.recipe.Count; j++)
+            //{
+            //    SearchIO.output(StartState.recipe[j].ruleSetIndex + " " + StartState.recipe[j].optionNumber);
 
-            }
+            //}
 
             // test for Rule from 1-6 from RS0 , no problem with this part
             //for (int i = 0; i < 6; i++)

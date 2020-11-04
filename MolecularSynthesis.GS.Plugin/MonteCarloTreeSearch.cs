@@ -378,20 +378,21 @@ namespace MolecularSynthesis.GS.Plugin
             //}
 
             // use openbabel for evaluation
-            //var resultMol = OBFunctions.designgraphtomol(child.graph);
-            //resultMol = OBFunctions.InterStepMinimize(resultMol);
-            //OBFunctions.updatepositions(child.graph, resultMol);
-            //var FinalResultMol = OBFunctions.designgraphtomol(child.graph);
-            //var conv = new OBConversion();
-            //conv.SetInAndOutFormats("pdb", "mol");
-            //conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test103.mol"));
+            var resultMol = OBFunctions.designgraphtomol(child.graph);
+            resultMol = OBFunctions.InterStepMinimize(resultMol);
+            OBFunctions.updatepositions(child.graph, resultMol);
+            var FinalResultMol = OBFunctions.designgraphtomol(child.graph);
 
-            //score = -Evaluation.distance(child, desiredLenghtAndRadius);
-            //return score;
+            var conv = new OBConversion();
+            conv.SetInAndOutFormats("pdb", "mol");
+            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test201.mol"));
+
+            score = -Evaluation.distance(child, desiredLenghtAndRadius);
+            return score;
 
             // just for testing , no need for openbabel
-            double TotalMass = Evaluation.TotalAtomMass(child);
-            return TotalMass;
+            //double TotalMass = Evaluation.TotalAtomMass(child);
+            //return TotalMass;
 
 
 

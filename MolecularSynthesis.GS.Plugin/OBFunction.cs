@@ -157,11 +157,11 @@ namespace OpenBabelFunctions
         // Watch out the input "ForTest.mol" is from where
         public static OBMol InterStepMinimize(OBMol mol)
         {
-            const int waitTime = 60000000; // time for waiting in milliseconds
+            const int waitTime = 1000000; // time for waiting in milliseconds
             var stopwatch = new Stopwatch();
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
-            conv.WriteFile(mol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test101.mol"));
+            conv.WriteFile(mol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test111.mol"));
             string minimizeOutput;
             using (Process proc = new Process())
             {
@@ -171,7 +171,7 @@ namespace OpenBabelFunctions
                 //C: \Users\zhang\source\repos\MolecularSynthesis
 
                 //"C:\Program Files\OpenBabel-3.1.1\obminimize.exe"
-                proc.StartInfo.Arguments = "-ff UFF -cg Test101.mol";
+                proc.StartInfo.Arguments = "-c 1e3 Test111.mol";
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
                 proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output";
@@ -182,19 +182,21 @@ namespace OpenBabelFunctions
                 Console.Write("starting OBMinimize...");
                 stopwatch.Restart();
                 proc.Start();
-                proc.WaitForExit(waitTime); //wait up to 10 seconds. OB will return best result
+                //proc.WaitForExit(); //wait up to 10 seconds. OB will return best result
                 // but maybe you want to scale this based on molecule size
                 var elapsed = stopwatch.Elapsed;
                 Console.WriteLine("completed in {0}", elapsed);
                 minimizeOutput = proc.StandardOutput.ReadToEnd();
-                if (elapsed.TotalMilliseconds > waitTime)
-                    Console.WriteLine(minimizeOutput);
+                proc.WaitForExit();
+                //if (elapsed.TotalMilliseconds > waitTime)
+                    //Console.WriteLine(minimizeOutput);
             }
             conv.ReadString(mol, minimizeOutput);
 
             return mol;
         }
 
+        
         public static string GetRamDir()
         {
             //different linux distributions have different locations for temporary files. 

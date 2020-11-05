@@ -93,7 +93,7 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 2000;
+            int iteration = 10000;
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
             // 1. check if this is the leaf node, if no go to step 2 until it is a leaf node,if yes go to step 3
@@ -253,9 +253,9 @@ namespace MolecularSynthesis.GS.Plugin
             // need to add one avaiable option from current ,add options into recipe
 
             var option0 = rulesets[0].recognize(current.graph);
-            // option1 = rulesets[1].recognize(current.graph);
-            //int PotenialOptionNumber = option1.Count + option0.Count;
-            int PotenialOptionNumber = option0.Count;
+            var option1 = rulesets[1].recognize(current.graph);
+            int PotenialOptionNumber = option1.Count + option0.Count;
+            //int PotenialOptionNumber = option0.Count;
 
 
             //var option0 = rulesets[0].recognize(candidate.graph);
@@ -274,12 +274,12 @@ namespace MolecularSynthesis.GS.Plugin
                     option0[i].apply(child.graph, null);
                     child.addToRecipe(option0[i]);
                 }
-                //else
-                //{
-                    //option1 = rulesets[1].recognize(child.graph);
-                //    option1[i - option0.Count].apply(child.graph, null);
-                //    child.addToRecipe(option1[i - option0.Count]);
-                //}
+                else
+                {
+                    option1 = rulesets[1].recognize(child.graph);
+                    option1[i - option0.Count].apply(child.graph, null);
+                    child.addToRecipe(option1[i - option0.Count]);
+                }
 
                 current.Children.Add(child);
 
@@ -330,8 +330,8 @@ namespace MolecularSynthesis.GS.Plugin
                 //rnd.Next(0, 2); // generate 0 or 1
 
                 var option0 = rulesets[0].recognize(child.graph);
-                //int WhichRuleset = rnd.Next(0, 2);
-                int WhichRuleset = 0;
+                int WhichRuleset = rnd.Next(0, 2);
+                //int WhichRuleset = 0;
 
                 if (WhichRuleset == 0)
                 {

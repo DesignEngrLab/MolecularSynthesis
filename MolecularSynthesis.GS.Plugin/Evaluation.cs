@@ -48,7 +48,8 @@ namespace MolecularSynthesis.GS.Plugin
                     weight = weight + 80;
                 else if (n.localLabels.Contains("Br"))
                     weight = weight + 19;
-
+                else if (n.localLabels.Contains("x"))
+                    break;
 
             }
             return weight;

@@ -19,7 +19,9 @@ namespace MolecularSynthesis.GS.Plugin
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-        static double[] desiredLenghtAndRadius = new double[] { 300, 50 };
+        // RS0 R7 R3; RS1 R1 R2
+        //RS0 R3 L=134;
+        static double[] desiredLenghtAndRadius = new double[] { 245.277, 89.53 };
         static Random rnd = new Random(0);
 
         public MCTS(GlobalSettings settings) : base(settings)
@@ -101,6 +103,9 @@ namespace MolecularSynthesis.GS.Plugin
             // 3. do random simulation
             // 4. update S,n,UCB value for the whole tree
 
+            //when the search is within range of <> , BFS is better
+            //when the search is within range of <> , MCTS is better
+
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
             StartState.S = 0;
@@ -110,7 +115,7 @@ namespace MolecularSynthesis.GS.Plugin
             StartState.Parent = null;
 
             int IterationTimes = 0;
-
+            List<string> MCTSProcess = new List<string>();
 
             var current = StartState;
 
@@ -134,10 +139,21 @@ namespace MolecularSynthesis.GS.Plugin
                 else
                 {
                     // add all possible actions under one parent node
-                    if (current.recipe.Count < 3)
+                    int RS0 = 0;
+                    foreach (var option in current.recipe)
+                    {
+                        // need to recognize how many Rules from Ruleset0 exist
+                        if (option.ruleSetIndex == 0)
+                        {
+                            RS0 = RS0 + 1;
+                        }
+                    }
+                    // go RS0 RS2 RS1 
+                    if (RS0 < 5)
                     {
                         AddNewNode(current);
-                        SearchIO.output("Children number = " + current.Children.Count + "**********");
+                        string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
+                        MCTSProcess.Add(ChildrenInformation);
                         current = SelectPromisingNode(current);
                         current.S = Rollout(current);
                     }
@@ -153,40 +169,59 @@ namespace MolecularSynthesis.GS.Plugin
                 BackPropogation(FindAllParents(current), current);
 
                 IterationTimes = IterationTimes + 1;
+                SearchIO.output("IterationTimes = ", IterationTimes);
 
-                SearchIO.output("Iteration times: " + IterationTimes);
-                SearchIO.output("S = " + current.S);
-                SearchIO.output("n = " + current.n);
-                SearchIO.output("Children number = " + current.Children.Count + "*************");
-                SearchIO.output("number of recipe: " + current.recipe.Count);
-                SearchIO.output("current node recipe:");
+                string times="Iteration times: " + IterationTimes.ToString();
+                MCTSProcess.Add(times);
+                string CurrentSValue ="S = " + current.S.ToString();
+                MCTSProcess.Add(CurrentSValue);
+                string CurrentnValue = "n = " + current.n.ToString();
+                MCTSProcess.Add(CurrentnValue);
+
+                if (IterationTimes > 1)
+                {
+                    
+                    string CurrentUCBValue = "UCB = " + CalculateUcb(current).ToString();
+                    MCTSProcess.Add(CurrentUCBValue);
+                }
+                string ChildrenNumber="Children number = " + current.Children.Count.ToString() + "*************";
+                MCTSProcess.Add(ChildrenNumber);
+                string NumberOfRecipe="number of recipe: " + current.recipe.Count.ToString();
+                MCTSProcess.Add(NumberOfRecipe);
+                string CurrentNodeRecipe="current node recipe:";
+                MCTSProcess.Add(CurrentNodeRecipe);
 
                 if (current.recipe.Count == 0)
                 {
-                    SearchIO.output("no recipe" + "------------");
+                    string NoRecipe="no recipe" + "------------";
+                    MCTSProcess.Add(NoRecipe);
                 }
                 else
                 {
                     foreach (var option in current.recipe)
                     {
                         //SearchIO.output(current.recipe[j].ruleSetIndex + " " + current.recipe[j].optionNumber);
-                        SearchIO.output(option.ruleSetIndex + " " + option.ruleNumber + "------------");
-
+                        string OptionInformation=option.ruleSetIndex.ToString() + " " + option.ruleNumber.ToString() + "------------";
+                        MCTSProcess.Add(OptionInformation);
                     }
                 }
 
-                SearchIO.output("-------------------------------------------------------------------------");
+                string seperateline="-------------------------------------------------------------------------";
+                MCTSProcess.Add(seperateline);
             }
 
             //TreeCandidate seed = new TreeCandidate(seedCandidate);
             var FinalResult = FinalRecipe(StartState);
-            SearchIO.output("Solution is down below: ");
+            string SolutionIsDownBelow="Solution is down below: ";
+            MCTSProcess.Add(SolutionIsDownBelow);
+
             foreach (var option in FinalResult.recipe)
             {
-                SearchIO.output(option.ruleSetIndex + " " + option.ruleNumber + "------------");
+                string SolutionInformation=option.ruleSetIndex + " " + option.ruleNumber + "------------";
+                MCTSProcess.Add(SolutionInformation);
             }
 
-
+            System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\output\MCTSProcessRecord.txt", MCTSProcess);
 
         }
         public double CalculateUcb(TreeCandidate child)
@@ -194,7 +229,7 @@ namespace MolecularSynthesis.GS.Plugin
             if (child.n == 0)
                 return double.MaxValue;
             else
-                return child.S / child.n + 200 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
+                return child.S / child.n + 100 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
 
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
@@ -202,7 +237,6 @@ namespace MolecularSynthesis.GS.Plugin
             //create the bestchild as an intermidiate variable
 
             TreeCandidate bestChild = null;
-
 
             while (current.Children.Count != 0)
             {
@@ -233,10 +267,10 @@ namespace MolecularSynthesis.GS.Plugin
                 double bestS = double.MinValue;
                 foreach (TreeCandidate child in StartState.Children)
                 {
-                    
-                    if (child.S > bestS)
+
+                    if (child.S/child.n > bestS)
                     {
-                        bestS = child.S;
+                        bestS = child.S / child.n;
                         bestChild = child;
                     }
                 }
@@ -253,6 +287,7 @@ namespace MolecularSynthesis.GS.Plugin
             // need to add one avaiable option from current ,add options into recipe
 
             var option0 = rulesets[0].recognize(current.graph);
+            //option0.AddRange(rulesets[1].recognize(current.graph));
             var option1 = rulesets[1].recognize(current.graph);
             int PotenialOptionNumber = option1.Count + option0.Count;
             //int PotenialOptionNumber = option0.Count;
@@ -266,7 +301,7 @@ namespace MolecularSynthesis.GS.Plugin
                 child.Children = new List<TreeCandidate>();
                 child.n = 0;
                 child.S = 0;
-                child.UCB = double.MaxValue;                
+                child.UCB = double.MaxValue;
 
                 if (i < option0.Count)
                 {
@@ -309,7 +344,7 @@ namespace MolecularSynthesis.GS.Plugin
             double score;
             int RS0 = 0;
             int RS1 = 0;
-            TreeCandidate child = (TreeCandidate)candidate.copy();                     
+            TreeCandidate child = (TreeCandidate)candidate.copy();
 
             //option
             //public int ruleSetIndex { get; set; }
@@ -320,12 +355,10 @@ namespace MolecularSynthesis.GS.Plugin
                 if (option.ruleSetIndex == 0)
                 {
                     RS0 = RS0 + 1;
-                }
-
-                //var options = rulesets[0].recognize(current.graph)
+                }                
             }
 
-            while (RS0 < 3)
+            while (RS0 < 5)
             {
                 //rnd.Next(0, 2); // generate 0 or 1
 
@@ -363,9 +396,9 @@ namespace MolecularSynthesis.GS.Plugin
             }
 
             var option2 = rulesets[2].recognize(child.graph);
-            
+
             if (option2.Count != 1)
-                Console.WriteLine("how?!?"+"|||  Option2="+ option2.Count);
+                Console.WriteLine("how?!?" + "|||  Option2=" + option2.Count);
             option2[0].apply(child.graph, null);
             child.addToRecipe(option2[0]);
 
@@ -375,16 +408,16 @@ namespace MolecularSynthesis.GS.Plugin
             //}
 
             // use openbabel for evaluation
-            OBMol resultMol = OBFunctions.designgraphtomol(child.graph);
-            resultMol = OBFunctions.InterStepMinimize(resultMol);
-            OBFunctions.updatepositions(child.graph, resultMol);
+            //OBMol resultMol = OBFunctions.designgraphtomol(child.graph);
+            //resultMol = OBFunctions.InterStepMinimize(resultMol);
+            //OBFunctions.updatepositions(child.graph, resultMol);
 
-            score = -Evaluation.distance(child, desiredLenghtAndRadius);
-            return score;
+            //score = 1 / Evaluation.distance(child, desiredLenghtAndRadius);
+            //return score;
 
             // just for testing , no need for openbabel
-            //double TotalMass = Evaluation.TotalAtomMass(child);
-            //return TotalMass;
+            double TotalMass = Evaluation.TotalAtomMass(child);
+            return TotalMass;
 
 
 

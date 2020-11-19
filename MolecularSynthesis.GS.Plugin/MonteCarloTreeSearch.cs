@@ -438,7 +438,7 @@ namespace MolecularSynthesis.GS.Plugin
             return TotalMass;
 
             //check if the rollout has the same options order,use dictionary 
-            child.optionNumbersInRecipe();
+            //child.optionNumbersInRecipe();
 
 
 

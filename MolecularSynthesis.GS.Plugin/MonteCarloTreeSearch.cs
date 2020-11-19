@@ -39,53 +39,6 @@ namespace MolecularSynthesis.GS.Plugin
         {
             get { return "MCTS"; }
         }
-
-        //public class TreeNode<T>
-        //{
-        //    public T Data { get; set; }
-        //    public TreeNode<T> Parent { get; set; }
-
-        //    public List<TreeNode<T>> Children { get; set; }
-        //    public int GetHeight()
-        //    {
-        //        int height = 1;
-        //        TreeNode<T> current = this;
-        //        while (current.Parent != null)
-        //        {
-        //            height++;
-        //            current = current.Parent;
-
-        //        }
-        //        return height;
-        //    }
-        //}
-
-        //public class Tree<T>
-        //{            
-        //    public TreeNode<T> Root { get; set; }
-        //}
-
-        //class program
-        //{
-        //    static void Main(string[] args)
-        //    {
-        //        Tree<int> tree = new Tree<int>();
-        //        tree.Root = new TreeNode<int>() { Data = 100 };
-        //        tree.Root.Children = new List<TreeNode<int>>
-        //        {
-        //            new TreeNode<int>(){ Data=50, Parent=tree.Root },
-        //            new TreeNode<int>(){ Data=1, Parent=tree.Root },
-        //            new TreeNode<int>(){ Data=150, Parent=tree.Root}
-        //        };
-        //        tree.Root.Children[2].Children = new List<TreeNode<int>>()
-        //        {
-        //            new TreeNode<int>()
-        //            { Data=30, Parent= tree.Root.Children[2]}
-        //        };
-        //    }
-
-        //}
-
         protected override void Run()
         {
             //var candidates = new SimplePriorityQueue<candidate, double>();
@@ -98,7 +51,7 @@ namespace MolecularSynthesis.GS.Plugin
             int iteration = 10000;
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
-            // 1. check if this is the leaf node, if no go to step 2 until it is a leaf node,if yes go to step 3
+            // 1. check if this is the leaf node, if not, go to step 2 until it is a leaf node,if yes go to step 3
             // 2. find the children who has the best UCB value
             // 3. do random simulation
             // 4. update S,n,UCB value for the whole tree
@@ -116,26 +69,15 @@ namespace MolecularSynthesis.GS.Plugin
 
             int IterationTimes = 0;
             List<string> MCTSProcess = new List<string>();
-
-            var current = StartState;
-
             for (int i = 0; i < iteration; i++)
             {
                 // need to save S value and n value, delete the added graph, back to StartState                                                  
-
-                current = StartState;
+                TreeCandidate current = StartState;
                 while (current.Children.Count > 0)
-                {
                     current = SelectPromisingNode(current);// until at leaf node               
 
-                }
-
                 if (current.n == 0)
-                {
                     current.S = Rollout(current);
-                }
-
-
                 else
                 {
                     // add all possible actions under one parent node
@@ -144,9 +86,7 @@ namespace MolecularSynthesis.GS.Plugin
                     {
                         // need to recognize how many Rules from Ruleset0 exist
                         if (option.ruleSetIndex == 0)
-                        {
-                            RS0 = RS0 + 1;
-                        }
+                            RS0++;
                     }
                     // go RS0 RS2 RS1 
                     if (RS0 < 5)
@@ -158,72 +98,78 @@ namespace MolecularSynthesis.GS.Plugin
                         current.S = Rollout(current);
                     }
                     else
-                    {
                         current.S = Rollout(current);
-                    }
-
                 }
-
-
-
                 BackPropogation(FindAllParents(current), current);
-
-                IterationTimes = IterationTimes + 1;
-                SearchIO.output("IterationTimes = ", IterationTimes);
-
-                string times="Iteration times: " + IterationTimes.ToString();
-                MCTSProcess.Add(times);
-                string CurrentSValue ="S = " + current.S.ToString();
-                MCTSProcess.Add(CurrentSValue);
-                string CurrentnValue = "n = " + current.n.ToString();
-                MCTSProcess.Add(CurrentnValue);
-
-                if (IterationTimes > 1)
-                {
-                    
-                    string CurrentUCBValue = "UCB = " + CalculateUcb(current).ToString();
-                    MCTSProcess.Add(CurrentUCBValue);
-                }
-                string ChildrenNumber="Children number = " + current.Children.Count.ToString() + "*************";
-                MCTSProcess.Add(ChildrenNumber);
-                string NumberOfRecipe="number of recipe: " + current.recipe.Count.ToString();
-                MCTSProcess.Add(NumberOfRecipe);
-                string CurrentNodeRecipe="current node recipe:";
-                MCTSProcess.Add(CurrentNodeRecipe);
-
-                if (current.recipe.Count == 0)
-                {
-                    string NoRecipe="no recipe" + "------------";
-                    MCTSProcess.Add(NoRecipe);
-                }
-                else
-                {
-                    foreach (var option in current.recipe)
-                    {
-                        //SearchIO.output(current.recipe[j].ruleSetIndex + " " + current.recipe[j].optionNumber);
-                        string OptionInformation=option.ruleSetIndex.ToString() + " " + option.ruleNumber.ToString() + "------------";
-                        MCTSProcess.Add(OptionInformation);
-                    }
-                }
-
-                string seperateline="-------------------------------------------------------------------------";
-                MCTSProcess.Add(seperateline);
+                IterationTimes = DisplayData(IterationTimes, MCTSProcess, current);
             }
+            ReportFinalData(StartState, MCTSProcess);
+
+        }
+
+        private void ReportFinalData(TreeCandidate StartState, List<string> MCTSProcess)
+        {
+
 
             //TreeCandidate seed = new TreeCandidate(seedCandidate);
             var FinalResult = FinalRecipe(StartState);
-            string SolutionIsDownBelow="Solution is down below: ";
+            string SolutionIsDownBelow = "Solution is down below: ";
             MCTSProcess.Add(SolutionIsDownBelow);
 
             foreach (var option in FinalResult.recipe)
             {
-                string SolutionInformation=option.ruleSetIndex + " " + option.ruleNumber + "------------";
+                string SolutionInformation = option.ruleSetIndex + " " + option.ruleNumber + "------------";
                 MCTSProcess.Add(SolutionInformation);
             }
 
             System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\output\MCTSProcessRecord.txt", MCTSProcess);
-
         }
+
+        private int DisplayData(int IterationTimes, List<string> MCTSProcess, TreeCandidate current)
+        {
+            IterationTimes = IterationTimes + 1;
+            SearchIO.output("IterationTimes = ", IterationTimes);
+
+            string times = "Iteration times: " + IterationTimes.ToString();
+            MCTSProcess.Add(times);
+            string CurrentSValue = "S = " + current.S.ToString();
+            MCTSProcess.Add(CurrentSValue);
+            string CurrentnValue = "n = " + current.n.ToString();
+            MCTSProcess.Add(CurrentnValue);
+
+            if (IterationTimes > 1)
+            {
+
+                string CurrentUCBValue = "UCB = " + CalculateUcb(current).ToString();
+                MCTSProcess.Add(CurrentUCBValue);
+            }
+            string ChildrenNumber = "Children number = " + current.Children.Count.ToString() + "*************";
+            MCTSProcess.Add(ChildrenNumber);
+            string NumberOfRecipe = "number of recipe: " + current.recipe.Count.ToString();
+            MCTSProcess.Add(NumberOfRecipe);
+            string CurrentNodeRecipe = "current node recipe:";
+            MCTSProcess.Add(CurrentNodeRecipe);
+
+            if (current.recipe.Count == 0)
+            {
+                string NoRecipe = "no recipe" + "------------";
+                MCTSProcess.Add(NoRecipe);
+            }
+            else
+            {
+                foreach (var option in current.recipe)
+                {
+                    //SearchIO.output(current.recipe[j].ruleSetIndex + " " + current.recipe[j].optionNumber);
+                    string OptionInformation = option.ruleSetIndex.ToString() + " " + option.ruleNumber.ToString() + "------------";
+                    MCTSProcess.Add(OptionInformation);
+                }
+            }
+
+            string seperateline = "-------------------------------------------------------------------------";
+            MCTSProcess.Add(seperateline);
+            return IterationTimes;
+        }
+
         public double CalculateUcb(TreeCandidate child)
         {
             if (child.n == 0)
@@ -232,12 +178,10 @@ namespace MolecularSynthesis.GS.Plugin
                 return child.S / child.n + 100 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
 
+            //create the bestchild as an intermidiate variable
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
         {
-            //create the bestchild as an intermidiate variable
-
             TreeCandidate bestChild = null;
-
             while (current.Children.Count != 0)
             {
                 double bestUcb = double.MinValue;
@@ -252,10 +196,7 @@ namespace MolecularSynthesis.GS.Plugin
                     }
                 }
                 current = bestChild;
-
             }
-
-            //return SelectPromisingNode(bestChild);
             return bestChild;
         }
 
@@ -328,44 +269,25 @@ namespace MolecularSynthesis.GS.Plugin
 
         public void BackPropogation(List<TreeCandidate> parentpath, TreeCandidate current)
         {
-            current.n = current.n + 1;
-
+            current.n++;
             foreach (TreeCandidate treeCandidate in parentpath)
             {
-
                 treeCandidate.n++;
                 treeCandidate.S += current.S;
-
             }
         }
 
         public double Rollout(TreeCandidate candidate)
         {
             double score;
-            int RS0 = 0;
+            int RS0 = candidate.ruleSetIndicesInRecipe.Count(rsIndex => rsIndex == 0);
             int RS1 = 0;
             TreeCandidate child = (TreeCandidate)candidate.copy();
 
-            //option
-            //public int ruleSetIndex { get; set; }
-            //public int optionNumber { get; set; }
-            foreach (var option in child.recipe)
-            {
-                // need to recognize how many Rules from Ruleset0 exist
-                if (option.ruleSetIndex == 0)
-                {
-                    RS0 = RS0 + 1;
-                }                
-            }
-
             while (RS0 < 5)
             {
-                //rnd.Next(0, 2); // generate 0 or 1
-
                 var option0 = rulesets[0].recognize(child.graph);
                 int WhichRuleset = rnd.Next(0, 2);
-                //int WhichRuleset = 0;
-
                 if (WhichRuleset == 0)
                 {
                     RS0 = RS0 + 1;
@@ -378,7 +300,6 @@ namespace MolecularSynthesis.GS.Plugin
                         child.addToRecipe(option0[Randomoption0]);
                     }
                 }
-
                 else
                 {
                     var option1 = rulesets[1].recognize(child.graph);
@@ -389,38 +310,15 @@ namespace MolecularSynthesis.GS.Plugin
                         option1[Randomoption1].apply(child.graph, null);
                         child.addToRecipe(option1[Randomoption1]);
                     }
-
-                    //candidate=RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true)
-
                 }
             }
-
             var option2 = rulesets[2].recognize(child.graph);
-
             if (option2.Count != 1)
                 Console.WriteLine("how?!?" + "|||  Option2=" + option2.Count);
             option2[0].apply(child.graph, null);
             child.addToRecipe(option2[0]);
 
-            //if (!candidate.recipe.Contains(option2[0]))
-            //{
-            //    option2[0].apply(candidate.graph, null);
-            //}
-
-            // use openbabel for evaluation
-            //OBMol resultMol = OBFunctions.designgraphtomol(child.graph);
-            //resultMol = OBFunctions.InterStepMinimize(resultMol);
-            //OBFunctions.updatepositions(child.graph, resultMol);
-
-            //score = 1 / Evaluation.distance(child, desiredLenghtAndRadius);
-            //return score;
-
-            // just for testing , no need for openbabel
-            double TotalMass = Evaluation.TotalAtomMass(child);
-            return TotalMass;
-
-
-
+            return (double)Evaluation.TotalAtomMass(child);
         }
         public List<TreeCandidate> FindAllParents(TreeCandidate current)
         {

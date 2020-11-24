@@ -12,7 +12,7 @@ using GraphPlot
 #end
 filelist = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples")
 for filename in filelist
-
+   
     if endswith(filename, ".xyz") == true
     #xyz_filename = ARGS[1]
         xyz_filename = filename
@@ -59,7 +59,7 @@ for filename in filelist
                         oxygen_counter += 1
                         push!(oxygen_id, nb)         #Enter oxygen id into array
                     else
-                        X_id = nb            #If neighbor of carboxylate carbon isn't oxygen, must be anchor
+                        X_id = nb                     #If neighbor of carboxylate carbon isn't oxygen, must be anchor
                     end
                 end
                 
@@ -78,12 +78,14 @@ for filename in filelist
         ##################################################################################################
         keep = [true for i = 1:crystal.atoms.n]
 
+        X_counter = 0
+
         for a = 1:crystal.atoms.n
             
         
 
             is_carboxyl, oxygen_ids, X_id, H_id = identify_carboxyl(crystal, a)
-            
+
             if is_carboxyl == true 
             
                 crystal.atoms.species[X_id] = :X
@@ -91,7 +93,7 @@ for filename in filelist
                 keep[oxygen_ids] .= false
                 keep[a] = false
                 keep[H_id] = false
-                
+                               
             end
 
 

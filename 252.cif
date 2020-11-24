@@ -1,0 +1,52 @@
+data_tobacco_crystal_2_PM
+_symmetry_space_group_name_H-M	'P1'
+_cell_length_a	15.000000
+_cell_length_b	15.000000
+_cell_length_c	15.000000
+_cell_angle_alpha	90.000000
+_cell_angle_beta	90.000000
+_cell_angle_gamma	90.000000
+_symmetry_Int_Tables_number 1
+
+loop_
+_symmetry_equiv_pos_as_xyz
+'x,y,z'
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+C1	C	-0.013923	-0.077718	0.008826
+C2	C	-0.085523	-0.036985	-0.027641
+C3	C	-0.086123	0.052749	-0.037708
+C4	C	-0.015790	0.100882	-0.008041
+C5	C	0.056477	0.060549	0.027559
+C6	C	0.058344	-0.029851	0.034692
+O1	O	-0.157456	0.095282	-0.079108
+Cl1	Cl	-0.178390	-0.096518	-0.065241
+N1	N	0.136077	-0.073385	0.069826
+Cl2	Cl	0.147944	0.123015	0.064492
+H1	H	0.192477	-0.035518	0.068426
+H2	H	0.147810	-0.135451	0.044559
+H3	H	-0.201923	0.052949	-0.100641
+
+loop_
+_geom_bond_atom_site_label_1
+_geom_bond_atom_site_label_2
+_geom_bond_distance
+_ccdc_geom_bond_type
+C1	C2	0.09009	. A
+C1	C6	0.09046	. A
+C2	C3	0.09030	. A
+C2	Cl1	0.11654	. A
+C3	C4	0.09024	. A
+C3	O1	0.09280	. A
+C4	C5	0.09009	. A
+C5	C6	0.09070	. A
+C5	Cl2	0.11676	. A
+C6	N1	0.09577	. A
+O1	H3	0.06506	. A
+N1	H1	0.06795	. A
+N1	H2	0.06803	. A

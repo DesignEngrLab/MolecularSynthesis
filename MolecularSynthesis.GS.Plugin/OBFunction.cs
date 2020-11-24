@@ -174,6 +174,7 @@ namespace OpenBabelFunctions
                 proc.StartInfo.Arguments = "-c 1e3 Test111.mol";
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
+                proc.StartInfo.ErrorDialog = false;
                 proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output";
                 //proc.StartInfo.RedirectStandardError = true;
                 //proc.StartInfo.UseShellExecute = false;
@@ -182,16 +183,17 @@ namespace OpenBabelFunctions
                 Console.Write("starting OBMinimize...");
                 stopwatch.Restart();
                 proc.Start();
+                
                 //proc.WaitForExit(); //wait up to 10 seconds. OB will return best result
                 // but maybe you want to scale this based on molecule size
-                var elapsed = stopwatch.Elapsed;
-                Console.WriteLine("completed in {0}", elapsed);
+                //var elapsed = stopwatch.Elapsed;
+                //Console.WriteLine("completed in {0}", elapsed);
                 minimizeOutput = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
                 //if (elapsed.TotalMilliseconds > waitTime)
                     //Console.WriteLine(minimizeOutput);
             }
-            conv.ReadString(mol, minimizeOutput);
+            //conv.ReadString(mol, minimizeOutput);
 
             return mol;
         }

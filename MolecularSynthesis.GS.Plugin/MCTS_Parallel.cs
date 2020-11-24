@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class MCTS : SearchProcess
+    public class MCTS_Parallel : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -32,7 +32,7 @@ namespace MolecularSynthesis.GS.Plugin
         // 872.18
 
 
-        public MCTS(GlobalSettings settings) : base(settings)
+        public MCTS_Parallel(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -45,7 +45,7 @@ namespace MolecularSynthesis.GS.Plugin
         /// <value>The text.</value>
         public override string text
         {
-            get { return "MCTS"; }
+            get { return "MCTS_Parallel"; }
         }
 
         //public class TreeNode<T>
@@ -103,7 +103,7 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 50000;
+            int iteration = 20000;
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
             // 1. check if this is the leaf node, if no go to step 2 until it is a leaf node,if yes go to step 3
@@ -129,7 +129,9 @@ namespace MolecularSynthesis.GS.Plugin
 
             var current = StartState;
 
-            for (int i = 0; i < iteration; i++)
+            // 1. leaf parallel 2. node parallel 3 tree parallel 
+
+            Parallel.For(0, iteration, i =>
             {
                 // need to save S value and n value, delete the added graph, back to StartState                                                  
 
@@ -159,7 +161,7 @@ namespace MolecularSynthesis.GS.Plugin
                         }
                     }
                     // go RS0 RS2 RS1 
-                    if (RS0 < 22)
+                    if (RS0 < 5)
                     {
                         AddNewNode(current);
                         string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
@@ -181,29 +183,29 @@ namespace MolecularSynthesis.GS.Plugin
                 IterationTimes = IterationTimes + 1;
                 SearchIO.output("IterationTimes = ", IterationTimes);
 
-                string times="Iteration times: " + IterationTimes.ToString();
+                string times = "Iteration times: " + IterationTimes.ToString();
                 MCTSProcess.Add(times);
-                string CurrentSValue ="S = " + current.S.ToString();
+                string CurrentSValue = "S = " + current.S.ToString();
                 MCTSProcess.Add(CurrentSValue);
                 string CurrentnValue = "n = " + current.n.ToString();
                 MCTSProcess.Add(CurrentnValue);
 
                 if (IterationTimes > 1)
                 {
-                    
+
                     string CurrentUCBValue = "UCB = " + CalculateUcb(current).ToString();
                     MCTSProcess.Add(CurrentUCBValue);
                 }
-                string ChildrenNumber="Children number = " + current.Children.Count.ToString() + "*************";
+                string ChildrenNumber = "Children number = " + current.Children.Count.ToString() + "*************";
                 MCTSProcess.Add(ChildrenNumber);
-                string NumberOfRecipe="number of recipe: " + current.recipe.Count.ToString();
+                string NumberOfRecipe = "number of recipe: " + current.recipe.Count.ToString();
                 MCTSProcess.Add(NumberOfRecipe);
-                string CurrentNodeRecipe="current node recipe:";
+                string CurrentNodeRecipe = "current node recipe:";
                 MCTSProcess.Add(CurrentNodeRecipe);
 
                 if (current.recipe.Count == 0)
                 {
-                    string NoRecipe="no recipe" + "------------";
+                    string NoRecipe = "no recipe" + "------------";
                     MCTSProcess.Add(NoRecipe);
                 }
                 else
@@ -211,14 +213,14 @@ namespace MolecularSynthesis.GS.Plugin
                     foreach (var option in current.recipe)
                     {
                         //SearchIO.output(current.recipe[j].ruleSetIndex + " " + current.recipe[j].optionNumber);
-                        string OptionInformation=option.ruleSetIndex.ToString() + " " + option.ruleNumber.ToString() + "------------";
+                        string OptionInformation = option.ruleSetIndex.ToString() + " " + option.ruleNumber.ToString() + "------------";
                         MCTSProcess.Add(OptionInformation);
                     }
                 }
 
-                string seperateline="-------------------------------------------------------------------------";
+                string seperateline = "-------------------------------------------------------------------------";
                 MCTSProcess.Add(seperateline);
-            }
+            });
 
             //TreeCandidate seed = new TreeCandidate(seedCandidate);
             var FinalResult = FinalRecipe(StartState);
@@ -231,15 +233,11 @@ namespace MolecularSynthesis.GS.Plugin
                 MCTSProcess.Add(SolutionInformation);
             }
 
-            stopwatch.Restart();
-            var elapsed = stopwatch.Elapsed;
-            string RunningTime = "completed in {0}" + elapsed;
-            MCTSProcess.Add(RunningTime);
-            
             System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\output\MCTSProcessRecord.txt", MCTSProcess);
             
-            
-            //Console.WriteLine("completed in {0}", elapsed);
+            stopwatch.Restart();
+            var elapsed = stopwatch.Elapsed;
+            Console.WriteLine("completed in {0}", elapsed);
         }
 
         public double CalculateUcb(TreeCandidate child)
@@ -247,7 +245,7 @@ namespace MolecularSynthesis.GS.Plugin
             if (child.n == 0)
                 return double.MaxValue;
             else
-                return child.S / child.n + 300 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
+                return child.S / child.n + 500 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
 
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
@@ -376,7 +374,7 @@ namespace MolecularSynthesis.GS.Plugin
                 }                
             }
 
-            while (RS0 < 22)
+            while (RS0 < 5)
             {
                 //rnd.Next(0, 2); // generate 0 or 1
 
@@ -436,9 +434,6 @@ namespace MolecularSynthesis.GS.Plugin
             // just for testing , no need for openbabel
             double TotalMass = -Evaluation.TotalAtomMass(child);
             return TotalMass;
-
-            //check if the rollout has the same options order,use dictionary 
-            child.optionNumbersInRecipe();
 
 
 

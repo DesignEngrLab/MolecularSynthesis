@@ -32,6 +32,9 @@ namespace MolecularSynthesis.GS.Plugin
         public static double TotalAtomMass(TreeCandidate current)
         {
             double weight = 0;
+            // Target RS0 R5 R6 R7 RS1 R2 R3 387.5
+            // Target RS0 R4 R5 R6 70+70+69=209+60=269
+            double TargetMass = 1460;
             foreach (node n in current.graph.nodes)
             {
                 if (n.localLabels.Contains("H"))
@@ -46,13 +49,14 @@ namespace MolecularSynthesis.GS.Plugin
                     weight = weight + 35.5;
                 else if (n.localLabels.Contains("Br"))
                     weight = weight + 80;
-                else if (n.localLabels.Contains("Br"))
+                else if (n.localLabels.Contains("F"))
                     weight = weight + 19;
                 else if (n.localLabels.Contains("x"))
                     break;
 
             }
-            return weight;
+            var result = TargetMass - weight;
+            return Math.Abs(result);
 
         }
 

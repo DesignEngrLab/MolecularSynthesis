@@ -21,7 +21,9 @@ for filename in filelist
 
         atoms, bonds, bondtypes = read_mol(joinpath(homedir(), "Documents", "GitHub", "MolecularSynthesis", "Visual_studio_examples", mol_filename))
         
-        box = Box(30.0,30.0,30.0)
+        r = maximum([distance(atoms, i, j) for i = 1:atoms.n, j = 1:atoms.n])
+        box_length = 3*r
+        box = Box(box_length,box_length,box_length)
         atoms=Frac(atoms, box)
 
         crystal = Crystal("NewTest.cif", box, atoms, Charges{Frac}(0), bonds, Xtals.SymmetryInfo())

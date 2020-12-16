@@ -1,0 +1,110 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#using Pkg\n",
+    "#Pkg.add(\"DataFrames\")\n",
+    "#Pkg.add(\"CSV\")\n",
+    "#Pkg.add(url = \"https://github.com/SimonEnsemble/Xtals.jl.git\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "using DataFrames\n",
+    "using CSV\n",
+    "using Printf\n",
+    "using Statistics\n",
+    "using LinearAlgebra\n",
+    "using Xtals\n",
+    "using LightGraphs\n",
+    "using GraphPlot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(Atoms{Cart}(50, [:O, :C, :O, :C, :H, :C, :C, :C, :C, :C  …  :H, :H, :H, :H, :H, :C, :H, :O, :O, :H], Cart([1.23 0.078 … 3.055 1.926; -0.92 -0.236 … 16.704 18.572; -0.026 0.139 … -0.556 -0.113])), {50, 53} undirected simple Int64 graph, [1, 1, 2, 1, 5, 5, 5, 1, 1, 5  …  1, 1, 1, 2, 1, 1, 1, 1, 1, 1])"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "atoms, bonds, bondtypes = read_mol(joinpath(homedir(), \"Documents\", \"GitHub\", \"MolecularSynthesis\", \"examples\", \"4.mol\"))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# When I try to run this line I get the error message that \"i\" is not defined, so I split it up into a 3 line for loop\n",
+    "# r = maximum([distance(atoms, i, j) for i = 1:atoms.n, j = i+1:atoms.n])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "LoadError",
+     "evalue": "MethodError: no method matching distance(::Atoms{Cart}, ::Int64, ::Int64)\nClosest candidates are:\n  distance(::Atoms, !Matched::Box, ::Int64, !Matched::Int64, !Matched::Bool) at C:\\Users\\kgeri\\.julia\\packages\\Xtals\\QIUgm\\src\\distance.jl:58\n  distance(!Matched::Cart, !Matched::Box, ::Int64, !Matched::Int64, !Matched::Bool) at C:\\Users\\kgeri\\.julia\\packages\\Xtals\\QIUgm\\src\\distance.jl:47\n  distance(!Matched::Frac, !Matched::Box, ::Int64, !Matched::Int64, !Matched::Bool) at C:\\Users\\kgeri\\.julia\\packages\\Xtals\\QIUgm\\src\\distance.jl:39\n  ...",
+     "output_type": "error",
+     "traceback": [
+      "MethodError: no method matching distance(::Atoms{Cart}, ::Int64, ::Int64)\nClosest candidates are:\n  distance(::Atoms, !Matched::Box, ::Int64, !Matched::Int64, !Matched::Bool) at C:\\Users\\kgeri\\.julia\\packages\\Xtals\\QIUgm\\src\\distance.jl:58\n  distance(!Matched::Cart, !Matched::Box, ::Int64, !Matched::Int64, !Matched::Bool) at C:\\Users\\kgeri\\.julia\\packages\\Xtals\\QIUgm\\src\\distance.jl:47\n  distance(!Matched::Frac, !Matched::Box, ::Int64, !Matched::Int64, !Matched::Bool) at C:\\Users\\kgeri\\.julia\\packages\\Xtals\\QIUgm\\src\\distance.jl:39\n  ...",
+      "",
+      "Stacktrace:",
+      " [1] top-level scope at .\\In[3]:3",
+      " [2] include_string(::Function, ::Module, ::String, ::String) at .\\loading.jl:1091"
+     ]
+    }
+   ],
+   "source": [
+    "for i = 1:atoms.n, j = i+1:atoms.n\n",
+    "\n",
+    "    r = maximum(distance(atoms, i, j))    \n",
+    "\n",
+    "end"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Julia 1.5.1",
+   "language": "julia",
+   "name": "julia-1.5"
+  },
+  "language_info": {
+   "file_extension": ".jl",
+   "mimetype": "application/julia",
+   "name": "julia",
+   "version": "1.5.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

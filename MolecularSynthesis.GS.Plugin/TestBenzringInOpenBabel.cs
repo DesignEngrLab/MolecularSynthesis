@@ -53,12 +53,8 @@ namespace TestOpenBabel
             var option2 = rulesets[2].recognize(StartState.graph);
 
             option0 = rulesets[0].recognize(StartState.graph);
-            option0[3].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[3]);
-
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[4].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[4]);
+            option0[6].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[6]);
 
             option0 = rulesets[0].recognize(StartState.graph);
             option0[5].apply(StartState.graph, null);
@@ -68,9 +64,21 @@ namespace TestOpenBabel
             option0[1].apply(StartState.graph, null);
             StartState.addToRecipe(option0[1]);
 
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[2].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[2]);
+            option1 = rulesets[1].recognize(StartState.graph);
+            option1[3].apply(StartState.graph, null);
+            StartState.addToRecipe(option1[3]);
+
+            option1 = rulesets[1].recognize(StartState.graph);
+            option1[16].apply(StartState.graph, null);
+            StartState.addToRecipe(option1[16]);
+
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[1].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[1]);
+
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[2].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[2]);
 
             option2 = rulesets[2].recognize(StartState.graph);
             option2[0].apply(StartState.graph, null);
@@ -87,6 +95,38 @@ namespace TestOpenBabel
             var resultMol = OBFunctions.designgraphtomol(StartState.graph);
             resultMol = OBFunctions.InterStepMinimize(resultMol);
             OBFunctions.updatepositions(StartState.graph, resultMol);
+
+            var FinalResultMol = OBFunctions.designgraphtomol(StartState.graph);
+
+            var conv = new OBConversion();
+            conv.SetInAndOutFormats("pdb", "mol");
+
+            int i = 12345678;
+            string name = ".mol";
+            name = Convert.ToString(i) + name;
+            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\Desktop", name));
+
+            string name2 = ".xyz";
+            name2 = Convert.ToString(i) + name2;
+
+            using (Process proc = new Process())
+            {
+                //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
+                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
+                proc.StartInfo.Arguments = name + " -O " + name2;
+                proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\Desktop";
+                //C:\Users\zhang\Desktop
+                //proc.StartInfo.RedirectStandardError = true;
+                //proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.RedirectStandardOutput = true;
+                //proc.StartInfo.RedirectStandardInput = false;
+
+                Console.Write("starting Converting...");
+                proc.Start();
+
+                //minimizeOutput = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+            }
 
             // writing TXT file
             //List<string> list = new List<string>();

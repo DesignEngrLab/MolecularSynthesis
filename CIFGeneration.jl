@@ -12,14 +12,14 @@ using GraphPlot
 #end
 #filelist = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples")
 #filelist = readdir("C:\\Users\\kgeri\\Documents\\GradSchool\\Research\\examples")
-filelist = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\Visual_studio_examples")
+filelist = readdir("C:\\Users\\zhang\\Desktop")
 for filename in filelist
    
     if endswith(filename, ".mol") == true
     #xyz_filename = ARGS[1]
         mol_filename = filename
 
-        atoms, bonds, bondtypes = read_mol(joinpath(homedir(), "Documents", "GitHub", "MolecularSynthesis", "Visual_studio_examples", mol_filename))
+        atoms, bonds, bondtypes = read_mol(joinpath(homedir(), "Desktop" ,mol_filename))
         
         box = Box(30.0,30.0,30.0)
         atoms=Frac(atoms, box)

@@ -38,7 +38,7 @@ namespace MolecularSynthesis.GS.Plugin
         }
 
         protected override void Run()
-        {                     
+        {
 
             //TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
@@ -57,7 +57,12 @@ namespace MolecularSynthesis.GS.Plugin
             //option0[6].apply(StartState.graph, null);
             //StartState.addToRecipe(option0[6]);
 
-            int TotalNumber = 20;
+            // add a stopwatch to record time
+            var timer = new Stopwatch();
+            timer.Start();
+
+            // Randomly generate .mol and .xyz files
+            int TotalNumber = 30;
             var rand = new Random();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
@@ -72,7 +77,7 @@ namespace MolecularSynthesis.GS.Plugin
                 
                 option0 = rulesets[0].recognize(candidate.graph);
                 option0[6].apply(candidate.graph, null);
-                StartState.addToRecipe(option0[6]);
+                //StartState.addToRecipe(option0[6]);
                 
                 for (int j = 0; j < 4; j++)
                 {
@@ -123,6 +128,16 @@ namespace MolecularSynthesis.GS.Plugin
                 }
              }
 
+            timer.Stop();
+            TimeSpan ts = timer.Elapsed;
+            //string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");
+
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
+
+            //SearchIO.output("Total running time:" , elapsedTime);
             //option0 = rulesets[0].recognize(StartState.graph);
             //option0[0].apply(StartState.graph, null);
             //StartState.addToRecipe(option0[0]);
@@ -165,7 +180,7 @@ namespace MolecularSynthesis.GS.Plugin
             //StartState.addToRecipe(option2[0]);
 
             ////Save("XYZ.gxml",StartState.graph);
-                  
+
 
 
             //var resultMol = OBFunctions.designgraphtomol(StartState.graph);

@@ -96,6 +96,12 @@ namespace MolecularSynthesis.GS.Plugin
 
         protected override void Run()
         {
+
+            // add a timer to compare running time for different paralellization method
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+
             //var candidates = new SimplePriorityQueue<candidate, double>();
 
             // generate a random number 0 or 1 to decide the next rule is from RS0 or RS1
@@ -103,7 +109,7 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 50000;
+            int iteration = 1000;
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
             // 1. check if this is the leaf node, if no go to step 2 until it is a leaf node,if yes go to step 3
@@ -113,8 +119,7 @@ namespace MolecularSynthesis.GS.Plugin
 
             //when the search is within range of <> , BFS is better
             //when the search is within range of <> , MCTS is better
-
-            var stopwatch = new Stopwatch();
+                      
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
@@ -159,7 +164,7 @@ namespace MolecularSynthesis.GS.Plugin
                         }
                     }
                     // go RS0 RS2 RS1 
-                    if (RS0 < 22)
+                    if (RS0 < 5)
                     {
                         AddNewNode(current);
                         string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
@@ -231,15 +236,19 @@ namespace MolecularSynthesis.GS.Plugin
                 MCTSProcess.Add(SolutionInformation);
             }
 
-            stopwatch.Restart();
-            var elapsed = stopwatch.Elapsed;
-            string RunningTime = "completed in {0}" + elapsed;
-            MCTSProcess.Add(RunningTime);
+            stopWatch.Stop();
+            // Get the elapsed time as a TimeSpan value.
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+
+            MCTSProcess.Add(elapsedTime);
             
             System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\output\MCTSProcessRecord.txt", MCTSProcess);
             
             
-            //Console.WriteLine("completed in {0}", elapsed);
+            
         }
 
         public double CalculateUcb(TreeCandidate child)
@@ -376,7 +385,7 @@ namespace MolecularSynthesis.GS.Plugin
                 }                
             }
 
-            while (RS0 < 22)
+            while (RS0 < 5)
             {
                 //rnd.Next(0, 2); // generate 0 or 1
 
@@ -430,7 +439,7 @@ namespace MolecularSynthesis.GS.Plugin
             //resultMol = OBFunctions.InterStepMinimize(resultMol);
             //OBFunctions.updatepositions(child.graph, resultMol);
 
-            //score = - Evaluation.distance(child, desiredLenghtAndRadius);
+            //score = -Evaluation.distance(child, desiredLenghtAndRadius);
             //return score;
 
             // just for testing , no need for openbabel

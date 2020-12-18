@@ -157,8 +157,8 @@ namespace OpenBabelFunctions
         // Watch out the input "ForTest.mol" is from where
         public static OBMol InterStepMinimize(OBMol mol)
         {
-            const int waitTime = 1000000; // time for waiting in milliseconds
-            var stopwatch = new Stopwatch();
+            //const int waitTime = 1000000; // time for waiting in milliseconds
+            //var stopwatch = new Stopwatch();
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
             conv.WriteFile(mol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test111.mol"));
@@ -171,7 +171,7 @@ namespace OpenBabelFunctions
                 //C: \Users\zhang\source\repos\MolecularSynthesis
 
                 //"C:\Program Files\OpenBabel-3.1.1\obminimize.exe"
-                proc.StartInfo.Arguments = "-c 1e3 Test111.mol";
+                proc.StartInfo.Arguments = "-c 1e3 -ff GAFF Test111.mol";
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
                 proc.StartInfo.ErrorDialog = false;
@@ -181,9 +181,9 @@ namespace OpenBabelFunctions
                 proc.StartInfo.RedirectStandardOutput = true;
                 //proc.StartInfo.RedirectStandardInput = false;
                 Console.Write("starting OBMinimize...");
-                stopwatch.Restart();
+                //stopwatch.Restart();
                 proc.Start();
-                
+
                 //proc.WaitForExit(); //wait up to 10 seconds. OB will return best result
                 // but maybe you want to scale this based on molecule size
                 //var elapsed = stopwatch.Elapsed;
@@ -193,8 +193,7 @@ namespace OpenBabelFunctions
                 //if (elapsed.TotalMilliseconds > waitTime)
                     //Console.WriteLine(minimizeOutput);
             }
-            //conv.ReadString(mol, minimizeOutput);
-
+            conv.ReadString(mol, minimizeOutput);
             return mol;
         }
 

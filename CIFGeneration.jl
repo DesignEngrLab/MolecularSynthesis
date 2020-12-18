@@ -196,22 +196,21 @@ for filename in filelist
        
          if crystal.atoms.species[i] == :X
            nb_of_X += 1
-           #X_index = findfirst(isequal(i), X_ids)
-           #println(X_index)
+
            element = X_species[nb_of_X]
            
            @printf(cif_file, "%s\t%s\t", string(crystal.atoms.species[i]) *
-               (number_atoms ? string(label_numbers[crystal.atoms.species[i]]) : ""),
+                string(i),
                element)
          else
            @printf(cif_file, "%s\t%s\t", string(crystal.atoms.species[i]) *
-               (number_atoms ? string(label_numbers[crystal.atoms.species[i]]) : ""),
+               string(i),
                crystal.atoms.species[i])
          end
        
         # store label for this atom idx
          idx_to_label[i] = string(crystal.atoms.species[i]) *
-                   string(label_numbers[crystal.atoms.species[i]])
+                   string(i)
          # increment label
          label_numbers[crystal.atoms.species[i]] += 1
          if fractional_coords

@@ -15,7 +15,7 @@ using OpenBabelFunctions;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class MCTS : SearchProcess
+    public class Mod1 : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -24,7 +24,7 @@ namespace MolecularSynthesis.GS.Plugin
         static double[] desiredLenghtAndRadius = new double[] { 245.277, 89.53 };
         static Random rnd = new Random(0);
 
-        public MCTS(GlobalSettings settings) : base(settings)
+        public Mod1(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -37,7 +37,7 @@ namespace MolecularSynthesis.GS.Plugin
         /// <value>The text.</value>
         public override string text
         {
-            get { return "MCTS"; }
+            get { return "Mod1"; }
         }
         protected override void Run()
         {
@@ -62,7 +62,7 @@ namespace MolecularSynthesis.GS.Plugin
             // rollout process should match linker length , add a collector to collect solutions from trees with different depth
             // change for loop to while loop, set stop criteria, like n=50
             // careful for result from evaluation, should include posive value and negative value
-            
+
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
             StartState.S = 0;
@@ -71,48 +71,58 @@ namespace MolecularSynthesis.GS.Plugin
             StartState.Children = new List<TreeCandidate>();
             StartState.Parent = null;
 
+            int LinkerLength = 5;
             int IterationTimes = 0;
             List<string> MCTSProcess = new List<string>();
+            List<TreeCandidate> PossibleSolution  = new List<TreeCandidate>();
+            TreeCandidate current = StartState;
 
-            // while (current.n<50)
-            for (int i = 0; i < iteration; i++)
+            for (int i = 0; i < LinkerLength; i++)
             {
-                // if abs(current.S - target value)  < stop criteria 
-                //  record this recipe
-
-                // need to save S value and n value, delete the added graph, back to StartState                                                  
-                TreeCandidate current = StartState;
-                while (current.Children.Count > 0)
-                    current = SelectPromisingNode(current);// until at leaf node               
-
-                if (current.n == 0)
-                    current.S = Rollout(current);
-                else
+                current = StartState;
+                while (current.n < 50)
+                //for (int i = 0; i < iteration; i++)
                 {
-                    // add all possible actions under one parent node
-                    int RS0 = 0;
-                    foreach (var option in current.recipe)
-                    {
-                        // need to recognize how many Rules from Ruleset0 exist
-                        if (option.ruleSetIndex == 0)
-                            RS0++;
-                    }
-                    // go RS0 RS2 RS1 
-                    if (RS0 < 5)
-                    {
-                        AddNewNode(current);
-                        string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
-                        MCTSProcess.Add(ChildrenInformation);
-                        current = SelectPromisingNode(current);
-                        current.S = Rollout(current);
-                    }
+                    // if abs(current.S - target value)  < stop criteria 
+                    //  record this recipe
+
+                    // need to save S value and n value, delete the added graph, back to StartState                                                  
+                    current = StartState;
+                    while (current.Children.Count > 0)
+                        current = SelectPromisingNode(current);// until at leaf node               
+
+                    if (current.n == 0)
+                        current.S = Rollout(i, current);
                     else
-                        current.S = Rollout(current);
+                    {
+                        // add all possible actions under one parent node
+                        int RS0 = 0;
+                        foreach (var option in current.recipe)
+                        {
+                            // need to recognize how many Rules from Ruleset0 exist
+                            if (option.ruleSetIndex == 0)
+                                RS0++;
+                        }
+                        // go RS0 RS2 RS1 
+                        if (RS0 < i)
+                        {
+                            AddNewNode(current);
+                            string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
+                            MCTSProcess.Add(ChildrenInformation);
+                            current = SelectPromisingNode(current);
+                            current.S = Rollout(i,current);
+                        }
+                        else
+                            current.S = Rollout(i,current);
+                    }
+                    BackPropogation(FindAllParents(current), current);
+                    IterationTimes = DisplayData(IterationTimes, MCTSProcess, current);
                 }
-                BackPropogation(FindAllParents(current), current);
-                IterationTimes = DisplayData(IterationTimes, MCTSProcess, current);
+                PossibleSolution.Add(FinalRecipe(StartState));
             }
-            ReportFinalData(StartState, MCTSProcess);
+
+
+            //ReportFinalData(StartState, MCTSProcess);
 
         }
 
@@ -187,7 +197,7 @@ namespace MolecularSynthesis.GS.Plugin
                 return child.S / child.n + 100 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
 
-            //create the bestchild as an intermidiate variable
+        //create the bestchild as an intermidiate variable
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
         {
             TreeCandidate bestChild = null;
@@ -218,7 +228,7 @@ namespace MolecularSynthesis.GS.Plugin
                 foreach (TreeCandidate child in StartState.Children)
                 {
 
-                    if (child.S/child.n > bestS)
+                    if (child.S / child.n > bestS)
                     {
                         bestS = child.S / child.n;
                         bestChild = child;
@@ -286,7 +296,7 @@ namespace MolecularSynthesis.GS.Plugin
             }
         }
 
-        public double Rollout(TreeCandidate candidate)
+        public double Rollout(int LinkerLength, TreeCandidate candidate)
         {
             double score;
             int RS0 = candidate.ruleSetIndicesInRecipe.Count(rsIndex => rsIndex == 0);
@@ -294,7 +304,7 @@ namespace MolecularSynthesis.GS.Plugin
             TreeCandidate child = (TreeCandidate)candidate.copy();
 
             // (RS0 R1) 
-            while (RS0 < 5)
+            while (RS0 < LinkerLength)
             {
                 var option0 = rulesets[0].recognize(child.graph);
                 int WhichRuleset = rnd.Next(0, 2);

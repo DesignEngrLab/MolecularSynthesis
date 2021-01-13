@@ -15,7 +15,7 @@ using OpenBabelFunctions;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class MCTS : SearchProcess
+    public class Mod2 : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -24,7 +24,7 @@ namespace MolecularSynthesis.GS.Plugin
         static double[] desiredLenghtAndRadius = new double[] { 245.277, 89.53 };
         static Random rnd = new Random(0);
 
-        public MCTS(GlobalSettings settings) : base(settings)
+        public Mod2(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -37,7 +37,7 @@ namespace MolecularSynthesis.GS.Plugin
         /// <value>The text.</value>
         public override string text
         {
-            get { return "MCTS"; }
+            get { return "Mod2"; }
         }
         protected override void Run()
         {
@@ -73,15 +73,17 @@ namespace MolecularSynthesis.GS.Plugin
 
             int IterationTimes = 0;
             List<string> MCTSProcess = new List<string>();
+            TreeCandidate current = StartState;
 
-            // while (current.n<50)
-            for (int i = 0; i < iteration; i++)
+            // n=500 require nearly 9000 iteration, n=10000 require nearly 15000 iteration
+            while (current.n<500)
+            //for (int i = 0; i < iteration; i++)
             {
                 // if abs(current.S - target value)  < stop criteria 
                 //  record this recipe
 
                 // need to save S value and n value, delete the added graph, back to StartState                                                  
-                TreeCandidate current = StartState;
+                current = StartState;
                 while (current.Children.Count > 0)
                     current = SelectPromisingNode(current);// until at leaf node               
 

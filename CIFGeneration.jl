@@ -104,7 +104,7 @@ for filename in filelist
 
      ##################################################################################################
      tobacco_crystal = crystal.atoms[keep]
-     write_cif(crystal, "tobacco_crystal.cif")
+     write_cif(crystal, "crystal.cif")
      tobacco_crystal = crystal[BitArray(keep)]
 
      ##################################################################################################
@@ -249,7 +249,7 @@ for filename in filelist
 
         ##################################################################################################
         infer_bonds!(tobacco_crystal, false)
-        write_cif_Kai(tobacco_crystal, "tobacco_crystal_2.cif", X_species, X_ids)
+        write_cif_Kai(tobacco_crystal, "tobacco_crystal.cif", X_species, X_ids)
 
 
         ##################################################################################################

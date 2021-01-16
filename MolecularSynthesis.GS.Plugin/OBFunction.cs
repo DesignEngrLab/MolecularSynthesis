@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using MIConvexHull;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace OpenBabelFunctions
 {
@@ -39,11 +41,11 @@ namespace OpenBabelFunctions
         /// <param name="host"></param>
         /// <returns></returns>
         /// 
-        
+
         public static OBMol designgraphtomol(designGraph host)
         {
             var mol = new OBMol();
-            
+
             Dictionary<string, int> nodeatomlookup = new Dictionary<string, int>(); //dictionary for looking up which nodes go to which atoms by their names
             int i = 0;
             foreach (node n in host.nodes)
@@ -53,14 +55,14 @@ namespace OpenBabelFunctions
                 double y = scale * n.Y;
                 double z = scale * n.Z; //set coordinates of atom
                 atom.SetVector(x, y, z);
-                
+
                 foreach (string label in n.localLabels)
                 {
                     if (elementTabel.ContainsKey(label))
                     {
-                            atom.SetAtomicNum(elementTabel[label]); //set atomic number
-                            break;
-                        
+                        atom.SetAtomicNum(elementTabel[label]); //set atomic number
+                        break;
+
                     }
                 }
                 i++;
@@ -82,9 +84,9 @@ namespace OpenBabelFunctions
                 else if (a.localLabels.Contains("t"))
                     bondorder = 3;
 
-                mol.AddBond(nodeatomlookup[a.To.name], nodeatomlookup[a.From.name], bondorder);                                   
-                
-                
+                mol.AddBond(nodeatomlookup[a.To.name], nodeatomlookup[a.From.name], bondorder);
+
+
 
 
             }
@@ -104,7 +106,7 @@ namespace OpenBabelFunctions
                 n.Y = a.GetY() / scale;
                 n.Z = a.GetZ() / scale;
             }
-            
+
         }
 
         public static designGraph tagconvexhullpoints(designGraph host)
@@ -161,17 +163,20 @@ namespace OpenBabelFunctions
             //var stopwatch = new Stopwatch();
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
-            conv.WriteFile(mol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test111.mol"));
+
+            int ThreadNumber = System.Threading.Thread.CurrentThread.ManagedThreadId;
+            string filename= "Test" + ThreadNumber.ToString() + ".mol";
+            conv.WriteFile(mol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", filename));
             string minimizeOutput;
             using (Process proc = new Process())
             {
-                
+
                 proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obminimize.exe";
                 //proc.StartInfo.FileName = "C: \\Users\\zhang\\source\\repos\\MolecularSynthesis\\minimize.exe";
                 //C: \Users\zhang\source\repos\MolecularSynthesis
 
                 //"C:\Program Files\OpenBabel-3.1.1\obminimize.exe"
-                proc.StartInfo.Arguments = "-c 1e3 -ff GAFF Test111.mol";
+                proc.StartInfo.Arguments = "-c 1e3 -ff GAFF "+ filename;
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
                 proc.StartInfo.ErrorDialog = false;
@@ -191,13 +196,13 @@ namespace OpenBabelFunctions
                 minimizeOutput = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
                 //if (elapsed.TotalMilliseconds > waitTime)
-                    //Console.WriteLine(minimizeOutput);
+                //Console.WriteLine(minimizeOutput);
             }
             conv.ReadString(mol, minimizeOutput);
             return mol;
         }
 
-        
+
         public static string GetRamDir()
         {
             //different linux distributions have different locations for temporary files. 

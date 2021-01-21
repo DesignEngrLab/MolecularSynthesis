@@ -25,7 +25,7 @@ namespace MolecularSynthesis.GS.Plugin
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         static double[] desiredLenghtAndRadius = new double[] { 300, 50 };
-        static Random rnd = new Random(0);
+        //static Random rnd = new Random(0);
 
         public JustForTest(GlobalSettings settings) : base(settings)
         {
@@ -48,17 +48,7 @@ namespace MolecularSynthesis.GS.Plugin
             StartState.S = 0;
             StartState.n = 0;
             StartState.UCB = double.MaxValue;
-            StartState.Children = new List<TreeCandidate>();
-
-            //var option0 = rulesets[0].recognize(StartState.graph);
-            //var option1 = rulesets[1].recognize(StartState.graph);
-            //var option2 = rulesets[2].recognize(StartState.graph);
-
-            ////option0[6].apply(StartState.graph, null);
-
-            //option0 = rulesets[0].recognize(StartState.graph);
-            //option0[6].apply(StartState.graph, null);
-            //StartState.addToRecipe(option0[6]);
+            StartState.Children = new List<TreeCandidate>();            
 
             // add a stopwatch to record time
             var timer = new Stopwatch();
@@ -85,7 +75,14 @@ namespace MolecularSynthesis.GS.Plugin
 
                 option0 = rulesets[0].recognize(candidate.graph,false);
                 option0[6].apply(candidate.graph, null);
-                //StartState.addToRecipe(option0[6]);
+                //candidate.addToRecipe(option0[6]);
+                foreach (var rule in candidate.recipe)
+                {
+                    Console.WriteLine("ThreadNumber" + Thread.CurrentThread.ManagedThreadId + " "+rule.ruleSetIndex+" "+ rule.ruleNumber);
+                    Console.WriteLine("------BezeneRing");
+                }
+                
+
 
                 for (int j = 0; j < 4; j++)
                 {
@@ -94,12 +91,26 @@ namespace MolecularSynthesis.GS.Plugin
                     var TotalOption = rulesets[RuleSetNumber].recognize(candidate.graph, false).Count;
                     var OptionNumber = rand.Next(0, TotalOption);
                     rulesets[RuleSetNumber].recognize(candidate.graph,false)[OptionNumber].apply(candidate.graph, null);
-                    //StartState.addToRecipe(rulesets[RuleSetNumber].recognize(StartState.graph)[OptionNumber]);                    
+                    //candidate.addToRecipe(rulesets[RuleSetNumber].recognize(candidate.graph,false)[OptionNumber]);
+
+                    foreach (var rule in candidate.recipe)
+                    {
+                        Console.WriteLine("ThreadNumber" + Thread.CurrentThread.ManagedThreadId + " " + rule.ruleSetIndex + " " + rule.ruleNumber);
+                        Console.WriteLine("------OtherRules");
+                    }
+
+
                 }
                 
                 option2 = rulesets[2].recognize(candidate.graph, false);
                 option2[0].apply(candidate.graph, null);
-                //StartState.addToRecipe(option2[0]);
+                //candidate.addToRecipe(option2[0]);
+
+                foreach (var rule in candidate.recipe)
+                {
+                    Debug.WriteLine("ThreadNumber" + Thread.CurrentThread.ManagedThreadId + " " + rule.ruleSetIndex + " " + rule.ruleNumber);
+                    Console.WriteLine("------Carboxylate");
+                }
 
                 var resultMol = OBFunctions.designgraphtomol(candidate.graph);
                 resultMol = OBFunctions.InterStepMinimize(resultMol);
@@ -113,6 +124,9 @@ namespace MolecularSynthesis.GS.Plugin
 
                 name = Convert.ToString(i) + name;
                 conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
+                       
+
+
 
                 //string name2 = ".xyz";
                 //name2 = Convert.ToString(i) + name2;
@@ -278,173 +292,12 @@ namespace MolecularSynthesis.GS.Plugin
 
             //}
         }
-        public double CalculateUcb(TreeCandidate child)
-        {
-            if (child.n == 0)
-                return double.MaxValue;
-            else
-                return child.S / child.n + 2 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
-        }
-
-        public TreeCandidate SelectPromisingNode(TreeCandidate current)
-        {
-            //create the bestchild as an intermidiate variable
-
-            TreeCandidate bestChild = null;
-            double bestUcb = double.MinValue;
-
-            while (current.Children.Count != 0)
-            {
-                foreach (TreeCandidate child in current.Children)
-                {
-                    double Ucb = CalculateUcb(child);
-                    if (Ucb > bestUcb)
-                    {
-                        bestUcb = Ucb;
-                        bestChild = child;
-                    }
-                }
-                current = bestChild;
-            }
-
-            //return SelectPromisingNode(bestChild);
-            return bestChild;
-        }
-
-        public void AddNewNode(TreeCandidate current)
-        {
-            // need to add one avaiable option from current ,add options into recipe
-
-            var option0 = rulesets[0].recognize(current.graph);
-            var option1 = rulesets[1].recognize(current.graph);
-            int PotenialOptionNumber = option1.Count + option0.Count;
-
-            //var option0 = rulesets[0].recognize(candidate.graph);
-            for (int i = 0; i < PotenialOptionNumber; i++)
-            {
-                var child = (TreeCandidate)current.copy();
-                child.Parent = current;
-                child.Children = new List<TreeCandidate>();
-                child.n = 0;
-                child.S = 0;
-                child.UCB = double.MinValue;
-
-                if (i < option0.Count)
-                {
-                    option0[i].apply(child.graph, null);
-                    child.addToRecipe(option0[i]);
-                }
-                else
-                {
-                    option1[i - option0.Count].apply(child.graph, null);
-                    child.addToRecipe(option1[i - option0.Count]);
-                }
-
-                current.Children.Add(child);
-
-
-            }
 
 
 
 
-        }
 
-        public void BackPropogation(List<TreeCandidate> parentpath, TreeCandidate current)
-        {
-            current.n = current.n + 1;
 
-            foreach (var treeCandidate in parentpath)
-            {
-                treeCandidate.n++;
-                treeCandidate.S += current.S;
-
-            }
-        }
-
-        public double Rollout(TreeCandidate candidate)
-        {
-            double score;
-            int RS0 = 0;
-            //var options = rulesets;
-            //candidate.ruleSetIndicesInRecipe();
-            //var childrenCandidate = RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true);
-            //var a = candidate.recipe[1];
-
-            //option
-            //public int ruleSetIndex { get; set; }
-            //public int optionNumber { get; set; }
-            foreach (var option in candidate.recipe)
-            {
-                // need to recognize how many Rules from Ruleset0 exist
-                if (option.ruleSetIndex == 0)
-                {
-                    RS0 = RS0 + 1;
-                }
-
-                //var options = rulesets[0].recognize(current.graph)
-            }
-
-            var option0 = rulesets[0].recognize(candidate.graph);
-            var option1 = rulesets[1].recognize(candidate.graph);
-            var option2 = rulesets[2].recognize(candidate.graph);
-
-            while (RS0 != 5)
-            {
-                //rnd.Next(0, 2); // generate 0 or 1
-                if (rnd.Next(0, 2) == 0 && option0.Count > 0)
-                {
-                    RS0 = RS0 + 1;
-                    var Randomoption0 = rnd.Next(0, option0.Count);
-                    option0[Randomoption0].apply(candidate.graph, null);
-                    // dont need to add options into recipe in rollout process
-                    //candidate.addToRecipe(option0[Randomoption0]);
-                }
-                else if (option1.Count > 0)
-                {
-                    var Randomoption1 = rnd.Next(0, option1.Count);
-                    option1[Randomoption1].apply(candidate.graph, null);
-                    //candidate.addToRecipe(option1[Randomoption1]);
-                }
-
-                //candidate=RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true)
-
-            }
-            var x = option2.Count;
-            option2[0].apply(candidate.graph, null);
-            var resultMol = OBFunctions.designgraphtomol(candidate.graph);
-            resultMol = OBFunctions.InterStepMinimize(resultMol);
-            //var x = resultMol.GetAtom(51);
-            OBFunctions.updatepositions(seedGraph, resultMol);
-
-            score = -Evaluation.distance(candidate, desiredLenghtAndRadius);
-            return score;
-        }
-
-        public List<TreeCandidate> FindAllParents(TreeCandidate current)
-        {
-            var parents = new List<TreeCandidate>();
-            int height = GetHeight(current);
-
-            for (int i = 0; i < height; i++)
-            {
-                parents.Add(current.Parent);
-            }
-
-            return parents;
-        }
-
-        public int GetHeight(TreeCandidate current)
-        {
-            int height = 0;
-            while (current.Parent != null)
-            {
-                height = height + 1;
-                current = current.Parent;
-            }
-
-            return height;
-        }
     }
 
 }

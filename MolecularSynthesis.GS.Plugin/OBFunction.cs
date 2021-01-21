@@ -165,8 +165,11 @@ namespace OpenBabelFunctions
             conv.SetInAndOutFormats("pdb", "mol");
 
             int ThreadNumber = System.Threading.Thread.CurrentThread.ManagedThreadId;
+            Debug.WriteLine("starting " + ThreadNumber);
             string filename= "Test" + ThreadNumber.ToString() + ".mol";
-            conv.WriteFile(mol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", filename));
+            filename = Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", filename);
+            //if (File.Exists(filename)) File.Delete(filename);
+            conv.WriteFile(mol, filename);
             string minimizeOutput;
             using (Process proc = new Process())
             {
@@ -199,6 +202,8 @@ namespace OpenBabelFunctions
                 //Console.WriteLine(minimizeOutput);
             }
             conv.ReadString(mol, minimizeOutput);
+            Debug.WriteLine("...ending " + ThreadNumber);
+
             return mol;
         }
 

@@ -3,10 +3,11 @@ using Xtals, LightGraphs, Test, Printf, LinearAlgebra
 #if length(ARGS) != 1
 #    error("Pass xyz file as argument")
 #end
-path_to_mol_files = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples")
-#path_to_mol_files = readdir("C:\\Users\\kgeri\\Documents\\GradSchool\\Research\\examples")
+filelist = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples")
+path_to_mol_files = joinpath(homedir(), "Documents", "GitHub", "MolecularSynthesis", "Examples")
+
 #path_to_mol_files = readdir("C:\\Users\\zhang\\Desktop")
-for filename in path_to_mol_files
+for filename in filelist
    
     if endswith(filename, ".mol") == true
     
@@ -270,7 +271,7 @@ for filename in path_to_mol_files
       #####################################################################
       write_cif_Kai(tobacco_xtal, xtal.name * "_fer_tobacco.cif")
 
-      
+
     else
     end
 

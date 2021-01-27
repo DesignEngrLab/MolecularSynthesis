@@ -139,10 +139,10 @@ for filename in filelist
 
       tobacco_xtal = xtal_to_tobacco_xtal(xtal)
 
-      write_xyz(tobacco_xtal)
-      write_bond_information(tobacco_xtal)
+      #write_xyz(tobacco_xtal)
+      #write_bond_information(tobacco_xtal)
 
-      write_cif(tobacco_xtal, xtal.name * "_tobacco.cif")
+      #write_cif(tobacco_xtal, xtal.name * "_tobacco.cif")
 
       ###############################################################################
       function center!(xtal::Crystal)
@@ -155,7 +155,7 @@ for filename in filelist
 
       ##############################################################################
       center!(tobacco_xtal)
-      write_cif(tobacco_xtal, "tbc_center.cif")
+      #write_cif(tobacco_xtal, "tbc_center.cif")
 
       ##############################################################################
       """

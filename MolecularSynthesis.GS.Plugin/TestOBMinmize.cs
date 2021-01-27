@@ -62,7 +62,7 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 30;
+            int TotalNumber = 10;
             var rand = new Random();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
@@ -105,27 +105,27 @@ namespace MolecularSynthesis.GS.Plugin
                 name = Convert.ToString(i) + name;
                 conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
 
-                string name2 = ".xyz";
-                name2 = Convert.ToString(i) + name2;
+                //string name2 = ".xyz";
+                //name2 = Convert.ToString(i) + name2;
 
-                using (Process proc = new Process())
-                {
-                    //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
-                    proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
-                    proc.StartInfo.Arguments = name + " -O " + name2;
-                    proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples";
+                //using (Process proc = new Process())
+                //{
+                //    //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
+                //    proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
+                //    proc.StartInfo.Arguments = name + " -O " + name2;
+                //    proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples";
 
-                    //proc.StartInfo.RedirectStandardError = true;
-                    //proc.StartInfo.UseShellExecute = false;
-                    proc.StartInfo.RedirectStandardOutput = true;
-                    //proc.StartInfo.RedirectStandardInput = false;
+                //    //proc.StartInfo.RedirectStandardError = true;
+                //    //proc.StartInfo.UseShellExecute = false;
+                //    proc.StartInfo.RedirectStandardOutput = true;
+                //    //proc.StartInfo.RedirectStandardInput = false;
 
-                    Console.Write("starting Convert...");
-                    proc.Start();
+                //    Console.Write("starting Convert...");
+                //    proc.Start();
                                         
-                    //minimizeOutput = proc.StandardOutput.ReadToEnd();
-                    proc.WaitForExit();
-                }
+                //    //minimizeOutput = proc.StandardOutput.ReadToEnd();
+                //    proc.WaitForExit();
+                //}
              }
 
             timer.Stop();

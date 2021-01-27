@@ -76,11 +76,14 @@ namespace MolecularSynthesis.GS.Plugin
                 option0 = rulesets[0].recognize(candidate.graph,false);
                 option0[6].apply(candidate.graph, null);
                 //candidate.addToRecipe(option0[6]);
-                foreach (var rule in candidate.recipe)
-                {
-                    Console.WriteLine("ThreadNumber" + Thread.CurrentThread.ManagedThreadId + " "+rule.ruleSetIndex+" "+ rule.ruleNumber);
-                    Console.WriteLine("------BezeneRing");
-                }
+                Debug.WriteLine("\r\nInitialnizing"+ Thread.CurrentThread.ManagedThreadId);
+
+                //foreach (var rule in candidate.recipe)
+                //{
+                //    Debug.WriteLine("ThreadNumber" + Thread.CurrentThread.ManagedThreadId + " "+rule.ruleSetIndex+" "+ rule.ruleNumber);
+                //    Debug.WriteLine("------BezeneRing");
+                    
+                //}
                 
 
 
@@ -91,13 +94,14 @@ namespace MolecularSynthesis.GS.Plugin
                     var TotalOption = rulesets[RuleSetNumber].recognize(candidate.graph, false).Count;
                     var OptionNumber = rand.Next(0, TotalOption);
                     rulesets[RuleSetNumber].recognize(candidate.graph,false)[OptionNumber].apply(candidate.graph, null);
+                    Debug.WriteLine("growing" + Thread.CurrentThread.ManagedThreadId);
                     //candidate.addToRecipe(rulesets[RuleSetNumber].recognize(candidate.graph,false)[OptionNumber]);
 
-                    foreach (var rule in candidate.recipe)
-                    {
-                        Console.WriteLine("ThreadNumber" + Thread.CurrentThread.ManagedThreadId + " " + rule.ruleSetIndex + " " + rule.ruleNumber);
-                        Console.WriteLine("------OtherRules");
-                    }
+                    //foreach (var rule in candidate.recipe)
+                    //{
+                    //    Debug.WriteLine("ThreadNumber" + Thread.CurrentThread.ManagedThreadId + " " + rule.ruleSetIndex + " " + rule.ruleNumber);
+                    //    Debug.WriteLine("------OtherRules");
+                    //}
 
 
                 }
@@ -105,16 +109,21 @@ namespace MolecularSynthesis.GS.Plugin
                 option2 = rulesets[2].recognize(candidate.graph, false);
                 option2[0].apply(candidate.graph, null);
                 //candidate.addToRecipe(option2[0]);
+                Debug.WriteLine("Stop growing" + Thread.CurrentThread.ManagedThreadId);
 
-                foreach (var rule in candidate.recipe)
-                {
-                    Debug.WriteLine("ThreadNumber" + Thread.CurrentThread.ManagedThreadId + " " + rule.ruleSetIndex + " " + rule.ruleNumber);
-                    Console.WriteLine("------Carboxylate");
-                }
+
+                //foreach (var rule in candidate.recipe)
+                //{
+                //    Debug.WriteLine("ThreadNumber" + Thread.CurrentThread.ManagedThreadId + " " + rule.ruleSetIndex + " " + rule.ruleNumber);
+                //    Debug.WriteLine("------Carboxylate");
+                //}
 
                 var resultMol = OBFunctions.designgraphtomol(candidate.graph);
+                Debug.WriteLine("complete graph to mol" + Thread.CurrentThread.ManagedThreadId);
                 resultMol = OBFunctions.InterStepMinimize(resultMol);
+                Debug.WriteLine("start updating" + Thread.CurrentThread.ManagedThreadId);
                 OBFunctions.updatepositions(candidate.graph, resultMol);
+
                 var FinalResultMol = OBFunctions.designgraphtomol(candidate.graph);
 
                 var conv = new OBConversion();
@@ -122,7 +131,8 @@ namespace MolecularSynthesis.GS.Plugin
 
                 string name = ".mol";
 
-                name = Convert.ToString(i) + name;
+                Debug.WriteLine("start writing .mol file" + Thread.CurrentThread.ManagedThreadId);
+                name = Convert.ToString(Thread.CurrentThread.ManagedThreadId) + name;
                 conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
                        
 

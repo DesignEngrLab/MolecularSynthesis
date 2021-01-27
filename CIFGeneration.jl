@@ -3,8 +3,13 @@ using Xtals, LightGraphs, Test, Printf, LinearAlgebra
 #if length(ARGS) != 1
 #    error("Pass xyz file as argument")
 #end
-filelist = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples")
-path_to_mol_files = joinpath(homedir(), "Documents", "GitHub", "MolecularSynthesis", "Examples")
+#filelist = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples")
+#path_to_mol_files = joinpath(homedir(), "Documents", "GitHub", "MolecularSynthesis", "Examples")
+
+
+filelist = readdir("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples")
+path_to_mol_files = joinpath(homedir(), "source", "repos", "MolecularSynthesis", "Examples")
+
 
 #path_to_mol_files = readdir("C:\\Users\\zhang\\Desktop")
 for filename in filelist

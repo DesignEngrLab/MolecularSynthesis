@@ -161,11 +161,15 @@ namespace OpenBabelFunctions
         {
             //const int waitTime = 1000000; // time for waiting in milliseconds
             //var stopwatch = new Stopwatch();
+
+            int ThreadNumber = System.Threading.Thread.CurrentThread.ManagedThreadId;
+            Debug.WriteLine("starting minimizing " + ThreadNumber);
+
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
 
-            int ThreadNumber = System.Threading.Thread.CurrentThread.ManagedThreadId;
-            Debug.WriteLine("starting " + ThreadNumber);
+            Debug.WriteLine("starting to use obminimize " + ThreadNumber);
+
             string filename= "Test" + ThreadNumber.ToString() + ".mol";
             filename = Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", filename);
             //if (File.Exists(filename)) File.Delete(filename);
@@ -202,7 +206,7 @@ namespace OpenBabelFunctions
                 //Console.WriteLine(minimizeOutput);
             }
             conv.ReadString(mol, minimizeOutput);
-            Debug.WriteLine("...ending " + ThreadNumber);
+            Debug.WriteLine("Minimizing...ending " + ThreadNumber);
 
             return mol;
         }

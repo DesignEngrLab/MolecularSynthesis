@@ -152,17 +152,20 @@ namespace TestOpenBabel
             SearchIO.output("Length is: "+ result[0]);
             SearchIO.output("Radius is: "+ result[1]);
 
-            //int XXX = 0;
-            //for (int i = 0; i < 10000; i++)
+            string[] PathOfXyz = Directory.GetFiles(@"C:\Users\zhang\desktop", "*.xyz");
+            //string CifFilename = Path.GetFileName(PathOfXyz[0]);
+            //foreach (var namexxx in PathOfXyz)
             //{
-            //    XXX = XXX + i;
+            //    Console.WriteLine(Path.GetFileName(namexxx));
             //}
+            Console.WriteLine(Path.GetFileName(PathOfXyz[0]));
+            Console.WriteLine(Path.GetFileName(PathOfXyz[1]));
 
-            int YYY = 0;
-            Parallel.For(0, 1000, i =>
-            {
-                YYY = YYY + i;
-            });
+            RunBat("C:\\Users\\zhang\\source\\repos\\PoreBlazer\\Windows\\HKUST1\\run.bat");
+
+            //C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\results.txt
+            //string[] EvaluationResult = System.IO.File.ReadAllLines(@"C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\results.txt");
+            //Console.WriteLine(EvaluationResult[174]);
 
             stopwatch.Restart();
             var elapsed = stopwatch.Elapsed;
@@ -172,6 +175,19 @@ namespace TestOpenBabel
             //conv.SetInAndOutFormats("pdb", extension);
             //conv.WriteFile(resultMol, filename + "." + extension);
             //File.AppendText()
+        }
+
+        private void RunBat(string batPath)
+        {
+            Process pro = new Process();
+
+            FileInfo file = new FileInfo(batPath);
+            pro.StartInfo.WorkingDirectory = file.Directory.FullName;
+            pro.StartInfo.FileName = batPath;
+            pro.StartInfo.CreateNoWindow = false;
+            pro.StartInfo.UseShellExecute = true;
+            pro.Start();
+            pro.WaitForExit();
         }
     }
 

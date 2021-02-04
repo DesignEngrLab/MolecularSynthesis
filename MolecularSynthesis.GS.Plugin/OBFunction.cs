@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MolecularSynthesis.GS.Plugin;
 
 namespace OpenBabelFunctions
 {
@@ -24,6 +25,7 @@ namespace OpenBabelFunctions
             {"Br", 35},
             {"F", 9}
         };
+        static TreeCandidate noneparallel = new TreeCandidate(new candidate());
 
         //public static string moltoSMILES(OBMol mol)
         //{
@@ -161,16 +163,27 @@ namespace OpenBabelFunctions
         {
             //const int waitTime = 1000000; // time for waiting in milliseconds
             //var stopwatch = new Stopwatch();
-            var conv = new OBConversion();
-            conv.SetInAndOutFormats("pdb", "mol");
 
             int ThreadNumber = System.Threading.Thread.CurrentThread.ManagedThreadId;
-            Debug.WriteLine("starting " + ThreadNumber);
-            string filename= "Test" + ThreadNumber.ToString() + ".mol";
+            Debug.WriteLine("starting minimizing " + ThreadNumber);
+
+            var conv = new OBConversion();
+            Debug.WriteLine("starting formats " + ThreadNumber);
+
+            // force thread to run this function in serial 
+            lock (noneparallel)
+            conv.SetInAndOutFormats("pdb", "mol");
+
+            Debug.WriteLine("starting to use obminimize " + ThreadNumber);
+
+            string filename = "Test" + ThreadNumber.ToString() + ".mol";
             filename = Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", filename);
+
             //if (File.Exists(filename)) File.Delete(filename);
             conv.WriteFile(mol, filename);
             string minimizeOutput;
+
+            Debug.WriteLine("starting obminimize process " + ThreadNumber);
             using (Process proc = new Process())
             {
 
@@ -179,7 +192,7 @@ namespace OpenBabelFunctions
                 //C: \Users\zhang\source\repos\MolecularSynthesis
 
                 //"C:\Program Files\OpenBabel-3.1.1\obminimize.exe"
-                proc.StartInfo.Arguments = "-c 1e3 -ff GAFF "+ filename;
+                proc.StartInfo.Arguments = "-c 1e3 -ff GAFF " + filename;
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
                 proc.StartInfo.ErrorDialog = false;
@@ -202,7 +215,7 @@ namespace OpenBabelFunctions
                 //Console.WriteLine(minimizeOutput);
             }
             conv.ReadString(mol, minimizeOutput);
-            Debug.WriteLine("...ending " + ThreadNumber);
+            Debug.WriteLine("Minimizing...ending " + ThreadNumber);
 
             return mol;
         }

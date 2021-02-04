@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Timers;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace TestOpenBabel
 {
@@ -61,17 +62,17 @@ namespace TestOpenBabel
             option0[6].apply(StartState.graph, null);
             StartState.addToRecipe(option0[6]);
 
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[5].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[5]);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[5].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[5]);
 
             option0 = rulesets[0].recognize(StartState.graph);
             option0[1].apply(StartState.graph, null);
             StartState.addToRecipe(option0[1]);
 
-            option1 = rulesets[1].recognize(StartState.graph);
-            option1[3].apply(StartState.graph, null);
-            StartState.addToRecipe(option1[3]);
+            //option1 = rulesets[1].recognize(StartState.graph);
+            //option1[3].apply(StartState.graph, null);
+            //StartState.addToRecipe(option1[3]);
 
             option1 = rulesets[1].recognize(StartState.graph);
             option1[16].apply(StartState.graph, null);
@@ -111,36 +112,40 @@ namespace TestOpenBabel
             name = Convert.ToString(i) + name;
 
             // "C:\\Users\\zhang\\source\\repos\\tobacco_3.0\\edges"
-            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\Desktop", name));
 
-            string name2 = ".xyz";
-            name2 = Convert.ToString(i) + name2;
+            //C: \Users\zhang\source\repos\MolecularSynthesis\examples
+            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
 
-            // Generate .xyz file after minimization
-            using (Process proc = new Process())
-            {
-                //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
-                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
-                proc.StartInfo.Arguments = name + " -O " + name2;
-                proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\Desktop";
-                //C:\\Users\\zhang\\Desktop
-                proc.StartInfo.RedirectStandardOutput = true;
 
-                proc.Start();
+            // Convert .mol file to .xyz file
+            //string name2 = ".xyz";
+            //name2 = Convert.ToString(i) + name2;
 
-                proc.WaitForExit();
-            }
+            //// Generate .xyz file after minimization
+            //using (Process proc = new Process())
+            //{
+            //    //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
+            //    proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
+            //    proc.StartInfo.Arguments = name + " -O " + name2;
+            //    proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\Desktop";
+            //    //C:\\Users\\zhang\\Desktop
+            //    proc.StartInfo.RedirectStandardOutput = true;
+
+            //    proc.Start();
+
+            //    proc.WaitForExit();
+            //}
 
             // Generate .cif file for tabacco input using julia
 
             using (Process proc = new Process())
             {
-                // C:\Users\zhang\AppData\Local\Programs\Julia 1.5.3\bin\\julia.exe
+                // "C:\Users\zhang\AppData\Local\Programs\Julia 1.5.3\bin\\julia.exe"
                 //C: \\Users\\zhang\\AppData\\Local\\Programs\\Julia 1.5.3\\bin\\julia.exe
                 proc.StartInfo.FileName = "C:\\Users\\zhang\\AppData\\Local\\Programs\\Julia 1.5.3\\bin\\julia.exe";
                 //proc.StartInfo.Arguments = name + " -O " + name2;
 
-                // C:\Users\zhang\source\repos\MolecularSynthesis\CIFGeneration.jl
+                // "C:\Users\zhang\source\repos\MolecularSynthesis\CIFGeneration.jl"
                 // C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\CIFGeneration.jl
                 proc.StartInfo.Arguments = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\CIFGeneration.jl";
                 proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\tobacco_3.0\\edges";
@@ -193,8 +198,78 @@ namespace TestOpenBabel
             //string MOFName = PreMOFName + SufMOFName;
             //System.IO.File.Delete(@"C:\Users\zhang\source\repos\tabacco_3.0\MOFName");
 
-            // take output .cif file from tabacco to evaluation in poreblazer 4.0
+            // convert the output .cif into .xyz file for poreblazer 4.0 evaluation
+            //C:\Users\zhang\source\repos\tobacco_3.0\output_cifs
 
+            string[] PathOfCif = Directory.GetFiles(@"C:\Users\zhang\source\repos\tobacco_3.0\output_cifs", "*.cif");
+            string CifFileName = Path.GetFileName(PathOfCif[0]);
+
+            string name2 = "789.xyz";
+            //name2 = Convert.ToString(789) + name2;
+
+            using (Process proc = new Process())
+            {
+                //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
+                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
+                proc.StartInfo.Arguments = CifFileName + " -O " + name2;
+                //C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1
+                //C: \Users\zhang\source\repos\tobacco_3.0\output_cifs
+                proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\tobacco_3.0\\output_cifs";
+                //C:\\Users\\zhang\\Desktop
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.Start();
+                proc.WaitForExit();
+            }
+            //C:\Users\zhang\source\repos\PoreBlazer\Windows\poreblazer.exe 
+            //C: \Users\zhang\source\repos\PoreBlazer\Windows\HKUST1 > ..\poreblazer.exe  0 < input.dat 1 > results.txt
+
+            // copy .xyz file to HKUST1 folder to run poreblazer
+            string fileName = name2;
+            string sourcePath = @"C:\Users\zhang\source\repos\tobacco_3.0\output_cifs";
+            string targetPath = @"C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1";
+            string sourceFile = System.IO.Path.Combine(sourcePath, fileName);
+            string destFile = System.IO.Path.Combine(targetPath, fileName);
+            System.IO.File.Copy(sourceFile, destFile, true);
+
+            // change input.dat file with .xyz fil that we created
+            string[] lines = System.IO.File.ReadAllLines(@"C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\input.dat");
+            lines[0] = name2;
+
+
+            using (FileStream fs = new FileStream(@"C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\input.dat", FileMode.Create))
+            {
+                //fs.Seek(5, SeekOrigin.Begin);
+                fs.Write(Encoding.ASCII.GetBytes(name2), 0, name2.Length);
+                fs.Write(Encoding.ASCII.GetBytes("\r\n26.28791 "), 0, " 26.28791 ".Length);
+                fs.Write(Encoding.ASCII.GetBytes(" 26.28791 "), 0, " 26.28791 ".Length);
+                fs.Write(Encoding.ASCII.GetBytes(" 26.28791 "), 0, " 26.28791 ".Length);
+                fs.Write(Encoding.ASCII.GetBytes("\r\n90 "), 0, " 90 ".Length);
+                fs.Write(Encoding.ASCII.GetBytes(" 90 "), 0, " 90 ".Length);
+                fs.Write(Encoding.ASCII.GetBytes(" 90 "), 0, " 90 ".Length);
+            }
+            // run poreblazer 4.0 to get the result.txt file
+            //C: \Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\input.dat
+            //System.Diagnostics.Process.Start(@"C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\input.dat");
+
+            RunBat("C:\\Users\\zhang\\source\\repos\\PoreBlazer\\Windows\\HKUST1\\run.bat");
+
+            // read result.txt file to get the poresize
+            string[] EvaluationResult = System.IO.File.ReadAllLines(@"C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\results.txt");
+            Console.WriteLine(EvaluationResult[174]);
+
+
+            // delete all the current file for next iteration
+            //string[] PathOfCif2 = Directory.GetFiles(@"C:\Users\zhang\source\repos\tobacco_3.0\edges", "*.cif");
+            //string CifFileName2 = Path.GetFileName(PathOfCif2[0]);
+            //System.IO.File.Delete(@"C:\Users\zhang\source\repos\tabacco_3.0\edges\CifFileName2");
+
+            //string[] PathOfCif3 = Directory.GetFiles(@"C:\Users\zhang\source\repos\tobacco_3.0\output_cifs", "*.cif");
+            //string CifFileName3 = Path.GetFileName(PathOfCif3[0]);
+            //System.IO.File.Delete(@"C:\Users\zhang\source\repos\tabacco_3.0\output_cifs\CifFileName3");
+
+            //string[] PathOfXyz3 = Directory.GetFiles(@"C:\Users\zhang\source\repos\tobacco_3.0\output_cifs", "*.xyz");
+            //string XyzFileName3 = Path.GetFileName(PathOfXyz3[0]);
+            //System.IO.File.Delete(@"C:\Users\zhang\source\repos\tabacco_3.0\output_cifs\XyzFileName3");
 
             stopWatch.Stop();
             // Get the elapsed time as a TimeSpan value.
@@ -203,12 +278,28 @@ namespace TestOpenBabel
             ts.Hours, ts.Minutes, ts.Seconds,
             ts.Milliseconds / 10);
 
+            Console.WriteLine("Total Running Time" + elapsedTime);
+
             MCTSProcess.Add(elapsedTime);
             System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\output\WholeProcessRecord.txt", MCTSProcess);
 
         }
-    }
 
+
+        private void RunBat(string batPath)
+        {
+            Process pro = new Process();
+
+            FileInfo file = new FileInfo(batPath);
+            pro.StartInfo.WorkingDirectory = file.Directory.FullName;
+            pro.StartInfo.FileName = batPath;
+            pro.StartInfo.CreateNoWindow = false;
+            pro.StartInfo.UseShellExecute = true;
+            pro.Start();
+            pro.WaitForExit();
+        }
+    }
+    
 
 
 

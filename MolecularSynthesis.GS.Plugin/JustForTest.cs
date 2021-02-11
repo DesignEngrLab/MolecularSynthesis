@@ -14,7 +14,8 @@ using OpenBabel;
 using OpenBabelFunctions;
 using MolecularSynthesis.GS.Plugin;
 using System.Diagnostics;
-
+using System;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -55,7 +56,7 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 8;
+            int TotalNumber = 10;
             var rand = new Random();
 
             //TreeCandidate StartState = new TreeCandidate(seedCandidate);
@@ -130,9 +131,10 @@ namespace MolecularSynthesis.GS.Plugin
                 conv.SetInAndOutFormats("pdb", "mol");
 
                 string name = ".mol";
+                string datatime = DateTime.Now.ToString("h:mm:ss");
 
-                Debug.WriteLine("start writing .mol file" + Thread.CurrentThread.ManagedThreadId);
-                name = Convert.ToString(Thread.CurrentThread.ManagedThreadId) + name;
+                Debug.WriteLine("start writing .mol file " + datatime + " " + Thread.CurrentThread.ManagedThreadId);
+                name = datatime+"_"+ Convert.ToString(Thread.CurrentThread.ManagedThreadId)+ name;
                 conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
                        
 

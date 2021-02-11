@@ -24,7 +24,7 @@ namespace MolecularSynthesis.GS.Plugin
         // RS0 R4 R5 R6 R7; RS1 R8 R9 target
         // RS0 R4 R2 R4 R6 R6  solution 897.486 283.802
         // RS0 R4 R5 R6 R2 R3 894.260 288.637
-        static double[] desiredLenghtAndRadius = new double[] { 891.222, 288.221 };
+        static double[] desiredLenghtAndRadius = new double[] { 489, 138 };
         static Random rnd = new Random(0);
         // the linker without any rules will have 41.675 in length and 90.584 in radius 
         // 891.222-41.675=849.5
@@ -64,7 +64,7 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 200;
+            int iteration = 1000;
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
             // 1. check if this is the leaf node, if no go to step 2 until it is a leaf node,if yes go to step 3
@@ -129,8 +129,8 @@ namespace MolecularSynthesis.GS.Plugin
                             RS0 = RS0 + 1;
                         }
                     }
-                    // go RS0 RS2 RS1 
-                    if (RS0 < 5)
+                    
+                    if (RS0 < 4)
                     {
                         AddNewNode(current);
                         string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
@@ -221,7 +221,7 @@ namespace MolecularSynthesis.GS.Plugin
             if (child.n == 0)
                 return double.MaxValue;
             else
-                return child.S / child.n + 500 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
+                return child.S / child.n + 100 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
 
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
@@ -350,7 +350,7 @@ namespace MolecularSynthesis.GS.Plugin
                 }
             }
 
-            while (RS0 < 5)
+            while (RS0 < 4)
             {
                 //rnd.Next(0, 2); // generate 0 or 1
 
@@ -367,7 +367,7 @@ namespace MolecularSynthesis.GS.Plugin
                         var Randomoption0 = rnd.Next(0, option0.Count);
                         option0[Randomoption0].apply(child.graph, null);
                         // dont need to add options into recipe in rollout process
-                        child.addToRecipe(option0[Randomoption0]);
+                        //child.addToRecipe(option0[Randomoption0]);
                     }
                 }
 
@@ -379,10 +379,8 @@ namespace MolecularSynthesis.GS.Plugin
                         RS1 = RS1 + 1;
                         var Randomoption1 = rnd.Next(0, option1.Count);
                         option1[Randomoption1].apply(child.graph, null);
-                        child.addToRecipe(option1[Randomoption1]);
-                    }
-
-                    //candidate=RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true)
+                        //child.addToRecipe(option1[Randomoption1]);
+                    }                    
 
                 }
             }
@@ -392,7 +390,7 @@ namespace MolecularSynthesis.GS.Plugin
             if (option2.Count != 1)
                 Console.WriteLine("how?!?" + "|||  Option2=" + option2.Count);
             option2[0].apply(child.graph, null);
-            child.addToRecipe(option2[0]);
+            //child.addToRecipe(option2[0]);
 
             //if (!candidate.recipe.Contains(option2[0]))
             //{
@@ -400,16 +398,16 @@ namespace MolecularSynthesis.GS.Plugin
             //}
 
             // use openbabel for evaluation
-            //OBMol resultMol = OBFunctions.designgraphtomol(child.graph);
-            //resultMol = OBFunctions.InterStepMinimize(resultMol);
-            //OBFunctions.updatepositions(child.graph, resultMol);
+            OBMol resultMol = OBFunctions.designgraphtomol(child.graph);
+            resultMol = OBFunctions.InterStepMinimize(resultMol);
+            OBFunctions.updatepositions(child.graph, resultMol);
 
-            //score = -Evaluation.distance(child, desiredLenghtAndRadius);
-            //return score;
+            score = -Evaluation.distance(child, desiredLenghtAndRadius);
+            return score;
 
             // just for testing , no need for openbabel
-            double TotalMass = -Evaluation.TotalAtomMass(child);
-            return TotalMass;
+            //double TotalMass = -Evaluation.TotalAtomMass(child);
+            //return TotalMass;
 
 
 

@@ -352,6 +352,7 @@ namespace MolecularSynthesis.GS.Plugin
 
 
             double TotalMass = 0;
+            var Totalmass = new double[10];
 
             Parallel.For(0, 10, i =>
             //for (int i = 0; i < 10; i++)
@@ -420,16 +421,16 @@ namespace MolecularSynthesis.GS.Plugin
                 //return score;
 
                 // just for testing , no need for openbabel
+                lock (Totalmass)
+                    Totalmass[i] = -Evaluation.TotalAtomMass(child);
 
 
                 TotalMass = TotalMass - Evaluation.TotalAtomMass(child);
                 child = (TreeCandidate)candidate.copy();
             });
+                       
 
-            return TotalMass / 4;
-
-
-
+            return Totalmass.Sum() / 10;
         }
         public List<TreeCandidate> FindAllParents(TreeCandidate current)
         {

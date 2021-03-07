@@ -62,7 +62,7 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 100;
+            int TotalNumber = 10;
             var rand = new Random();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);

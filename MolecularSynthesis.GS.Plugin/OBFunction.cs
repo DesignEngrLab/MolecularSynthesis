@@ -177,7 +177,7 @@ namespace OpenBabelFunctions
             Debug.WriteLine("starting to use obminimize " + ThreadNumber);
 
             string filename = "Test" + ThreadNumber.ToString() + ".mol";
-            filename = Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", filename);
+            filename = Path.Combine("C:\\Users\\kgeri\\source\\repos\\MolecularSynthesis\\output", filename);
 
             //if (File.Exists(filename)) File.Delete(filename);
             lock (noneparallel)
@@ -188,7 +188,7 @@ namespace OpenBabelFunctions
             using (Process proc = new Process())
             {
 
-                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obminimize.exe";
+                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.0.0\\obminimize.exe";
                 //proc.StartInfo.FileName = "C: \\Users\\zhang\\source\\repos\\MolecularSynthesis\\minimize.exe";
                 //C: \Users\zhang\source\repos\MolecularSynthesis
 
@@ -197,7 +197,7 @@ namespace OpenBabelFunctions
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
                 proc.StartInfo.ErrorDialog = false;
-                proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output";
+                proc.StartInfo.WorkingDirectory = "C:\\Users\\kgeri\\source\\repos\\MolecularSynthesis\\output";
                 //proc.StartInfo.RedirectStandardError = true;
                 //proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;

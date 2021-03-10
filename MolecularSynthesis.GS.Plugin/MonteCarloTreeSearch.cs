@@ -24,9 +24,6 @@ namespace MolecularSynthesis.GS.Plugin
         static double[] desiredLenghtAndRadius = new double[] { 245.277, 89.53 };
         static Random rnd = new Random(0);
 
-
-
-
         public MCTS(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;

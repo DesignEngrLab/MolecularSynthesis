@@ -103,7 +103,8 @@ namespace MolecularSynthesis.GS.Plugin
 
                 string name = ".mol";
                 name = Convert.ToString(i) + name;
-                conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
+                // conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
+                conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples_Kai", name));
 
                 //string name2 = ".xyz";
                 //name2 = Convert.ToString(i) + name2;
@@ -122,11 +123,11 @@ namespace MolecularSynthesis.GS.Plugin
 
                 //    Console.Write("starting Convert...");
                 //    proc.Start();
-                                        
+
                 //    //minimizeOutput = proc.StandardOutput.ReadToEnd();
                 //    proc.WaitForExit();
                 //}
-             }
+            }
 
             timer.Stop();
             TimeSpan ts = timer.Elapsed;

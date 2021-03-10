@@ -180,6 +180,7 @@ namespace OpenBabelFunctions
             filename = Path.Combine("C:\\Users\\kgeri\\source\\repos\\MolecularSynthesis\\output", filename);
 
             //if (File.Exists(filename)) File.Delete(filename);
+            lock (noneparallel)
             conv.WriteFile(mol, filename);
             string minimizeOutput;
 

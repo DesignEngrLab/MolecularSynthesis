@@ -63,6 +63,7 @@ namespace TestOpenBabel
                 proc.StartInfo.Arguments = "-res " + Path.Combine(zeoDir, "IRMOF-1.cssr");
                 //C: \Users\zhang\source\repos\MolecularSynthesis\output
                 proc.StartInfo.WorkingDirectory = this.outputDirectory;
+                Console.WriteLine(this.outputDirectory);
                 //C:\\Users\\zhang\\Desktop
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.UseShellExecute=false;

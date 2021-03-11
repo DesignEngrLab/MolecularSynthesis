@@ -1,21 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MIConvexHull" Version="1.1.19.1019" />
-    <PackageReference Include="OptimizedPriorityQueue" Version="4.2.0" />
+    <PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GraphSynth\GraphSynthSourceFiles\GraphSynth.Base\GraphSynth.Base.csproj" />
+    <ProjectReference Include="..\GraphSynth.Base\GraphSynth.Base.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="OBDotNet">
-      <HintPath>..\..\..\..\..\..\Program Files\OpenBabel-3.0.0\OBDotNet.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\OpenBabel-3.1.1\OBDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
 

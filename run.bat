@@ -1,0 +1,1 @@
+dotnet GraphSynthConsole/bin/Debug/net5.0/GraphSynthConsole.dll

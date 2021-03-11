@@ -18,6 +18,7 @@ using System.Timers;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Text;
+using System.Reflection;
 
 namespace TestOpenBabel
 {
@@ -44,21 +45,25 @@ namespace TestOpenBabel
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-
+            var dirString = this.rulesDirectory;
+            var dir = new DirectoryInfo(dirString);
+            dir = dir.Parent;
+            var zeoDir = new DirectoryInfo(Path.Combine(dir.FullName, "zeo++-0.3")).FullName;
             using (Process proc = new Process())
             {
                 // "C:\Users\zhang\AppData\Local\Programs\Julia 1.5.3\bin\\julia.exe"
                 //C: \\Users\\zhang\\AppData\\Local\\Programs\\Julia 1.5.3\\bin\\julia.exe
 
                 //C: \Users\zhang\source\repos\zeo++-0.3\network
-                proc.StartInfo.FileName = "C:\\Users\\zhang\\source\\repos\\zeo++-0.3\\network.exe";
+                proc.StartInfo.FileName =Path.Combine(zeoDir, "network");
                 //proc.StartInfo.Arguments = name + " -O " + name2;
 
                 // "C:\Users\zhang\source\repos\MolecularSynthesis\CIFGeneration.jl"
                 // C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\CIFGeneration.jl
-                proc.StartInfo.Arguments = "-res C:\\Users\\zhang\\source\\repos\\zeo++-0.3\\IRMOF-1.cssr";
+                proc.StartInfo.Arguments = "-res " + Path.Combine(zeoDir, "IRMOF-1.cssr");
                 //C: \Users\zhang\source\repos\MolecularSynthesis\output
-                proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output";
+                proc.StartInfo.WorkingDirectory = this.outputDirectory;
+                Console.WriteLine(this.outputDirectory);
                 //C:\\Users\\zhang\\Desktop
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.UseShellExecute=false;

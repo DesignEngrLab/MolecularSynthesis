@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GlobalSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" WorkingDirRelative="..\..\..\..\..\..\MolecularSynthesis\" >
+<GlobalSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" WorkingDirRelative="../../../../../../MolecularSynthesis/" >
   <MaxRulesToDisplay>1000</MaxRulesToDisplay>
   <MaxRulesToApply>500</MaxRulesToApply>
-  <InputDir>input\</InputDir>
-  <OutputDir>output\</OutputDir>
-  <RulesDir>rules\</RulesDir>
-  <LocalHelpDir>..\GraphSynth\GraphSynthSourceFiles\GraphSynth\Desktop\GraphSynth\</LocalHelpDir>
+  <InputDir>../../../../input/</InputDir>
+  <OutputDir>output/</OutputDir>
+  <RulesDir>../../../../rules/</RulesDir>
+  <LocalHelpDir>../GraphSynth/GraphSynthSourceFiles/GraphSynth/Desktop/GraphSynth/</LocalHelpDir>
   <OnlineHelpURL>http://graphsynth.com/help/</OnlineHelpURL>
   <GraphLayoutDir />
-  <SearchDir>MolecularSynthesis.GS.Plugin\</SearchDir>
-  <ErrorLogFile>..\..\..\AppData\Roaming\GraphSynth\ErrorLog.txt</ErrorLogFile>
+  <SearchDir>MolecularSynthesis.GS.Plugin/</SearchDir>
+  <ErrorLogFile>../../../AppData/Roaming/GraphSynth/ErrorLog.txt</ErrorLogFile>
   <DefaultSeedFileName>linkerseed.gxml</DefaultSeedFileName>
   <DefaultRuleSets>rulse_set_0.rsxml, rulse_set_1.rsxml</DefaultRuleSets>
-  <CustomShapesFile>..\GraphSynth\GraphSynthSourceFiles\GraphSynth\Desktop\GraphSynth\plugins\customShapeDescriptors.xaml</CustomShapesFile>
-  <CompiledRuleFunctions>..\..\GraphSynth\GraphSynthSourceFiles\GraphSynth\Desktop\GraphSynth\rules\CompiledRuleFunctions.dll</CompiledRuleFunctions>
+  <CustomShapesFile>../GraphSynth/GraphSynthSourceFiles/GraphSynth/Desktop/GraphSynth/plugins/customShapeDescriptors.xaml</CustomShapesFile>
+  <CompiledRuleFunctions>../../GraphSynth/GraphSynthSourceFiles/GraphSynth/Desktop/GraphSynth/rules/CompiledRuleFunctions.dll</CompiledRuleFunctions>
   <SearchControllerPlayOnStart>false</SearchControllerPlayOnStart>
   <GetHelpFromOnline>false</GetHelpFromOnline>
   <RecompileRuleConditions>false</RecompileRuleConditions>

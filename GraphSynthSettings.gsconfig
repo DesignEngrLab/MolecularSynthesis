@@ -3,7 +3,7 @@
   <MaxRulesToDisplay>1000</MaxRulesToDisplay>
   <MaxRulesToApply>500</MaxRulesToApply>
   <InputDir>../../../../input/</InputDir>
-  <OutputDir>output/</OutputDir>
+  <OutputDir>../../../../output/</OutputDir>
   <RulesDir>../../../../rules/</RulesDir>
   <LocalHelpDir>../GraphSynth/GraphSynthSourceFiles/GraphSynth/Desktop/GraphSynth/</LocalHelpDir>
   <OnlineHelpURL>http://graphsynth.com/help/</OnlineHelpURL>

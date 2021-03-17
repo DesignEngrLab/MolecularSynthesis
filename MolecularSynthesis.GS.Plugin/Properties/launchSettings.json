@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "MolecularSynthesis.GS.Plugin": {
-      "commandName": "Executable",
-      "executablePath": "C:\\Users\\kgeri\\source\\repos\\GraphSynth\\GraphSynthSourceFiles\\GraphSynthConsole\\bin\\Debug\\netcoreapp3.1\\GraphSynthConsole.exe"
-    }
-  }
-}

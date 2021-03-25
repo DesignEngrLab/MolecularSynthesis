@@ -65,9 +65,13 @@ namespace MolecularSynthesis.GS.Plugin
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
 <<<<<<< HEAD
+<<<<<<< HEAD
             int iteration = 10;
 
 
+=======
+            int iteration = 200;
+>>>>>>> parent of 7a2c01d (test MCTS)
 =======
             int iteration = 200;
 >>>>>>> parent of 7a2c01d (test MCTS)

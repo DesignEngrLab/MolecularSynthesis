@@ -11,7 +11,7 @@
   <SearchDir>MolecularSynthesis.GS.Plugin/</SearchDir>
   <ErrorLogFile>../../../AppData/Roaming/GraphSynth/ErrorLog.txt</ErrorLogFile>
   <DefaultSeedFileName>linkerseed.gxml</DefaultSeedFileName>
-  <DefaultRuleSets>rulse_set_0.rsxml, rulse_set_1.rsxml</DefaultRuleSets>
+  <DefaultRuleSets>rulse_set_0.rsxml, rulse_set_1.rsxml, rule_set_2.rsxml</DefaultRuleSets>
   <CustomShapesFile>../GraphSynth/GraphSynthSourceFiles/GraphSynth/Desktop/GraphSynth/plugins/customShapeDescriptors.xaml</CustomShapesFile>
   <CompiledRuleFunctions>../../GraphSynth/GraphSynthSourceFiles/GraphSynth/Desktop/GraphSynth/rules/CompiledRuleFunctions.dll</CompiledRuleFunctions>
   <SearchControllerPlayOnStart>false</SearchControllerPlayOnStart>

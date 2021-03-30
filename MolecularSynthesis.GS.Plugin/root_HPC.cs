@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class MCTS_Parallel_root : SearchProcess
+    public class MCTS_Parallel_root_HPC : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -32,7 +32,7 @@ namespace MolecularSynthesis.GS.Plugin
         // 872.18
 
 
-        public MCTS_Parallel_root(GlobalSettings settings) : base(settings)
+        public MCTS_Parallel_root_HPC(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -45,7 +45,7 @@ namespace MolecularSynthesis.GS.Plugin
         /// <value>The text.</value>
         public override string text
         {
-            get { return "MCTS_root"; }
+            get { return "MCTS_root_HPC"; }
         }
 
 
@@ -413,9 +413,7 @@ namespace MolecularSynthesis.GS.Plugin
             double TotalMass = -Evaluation.TotalAtomMass(child);
             return TotalMass;
 
-            // code below will use poresize as evaluation funcition
-            //double PoreSize = -Evaluation.GetPoreSize(child.graph);
-            //return PoreSize
+
 
         }
         public List<TreeCandidate> FindAllParents(TreeCandidate current)

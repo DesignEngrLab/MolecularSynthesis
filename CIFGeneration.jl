@@ -4,11 +4,24 @@ using Xtals, LightGraphs, Test, Printf, LinearAlgebra
 #    error("Pass xyz file as argument")
 #end
 #filelist = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples")
-#path_to_mol_files = joinpath(homedir(), "Documents", "GitHub", "MolecularSynthesis", "Examples")
+#path_to_mol_files = joinpath(homedir(), "Documents", "GitHub", "MolecularSynthesis", "examples")
+
+# those 2 lines are used on my own laptop in windows
+#filelist = readdir("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples")
+#path_to_mol_files = joinpath(homedir(), "source", "repos", "MolecularSynthesis", "examples")
 
 
-filelist = readdir("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples")
-path_to_mol_files = joinpath(homedir(), "source", "repos", "MolecularSynthesis", "Examples")
+# those 2 lines are used on my own laptop in ubuntu
+# C:\Users\zhang\source\repos\1\testZeo_onUbuntu\examples
+filelist = readdir("/mnt/c/Users/zhang/source/repos/1/testZeo_onUbuntu/examples")
+path_to_mol_files = joinpath("/mnt","c","Users","zhang", "source", "repos", "1", "testZeo_onUbuntu","examples")
+
+# those 2 lines are used on HPC
+#/nfs/hpc/share/zhangho2/MolecularSynthesis/examples
+#filelist = readdir("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples")
+#path_to_mol_files = joinpath("/nfs","hpc","share","zhangho2", "MolecularSynthesis","examples")
+
+
 
 
 #path_to_mol_files = readdir("C:\\Users\\zhang\\Desktop")

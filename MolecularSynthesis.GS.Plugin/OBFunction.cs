@@ -158,52 +158,100 @@ namespace OpenBabelFunctions
         }
 
 
-        // Watch out the input "ForTest.mol" is from where
+        //// Watch out the input "ForTest.mol" is from where
+        //public static OBMol InterStepMinimize(OBMol mol)
+        //{
+        //    //const int waitTime = 1000000; // time for waiting in milliseconds
+        //    //var stopwatch = new Stopwatch();
+
+        //    int ThreadNumber = System.Threading.Thread.CurrentThread.ManagedThreadId;
+        //    Debug.WriteLine("starting minimizing " + ThreadNumber);
+
+        //    var conv = new OBConversion();
+        //    Debug.WriteLine("starting formats " + ThreadNumber);
+
+        //    // force thread to run this function in serial 
+        //    lock (noneparallel)
+        //    conv.SetInAndOutFormats("pdb", "mol");
+
+        //    Debug.WriteLine("starting to use obminimize " + ThreadNumber);
+
+        //    string filename = "Test" + ThreadNumber.ToString() + ".mol";
+        //    filename = Path.Combine("/mnt/c/Users/zhang/source/repos/MolecularSynthesis/output", filename);
+
+        //    //if (File.Exists(filename)) File.Delete(filename);
+        //    lock (noneparallel)
+        //    conv.WriteFile(mol, filename);
+        //    string minimizeOutput;
+
+        //    Debug.WriteLine("starting obminimize process " + ThreadNumber);
+        //    using (Process proc = new Process())
+        //    {
+
+        //        // /mnt/c/Users/zhang/source/repos/MolecularSynthesis/
+        //        proc.StartInfo.FileName = "/usr/bin/obminimize";
+        //        //proc.StartInfo.FileName = "C: \\Users\\zhang\\source\\repos\\MolecularSynthesis\\minimize.exe";
+        //        //C: \Users\zhang\source\repos\MolecularSynthesis
+
+        //        //"C:\Program Files\OpenBabel-3.1.1\obminimize.exe"
+        //        proc.StartInfo.Arguments = "-c 1e3 -ff GAFF " + filename;
+        //        //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
+        //        // or '-c' convergence criteria
+        //        proc.StartInfo.ErrorDialog = false;
+        //        proc.StartInfo.WorkingDirectory = "/mnt/c/Users/zhang/source/repos/MolecularSynthesis/output";
+        //        //proc.StartInfo.RedirectStandardError = true;
+        //        //proc.StartInfo.UseShellExecute = false;
+        //        proc.StartInfo.RedirectStandardOutput = true;
+        //        //proc.StartInfo.RedirectStandardInput = false;
+        //        Console.Write("starting OBMinimize...");
+        //        //stopwatch.Restart();
+        //        proc.Start();
+
+        //        //proc.WaitForExit(); //wait up to 10 seconds. OB will return best result
+        //        // but maybe you want to scale this based on molecule size
+        //        //var elapsed = stopwatch.Elapsed;
+        //        //Console.WriteLine("completed in {0}", elapsed);
+        //        minimizeOutput = proc.StandardOutput.ReadToEnd();
+        //        proc.WaitForExit();
+        //        //if (elapsed.TotalMilliseconds > waitTime)
+        //        //Console.WriteLine(minimizeOutput);
+        //    }
+        //    conv.ReadString(mol, minimizeOutput);
+        //    Debug.WriteLine("Minimizing...ending " + ThreadNumber);
+
+        //    return mol;
+        //}
+
         public static OBMol InterStepMinimize(OBMol mol)
         {
             //const int waitTime = 1000000; // time for waiting in milliseconds
-            //var stopwatch = new Stopwatch();
-
-            int ThreadNumber = System.Threading.Thread.CurrentThread.ManagedThreadId;
-            Debug.WriteLine("starting minimizing " + ThreadNumber);
-
+            var stopwatch = new Stopwatch();
             var conv = new OBConversion();
-            Debug.WriteLine("starting formats " + ThreadNumber);
-
-            // force thread to run this function in serial 
-            lock (noneparallel)
             conv.SetInAndOutFormats("pdb", "mol");
-
-            Debug.WriteLine("starting to use obminimize " + ThreadNumber);
-
-            string filename = "Test" + ThreadNumber.ToString() + ".mol";
-            filename = Path.Combine("C:\\Users\\kgeri\\source\\repos\\MolecularSynthesis\\output", filename);
-
-            //if (File.Exists(filename)) File.Delete(filename);
-            lock (noneparallel)
-            conv.WriteFile(mol, filename);
+            // /mnt/c/Users/zhang/source/repos/MolecularSynthesis/output
+            // /nfs/hpc/share/zhangho2/MolecularSynthesis/output
+            conv.WriteFile(mol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/output", "Test111.mol"));
             string minimizeOutput;
-
-            Debug.WriteLine("starting obminimize process " + ThreadNumber);
             using (Process proc = new Process())
             {
+                /// usr / local / apps / openbabel / 3.1.1 / bin / obminimize
 
-                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.0.0\\obminimize.exe";
+                proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obminimize";
                 //proc.StartInfo.FileName = "C: \\Users\\zhang\\source\\repos\\MolecularSynthesis\\minimize.exe";
                 //C: \Users\zhang\source\repos\MolecularSynthesis
 
                 //"C:\Program Files\OpenBabel-3.1.1\obminimize.exe"
-                proc.StartInfo.Arguments = "-c 1e3 -ff GAFF " + filename;
+                proc.StartInfo.Arguments = "-c 1e3 -ff GAFF Test111.mol";
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
                 proc.StartInfo.ErrorDialog = false;
-                proc.StartInfo.WorkingDirectory = "C:\\Users\\kgeri\\source\\repos\\MolecularSynthesis\\output";
+                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis/output";
                 //proc.StartInfo.RedirectStandardError = true;
                 //proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
                 //proc.StartInfo.RedirectStandardInput = false;
                 Console.Write("starting OBMinimize...");
-                //stopwatch.Restart();
+                stopwatch.Restart();
                 proc.Start();
 
                 //proc.WaitForExit(); //wait up to 10 seconds. OB will return best result
@@ -215,11 +263,15 @@ namespace OpenBabelFunctions
                 //if (elapsed.TotalMilliseconds > waitTime)
                 //Console.WriteLine(minimizeOutput);
             }
+            //Console.WriteLine(minimizeOutput);
             conv.ReadString(mol, minimizeOutput);
-            Debug.WriteLine("Minimizing...ending " + ThreadNumber);
 
             return mol;
         }
+
+
+
+
 
 
         public static string GetRamDir()

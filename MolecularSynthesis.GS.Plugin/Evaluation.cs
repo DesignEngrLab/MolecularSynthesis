@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using OpenBabelFunctions;
 using OpenBabel;
 using MolecularSynthesis.GS.Plugin;
+using System.IO;
+using System.Diagnostics;
 //using GraphMolWrap;
 
 
@@ -69,7 +71,7 @@ namespace MolecularSynthesis.GS.Plugin
             int m = 0;
             foreach (var n in host.nodes)
             {
-                if (!n.localLabels.Contains("Boundary")) continue; 
+                if (!n.localLabels.Contains("Boundary")) continue;
                 m += 1;
                 if (m == 1)
                 {
@@ -168,7 +170,7 @@ namespace MolecularSynthesis.GS.Plugin
             var childLenghtAndRadius = FindLengthAndRadius(child.graph);
 
             double[] difference = new double[2];
-                      
+
             difference[0] = Math.Abs(childLenghtAndRadius[0] - desiredLenghtAndRadius[0]);
             difference[1] = Math.Abs(childLenghtAndRadius[1] - desiredLenghtAndRadius[1]);
 
@@ -181,9 +183,212 @@ namespace MolecularSynthesis.GS.Plugin
 
 
         public static void CifToTabacco()
-        { 
-            
+        {
+
         }
+
+        public static double GetPoreSize(designGraph candidate)
+        {
+            double PoreSizeValue = 0;
+            // 0. recieve candidate as graph
+            // 1. designgraph to mol
+            var resultMol = OBFunctions.designgraphtomol(candidate);
+            var conv = new OBConversion();
+            conv.SetInAndOutFormats("pdb", "mol");
+            // generate .mol file for minimization
+            conv.WriteFile(resultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", "TestOBD.mol"));
+            string minimizeOutput;
+
+
+            // 2. minimize
+            using (Process proc = new Process())
+            {
+
+                proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obminimize";
+
+                proc.StartInfo.Arguments = "-c 1e3 -ff GAFF TestOBD.mol";
+                //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
+                // or '-c' convergence criteria
+
+                //proc.StartInfo.ErrorDialog = false;
+                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis/examples";
+                //proc.StartInfo.RedirectStandardError = true;
+                //proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.RedirectStandardOutput = true;
+                //proc.StartInfo.RedirectStandardInput = false;
+                Console.Write("starting OBMinimize...");
+                proc.Start();
+
+                minimizeOutput = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+            }
+
+            conv.ReadString(resultMol, minimizeOutput);
+
+            // after minimization, update, make new .mol file for tobacco
+            OBFunctions.updatepositions(candidate, resultMol);
+
+            var FinalResultMol = OBFunctions.designgraphtomol(candidate);
+            conv = new OBConversion();
+            conv.SetInAndOutFormats("pdb", "mol");
+            // /nfs/hpc/share/zhangho2/tobacco_3.0/edges
+            conv.WriteFile(FinalResultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", "Candidate.mol"));
+            File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/TestOBD.mol");
+
+
+            // 3. .mol to .cif
+
+            using (Process proc = new Process())
+            {
+
+                //C: \Users\zhang\source\repos\zeo++-0.3\network
+                // /usr/local/apps/julia/1.5/bin/julia
+                // /usr/local/apps/julia/1.5/bin/julia
+                proc.StartInfo.FileName = "/usr/local/apps/julia/1.5/bin/julia";
+                // /nfs/hpc/share/zhangho2/MolecularSynthesis
+                proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/MolecularSynthesis/CIFGeneration.jl";
+                // /nfs/hpc/share/zhangho2/tobacco_3.0/edges
+                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/tobacco_3.0/edges";
+                //C:\\Users\\zhang\\Desktop
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.UseShellExecute = false;
+                proc.Start();
+                System.Console.WriteLine("CIFGerneration.jl is running");
+                proc.WaitForExit();
+            }
+            Console.WriteLine("Finish .mol to .cif");
+
+            // 4. invoke tobacco
+            using (Process proc = new Process())
+            {
+
+                // /usr/local/apps/python/3.8/bin/python3
+
+                proc.StartInfo.FileName = "/usr/local/apps/python/3.8/bin/python3";
+                // /nfs/hpc/share/zhangho2/tobacco_3.0
+                proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/tobacco_3.0/tobacco.py";
+                //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                //C: \Users\zhang\source\repos\tobacco_3.0\edges
+                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/tobacco_3.0";
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.UseShellExecute = false;
+                proc.Start();
+                System.Console.WriteLine("tabacco is running");
+                proc.WaitForExit();
+            }
+
+            // 5. move file to the right folder to generate .cssr file
+            // /nfs/hpc/share/zhangho2/tobacco_3.0/output_cifs
+
+
+            var folderPath = "/nfs/hpc/share/zhangho2/tobacco_3.0/output_cifs";
+            foreach (string file in Directory.EnumerateFiles(folderPath, "*.cif"))
+            {
+                string[] details = file.Split('/');
+                Console.WriteLine(details[7]);
+                // /nfs/hpc/share/zhangho2/MolecularSynthesis/data/crystals
+                var paths = new string[] { "/nfs", "hpc", "share", "zhangho2", "MolecularSynthesis", "data", "crystals", details[7] };
+
+                var NewPosition = Path.Combine(paths);
+                Console.WriteLine(NewPosition);
+                System.IO.File.Move(file, NewPosition, true);
+            }
+            Console.WriteLine("how about now???--------------------------------------------------------------");
+
+            // invoke MakeCssr.jl
+            using (Process proc = new Process())
+            {
+
+                //C: \Users\zhang\source\repos\zeo++-0.3\network
+                // /usr/bin/obminimize
+                proc.StartInfo.FileName = "/usr/local/apps/julia/1.5/bin/julia";
+                //proc.StartInfo.Arguments = name + " -O " + name2;
+
+                // "C:\Users\zhang\source\repos\MolecularSynthesis\CIFGeneration.jl"
+                // C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\CIFGeneration.jl
+                proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/MolecularSynthesis/MakeCssr.jl";
+                //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                //C: \Users\zhang\source\repos\tobacco_3.0\edges
+                //C:\Users\zhang\source\repos\MolecularSynthesis\zeo++-0.3
+                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis";
+                //C:\\Users\\zhang\\Desktop
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.UseShellExecute = false;
+                proc.Start();
+                System.Console.WriteLine("MakeCssr is running");
+                proc.WaitForExit();
+            }
+
+
+            // 6. invoke zeo++ to get PoresizeValue
+
+            // /nfs/hpc/share/zhangho2/MolecularSynthesis
+            System.Console.WriteLine("before zeo++");
+            folderPath = "/nfs/hpc/share/zhangho2/MolecularSynthesis";
+            foreach (string file in Directory.EnumerateFiles(folderPath, "*.cssr"))
+            {
+                string[] details = file.Split('/');
+                Console.WriteLine(details[6]);
+                // /nfs/hpc/share/zhangho2/MolecularSynthesis/zeo++-0.3
+                var paths = new string[] { "/nfs", "hpc", "share", "zhangho2", "zeo++-0.3", details[6] };
+
+                var NewPosition = Path.Combine(paths);
+                Console.WriteLine(NewPosition);
+                System.IO.File.Move(file, NewPosition, true);
+                Console.WriteLine("move .cssr file successfully");
+                //var ZeoArgument = "-res " + details[6];
+                //System.Console.WriteLine(file);
+                //System.Console.WriteLine(ZeoArgument);
+                //System.Console.WriteLine("--------------------------------------------------");
+
+                using (Process proc = new Process())
+                {
+
+                    //C: \Users\zhang\source\repos\zeo++-0.3\network
+                    // /nfs/hpc/share/zhangho2/MolecularSynthesis/zeo++-0.3
+                    proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
+                    //proc.StartInfo.Arguments = name + " -O " + name2;
+
+                    proc.StartInfo.Arguments = " -res " + details[6]; ;
+                    //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                    proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
+                    //C:\\Users\\zhang\\Desktop
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.Start();
+
+                    proc.WaitForExit();
+                }
+            }
+
+
+            // 7. read .res file to get poresize value
+            // /nfs/hpc/share/zhangho2/zeo++-0.3
+            folderPath = "/nfs/hpc/share/zhangho2/zeo++-0.3";
+            foreach (string file in Directory.EnumerateFiles(folderPath, "*.res"))
+            {
+
+                string contents = File.ReadAllText(file);
+                string[] words = contents.Split(' ');
+                Console.WriteLine(contents);
+                Console.WriteLine("Poresize: ",words[4]);
+
+                //foreach (var word in words)
+                //{
+                //    //System.Console.WriteLine($"<{word}>");
+                //    Console.WriteLine(word);
+                //}
+                PoreSizeValue = Convert.ToDouble(words[4]);
+                Console.WriteLine("Poresizevalue: ", words[4]);
+            }
+            
+
+
+            return PoreSizeValue;
+        }
+
+
+
 
     }
 }

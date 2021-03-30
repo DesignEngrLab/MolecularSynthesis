@@ -45,10 +45,18 @@ namespace TestOpenBabel
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
+
+
             var dirString = this.rulesDirectory;
             var dir = new DirectoryInfo(dirString);
             dir = dir.Parent;
             var zeoDir = new DirectoryInfo(Path.Combine(dir.FullName, "zeo++-0.3")).FullName;
+
+            var filepath= Path.Combine(zeoDir, "network");
+            var arguments= "-res " + Path.Combine(zeoDir, "IRMOF-1.cssr");
+            Console.WriteLine(filepath);
+            Console.WriteLine(arguments);
+
             using (Process proc = new Process())
             {
                 // "C:\Users\zhang\AppData\Local\Programs\Julia 1.5.3\bin\\julia.exe"

@@ -79,7 +79,7 @@ namespace MolecularSynthesis.GS.Plugin
                 option0[6].apply(candidate.graph, null);
                 //StartState.addToRecipe(option0[6]);
                 
-                for (int j = 0; j < 4; j++)
+                for (int j = 0; j < 3; j++)
                 {
                     //rnd.Next(0, 2); 0 or 1
                     var RuleSetNumber = rand.Next(0, 2);
@@ -94,40 +94,65 @@ namespace MolecularSynthesis.GS.Plugin
                 //StartState.addToRecipe(option2[0]);
 
                 var resultMol = OBFunctions.designgraphtomol(candidate.graph);
-                resultMol = OBFunctions.InterStepMinimize(resultMol);
-                OBFunctions.updatepositions(candidate.graph, resultMol);
-                var FinalResultMol = OBFunctions.designgraphtomol(candidate.graph);
 
                 var conv = new OBConversion();
+                conv.SetInAndOutFormats("pdb", "mol");
+                // /mnt/c/Users/zhang/source/repos/MolecularSynthesis/output
+                // /nfs/hpc/share/zhangho2/MolecularSynthesis/output
+                Console.WriteLine("writing TestOBD.mol");
+                conv.WriteFile(resultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", "TestOBD.mol"));
+                string minimizeOutput;
+                using (Process proc = new Process())
+                {
+
+                    proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obminimize";
+                    //proc.StartInfo.FileName = "C: \\Users\\zhang\\source\\repos\\MolecularSynthesis\\minimize.exe";
+                    //C: \Users\zhang\source\repos\MolecularSynthesis
+
+                    //"C:\Program Files\OpenBabel-3.1.1\obminimize.exe"
+                    proc.StartInfo.Arguments = "-c 1e3 -ff GAFF TestOBD.mol";
+                    //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
+                    // or '-c' convergence criteria
+                    //proc.StartInfo.ErrorDialog = false;
+                    proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis/examples";
+                    //proc.StartInfo.RedirectStandardError = true;
+                    //proc.StartInfo.UseShellExecute = false;
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    //proc.StartInfo.RedirectStandardInput = false;
+                    Console.Write("starting OBMinimize...");
+                    proc.Start();
+                   
+                    minimizeOutput = proc.StandardOutput.ReadToEnd();
+                    proc.WaitForExit();
+                }
+
+                conv.ReadString(resultMol, minimizeOutput);
+
+                //resultMol = OBFunctions.InterStepMinimize(resultMol);
+                OBFunctions.updatepositions(candidate.graph, resultMol);
+
+                var FinalResultMol = OBFunctions.designgraphtomol(candidate.graph);
+                conv = new OBConversion();
                 conv.SetInAndOutFormats("pdb", "mol");
 
                 string name = ".mol";
                 name = Convert.ToString(i) + name;
-                // conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
-                conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples_Kai", name));
+                //conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
+                ///nfs/hpc/share/zhangho2/MolecularSynthesis/output
+                ///mnt/c/Users/zhang/source/repos/MolecularSynthesis/examples
+                Console.WriteLine("writing new .mol file");
+                conv.WriteFile(FinalResultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", name));
+                //conv.WriteFile(FinalResultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", name));
+
+
+
 
                 //string name2 = ".xyz";
-                //name2 = Convert.ToString(i) + name2;
-
-                //using (Process proc = new Process())
-                //{
-                //    //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
-                //    proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
-                //    proc.StartInfo.Arguments = name + " -O " + name2;
-                //    proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples";
-
-                //    //proc.StartInfo.RedirectStandardError = true;
-                //    //proc.StartInfo.UseShellExecute = false;
-                //    proc.StartInfo.RedirectStandardOutput = true;
-                //    //proc.StartInfo.RedirectStandardInput = false;
-
-                //    Console.Write("starting Convert...");
-                //    proc.Start();
-
-                //    //minimizeOutput = proc.StandardOutput.ReadToEnd();
-                //    proc.WaitForExit();
-                //}
+                //name2 = Convert.ToString(i) + name2;                
             }
+
+            File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/TestOBD.mol");
+
 
             timer.Stop();
             TimeSpan ts = timer.Elapsed;
@@ -270,173 +295,7 @@ namespace MolecularSynthesis.GS.Plugin
 
             //}
         }
-        public double CalculateUcb(TreeCandidate child)
-        {
-            if (child.n == 0)
-                return double.MaxValue;
-            else
-                return child.S / child.n + 2 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
-        }
-
-        public TreeCandidate SelectPromisingNode(TreeCandidate current)
-        {
-            //create the bestchild as an intermidiate variable
-
-            TreeCandidate bestChild = null;
-            double bestUcb = double.MinValue;
-
-            while (current.Children.Count != 0)
-            {
-                foreach (TreeCandidate child in current.Children)
-                {
-                    double Ucb = CalculateUcb(child);
-                    if (Ucb > bestUcb)
-                    {
-                        bestUcb = Ucb;
-                        bestChild = child;
-                    }
-                }
-                current = bestChild;
-            }
-
-            //return SelectPromisingNode(bestChild);
-            return bestChild;
-        }
-
-        public void AddNewNode(TreeCandidate current)
-        {
-            // need to add one avaiable option from current ,add options into recipe
-
-            var option0 = rulesets[0].recognize(current.graph);
-            var option1 = rulesets[1].recognize(current.graph);
-            int PotenialOptionNumber = option1.Count + option0.Count;
-
-            //var option0 = rulesets[0].recognize(candidate.graph);
-            for (int i = 0; i < PotenialOptionNumber; i++)
-            {
-                var child = (TreeCandidate)current.copy();
-                child.Parent = current;
-                child.Children = new List<TreeCandidate>();
-                child.n = 0;
-                child.S = 0;
-                child.UCB = double.MinValue;
-
-                if (i < option0.Count)
-                {
-                    option0[i].apply(child.graph, null);
-                    child.addToRecipe(option0[i]);
-                }
-                else
-                {
-                    option1[i - option0.Count].apply(child.graph, null);
-                    child.addToRecipe(option1[i - option0.Count]);
-                }
-
-                current.Children.Add(child);
-
-
-            }
-
-
-
-
-        }
-
-        public void BackPropogation(List<TreeCandidate> parentpath, TreeCandidate current)
-        {
-            current.n = current.n + 1;
-
-            foreach (var treeCandidate in parentpath)
-            {
-                treeCandidate.n++;
-                treeCandidate.S += current.S;
-
-            }
-        }
-
-        public double Rollout(TreeCandidate candidate)
-        {
-            double score;
-            int RS0 = 0;
-            //var options = rulesets;
-            //candidate.ruleSetIndicesInRecipe();
-            //var childrenCandidate = RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true);
-            //var a = candidate.recipe[1];
-
-            //option
-            //public int ruleSetIndex { get; set; }
-            //public int optionNumber { get; set; }
-            foreach (var option in candidate.recipe)
-            {
-                // need to recognize how many Rules from Ruleset0 exist
-                if (option.ruleSetIndex == 0)
-                {
-                    RS0 = RS0 + 1;
-                }
-
-                //var options = rulesets[0].recognize(current.graph)
-            }
-
-            var option0 = rulesets[0].recognize(candidate.graph);
-            var option1 = rulesets[1].recognize(candidate.graph);
-            var option2 = rulesets[2].recognize(candidate.graph);
-
-            while (RS0 != 5)
-            {
-                //rnd.Next(0, 2); // generate 0 or 1
-                if (rnd.Next(0, 2) == 0 && option0.Count > 0)
-                {
-                    RS0 = RS0 + 1;
-                    var Randomoption0 = rnd.Next(0, option0.Count);
-                    option0[Randomoption0].apply(candidate.graph, null);
-                    // dont need to add options into recipe in rollout process
-                    //candidate.addToRecipe(option0[Randomoption0]);
-                }
-                else if (option1.Count > 0)
-                {
-                    var Randomoption1 = rnd.Next(0, option1.Count);
-                    option1[Randomoption1].apply(candidate.graph, null);
-                    //candidate.addToRecipe(option1[Randomoption1]);
-                }
-
-                //candidate=RecognizeChooseApply.GenerateAllNeighbors(current, rulesets, false, false, true)
-
-            }
-            var x = option2.Count;
-            option2[0].apply(candidate.graph, null);
-            var resultMol = OBFunctions.designgraphtomol(candidate.graph);
-            resultMol = OBFunctions.InterStepMinimize(resultMol);
-            //var x = resultMol.GetAtom(51);
-            OBFunctions.updatepositions(seedGraph, resultMol);
-
-            score = -Evaluation.distance(candidate, desiredLenghtAndRadius);
-            return score;
-        }
-
-        public List<TreeCandidate> FindAllParents(TreeCandidate current)
-        {
-            var parents = new List<TreeCandidate>();
-            int height = GetHeight(current);
-
-            for (int i = 0; i < height; i++)
-            {
-                parents.Add(current.Parent);
-            }
-
-            return parents;
-        }
-
-        public int GetHeight(TreeCandidate current)
-        {
-            int height = 0;
-            while (current.Parent != null)
-            {
-                height = height + 1;
-                current = current.Parent;
-            }
-
-            return height;
-        }
+        
     }
 
 }

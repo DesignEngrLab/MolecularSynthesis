@@ -64,7 +64,7 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 1;
+            int TotalNumber = 100;
             var rand = new Random();
             List<string> Results = new List<string>();
 
@@ -221,6 +221,9 @@ namespace MolecularSynthesis.GS.Plugin
                     System.Console.WriteLine("tabacco is running");
                     proc.WaitForExit();
                 }
+
+                // delete .cif file in edge folder to accelarate tabacco.py 
+                File.Delete(position2);
 
                 // 5. move file to the right folder to generate .cssr file
                 // /nfs/hpc/share/zhangho2/tobacco_3.0/output_cifs                      

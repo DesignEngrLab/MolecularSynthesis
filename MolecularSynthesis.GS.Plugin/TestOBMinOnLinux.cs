@@ -83,7 +83,7 @@ namespace MolecularSynthesis.GS.Plugin
             option2 = rulesets[2].recognize(candidate.graph);
             option2[0].apply(candidate.graph, null);
 
-            double PoreSize = -Evaluation.GetPoreSize(candidate.graph);
+            double PoreSize = Evaluation.GetPoreSize(candidate.graph);
             Console.WriteLine("PoreSize= "+ PoreSize);
 
             //var resultMol = OBFunctions.designgraphtomol(candidate.graph);

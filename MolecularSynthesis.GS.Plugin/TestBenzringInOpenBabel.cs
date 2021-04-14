@@ -1,18 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using GraphSynth;
-using GraphSynth.Representation;
-using GraphSynth.Search;
-using Priority_Queue;
+﻿using OpenBabel;
 using System;
-using System.Collections;
-using System.Security.Cryptography.X509Certificates;
-using System.IO;
-using MolecularSynthesis.GS.Plugin;
-using System.Linq;
-using OpenBabel;
 using OpenBabelFunctions;
+using GraphSynth.Search;
+using GraphSynth;
 using MolecularSynthesis.GS.Plugin;
+using System.Xml.XPath;
+using System.IO;
 using System.Diagnostics;
 using System.Timers;
 using System.Diagnostics;
@@ -34,11 +27,12 @@ namespace TestOpenBabel
         }
         protected override void Run()
         {
-            //var resultMol = OBFunctions.designgraphtomol(seedGraph);
+            var resultMol = OBFunctions.designgraphtomol(seedGraph);
             // after convert from designgraph to .mol file
             // save the result as .mol file
             // call minimize.exe to do the energy minimization               
 
+<<<<<<< HEAD
             var stopwatch = new Stopwatch();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
@@ -141,6 +135,14 @@ namespace TestOpenBabel
             //var conv = new OBConversion();
             //conv.SetInAndOutFormats("pdb", "mol");
             //conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test102.mol"));
+=======
+            resultMol = OBFunctions.InterStepMinimize(resultMol);
+            OBFunctions.updatepositions(seedGraph, resultMol);
+            var FinalResultMol = OBFunctions.designgraphtomol(seedGraph);
+            var conv = new OBConversion();
+            conv.SetInAndOutFormats("pdb", "mol");
+            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test102.mol"));
+>>>>>>> parent of 726848f (Still testing MCTS)
 
 
 

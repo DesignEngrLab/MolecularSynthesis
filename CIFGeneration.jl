@@ -1,38 +1,24 @@
+### A Pluto.jl notebook ###
+# v0.14.1
+
+using Markdown
+using InteractiveUtils
+
+# ╔═╡ a5e43be0-7bb4-11eb-1555-a7edba3c6174
 using Xtals, LightGraphs, Test, Printf, LinearAlgebra
 
-#if length(ARGS) != 1
-#    error("Pass xyz file as argument")
-#end
-#filelist = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples")
-#path_to_mol_files = joinpath(homedir(), "Documents", "GitHub", "MolecularSynthesis", "examples")
-
-# those 2 lines are used on my own laptop in windows
+# ╔═╡ bcb0916e-7bb4-11eb-1d49-eb02eb19aa76
 #filelist = readdir("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples")
-#path_to_mol_files = joinpath(homedir(), "source", "repos", "MolecularSynthesis", "examples")
 
 
-# those 2 lines are used on my own laptop in ubuntu
-# C:\Users\zhang\source\repos\1\testZeo_onUbuntu\examples
-filelist = readdir("/mnt/c/Users/zhang/source/repos/1/testZeo_onUbuntu/examples")
-path_to_mol_files = joinpath("/mnt","c","Users","zhang", "source", "repos", "1", "testZeo_onUbuntu","examples")
+# ╔═╡ fd622710-7bb4-11eb-3acf-e5d1d1f44a10
+#path_to_mol_files = joinpath(homedir(), "source", "repos", "MolecularSynthesis", "Examples")
 
-# those 2 lines are used on HPC
-#/nfs/hpc/share/zhangho2/MolecularSynthesis/examples
-#filelist = readdir("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples")
-#path_to_mol_files = joinpath("/nfs","hpc","share","zhangho2", "MolecularSynthesis","examples")
-
-
-
-
-#path_to_mol_files = readdir("C:\\Users\\zhang\\Desktop")
-for filename in filelist
-   
-    if endswith(filename, ".mol") == true
-    
-     # convert mol to a crystal so we can have bond functionality.
+# ╔═╡ 0f70313e-7bb5-11eb-2e6a-5da8e91ca46d
+# convert mol to a crystal so we can have bond functionality.
       function mol_to_xtal(mol_file::String)
         # read in mole file
-        atoms, bonds, bondtypes = read_mol(joinpath(path_to_mol_files, mol_file))
+        atoms, bonds, bondtypes = read_mol(mol_file)
     
         # construct box that makes tobacco work
         max_r = maximum([distance(atoms, i, j) for i = 1:atoms.n, j = 1:atoms.n])
@@ -51,12 +37,10 @@ for filename in filelist
                   Xtals.SymmetryInfo()
         )
         return crystal
-      end  
-        
-      #######################################################################################
-      # must be a carbon
-      # must be connected two two oxygens.
-      function is_C_carboxyl(xtal::Crystal, a::Int64)
+      end 
+
+# ╔═╡ 2fe536a2-7bb5-11eb-2cc1-85050d0b4467
+function is_C_carboxyl(xtal::Crystal, a::Int64)
         species = xtal.atoms.species[a]    # species of selected atom
         nbs = neighbors(xtal.bonds, a)     # neighbors of atom
 
@@ -78,8 +62,8 @@ for filename in filelist
         end
       end
 
-      # get ids of neighbors of atom a that are species x
-      function ids_x_neighbors(xtal::Crystal, a::Int64, x::Symbol)
+# ╔═╡ 388465b0-7bb5-11eb-37a4-c303fffac22a
+function ids_x_neighbors(xtal::Crystal, a::Int64, x::Symbol)
         ids = Int[]
         nbs = neighbors(xtal.bonds, a)     # neighbors of atom
         for a in nbs
@@ -90,7 +74,8 @@ for filename in filelist
         return ids
       end
 
-      function ids_X_atoms(xtal::Crystal)
+# ╔═╡ 482edd60-7bb5-11eb-23c5-11e47f9ea7e0
+function ids_X_atoms(xtal::Crystal)
         ids = Int[]
         for a = 1:xtal.atoms.n
             if is_C_carboxyl(xtal, a)
@@ -106,10 +91,8 @@ for filename in filelist
         return ids
       end
 
-      # get ids to remove: 
-      #    (i) carboxylate groups
-      #    (ii) hydrogens connected to the oxygens of the carboxylate groups
-      function ids_carboxylate(xtal::Crystal)
+# ╔═╡ 4e4cb8c2-7bb5-11eb-26d4-5759761645ab
+function ids_carboxylate(xtal::Crystal)
         ids = Int[]
         for a = 1:xtal.atoms.n
             if is_C_carboxyl(xtal, a)
@@ -129,8 +112,8 @@ for filename in filelist
         return ids
       end
 
-      ##################################################################################
-      function xtal_to_tobacco_xtal(xtal::Crystal)
+# ╔═╡ 4e2ad8e0-7bb5-11eb-2146-b5538ef2acec
+function xtal_to_tobacco_xtal(xtal::Crystal)
         # get X atom ids, those that are C's connected to carboxylate C
         ids_X = ids_X_atoms(xtal)
         
@@ -147,23 +130,8 @@ for filename in filelist
         return tobacco_xtal
       end
 
-      ###############################################################################
-      # MAIN
-      # read in .mol file of a linker
-      # strip off carboxylates
-      # label C atom that was connected to the carboxylate as `:X`.
-
-      xtal = mol_to_xtal(filename)
-
-      tobacco_xtal = xtal_to_tobacco_xtal(xtal)
-
-      #write_xyz(tobacco_xtal)
-      #write_bond_information(tobacco_xtal)
-
-      #write_cif(tobacco_xtal, xtal.name * "_tobacco.cif")
-
-      ###############################################################################
-      function center!(xtal::Crystal)
+# ╔═╡ 4e0e0210-7bb5-11eb-0011-dda1dc115a32
+function center!(xtal::Crystal)
         # geometric center
         xf_center = sum(xtal.atoms.coords.xf, dims=2) / xtal.atoms.n
         
@@ -171,18 +139,8 @@ for filename in filelist
         return nothing
       end
 
-      ##############################################################################
-      center!(tobacco_xtal)
-      #write_cif(tobacco_xtal, "tbc_center.cif")
-
-      ##############################################################################
-      """
-      write_cif(crystal, filename; fractional_coords=true, number_atoms=true)
-      Write a `crystal::Crystal` to a .cif file with `filename::AbstractString`. If `filename` does
-      not include the .cif extension, it will automatically be added. the `fractional_coords` flag
-      allows us to write either fractional or Cartesian coordinates.
-      """
-      function write_cif_Kai(crystal::Crystal, filename::AbstractString)
+# ╔═╡ 4d901f80-7bb5-11eb-220d-696ad96dcc9c
+function write_cif_Kai(crystal::Crystal, filename::AbstractString)
           if has_charges(crystal)
               if crystal.atoms.n != crystal.charges.n
                   error("write_cif assumes equal numbers of Charges and Atoms (or zero charges)")
@@ -286,13 +244,46 @@ for filename in filelist
           close(cif_file)
       end
 
-      #####################################################################
-      write_cif_Kai(tobacco_xtal, xtal.name * "_fer_tobacco.cif")
+# ╔═╡ cdcc2fe0-7bb5-11eb-36ef-fb438e0197bc
 
 
-    else
-    end
+# ╔═╡ cd91e600-7bb5-11eb-33da-cd699da432c3
+# begin
+# 	for filename in filelist
+# 		if endswith(filename, ".mol") == true			
+			
+# 			xtal = mol_to_xtal(filename)
+# 		  	tobacco_xtal = xtal_to_tobacco_xtal(xtal)
+# 		  	center!(tobacco_xtal)
+# 		  	write_cif_Kai(tobacco_xtal, xtal.name * "_fer_tobacco.cif")
+# 			#write_cssr(xtal, "my_xtal.cssr")
+# 		end		
+		
+# 	end	
+# end
 
-
-
+# ╔═╡ a9b37338-d2ca-4dda-90a3-26369799bfa3
+begin
+	filename=ARGS[1]
+	xtal = mol_to_xtal(filename)
+	tobacco_xtal = xtal_to_tobacco_xtal(xtal)
+	center!(tobacco_xtal)
+	write_cif_Kai(tobacco_xtal, xtal.name * "_fer_tobacco.cif")	
+	
 end
+
+# ╔═╡ Cell order:
+# ╠═a5e43be0-7bb4-11eb-1555-a7edba3c6174
+# ╠═bcb0916e-7bb4-11eb-1d49-eb02eb19aa76
+# ╠═fd622710-7bb4-11eb-3acf-e5d1d1f44a10
+# ╠═0f70313e-7bb5-11eb-2e6a-5da8e91ca46d
+# ╠═2fe536a2-7bb5-11eb-2cc1-85050d0b4467
+# ╠═388465b0-7bb5-11eb-37a4-c303fffac22a
+# ╠═482edd60-7bb5-11eb-23c5-11e47f9ea7e0
+# ╠═4e4cb8c2-7bb5-11eb-26d4-5759761645ab
+# ╠═4e2ad8e0-7bb5-11eb-2146-b5538ef2acec
+# ╠═4e0e0210-7bb5-11eb-0011-dda1dc115a32
+# ╠═4d901f80-7bb5-11eb-220d-696ad96dcc9c
+# ╠═cdcc2fe0-7bb5-11eb-36ef-fb438e0197bc
+# ╠═cd91e600-7bb5-11eb-33da-cd699da432c3
+# ╠═a9b37338-d2ca-4dda-90a3-26369799bfa3

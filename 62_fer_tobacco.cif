@@ -1,0 +1,62 @@
+data_62_PM
+_symmetry_space_group_name_H-M	'P1'
+_cell_length_a	43.029993
+_cell_length_b	43.029993
+_cell_length_c	43.029993
+_cell_angle_alpha	90.000000
+_cell_angle_beta	90.000000
+_cell_angle_gamma	90.000000
+_symmetry_Int_Tables_number 1
+
+loop_
+_symmetry_equiv_pos_as_xyz
+'x,y,z'
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+X1	C	0.033344	0.941480	0.001934
+C2	C	0.004178	0.950915	0.009440
+C3	C	0.996555	0.981382	0.009789
+C4	C	0.017843	0.003042	0.002352
+C5	C	0.046451	0.993723	0.994614
+C6	C	0.053934	0.963674	0.994428
+C7	C	0.011591	0.033137	0.002794
+C8	C	0.943918	0.992677	0.994916
+Br9	Br	0.971643	0.922981	0.020526
+H10	H	0.077685	0.957771	0.988176
+H11	H	0.064252	0.010664	0.988618
+C12	C	0.005828	0.061118	0.002562
+C13	C	0.999274	0.092770	0.002120
+X14	C	0.992558	0.124376	0.001539
+H15	H	0.922491	0.001322	0.005513
+H16	H	0.939549	0.969763	0.984853
+H17	H	0.951540	0.008782	0.976835
+O18	O	0.967366	0.990423	0.018992
+
+loop_
+_geom_bond_atom_site_label_1
+_geom_bond_atom_site_label_2
+_geom_bond_distance
+_ccdc_geom_bond_type
+X1	C2	0.03156	. A
+X1	C6	0.03119	. A
+C2	C3	0.03141	. A
+C2	Br9	0.04429	. A
+C3	C4	0.03127	. A
+C3	O18	0.03191	. A
+C4	C5	0.03107	. A
+C4	C7	0.03074	. A
+C5	C6	0.03097	. A
+C5	H11	0.02530	. A
+C6	H10	0.02526	. A
+C7	C12	0.02857	. A
+C8	H15	0.02542	. A
+C8	H16	0.02540	. A
+C8	H17	0.02538	. A
+C8	O18	0.03368	. A
+C12	C13	0.03233	. A
+C13	X14	0.03232	. A

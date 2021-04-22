@@ -16,6 +16,7 @@ using MolecularSynthesis.GS.Plugin;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace MolecularSynthesis.GS.Plugin
 {
@@ -64,16 +65,16 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 30;
+            int TotalNumber = 1000;
             var rand = new Random(7);
             List<string> Results = new List<string>();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
 
-
+                var candidateThreadDictionary = new ConcurrentDictionary<candidate, int>();
 
                 Parallel.For(0, TotalNumber, count =>
 
@@ -129,28 +130,28 @@ namespace MolecularSynthesis.GS.Plugin
 
 
                         // 2. minimize
-                        
-                            using (Process proc = new Process())
-                            {
 
-                                proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obminimize";
+                        using (Process proc = new Process())
+                        {
 
-                                proc.StartInfo.Arguments = "-c 1e3 -ff GAFF " + filename1;
-                                //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
-                                // or '-c' convergence criteria
+                            proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obminimize";
 
-                                //proc.StartInfo.ErrorDialog = false;
-                                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis/examples";
-                                //proc.StartInfo.RedirectStandardError = true;
-                                //proc.StartInfo.UseShellExecute = false;
-                                proc.StartInfo.RedirectStandardOutput = true;
-                                //proc.StartInfo.RedirectStandardInput = false;
-                                Console.Write("starting OBMinimize...");
-                                proc.Start();
+                            proc.StartInfo.Arguments = "-c 1e3 -ff GAFF " + filename1;
+                            //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
+                            // or '-c' convergence criteria
 
-                                minimizeOutput = proc.StandardOutput.ReadToEnd();
-                                proc.WaitForExit();
-                            }
+                            //proc.StartInfo.ErrorDialog = false;
+                            proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis/examples";
+                            //proc.StartInfo.RedirectStandardError = true;
+                            //proc.StartInfo.UseShellExecute = false;
+                            proc.StartInfo.RedirectStandardOutput = true;
+                            //proc.StartInfo.RedirectStandardInput = false;
+                            Console.Write("starting OBMinimize...");
+                            proc.Start();
+
+                            minimizeOutput = proc.StandardOutput.ReadToEnd();
+                            proc.WaitForExit();
+                        }
                         lock (noneparallel)
                             conv.ReadString(resultMol, minimizeOutput);
 
@@ -201,6 +202,7 @@ namespace MolecularSynthesis.GS.Plugin
                         // 3.1 move .cif to edge folder 
 
                         var filename3 = filename2.Split(".")[0] + "_fer_tobacco.cif";
+                        candidateThreadDictionary.TryAdd(candidate,ThreadNumber);
                         Console.WriteLine("filename3:");
                         Console.WriteLine(filename3);
 
@@ -209,155 +211,165 @@ namespace MolecularSynthesis.GS.Plugin
                         System.IO.File.Move(position1, position2, true);
 
                         // 4. invoke tobacco
-
-
-                        Console.WriteLine("wait all thread to stop here");
-                        Thread.Sleep(2000);
-
-                        using (Process proc = new Process())
-                        {
-
-                            // /usr/local/apps/python/3.8/bin/python3
-
-                            proc.StartInfo.FileName = "/usr/local/apps/python/3.8/bin/python3";
-                            // /nfs/hpc/share/zhangho2/tobacco_3.0
-                            proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/tobacco_3.0/tobacco.py";
-                            //C: \Users\zhang\source\repos\MolecularSynthesis\output
-                            //C: \Users\zhang\source\repos\tobacco_3.0\edges
-                            proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/tobacco_3.0";
-                            proc.StartInfo.RedirectStandardOutput = true;
-                            proc.StartInfo.UseShellExecute = false;
-                            proc.Start();
-                            System.Console.WriteLine("tabacco is running");
-                            proc.WaitForExit();
-                        }
-
-                        // delete .cif file in edge folder to accelarate tabacco.py 
-                        //File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
-
-                        // 5. move file to the right folder to generate .cssr file
-                        // /nfs/hpc/share/zhangho2/tobacco_3.0/output_cifs                      
-
-                        var filename4 = "pcu_v1-6c_Zn_1_Ch_1-" + filename3;
-                        Console.WriteLine("filename4:");
-                        Console.WriteLine(filename4);
-
-                        position1 = "/nfs/hpc/share/zhangho2/tobacco_3.0/output_cifs/" + filename4;
-                        position2 = "/nfs/hpc/share/zhangho2/MolecularSynthesis/data/crystals/" + filename4;
-                        System.IO.File.Move(position1, position2, true);
-
-                        Console.WriteLine("how about now???--------------------------------------------------------------");
-
-                        // invoke MakeCssr.jl
-
-                        // pcu_v1-6c_Zn_1_Ch_1-
-
-                        using (Process proc = new Process())
-                        {
-
-                            //C: \Users\zhang\source\repos\zeo++-0.3\network
-                            // /usr/bin/obminimize
-                            proc.StartInfo.FileName = "/usr/local/apps/julia/1.5/bin/julia";
-                            //proc.StartInfo.Arguments = name + " -O " + name2;
-
-                            // "C:\Users\zhang\source\repos\MolecularSynthesis\CIFGeneration.jl"
-                            // C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\CIFGeneration.jl
-                            proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/MolecularSynthesis/MakeCssr.jl " + position2;
-                            //C: \Users\zhang\source\repos\MolecularSynthesis\output
-                            //C: \Users\zhang\source\repos\tobacco_3.0\edges
-                            //C:\Users\zhang\source\repos\MolecularSynthesis\zeo++-0.3
-                            proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis";
-                            //C:\\Users\\zhang\\Desktop
-                            proc.StartInfo.RedirectStandardOutput = true;
-                            proc.StartInfo.UseShellExecute = false;
-                            proc.Start();
-                            System.Console.WriteLine("MakeCssr is running");
-                            proc.WaitForExit();
-                        }
-                        //File.Delete(position2);
-
-                        // 6. invoke zeo++ to get PoresizeValue
-
-                        var filename5 = filename4.Split(".")[0] + ".cssr";
-                        Console.WriteLine("filename5:");
-                        Console.WriteLine(filename5);
-
-                        //  /nfs/hpc/share/zhangho2/MolecularSynthesis/data/crystals
-                        position1 = "/nfs/hpc/share/zhangho2/MolecularSynthesis/data/crystals/" + filename5;
-                        position2 = "/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename5;
-                        System.IO.File.Move(position1, position2, true);
-
-
-                        //paths = new string[] { "/nfs", "hpc", "share", "zhangho2", "zeo++-0.3", filename5 };
-                        //NewPosition = Path.Combine(paths);
-                        //System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename5, NewPosition, true);
-
-                        // /nfs/hpc/share/zhangho2/MolecularSynthesis
-                        System.Console.WriteLine("before zeo++");
-
-                        using (Process proc = new Process())
-                        {
-
-                            //C: \Users\zhang\source\repos\zeo++-0.3\network
-                            // /nfs/hpc/share/zhangho2/MolecularSynthesis/zeo++-0.3
-                            proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
-                            //proc.StartInfo.Arguments = name + " -O " + name2;
-
-                            proc.StartInfo.Arguments = " -res " + filename5;
-                            //C: \Users\zhang\source\repos\MolecularSynthesis\output
-                            proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
-                            //C:\\Users\\zhang\\Desktop
-                            proc.StartInfo.RedirectStandardOutput = true;
-                            proc.StartInfo.UseShellExecute = false;
-                            proc.Start();
-
-                            proc.WaitForExit();
-                        }
-                        File.Delete(position2);
-
-                        // 7. read .res file to get poresize value
-
-                        var filename6 = filename5.Split(".")[0] + ".res";
-                        Console.WriteLine("filename6:");
-                        Console.WriteLine(filename6);
-
-                        string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
-                        string[] words = contents.Split(' ');
-                        Console.WriteLine(contents);
-
-                        Console.WriteLine("Poresize: " + words[4]);
-
-                        //Console.WriteLine("Poresize: ", words[5]);
-                        //PoreSizeValue = Convert.ToDouble(words[5]);
-                        //Console.WriteLine("Poresizevalue: ", words[5]);
-
-                        Results.Add(words[4]);
-
-                        File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
-                        File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
-
-                        // delete all the file generate in the process                        
-                        // test.mol---1
-                        File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename1);
-                        // candidate.mol---2
-                        File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename2);
-                        // fer_tobacco.cif---3
-                        File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
-                        // MOF . cif---4
-                        File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/data/crystals/" + filename4);
-                        // MOF .cssr---5
-                        File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename5);
-                        // MOF .res---6
-                        File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
-
-
                     }
-                    catch (Exception exc)
-                    {
-                        Console.WriteLine(exc.Message);
-                        //Save("erroringCandidate.xml", candidate);
-                    }
+                    catch { }
+
+                    Console.WriteLine("wait all thread to stop here");
                 });
+
+                using (Process proc = new Process())
+                {
+
+                    // /usr/local/apps/python/3.8/bin/python3
+
+                    proc.StartInfo.FileName = "/usr/local/apps/python/3.8/bin/python3";
+                    // /nfs/hpc/share/zhangho2/tobacco_3.0
+                    proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/tobacco_3.0/tobacco.py";
+                    //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                    //C: \Users\zhang\source\repos\tobacco_3.0\edges
+                    proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/tobacco_3.0";
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.Start();
+                    System.Console.WriteLine("tabacco is running");
+                    proc.WaitForExit();
+                }
+
+                Parallel.ForEach(candidateThreadDictionary, kvp =>
+                 {
+                     try
+                     {
+                         var ThreadNumber = kvp.Value;
+                         var candidate = kvp.Key;
+                         string filename1 = "Test" + ThreadNumber.ToString() + ".mol";
+                         string filename2 = "Candidate" + ThreadNumber.ToString() + ".mol";
+                         var filename3 = filename2.Split(".")[0] + "_fer_tobacco.cif";
+
+                         // delete .cif file in edge folder to accelarate tabacco.py 
+                         //File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
+
+                         // 5. move file to the right folder to generate .cssr file
+                         // /nfs/hpc/share/zhangho2/tobacco_3.0/output_cifs                      
+
+                         var filename4 = "pcu_v1-6c_Zn_1_Ch_1-" + filename3;
+                         Console.WriteLine("filename4:");
+                         Console.WriteLine(filename4);
+
+                         var position1 = "/nfs/hpc/share/zhangho2/tobacco_3.0/output_cifs/" + filename4;
+                         var position2 = "/nfs/hpc/share/zhangho2/MolecularSynthesis/data/crystals/" + filename4;
+                         System.IO.File.Move(position1, position2, true);
+
+                         Console.WriteLine("how about now???--------------------------------------------------------------");
+
+                         // invoke MakeCssr.jl
+
+                         // pcu_v1-6c_Zn_1_Ch_1-
+
+                         using (Process proc = new Process())
+                         {
+
+                             //C: \Users\zhang\source\repos\zeo++-0.3\network
+                             // /usr/bin/obminimize
+                             proc.StartInfo.FileName = "/usr/local/apps/julia/1.5/bin/julia";
+                             //proc.StartInfo.Arguments = name + " -O " + name2;
+
+                             // "C:\Users\zhang\source\repos\MolecularSynthesis\CIFGeneration.jl"
+                             // C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\CIFGeneration.jl
+                             proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/MolecularSynthesis/MakeCssr.jl " + position2;
+                             //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                             //C: \Users\zhang\source\repos\tobacco_3.0\edges
+                             //C:\Users\zhang\source\repos\MolecularSynthesis\zeo++-0.3
+                             proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis";
+                             //C:\\Users\\zhang\\Desktop
+                             proc.StartInfo.RedirectStandardOutput = true;
+                             proc.StartInfo.UseShellExecute = false;
+                             proc.Start();
+                             System.Console.WriteLine("MakeCssr is running");
+                             proc.WaitForExit();
+                         }
+                         //File.Delete(position2);
+
+                         // 6. invoke zeo++ to get PoresizeValue
+
+                         var filename5 = filename4.Split(".")[0] + ".cssr";
+                         Console.WriteLine("filename5:");
+                         Console.WriteLine(filename5);
+
+                         //  /nfs/hpc/share/zhangho2/MolecularSynthesis/data/crystals
+                         position1 = "/nfs/hpc/share/zhangho2/MolecularSynthesis/data/crystals/" + filename5;
+                         position2 = "/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename5;
+                         System.IO.File.Move(position1, position2, true);
+
+
+                         //paths = new string[] { "/nfs", "hpc", "share", "zhangho2", "zeo++-0.3", filename5 };
+                         //NewPosition = Path.Combine(paths);
+                         //System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename5, NewPosition, true);
+
+                         // /nfs/hpc/share/zhangho2/MolecularSynthesis
+                         System.Console.WriteLine("before zeo++");
+
+                         using (Process proc = new Process())
+                         {
+
+                             //C: \Users\zhang\source\repos\zeo++-0.3\network
+                             // /nfs/hpc/share/zhangho2/MolecularSynthesis/zeo++-0.3
+                             proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
+                             //proc.StartInfo.Arguments = name + " -O " + name2;
+
+                             proc.StartInfo.Arguments = " -res " + filename5;
+                             //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                             proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
+                             //C:\\Users\\zhang\\Desktop
+                             proc.StartInfo.RedirectStandardOutput = true;
+                             proc.StartInfo.UseShellExecute = false;
+                             proc.Start();
+
+                             proc.WaitForExit();
+                         }
+                         File.Delete(position2);
+
+                         // 7. read .res file to get poresize value
+
+                         var filename6 = filename5.Split(".")[0] + ".res";
+                         Console.WriteLine("filename6:");
+                         Console.WriteLine(filename6);
+
+                         string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
+                         string[] words = contents.Split(' ');
+                         Console.WriteLine(contents);
+
+                         Console.WriteLine("Poresize: " + words[4]);
+
+                         //Console.WriteLine("Poresize: ", words[5]);
+                         //PoreSizeValue = Convert.ToDouble(words[5]);
+                         //Console.WriteLine("Poresizevalue: ", words[5]);
+
+                         Results.Add(words[4]);
+
+                         File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
+                         File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
+
+                         // delete all the file generate in the process                        
+                         // test.mol---1
+                         File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename1);
+                         // candidate.mol---2
+                         File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename2);
+                         // fer_tobacco.cif---3
+                         File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
+                         // MOF . cif---4
+                         File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/data/crystals/" + filename4);
+                         // MOF .cssr---5
+                         File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename5);
+                         // MOF .res---6
+                         File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
+
+                     }
+                     catch (Exception exc)
+                     {
+                         Console.WriteLine(exc.Message);
+                         //Save("erroringCandidate.xml", candidate);
+                     }
+                 });
             }
 
             System.IO.File.WriteAllLines(@"/nfs/hpc/share/zhangho2/MolecularSynthesis/examples_Kai/Distribution.txt", Results);

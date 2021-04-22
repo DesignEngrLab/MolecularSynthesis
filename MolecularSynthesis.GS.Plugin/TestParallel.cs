@@ -32,7 +32,7 @@ namespace MolecularSynthesis.GS.Plugin
             RequiredNumRuleSets = 2;
             AutoPlay = true;
         }
-
+        static TreeCandidate noneparallel = new TreeCandidate(new candidate());
 
         public override string text
         {
@@ -64,13 +64,13 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 10;
+            int TotalNumber = 30;
             var rand = new Random(7);
             List<string> Results = new List<string>();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
             {
 
 
@@ -79,28 +79,28 @@ namespace MolecularSynthesis.GS.Plugin
 
                 //for (int i = 0; i < TotalNumber; i++)
                 {
-                        var candidate = (TreeCandidate)StartState.copy();
+                    var candidate = (TreeCandidate)StartState.copy();
 
-                        var option0 = rulesets[0].recognize(candidate.graph);
-                        var option1 = rulesets[1].recognize(candidate.graph);
-                        var option2 = rulesets[2].recognize(candidate.graph);
+                    var option0 = rulesets[0].recognize(candidate.graph);
+                    var option1 = rulesets[1].recognize(candidate.graph);
+                    var option2 = rulesets[2].recognize(candidate.graph);
 
-                        option0 = rulesets[0].recognize(candidate.graph);
-                        option0[6].apply(candidate.graph, null);
-                        //StartState.addToRecipe(option0[6]);
+                    option0 = rulesets[0].recognize(candidate.graph);
+                    option0[6].apply(candidate.graph, null);
+                    //StartState.addToRecipe(option0[6]);
 
-                        for (int j = 0; j < 3; j++)
-                        {
-                            //rnd.Next(0, 2); 0 or 1
-                            var RuleSetNumber = rand.Next(0, 2);
-                            var TotalOption = rulesets[RuleSetNumber].recognize(candidate.graph).Count;
-                            var OptionNumber = rand.Next(0, TotalOption);
-                            rulesets[RuleSetNumber].recognize(candidate.graph)[OptionNumber].apply(candidate.graph, null);
-                            //StartState.addToRecipe(rulesets[RuleSetNumber].recognize(StartState.graph)[OptionNumber]);                    
-                        }
+                    for (int j = 0; j < 3; j++)
+                    {
+                        //rnd.Next(0, 2); 0 or 1
+                        var RuleSetNumber = rand.Next(0, 1);
+                        var TotalOption = rulesets[RuleSetNumber].recognize(candidate.graph).Count;
+                        var OptionNumber = rand.Next(0, TotalOption);
+                        rulesets[RuleSetNumber].recognize(candidate.graph)[OptionNumber].apply(candidate.graph, null);
+                        //StartState.addToRecipe(rulesets[RuleSetNumber].recognize(StartState.graph)[OptionNumber]);                    
+                    }
 
-                        option2 = rulesets[2].recognize(candidate.graph);
-                        option2[0].apply(candidate.graph, null);
+                    option2 = rulesets[2].recognize(candidate.graph);
+                    option2[0].apply(candidate.graph, null);
                     //StartState.addToRecipe(option2[0]);
 
                     // ---------------------------------------------------------
@@ -112,7 +112,8 @@ namespace MolecularSynthesis.GS.Plugin
                         // 1. designgraph to mol
                         var resultMol = OBFunctions.designgraphtomol(candidate.graph);
                         var conv = new OBConversion();
-                        conv.SetInAndOutFormats("pdb", "mol");
+                        lock (noneparallel)
+                            conv.SetInAndOutFormats("pdb", "mol");
                         // generate .mol file for minimization
 
 
@@ -121,49 +122,54 @@ namespace MolecularSynthesis.GS.Plugin
                         Console.WriteLine("filename1:");
                         Console.WriteLine(filename1);
 
-                        conv.WriteFile(resultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", filename1));
+
+                        lock (noneparallel)
+                            conv.WriteFile(resultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", filename1));
                         string minimizeOutput;
 
 
                         // 2. minimize
-                        using (Process proc = new Process())
-                        {
+                        
+                            using (Process proc = new Process())
+                            {
 
-                            proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obminimize";
+                                proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obminimize";
 
-                            proc.StartInfo.Arguments = "-c 1e3 -ff GAFF " + filename1;
-                            //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
-                            // or '-c' convergence criteria
+                                proc.StartInfo.Arguments = "-c 1e3 -ff GAFF " + filename1;
+                                //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
+                                // or '-c' convergence criteria
 
-                            //proc.StartInfo.ErrorDialog = false;
-                            proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis/examples";
-                            //proc.StartInfo.RedirectStandardError = true;
-                            //proc.StartInfo.UseShellExecute = false;
-                            proc.StartInfo.RedirectStandardOutput = true;
-                            //proc.StartInfo.RedirectStandardInput = false;
-                            Console.Write("starting OBMinimize...");
-                            proc.Start();
+                                //proc.StartInfo.ErrorDialog = false;
+                                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis/examples";
+                                //proc.StartInfo.RedirectStandardError = true;
+                                //proc.StartInfo.UseShellExecute = false;
+                                proc.StartInfo.RedirectStandardOutput = true;
+                                //proc.StartInfo.RedirectStandardInput = false;
+                                Console.Write("starting OBMinimize...");
+                                proc.Start();
 
-                            minimizeOutput = proc.StandardOutput.ReadToEnd();
-                            proc.WaitForExit();
-                        }
-
-                        conv.ReadString(resultMol, minimizeOutput);
+                                minimizeOutput = proc.StandardOutput.ReadToEnd();
+                                proc.WaitForExit();
+                            }
+                        lock (noneparallel)
+                            conv.ReadString(resultMol, minimizeOutput);
 
                         // after minimization, update, make new .mol file for tobacco
                         OBFunctions.updatepositions(candidate.graph, resultMol);
 
                         var FinalResultMol = OBFunctions.designgraphtomol(candidate.graph);
                         conv = new OBConversion();
-                        conv.SetInAndOutFormats("pdb", "mol");
+                        lock (noneparallel)
+                            conv.SetInAndOutFormats("pdb", "mol");
                         // /nfs/hpc/share/zhangho2/tobacco_3.0/edges
                         string filename2 = "Candidate" + ThreadNumber.ToString() + ".mol";
                         Console.WriteLine("filename2:");
                         Console.WriteLine(filename2);
 
-                        conv.WriteFile(FinalResultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", filename2));
+                        lock (noneparallel)
+                            conv.WriteFile(FinalResultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", filename2));
 
-                        File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename1);
+                        //File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename1);
 
 
                         // 3. .mol to .cif
@@ -190,7 +196,7 @@ namespace MolecularSynthesis.GS.Plugin
                             proc.WaitForExit();
                         }
                         Console.WriteLine("Finish .mol to .cif");
-                        File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename2);
+                        //File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename2);
 
                         // 3.1 move .cif to edge folder 
 
@@ -203,6 +209,11 @@ namespace MolecularSynthesis.GS.Plugin
                         System.IO.File.Move(position1, position2, true);
 
                         // 4. invoke tobacco
+
+
+                        Console.WriteLine("wait all thread to stop here");
+                        Thread.Sleep(2000);
+
                         using (Process proc = new Process())
                         {
 
@@ -222,7 +233,7 @@ namespace MolecularSynthesis.GS.Plugin
                         }
 
                         // delete .cif file in edge folder to accelarate tabacco.py 
-
+                        //File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
 
                         // 5. move file to the right folder to generate .cssr file
                         // /nfs/hpc/share/zhangho2/tobacco_3.0/output_cifs                      
@@ -263,7 +274,7 @@ namespace MolecularSynthesis.GS.Plugin
                             System.Console.WriteLine("MakeCssr is running");
                             proc.WaitForExit();
                         }
-                        File.Delete(position2);
+                        //File.Delete(position2);
 
                         // 6. invoke zeo++ to get PoresizeValue
 
@@ -321,9 +332,27 @@ namespace MolecularSynthesis.GS.Plugin
                         //Console.WriteLine("Poresizevalue: ", words[5]);
 
                         Results.Add(words[4]);
+
                         File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
+                        File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
+
+                        // delete all the file generate in the process                        
+                        // test.mol---1
+                        File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename1);
+                        // candidate.mol---2
+                        File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename2);
+                        // fer_tobacco.cif---3
+                        File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
+                        // MOF . cif---4
+                        File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/data/crystals/" + filename4);
+                        // MOF .cssr---5
+                        File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename5);
+                        // MOF .res---6
+                        File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
+
+
                     }
-                    catch(Exception exc)
+                    catch (Exception exc)
                     {
                         Console.WriteLine(exc.Message);
                         //Save("erroringCandidate.xml", candidate);

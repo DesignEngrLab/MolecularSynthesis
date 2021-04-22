@@ -414,7 +414,7 @@ namespace MolecularSynthesis.GS.Plugin
             return TotalMass;
 
             // code below will use poresize as evaluation funcition
-            //double PoreSize = -Evaluation.GetPoreSize(child.graph);
+            double PoreSize = -Evaluation.GetPoreSize(child.graph);
             //return PoreSize
 
         }

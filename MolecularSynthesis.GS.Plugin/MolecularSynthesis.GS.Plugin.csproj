@@ -4,6 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="MIConvexHull" Version="1.1.19.1019" />
     <PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
@@ -15,7 +19,7 @@
 
   <ItemGroup>
     <Reference Include="OBDotNet">
-      <HintPath>..\..\..\..\Downloads\openbabel-3.1.1\scripts\csharp\OBDotNet.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\OpenBabel-3.1.1\OBDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
 

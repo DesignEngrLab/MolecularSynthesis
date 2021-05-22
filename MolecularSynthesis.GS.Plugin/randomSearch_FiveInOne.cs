@@ -20,14 +20,14 @@ using System.Collections.Concurrent;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class TestPara : SearchProcess
+    public class randomSearch_FiveInOne : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         static double[] desiredLenghtAndRadius = new double[] { 300, 50 };
         static Random rnd = new Random(0);
 
-        public TestPara(GlobalSettings settings) : base(settings)
+        public randomSearch_FiveInOne(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -37,7 +37,7 @@ namespace MolecularSynthesis.GS.Plugin
 
         public override string text
         {
-            get { return "TestPara"; }
+            get { return "randomSearch_FiveInOne"; }
         }
 
         protected override void Run()
@@ -65,14 +65,14 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 50;
+            int TotalNumber = 40;
             var rand = new Random(7);
             List<string> Results = new List<string>();
             List<string> Recipe = new List<string>();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 1; i++)
             {
                 Console.WriteLine("IterationTime========", i);
                 var candidateThreadDictionary = new ConcurrentDictionary<candidate, int>();
@@ -96,6 +96,7 @@ namespace MolecularSynthesis.GS.Plugin
                     //option0[6].apply(candidate.graph, null);
                     //StartState.addToRecipe(option0[6]);
                     lock (noneparallel)
+                        
                         for (int j = 0; j < 4; j++)
                         {
                             //rnd.Next(0, 2); 0 or 1
@@ -230,31 +231,26 @@ namespace MolecularSynthesis.GS.Plugin
                     Console.WriteLine("wait all thread to stop here");
                 });
 
-                try
+
+                Console.WriteLine("IterationTime======== " + i.ToString());
+                using (Process proc = new Process())
                 {
-                    Console.WriteLine("IterationTime======== " + i.ToString());
-                    using (Process proc = new Process())
-                    {
 
-                        // /usr/local/apps/python/3.8/bin/python3
+                    // /usr/local/apps/python/3.8/bin/python3
 
-                        proc.StartInfo.FileName = "/usr/local/apps/python/3.8/bin/python3";
-                        // /nfs/hpc/share/zhangho2/tobacco_3.0
-                        proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/tobacco_3.0/tobacco.py";
-                        //C: \Users\zhang\source\repos\MolecularSynthesis\output
-                        //C: \Users\zhang\source\repos\tobacco_3.0\edges
-                        proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/tobacco_3.0";
-                        proc.StartInfo.RedirectStandardOutput = true;
-                        proc.StartInfo.UseShellExecute = false;
-                        proc.Start();
-                        System.Console.WriteLine("tabacco is running");
-                        proc.WaitForExit(1000*60*2);
-                    }
+                    proc.StartInfo.FileName = "/usr/local/apps/python/3.8/bin/python3";
+                    // /nfs/hpc/share/zhangho2/tobacco_3.0
+                    proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/tobacco_3.0/tobacco.py";
+                    //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                    //C: \Users\zhang\source\repos\tobacco_3.0\edges
+                    proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/tobacco_3.0";
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.Start();
+                    System.Console.WriteLine("tabacco is running");
+                    proc.WaitForExit();
                 }
-                catch { Console.WriteLine("????????kidding me?????????"); }
-
                 Console.WriteLine("IterationTime========", i.ToString());
-
 
                 Parallel.ForEach(candidateThreadDictionary, kvp =>
                  {
@@ -347,7 +343,7 @@ namespace MolecularSynthesis.GS.Plugin
 
                              proc.WaitForExit();
                          }
-                         File.Delete(position2);
+                         //File.Delete(position2);
 
                          // 7. read .res file to get poresize value
 
@@ -359,13 +355,90 @@ namespace MolecularSynthesis.GS.Plugin
                          string[] words = contents.Split(' ');
                          Console.WriteLine(contents);
 
-                         Console.WriteLine("Poresize: " + words[4]);
+                         Console.WriteLine("PoreDiameter: " + words[4]);
 
                          //Console.WriteLine("Poresize: ", words[5]);
                          //PoreSizeValue = Convert.ToDouble(words[5]);
                          //Console.WriteLine("Poresizevalue: ", words[5]);
 
-                         Results.Add(words[4]);
+                         Results.Add("PoreDiameter: " + words[4]);
+
+                         //----------------Surface area and density----------------------
+                         using (Process proc = new Process())
+                         {
+
+                             //C: \Users\zhang\source\repos\zeo++-0.3\network
+                             // /nfs/hpc/share/zhangho2/MolecularSynthesis/zeo++-0.3
+                             proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
+                             //proc.StartInfo.Arguments = name + " -O " + name2;
+
+                             proc.StartInfo.Arguments = " -sa 2.0 2.0 2000 " + filename5;
+                             //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                             proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
+                             //C:\\Users\\zhang\\Desktop
+                             proc.StartInfo.RedirectStandardOutput = true;
+                             proc.StartInfo.UseShellExecute = false;
+                             proc.Start();
+
+                             proc.WaitForExit();
+                         }
+                         //File.Delete(position2);
+
+                         
+                         var filename7 = filename5.Split(".")[0] + ".sa";
+                         Console.WriteLine("filename7:");
+                         Console.WriteLine(filename6);
+
+                         Console.WriteLine("Surface area: " + words[15]);
+                         Console.WriteLine("Density: " + words[7]);
+
+                         //Console.WriteLine("Poresize: ", words[5]);
+                         //PoreSizeValue = Convert.ToDouble(words[5]);
+                         //Console.WriteLine("Poresizevalue: ", words[5]);
+
+                         Results.Add("Surface area: " + words[15]);
+                         Results.Add("Density: " + words[7]);
+
+
+                         //-----------------Accessible volume and Accessible Volume Fraction----------
+                         using (Process proc = new Process())
+                         {
+
+                             //C: \Users\zhang\source\repos\zeo++-0.3\network
+                             // /nfs/hpc/share/zhangho2/MolecularSynthesis/zeo++-0.3
+                             proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
+                             //proc.StartInfo.Arguments = name + " -O " + name2;
+
+                             proc.StartInfo.Arguments = " -vol 2.0 2.0 50000 " + filename5;
+                             //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                             proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
+                             //C:\\Users\\zhang\\Desktop
+                             proc.StartInfo.RedirectStandardOutput = true;
+                             proc.StartInfo.UseShellExecute = false;
+                             proc.Start();
+
+                             proc.WaitForExit();
+                         }
+                         //File.Delete(position2);
+
+                         
+                         var filename8 = filename5.Split(".")[0] + ".vol";
+                         Console.WriteLine("filename8:");
+                         Console.WriteLine(filename6);
+
+                         //string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
+                         //string[] words = contents.Split(' ');
+                         //Console.WriteLine(contents);
+
+                         Console.WriteLine("Accessible volume: " + words[11]);
+                                                 
+
+                         Results.Add("Accessible volume fraction : " + words[13]);
+                         Results.Add("Accessible volume in cm^3/g : " + words[15]);
+
+                         // ------------------------ delete all the files generated in the process-----------------------
+
+
 
                          File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
                          File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
@@ -383,6 +456,8 @@ namespace MolecularSynthesis.GS.Plugin
                          File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename5);
                          // MOF .res---6
                          File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
+                         File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename7);
+                         File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename8);
 
                      }
                      catch (Exception exc)

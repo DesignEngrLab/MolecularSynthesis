@@ -20,14 +20,14 @@ using System.Collections.Concurrent;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class TestPara : SearchProcess
+    public class randomSearch_PD : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         static double[] desiredLenghtAndRadius = new double[] { 300, 50 };
         static Random rnd = new Random(0);
 
-        public TestPara(GlobalSettings settings) : base(settings)
+        public randomSearch_PD(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -37,7 +37,7 @@ namespace MolecularSynthesis.GS.Plugin
 
         public override string text
         {
-            get { return "TestPara"; }
+            get { return "randomSearch_PD"; }
         }
 
         protected override void Run()
@@ -65,20 +65,20 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 50;
+            int TotalNumber = 40;
             var rand = new Random(7);
             List<string> Results = new List<string>();
             List<string> Recipe = new List<string>();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 25; i++)
             {
                 Console.WriteLine("IterationTime========", i);
                 var candidateThreadDictionary = new ConcurrentDictionary<candidate, int>();
 
                 Recipe.Add("---------IterationTime:" + i.ToString() + " ----------------------");
-
+                Results.Add("---------IterationTime:" + i.ToString() + " ----------------------");
                 Parallel.For(0, TotalNumber, count =>
                 //for (int i = 0; i < TotalNumber; i++)
                 {
@@ -95,9 +95,11 @@ namespace MolecularSynthesis.GS.Plugin
                     //option0 = rulesets[0].recognize(candidate.graph);
                     //option0[6].apply(candidate.graph, null);
                     //StartState.addToRecipe(option0[6]);
+                    //Recipe.Add("****************");
                     lock (noneparallel)
                         for (int j = 0; j < 4; j++)
                         {
+                            
                             //rnd.Next(0, 2); 0 or 1
                             var RuleSetNumber = rand.Next(0, 1);
                             var TotalOption = rulesets[RuleSetNumber].recognize(candidate.graph).Count;
@@ -109,10 +111,10 @@ namespace MolecularSynthesis.GS.Plugin
                             Recipe.Add("------ThreadNumber:" + ThreadNumber.ToString() + "-----------");
                             string ruleRecipe = "Ruleset number:" + RuleSetNumber.ToString() + "  Option number:" + OptionNumber.ToString();
                             Recipe.Add(ruleRecipe);
-
+                            
 
                         }
-
+                    Recipe.Add("****************");
                     option2 = rulesets[2].recognize(candidate.graph);
                     option2[0].apply(candidate.graph, null);
                     candidate.addToRecipe(option2[0]);
@@ -230,31 +232,26 @@ namespace MolecularSynthesis.GS.Plugin
                     Console.WriteLine("wait all thread to stop here");
                 });
 
-                try
+
+                Console.WriteLine("IterationTime======== " + i.ToString());
+                using (Process proc = new Process())
                 {
-                    Console.WriteLine("IterationTime======== " + i.ToString());
-                    using (Process proc = new Process())
-                    {
 
-                        // /usr/local/apps/python/3.8/bin/python3
+                    // /usr/local/apps/python/3.8/bin/python3
 
-                        proc.StartInfo.FileName = "/usr/local/apps/python/3.8/bin/python3";
-                        // /nfs/hpc/share/zhangho2/tobacco_3.0
-                        proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/tobacco_3.0/tobacco.py";
-                        //C: \Users\zhang\source\repos\MolecularSynthesis\output
-                        //C: \Users\zhang\source\repos\tobacco_3.0\edges
-                        proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/tobacco_3.0";
-                        proc.StartInfo.RedirectStandardOutput = true;
-                        proc.StartInfo.UseShellExecute = false;
-                        proc.Start();
-                        System.Console.WriteLine("tabacco is running");
-                        proc.WaitForExit(1000*60*2);
-                    }
+                    proc.StartInfo.FileName = "/usr/local/apps/python/3.8/bin/python3";
+                    // /nfs/hpc/share/zhangho2/tobacco_3.0
+                    proc.StartInfo.Arguments = "/nfs/hpc/share/zhangho2/tobacco_3.0/tobacco.py";
+                    //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                    //C: \Users\zhang\source\repos\tobacco_3.0\edges
+                    proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/tobacco_3.0";
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.Start();
+                    System.Console.WriteLine("tabacco is running");
+                    proc.WaitForExit();
                 }
-                catch { Console.WriteLine("????????kidding me?????????"); }
-
                 Console.WriteLine("IterationTime========", i.ToString());
-
 
                 Parallel.ForEach(candidateThreadDictionary, kvp =>
                  {
@@ -365,7 +362,7 @@ namespace MolecularSynthesis.GS.Plugin
                          //PoreSizeValue = Convert.ToDouble(words[5]);
                          //Console.WriteLine("Poresizevalue: ", words[5]);
 
-                         Results.Add(words[4]);
+                         Results.Add("PoreDiameter: "+ words[4]+"----"+ ThreadNumber.ToString());
 
                          File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
                          File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);

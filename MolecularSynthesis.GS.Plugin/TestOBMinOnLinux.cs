@@ -69,16 +69,16 @@ namespace MolecularSynthesis.GS.Plugin
             var option2 = rulesets[2].recognize(candidate.graph);
 
             option0 = rulesets[0].recognize(candidate.graph);
-            option0[1].apply(candidate.graph, null);
+            option0[5].apply(candidate.graph, null);
 
-            option0 = rulesets[0].recognize(candidate.graph);
-            option0[2].apply(candidate.graph, null);
+            //option0 = rulesets[0].recognize(candidate.graph);
+            //option0[2].apply(candidate.graph, null);
 
-            option0 = rulesets[0].recognize(candidate.graph);
-            option0[6].apply(candidate.graph, null);
+            //option0 = rulesets[0].recognize(candidate.graph);
+            //option0[6].apply(candidate.graph, null);
 
-            option1 = rulesets[1].recognize(candidate.graph);
-            option1[1].apply(candidate.graph, null);
+            //option1 = rulesets[1].recognize(candidate.graph);
+            //option1[1].apply(candidate.graph, null);
 
             option2 = rulesets[2].recognize(candidate.graph);
             option2[0].apply(candidate.graph, null);
@@ -105,7 +105,7 @@ namespace MolecularSynthesis.GS.Plugin
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
             ts.Hours, ts.Minutes, ts.Seconds,
             ts.Milliseconds / 10);
-            Console.WriteLine("RunTime " + elapsedTime);          
+            Console.WriteLine("RunTime " + elapsedTime);
 
 
         }

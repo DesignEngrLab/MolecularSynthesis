@@ -72,12 +72,13 @@ namespace MolecularSynthesis.GS.Plugin
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 25; i++)
             {
                 Console.WriteLine("IterationTime========", i);
                 var candidateThreadDictionary = new ConcurrentDictionary<candidate, int>();
 
                 Recipe.Add("---------IterationTime:" + i.ToString() + " ----------------------");
+                Results.Add("---------IterationTime:" + i.ToString() + " ----------------------");
 
                 Parallel.For(0, TotalNumber, count =>
                 //for (int i = 0; i < TotalNumber; i++)
@@ -92,19 +93,27 @@ namespace MolecularSynthesis.GS.Plugin
                     var option1 = rulesets[1].recognize(candidate.graph);
                     var option2 = rulesets[2].recognize(candidate.graph);
 
+                    option0 = rulesets[0].recognize(candidate.graph);
+                    option0[6].apply(candidate.graph, null);
+                    //candidate.addToRecipe(option0[6]);
+
                     //option0 = rulesets[0].recognize(candidate.graph);
                     //option0[6].apply(candidate.graph, null);
                     //StartState.addToRecipe(option0[6]);
                     lock (noneparallel)
                         
-                        for (int j = 0; j < 4; j++)
-                        {
+                        for (int j = 0; j < 3; j++)
+                        {   
+
                             //rnd.Next(0, 2); 0 or 1
-                            var RuleSetNumber = rand.Next(0, 1);
+                            var RuleSetNumber = rand.Next(0, 2);
                             var TotalOption = rulesets[RuleSetNumber].recognize(candidate.graph).Count;
                             var OptionNumber = rand.Next(0, TotalOption);
                             rulesets[RuleSetNumber].recognize(candidate.graph)[OptionNumber].apply(candidate.graph, null);
-                            candidate.addToRecipe(rulesets[RuleSetNumber].recognize(candidate.graph)[OptionNumber]);
+                            //candidate.addToRecipe(rulesets[RuleSetNumber].recognize(candidate.graph)[OptionNumber]);
+                                                    
+
+
 
                             // write rule into txt file
                             Recipe.Add("------ThreadNumber:" + ThreadNumber.ToString() + "-----------");
@@ -113,7 +122,7 @@ namespace MolecularSynthesis.GS.Plugin
 
 
                         }
-
+                    Recipe.Add("****************");
                     option2 = rulesets[2].recognize(candidate.graph);
                     option2[0].apply(candidate.graph, null);
                     candidate.addToRecipe(option2[0]);
@@ -360,9 +369,8 @@ namespace MolecularSynthesis.GS.Plugin
                          //Console.WriteLine("Poresize: ", words[5]);
                          //PoreSizeValue = Convert.ToDouble(words[5]);
                          //Console.WriteLine("Poresizevalue: ", words[5]);
-
-                         Results.Add("PoreDiameter: " + words[4]);
-
+                                                  
+                         Results.Add("PoreDiameter: " + words[4] + "----" + ThreadNumber.ToString());
                          //----------------Surface area and density----------------------
                          using (Process proc = new Process())
                          {
@@ -372,7 +380,7 @@ namespace MolecularSynthesis.GS.Plugin
                              proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
                              //proc.StartInfo.Arguments = name + " -O " + name2;
 
-                             proc.StartInfo.Arguments = " -sa 2.0 2.0 2000 " + filename5;
+                             proc.StartInfo.Arguments = " -sa 1.2 1.2 2000 " + filename5;
                              //C: \Users\zhang\source\repos\MolecularSynthesis\output
                              proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
                              //C:\\Users\\zhang\\Desktop
@@ -384,10 +392,13 @@ namespace MolecularSynthesis.GS.Plugin
                          }
                          //File.Delete(position2);
 
-                         
+
                          var filename7 = filename5.Split(".")[0] + ".sa";
                          Console.WriteLine("filename7:");
-                         Console.WriteLine(filename6);
+                         Console.WriteLine(filename7);
+
+                         contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename7);
+                         words = contents.Split(' ');
 
                          Console.WriteLine("Surface area: " + words[15]);
                          Console.WriteLine("Density: " + words[7]);
@@ -396,8 +407,8 @@ namespace MolecularSynthesis.GS.Plugin
                          //PoreSizeValue = Convert.ToDouble(words[5]);
                          //Console.WriteLine("Poresizevalue: ", words[5]);
 
-                         Results.Add("Surface area: " + words[15]);
-                         Results.Add("Density: " + words[7]);
+                         Results.Add("Surface area: " + words[15] + "---" + ThreadNumber.ToString());
+                         Results.Add("Density: " + words[7] + "---" + ThreadNumber.ToString());
 
 
                          //-----------------Accessible volume and Accessible Volume Fraction----------
@@ -421,20 +432,20 @@ namespace MolecularSynthesis.GS.Plugin
                          }
                          //File.Delete(position2);
 
-                         
+
                          var filename8 = filename5.Split(".")[0] + ".vol";
                          Console.WriteLine("filename8:");
-                         Console.WriteLine(filename6);
+                         Console.WriteLine(filename8);
 
-                         //string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
-                         //string[] words = contents.Split(' ');
+                         contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename8);
+                         words = contents.Split(' ');
                          //Console.WriteLine(contents);
 
-                         Console.WriteLine("Accessible volume: " + words[11]);
-                                                 
+                         //Console.WriteLine("Accessible volume: " + words[11]);
 
-                         Results.Add("Accessible volume fraction : " + words[13]);
-                         Results.Add("Accessible volume in cm^3/g : " + words[15]);
+
+                         Results.Add("Accessible volume: " + words[15] + "---" + ThreadNumber.ToString());
+                         Results.Add("Accessible Volume Fraction: " + words[13] + "---" + ThreadNumber.ToString());
 
                          // ------------------------ delete all the files generated in the process-----------------------
 
@@ -456,8 +467,8 @@ namespace MolecularSynthesis.GS.Plugin
                          File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename5);
                          // MOF .res---6
                          File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
-                         File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename7);
-                         File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename8);
+                         //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename7);
+                         //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename8);
 
                      }
                      catch (Exception exc)

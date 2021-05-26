@@ -15,7 +15,15 @@ namespace MolecularSynthesis.GS.Plugin
         public double S;
         public double n;
         public double UCB;
-        
+
+        //-------------------------
+        public string PD;
+        public string density;
+        public string SA;
+        public string AC;
+        public String ACF;
+        public List<string> Rc;
+
         public TreeCandidate(candidate seedCandidate) 
         {
             this.activeRuleSetIndex = seedCandidate.activeRuleSetIndex;

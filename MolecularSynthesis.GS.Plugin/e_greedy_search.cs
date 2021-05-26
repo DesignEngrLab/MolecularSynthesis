@@ -17,9 +17,10 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Threading;
 
+
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class greedy_search : SearchProcess
+    public class e_greedy_search : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -31,7 +32,7 @@ namespace MolecularSynthesis.GS.Plugin
         static double[] desiredLenghtAndRadius = new double[] { 658.15, 94.29 };
         // RS0 R3 R4 R5 R6
 
-        public greedy_search(GlobalSettings settings) : base(settings)
+        public e_greedy_search(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -42,7 +43,7 @@ namespace MolecularSynthesis.GS.Plugin
 
         public override string text
         {
-            get { return "greedy_search"; }
+            get { return "e_greedy_search"; }
         }
 
         protected override void Run()
@@ -226,68 +227,138 @@ namespace MolecularSynthesis.GS.Plugin
 
             //}
 
+            double Epsilon = 0.3;
 
             // greedy search begin
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
-                // determine the total number of candidates for 40 threads to evaluate
-                var optionCounter = GetSuccessor(greedySearchQueue[0]).Count;
-                var candidateCounter = 1;
-                //waitingQueue.Add(greedySearchQueue[0]);
 
+                // generate a random number between 0-1 to determine go greedy or go random
 
-                while (optionCounter <= TotalNumber)
-                {
-                    var nextCandidateOptionNumber = GetSuccessor(greedySearchQueue[candidateCounter]).Count;
+                
+                var e_greedy = rand.NextDouble();
 
-                    optionCounter = optionCounter + nextCandidateOptionNumber;
-                    candidateCounter = candidateCounter + 1;
-
-                    if (optionCounter >= TotalNumber)
-                    {
-                        optionCounter = optionCounter - nextCandidateOptionNumber;
-                        candidateCounter = candidateCounter - 1;
-                        break;
-                    }
-
-                }
-
-                // build the list for parallel evaluation, first candidate ,second candidate, third candidate ...
-                // and update queue
-                for (int j = 0; j < candidateCounter; j++)
+                e_greedy = 0.2;
+                if (e_greedy > Epsilon) // go greedy
                 {
 
+                    // determine the total number of candidates for 40 threads to evaluate
+                    var optionCounter = GetSuccessor(greedySearchQueue[0]).Count;
+                    var candidateCounter = 1;
+                    //waitingQueue.Add(greedySearchQueue[0]);
 
-                    for (int k = 0; k < GetSuccessor(greedySearchQueue[j]).Count; k++)
+
+                    while (optionCounter <= TotalNumber)
                     {
-                        //greedySearchQueue.Add(GetSuccessor(greedySearchQueue[j])[k]);
-                        waitingQueue.Add(GetSuccessor(greedySearchQueue[j])[k]);
-                        greedySearchQueue[j].Children.Add(GetSuccessor(greedySearchQueue[j])[k]);
+                        var nextCandidateOptionNumber = GetSuccessor(greedySearchQueue[candidateCounter]).Count;
+
+                        optionCounter = optionCounter + nextCandidateOptionNumber;
+                        candidateCounter = candidateCounter + 1;
+
+                        if (optionCounter >= TotalNumber)
+                        {
+                            optionCounter = optionCounter - nextCandidateOptionNumber;
+                            candidateCounter = candidateCounter - 1;
+                            break;
+                        }
 
                     }
 
+                    // build the list for parallel evaluation, first candidate ,second candidate, third candidate ...
+                    // and update queue
+                    for (int j = 0; j < candidateCounter; j++)
+                    {
+
+
+                        for (int k = 0; k < GetSuccessor(greedySearchQueue[j]).Count; k++)
+                        {
+                            //greedySearchQueue.Add(GetSuccessor(greedySearchQueue[j])[k]);
+                            waitingQueue.Add(GetSuccessor(greedySearchQueue[j])[k]);
+                            greedySearchQueue[j].Children.Add(GetSuccessor(greedySearchQueue[j])[k]);
+
+                        }
+
+                    }
+
+                    // start parallel evaluation
+                    Parallel.For(0, waitingQueue.Count, i => { waitingQueue[i].S = simpleEvaluation(waitingQueue[i]); });
+
+                    // put new candidates into greedy search queue and clean the waiting queue 
+
+                    for (int j = 0; j < waitingQueue.Count; j++)
+                    {
+                        greedySearchQueue.Add(waitingQueue[j]);
+                    }
+
+                    waitingQueue.Clear();
+
+                    // remove the older candidate
+                    for (int m = 0; m < candidateCounter; m++)
+                    {
+                        greedySearchQueue.RemoveAt(m);
+                    }
+
+                    // sort list for next iteration
+                    greedySearchQueue.Sort(sortByName);
+
                 }
 
-                // start parallel evaluation
-                Parallel.For(0, waitingQueue.Count,i=> { waitingQueue[i].S = simpleEvaluation(waitingQueue[i]); });
-
-                // put new candidates into greedy search queue and clean the waiting queue 
-
-                for (int j = 0; j < waitingQueue.Count; j++)
+                else // go random
                 {
-                    greedySearchQueue.Add(waitingQueue[j]);
+                    List<int> RandomNumberCollector = new List<int>();
+                    int randomCounter = 0;
+
+                    int randomCandidateNumber = rand.Next(0, greedySearchQueue.Count);
+                    RandomNumberCollector.Add(randomCandidateNumber);
+                    randomCounter = randomCounter + GetSuccessor(greedySearchQueue[randomCandidateNumber]).Count;
+
+                    
+                    while (randomCounter <= TotalNumber)
+                    {
+                        randomCandidateNumber = rand.Next(0, greedySearchQueue.Count);
+                        RandomNumberCollector.Add(randomCandidateNumber);
+
+                        var nextCandidateOptionNumber = GetSuccessor(greedySearchQueue[randomCandidateNumber]).Count;
+
+                        randomCounter = randomCounter + nextCandidateOptionNumber;
+                        
+                        if (randomCounter >= TotalNumber)
+                        {
+                            randomCounter = randomCounter - nextCandidateOptionNumber;
+                            RandomNumberCollector.RemoveAt(RandomNumberCollector.Count-1);
+                            break;
+                        }
+
+                    }
+
+                    for (int j = 0; j < RandomNumberCollector.Count; j++)
+                    {
+                        for (int k = 0; k < GetSuccessor(greedySearchQueue[RandomNumberCollector[j]]).Count; k++)
+                        {
+                            waitingQueue.Add(GetSuccessor(greedySearchQueue[RandomNumberCollector[j]])[k]);
+                            greedySearchQueue[randomCandidateNumber].Children.Add(GetSuccessor(greedySearchQueue[RandomNumberCollector[j]])[k]);
+
+                        }
+                    }
+
+                    Parallel.For(0, waitingQueue.Count, i => { waitingQueue[i].S = simpleEvaluation(waitingQueue[i]); });
+
+                    for (int j = 0; j < waitingQueue.Count; j++)
+                    {
+                        greedySearchQueue.Add(waitingQueue[j]);
+                    }
+
+                    waitingQueue.Clear();
+
+                    for (int m = 0; m < RandomNumberCollector.Count; m++)
+                    {
+                        greedySearchQueue.RemoveAt(RandomNumberCollector[m]);
+                    }
+                    greedySearchQueue.Sort(sortByName);
+
                 }
 
-                waitingQueue.Clear();
-
-                // remove the older candidate
-                for (int m = 0; m < candidateCounter; m++)
-                {
-                    greedySearchQueue.RemoveAt(m);
-                }
-
-                // sort list for next iteration
-                greedySearchQueue.Sort(sortByName);
+                               
 
 
 

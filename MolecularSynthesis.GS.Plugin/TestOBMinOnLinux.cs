@@ -69,7 +69,7 @@ namespace MolecularSynthesis.GS.Plugin
             var option2 = rulesets[2].recognize(candidate.graph);
 
             option0 = rulesets[0].recognize(candidate.graph);
-            option0[5].apply(candidate.graph, null);
+            option0[6].apply(candidate.graph, null);
 
             //option0 = rulesets[0].recognize(candidate.graph);
             //option0[2].apply(candidate.graph, null);

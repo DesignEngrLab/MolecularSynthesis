@@ -20,14 +20,14 @@ using System.Collections.Concurrent;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class randomSearch_AV : SearchProcess
+    public class randomSearch_FiveInOne_goodOutput : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         static double[] desiredLenghtAndRadius = new double[] { 300, 50 };
         static Random rnd = new Random(0);
 
-        public randomSearch_AV(GlobalSettings settings) : base(settings)
+        public randomSearch_FiveInOne_goodOutput(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -37,7 +37,7 @@ namespace MolecularSynthesis.GS.Plugin
 
         public override string text
         {
-            get { return "randomSearch_AV"; }
+            get { return "randomSearch_FiveInOne_goodOutput"; }
         }
 
         protected override void Run()
@@ -65,14 +65,16 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 40;
+            int TotalNumber = 1;
             var rand = new Random(7);
             List<string> Results = new List<string>();
             List<string> Recipe = new List<string>();
 
+            List<TreeCandidate> result = new List<TreeCandidate>();
+
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
-            for (int i = 0; i < 25; i++)
+            for (int i = 0; i < 1; i++)
             {
                 Console.WriteLine("IterationTime========", i);
                 var candidateThreadDictionary = new ConcurrentDictionary<candidate, int>();
@@ -88,32 +90,42 @@ namespace MolecularSynthesis.GS.Plugin
 
 
                     var candidate = (TreeCandidate)StartState.copy();
+                    result.Add(candidate);
 
                     var option0 = rulesets[0].recognize(candidate.graph);
                     var option1 = rulesets[1].recognize(candidate.graph);
                     var option2 = rulesets[2].recognize(candidate.graph);
 
-                    //option0 = rulesets[0].recognize(candidate.graph);
-                    //option0[6].apply(candidate.graph, null);
-                    //StartState.addToRecipe(option0[6]);
-                    lock (noneparallel)
-                        for (int j = 0; j < 4; j++)
-                        {
-                            //rnd.Next(0, 2); 0 or 1
-                            var RuleSetNumber = rand.Next(0, 2);
-                            var TotalOption = rulesets[RuleSetNumber].recognize(candidate.graph).Count;
-                            var OptionNumber = rand.Next(0, TotalOption);
-                            rulesets[RuleSetNumber].recognize(candidate.graph)[OptionNumber].apply(candidate.graph, null);
-                            candidate.addToRecipe(rulesets[RuleSetNumber].recognize(candidate.graph)[OptionNumber]);
+                    option0 = rulesets[0].recognize(candidate.graph);
+                    option0[6].apply(candidate.graph, null);
+                    candidate.addToRecipe(option0[6]);
 
-                            // write rule into txt file
-                            Recipe.Add("------ThreadNumber:" + ThreadNumber.ToString() + "-----------");
-                            string ruleRecipe = "Ruleset number:" + RuleSetNumber.ToString() + "  Option number:" + OptionNumber.ToString();
-                            Recipe.Add(ruleRecipe);
+                    //lock (noneparallel)
+                        
+                    //    for (int j = 0; j < 3; j++)
+                    //    {   
+
+                    //        //rnd.Next(0, 2); 0 or 1
+                    //        var RuleSetNumber = rand.Next(0, 2);
+                    //        var TotalOption = rulesets[RuleSetNumber].recognize(candidate.graph).Count;
+                    //        var OptionNumber = rand.Next(0, TotalOption);
+                    //        rulesets[RuleSetNumber].recognize(candidate.graph)[OptionNumber].apply(candidate.graph, null);
+                    //        //candidate.addToRecipe(rulesets[RuleSetNumber].recognize(candidate.graph)[OptionNumber]);
+                                                    
 
 
-                        }
-                    Recipe.Add("****************");
+
+                    //        // write rule into txt file
+                    //        Recipe.Add("------ThreadNumber:" + ThreadNumber.ToString() + "-----------");
+                    //        string ruleRecipe = "Ruleset number:" + RuleSetNumber.ToString() + "  Option number:" + OptionNumber.ToString();
+                    //        Recipe.Add(ruleRecipe);
+                    //        candidate.Rc.Add(RuleSetNumber.ToString());
+                    //        candidate.Rc.Add(" ");
+                    //        candidate.Rc.Add(OptionNumber.ToString());
+                    //        candidate.Rc.Add(" ");
+                    //    }
+                    //Recipe.Add("****************");
+
                     option2 = rulesets[2].recognize(candidate.graph);
                     option2[0].apply(candidate.graph, null);
                     candidate.addToRecipe(option2[0]);
@@ -333,7 +345,7 @@ namespace MolecularSynthesis.GS.Plugin
                              proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
                              //proc.StartInfo.Arguments = name + " -O " + name2;
 
-                             proc.StartInfo.Arguments = " -vol 1.2 1.2 50000 " + filename5;
+                             proc.StartInfo.Arguments = " -res " + filename5;
                              //C: \Users\zhang\source\repos\MolecularSynthesis\output
                              proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
                              //C:\\Users\\zhang\\Desktop
@@ -343,11 +355,11 @@ namespace MolecularSynthesis.GS.Plugin
 
                              proc.WaitForExit();
                          }
-                         File.Delete(position2);
+                         //File.Delete(position2);
 
                          // 7. read .res file to get poresize value
 
-                         var filename6 = filename5.Split(".")[0] + ".vol";
+                         var filename6 = filename5.Split(".")[0] + ".res";
                          Console.WriteLine("filename6:");
                          Console.WriteLine(filename6);
 
@@ -355,24 +367,93 @@ namespace MolecularSynthesis.GS.Plugin
                          string[] words = contents.Split(' ');
                          Console.WriteLine(contents);
 
-                         Console.WriteLine("------------------");
-                         foreach (var word in words)
-                         {
-                             Console.WriteLine(word);
-                         }
+                         Console.WriteLine("PoreDiameter: " + words[4]);
+                         
 
-                         Console.WriteLine("Accessible volume:" + words[15]);
-                         Console.WriteLine("Accessible Volume Fraction:  " + words[13]);
                          //Console.WriteLine("Poresize: ", words[5]);
                          //PoreSizeValue = Convert.ToDouble(words[5]);
                          //Console.WriteLine("Poresizevalue: ", words[5]);
 
+                         Results.Add("PoreDiameter: " + words[4] + "----" + ThreadNumber.ToString());
+                         //----------------Surface area and density----------------------
+                         using (Process proc = new Process())
+                         {
+
+                             //C: \Users\zhang\source\repos\zeo++-0.3\network
+                             // /nfs/hpc/share/zhangho2/MolecularSynthesis/zeo++-0.3
+                             proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
+                             //proc.StartInfo.Arguments = name + " -O " + name2;
+
+                             proc.StartInfo.Arguments = " -sa 1.2 1.2 2000 " + filename5;
+                             //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                             proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
+                             //C:\\Users\\zhang\\Desktop
+                             proc.StartInfo.RedirectStandardOutput = true;
+                             proc.StartInfo.UseShellExecute = false;
+                             proc.Start();
+
+                             proc.WaitForExit();
+                         }
+                         //File.Delete(position2);
+
+
+                         var filename7 = filename5.Split(".")[0] + ".sa";
+                         Console.WriteLine("filename7:");
+                         Console.WriteLine(filename7);
+
+                         contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename7);
+                         words = contents.Split(' ');
+
+                         Console.WriteLine("Surface area: " + words[15]);
+                         Console.WriteLine("Density: " + words[7]);
+
+                         //Console.WriteLine("Poresize: ", words[5]);
+                         //PoreSizeValue = Convert.ToDouble(words[5]);
+                         //Console.WriteLine("Poresizevalue: ", words[5]);
+
+                         Results.Add("Surface area: " + words[15] + "---" + ThreadNumber.ToString());
+                         Results.Add("Density: " + words[7] + "---" + ThreadNumber.ToString());
+
+
+                         //-----------------Accessible volume and Accessible Volume Fraction----------
+                         using (Process proc = new Process())
+                         {
+
+                             //C: \Users\zhang\source\repos\zeo++-0.3\network
+                             // /nfs/hpc/share/zhangho2/MolecularSynthesis/zeo++-0.3
+                             proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
+                             //proc.StartInfo.Arguments = name + " -O " + name2;
+
+                             proc.StartInfo.Arguments = " -vol 2.0 2.0 50000 " + filename5;
+                             //C: \Users\zhang\source\repos\MolecularSynthesis\output
+                             proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
+                             //C:\\Users\\zhang\\Desktop
+                             proc.StartInfo.RedirectStandardOutput = true;
+                             proc.StartInfo.UseShellExecute = false;
+                             proc.Start();
+
+                             proc.WaitForExit();
+                         }
+                         //File.Delete(position2);
+
+
+                         var filename8 = filename5.Split(".")[0] + ".vol";
+                         Console.WriteLine("filename8:");
+                         Console.WriteLine(filename8);
+
+                         contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename8);
+                         words = contents.Split(' ');
+                         //Console.WriteLine(contents);
+
+                         //Console.WriteLine("Accessible volume: " + words[11]);
+
+
                          Results.Add("Accessible volume: " + words[15] + "---" + ThreadNumber.ToString());
-                         Results.Add("Accessible Volume Fraction: " + words[13] + "---" + ThreadNumber.ToString());                                           
+                         Results.Add("Accessible Volume Fraction: " + words[13] + "---" + ThreadNumber.ToString());
 
-                         
+                         // ------------------------ delete all the files generated in the process-----------------------
 
-                         
+
 
                          File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
                          File.Delete("/nfs/hpc/share/zhangho2/tobacco_3.0/edges/" + filename3);
@@ -390,6 +471,8 @@ namespace MolecularSynthesis.GS.Plugin
                          File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename5);
                          // MOF .res---6
                          File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename6);
+                         //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename7);
+                         //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + filename8);
 
                      }
                      catch (Exception exc)

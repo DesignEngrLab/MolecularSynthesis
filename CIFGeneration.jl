@@ -3,12 +3,12 @@ using Xtals, LightGraphs, Test, Printf, LinearAlgebra
 #if length(ARGS) != 1
 #    error("Pass xyz file as argument")
 #end
+#filelist = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples")
+#path_to_mol_files = joinpath(homedir(), "Documents", "GitHub", "MolecularSynthesis", "Examples")
 
-filelist = readdir("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples")
-path_to_mol_files = joinpath(homedir(), "Documents", "GitHub", "MolecularSynthesis", "Examples")
 
-#filelist = readdir("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples")
-#path_to_mol_files = joinpath(homedir(), "source", "repos", "MolecularSynthesis", "Examples")
+filelist = readdir("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples")
+path_to_mol_files = joinpath(homedir(), "source", "repos", "MolecularSynthesis", "Examples")
 
 
 #path_to_mol_files = readdir("C:\\Users\\zhang\\Desktop")
@@ -237,7 +237,7 @@ for filename in filelist
               
               # increment label
               
-              @printf(cif_file, "%f\t%f\t%f", mod.(crystal.atoms.coords.xf[:, i],1.0)...)
+              @printf(cif_file, "%f\t%f\t%f", crystal.atoms.coords.xf[:, i]...)
               if has_charges(crystal)
                   if high_precision_charges
                       @printf(cif_file, "\t%.10f\n", crystal.charges.q[i])

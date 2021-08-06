@@ -177,9 +177,10 @@ namespace OpenBabelFunctions
             Debug.WriteLine("starting to use obminimize " + ThreadNumber);
 
             string filename = "Test" + ThreadNumber.ToString() + ".mol";
-            filename = Path.Combine("C:\\Users\\kgeri\\source\\repos\\MolecularSynthesis\\output", filename);
+            filename = Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", filename);
 
             //if (File.Exists(filename)) File.Delete(filename);
+            lock (noneparallel)
             conv.WriteFile(mol, filename);
             string minimizeOutput;
 
@@ -187,7 +188,8 @@ namespace OpenBabelFunctions
             using (Process proc = new Process())
             {
 
-                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.0.0\\obminimize.exe";
+                // C:\Program Files (x86)\OpenBabel-3.1.1
+                proc.StartInfo.FileName = "C:\\Program Files (x86)\\OpenBabel-3.1.1\\obminimize.exe";
                 //proc.StartInfo.FileName = "C: \\Users\\zhang\\source\\repos\\MolecularSynthesis\\minimize.exe";
                 //C: \Users\zhang\source\repos\MolecularSynthesis
 
@@ -195,12 +197,8 @@ namespace OpenBabelFunctions
                 proc.StartInfo.Arguments = "-c 1e3 -ff GAFF " + filename;
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
-<<<<<<< HEAD
                 proc.StartInfo.ErrorDialog = false;
-                proc.StartInfo.WorkingDirectory = "C:\\Users\\kgeri\\source\\repos\\MolecularSynthesis\\output";
-=======
                 proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output";
->>>>>>> parent of 726848f (Still testing MCTS)
                 //proc.StartInfo.RedirectStandardError = true;
                 //proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
@@ -208,24 +206,18 @@ namespace OpenBabelFunctions
                 Console.Write("starting OBMinimize...");
                 //stopwatch.Restart();
                 proc.Start();
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of 726848f (Still testing MCTS)
                 //proc.WaitForExit(); //wait up to 10 seconds. OB will return best result
                 // but maybe you want to scale this based on molecule size
-                var elapsed = stopwatch.Elapsed;
-                Console.WriteLine("completed in {0}", elapsed);
+                //var elapsed = stopwatch.Elapsed;
+                //Console.WriteLine("completed in {0}", elapsed);
                 minimizeOutput = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
                 //if (elapsed.TotalMilliseconds > waitTime)
                 //Console.WriteLine(minimizeOutput);
             }
             conv.ReadString(mol, minimizeOutput);
-<<<<<<< HEAD
             Debug.WriteLine("Minimizing...ending " + ThreadNumber);
-=======
->>>>>>> parent of 726848f (Still testing MCTS)
 
             return mol;
         }

@@ -62,7 +62,7 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 10;
+            int TotalNumber = 100;
             var rand = new Random();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
@@ -103,8 +103,7 @@ namespace MolecularSynthesis.GS.Plugin
 
                 string name = ".mol";
                 name = Convert.ToString(i) + name;
-                // conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
-                conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\kgeri\\Documents\\GitHub\\MolecularSynthesis\\examples_Kai", name));
+                conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples", name));
 
                 //string name2 = ".xyz";
                 //name2 = Convert.ToString(i) + name2;
@@ -123,11 +122,11 @@ namespace MolecularSynthesis.GS.Plugin
 
                 //    Console.Write("starting Convert...");
                 //    proc.Start();
-
+                                        
                 //    //minimizeOutput = proc.StandardOutput.ReadToEnd();
                 //    proc.WaitForExit();
                 //}
-            }
+             }
 
             timer.Stop();
             TimeSpan ts = timer.Elapsed;

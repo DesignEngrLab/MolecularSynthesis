@@ -36,6 +36,12 @@ namespace MolecularSynthesis.GS.Plugin
             copytreecandidate.n = n;
             copytreecandidate.UCB = UCB;
 
+            //copytreecandidate.recipe = this.recipe;
+            //copytreecandidate.graph = this.graph;
+
+
+
+
             return copytreecandidate;
         }
 

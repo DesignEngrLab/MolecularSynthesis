@@ -1,14 +1,19 @@
-﻿using OpenBabel;
-using System;
-using OpenBabelFunctions;
-using GraphSynth.Search;
+﻿using System.Collections.Generic;
+using System.Threading;
 using GraphSynth;
-using MolecularSynthesis.GS.Plugin;
-using System.Xml.XPath;
+using GraphSynth.Representation;
+using GraphSynth.Search;
+using Priority_Queue;
+using System;
+using System.Collections;
+using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using MolecularSynthesis.GS.Plugin;
+using System.Linq;
+using OpenBabel;
+using OpenBabelFunctions;
 using System.Diagnostics;
 using System.Timers;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace TestOpenBabel
@@ -27,12 +32,11 @@ namespace TestOpenBabel
         }
         protected override void Run()
         {
-            var resultMol = OBFunctions.designgraphtomol(seedGraph);
+            //var resultMol = OBFunctions.designgraphtomol(seedGraph);
             // after convert from designgraph to .mol file
             // save the result as .mol file
             // call minimize.exe to do the energy minimization               
-
-<<<<<<< HEAD
+            
             var stopwatch = new Stopwatch();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
@@ -46,81 +50,136 @@ namespace TestOpenBabel
             var option1 = rulesets[1].recognize(StartState.graph);
             var option2 = rulesets[2].recognize(StartState.graph);
 
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[6].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[6]);
+            //3 4 5 6 (658, 94)
 
+
+            // 3 6 3 3 4
+            // 2 5 2 2 3
+            // 638.247 93.74
+
+
+            //3 4 3 3 6 
+            //2 3 2 2 5 
+
+            //3 1 1 3 1
+            //2 0 0 2 0
+
+            //3 5 3 4 3(644 93)
+            //2 4 2 3 2
+
+            // 3 4 2 2 1 (601,81)
+            // 2 3 1 1 0
+
+            // 6 3 6 3 2(602,68)
+            // 5 2 5 2 1
             option0 = rulesets[0].recognize(StartState.graph);
             option0[5].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[1]);
+
+            option0 = rulesets[0].recognize(StartState.graph);
+            option0[2].apply(StartState.graph, null);
             StartState.addToRecipe(option0[5]);
 
             option0 = rulesets[0].recognize(StartState.graph);
+            option0[5].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[2]);
+
+            option0 = rulesets[0].recognize(StartState.graph);
+            option0[2].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[2]);
+
+            option0 = rulesets[0].recognize(StartState.graph);
             option0[1].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[1]);
+            StartState.addToRecipe(option0[3]);
 
-            option1 = rulesets[1].recognize(StartState.graph);
-            option1[3].apply(StartState.graph, null);
-            StartState.addToRecipe(option1[3]);
+            Console.WriteLine("\n");
+            Console.WriteLine("--------------------");
 
-            option1 = rulesets[1].recognize(StartState.graph);
-            option1[16].apply(StartState.graph, null);
-            StartState.addToRecipe(option1[16]);
+            var candidate = (TreeCandidate)StartState.copy();
 
-            //option0 = rulesets[0].recognize(StartState.graph);
-            //option0[1].apply(StartState.graph, null);
-            //StartState.addToRecipe(option0[1]);
+            foreach (var item in candidate.recipe)
+            {
+                // item.ruleSetIndex
+                // item.ruleNumber
+                Console.WriteLine("RulesetNumber: " + item.ruleSetIndex.ToString() +"    "+ "RuleNumber: "+ item.ruleNumber.ToString());
 
-            //option0 = rulesets[0].recognize(StartState.graph);
-            //option0[2].apply(StartState.graph, null);
-            //StartState.addToRecipe(option0[2]);
 
+
+            }
+            Console.WriteLine("--------------------");
+
+            //option2 = rulesets[2].recognize(candidate.graph);
+            //option2[0].apply(candidate.graph, null);
+            //candidate.addToRecipe(option0[2]);
+
+
+            //var resultMol = OBFunctions.designgraphtomol(candidate.graph);
+            //resultMol = OBFunctions.InterStepMinimize(resultMol);
+            //OBFunctions.updatepositions(candidate.graph, resultMol);
+
+            //startstate.addToRecipe(option0[1]);
+
+            //option1 = rulesets[1].recognize(StartState.graph);
+            //option1[4].apply(StartState.graph, null);
+            ////StartState.addToRecipe(option1[3]);
+
+            //option1 = rulesets[1].recognize(StartState.graph);
+            //option1[9].apply(StartState.graph, null);
+            ////StartState.addToRecipe(option1[16]);
+
+            //option1 = rulesets[1].recognize(StartState.graph);
+            //option1[10].apply(StartState.graph, null);
+            ////StartState.addToRecipe(option1[16]);            
+
+
+            //----------------------------------------------------------------------
             option2 = rulesets[2].recognize(StartState.graph);
             option2[0].apply(StartState.graph, null);
-            StartState.addToRecipe(option2[0]);
+            StartState.addToRecipe(option0[2]);
 
-            //option1 = rulesets[1].recognize(StartState.graph);
-            //option1[35].apply(StartState.graph, null);
-            //StartState.addToRecipe(option1[35]);
-
-            //option1 = rulesets[1].recognize(StartState.graph);
-            //option1[25].apply(StartState.graph, null);
-            //StartState.addToRecipe(option1[25]);
 
             var resultMol = OBFunctions.designgraphtomol(StartState.graph);
             resultMol = OBFunctions.InterStepMinimize(resultMol);
             OBFunctions.updatepositions(StartState.graph, resultMol);
 
-            var FinalResultMol = OBFunctions.designgraphtomol(StartState.graph);
+            SearchIO.addAndShowGraphWindow(StartState.graph);
 
-            var conv = new OBConversion();
-            conv.SetInAndOutFormats("pdb", "mol");
+            var result = Evaluation.FindLengthAndRadius(StartState.graph);
+            //[0] is Length, [1] is Radius, unit is 
+            SearchIO.output("Length is: " + result[0]);
+            SearchIO.output("Radius is: " + result[1]);
 
-            int i = 12345678;
-            string name = ".mol";
-            name = Convert.ToString(i) + name;
-            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\Desktop", name));
+            //var FinalResultMol = OBFunctions.designgraphtomol(StartState.graph);
 
-            string name2 = ".xyz";
-            name2 = Convert.ToString(i) + name2;
+            //var conv = new OBConversion();
+            //conv.SetInAndOutFormats("pdb", "mol");
 
-            using (Process proc = new Process())
-            {
-                //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
-                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
-                proc.StartInfo.Arguments = name + " -O " + name2;
-                proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\Desktop";
-                //C:\Users\zhang\Desktop
-                //proc.StartInfo.RedirectStandardError = true;
-                //proc.StartInfo.UseShellExecute = false;
-                proc.StartInfo.RedirectStandardOutput = true;
-                //proc.StartInfo.RedirectStandardInput = false;
+            //int i = 12345678;
+            //string name = ".mol";
+            //name = Convert.ToString(i) + name;
+            //conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\Desktop", name));
 
-                Console.Write("starting Converting...");
-                proc.Start();
+            //string name2 = ".xyz";
+            //name2 = Convert.ToString(i) + name2;
 
-                //minimizeOutput = proc.StandardOutput.ReadToEnd();
-                proc.WaitForExit();
-            }
+            //using (Process proc = new Process())
+            //{
+            //    //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
+            //    proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
+            //    proc.StartInfo.Arguments = name + " -O " + name2;
+            //    proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\Desktop";
+            //    //C:\Users\zhang\Desktop
+            //    //proc.StartInfo.RedirectStandardError = true;
+            //    //proc.StartInfo.UseShellExecute = false;
+            //    proc.StartInfo.RedirectStandardOutput = true;
+            //    //proc.StartInfo.RedirectStandardInput = false;
+
+            //    Console.Write("starting Converting...");
+            //    proc.Start();
+
+            //    //minimizeOutput = proc.StandardOutput.ReadToEnd();
+            //    proc.WaitForExit();
+            //}
 
             // writing TXT file
             //List<string> list = new List<string>();
@@ -135,35 +194,27 @@ namespace TestOpenBabel
             //var conv = new OBConversion();
             //conv.SetInAndOutFormats("pdb", "mol");
             //conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test102.mol"));
-=======
-            resultMol = OBFunctions.InterStepMinimize(resultMol);
-            OBFunctions.updatepositions(seedGraph, resultMol);
-            var FinalResultMol = OBFunctions.designgraphtomol(seedGraph);
-            var conv = new OBConversion();
-            conv.SetInAndOutFormats("pdb", "mol");
-            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\output", "Test102.mol"));
->>>>>>> parent of 726848f (Still testing MCTS)
 
 
 
-            SearchIO.addAndShowGraphWindow(seedGraph);
+            //SearchIO.addAndShowGraphWindow(seedGraph);
 
-            var result = new double[2];
-            result=Evaluation.FindLengthAndRadius(seedGraph);
-            //[0] is Length, [1] is Radius, unit is 
-            SearchIO.output("Length is: "+ result[0]);
-            SearchIO.output("Radius is: "+ result[1]);
+            //var result = new double[2];
+            //result=Evaluation.FindLengthAndRadius(seedGraph);
+            ////[0] is Length, [1] is Radius, unit is 
+            //SearchIO.output("Length is: "+ result[0]);
+            //SearchIO.output("Radius is: "+ result[1]);
 
-            string[] PathOfXyz = Directory.GetFiles(@"C:\Users\zhang\desktop", "*.xyz");
+            //string[] PathOfXyz = Directory.GetFiles(@"C:\Users\zhang\desktop", "*.xyz");
             //string CifFilename = Path.GetFileName(PathOfXyz[0]);
             //foreach (var namexxx in PathOfXyz)
             //{
             //    Console.WriteLine(Path.GetFileName(namexxx));
             //}
-            Console.WriteLine(Path.GetFileName(PathOfXyz[0]));
-            Console.WriteLine(Path.GetFileName(PathOfXyz[1]));
+            //Console.WriteLine(Path.GetFileName(PathOfXyz[0]));
+            //Console.WriteLine(Path.GetFileName(PathOfXyz[1]));
 
-            RunBat("C:\\Users\\zhang\\source\\repos\\PoreBlazer\\Windows\\HKUST1\\run.bat");
+            //RunBat("C:\\Users\\zhang\\source\\repos\\PoreBlazer\\Windows\\HKUST1\\run.bat");
 
             //C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\results.txt
             //string[] EvaluationResult = System.IO.File.ReadAllLines(@"C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\results.txt");

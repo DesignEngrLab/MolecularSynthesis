@@ -174,6 +174,7 @@ namespace MolecularSynthesis.GS.Plugin
 
             return difference.norm1();
         }
+
         public static double norm1(this IEnumerable<double> x)
         {
             return x.Sum(Math.Abs);

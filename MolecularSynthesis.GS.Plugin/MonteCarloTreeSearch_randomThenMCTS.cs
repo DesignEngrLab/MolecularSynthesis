@@ -16,7 +16,7 @@ using System.Diagnostics;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class MCTS : SearchProcess
+    public class MCTS__randomThenMCTS : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -29,7 +29,7 @@ namespace MolecularSynthesis.GS.Plugin
         // RS0 R3 R4 R5 R6
         static TreeCandidate noneparallel = new TreeCandidate(new candidate());
 
-        public MCTS(GlobalSettings settings) : base(settings)
+        public MCTS__randomThenMCTS(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -42,7 +42,7 @@ namespace MolecularSynthesis.GS.Plugin
         /// <value>The text.</value>
         public override string text
         {
-            get { return "MCTS"; }
+            get { return "MCTS__randomThenMCTS"; }
         }
         protected override void Run()
         {
@@ -53,8 +53,8 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 3000;
-            
+            int iteration = 100;
+
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
             // 1. check if this is the leaf node, if not, go to step 2 until it is a leaf node,if yes go to step 3
@@ -85,6 +85,8 @@ namespace MolecularSynthesis.GS.Plugin
             var timer = new Stopwatch();
             timer.Start();
 
+            var rand = new Random();
+
             //TreeCandidate current = StartState;
 
             //while (current.n<50)
@@ -96,47 +98,111 @@ namespace MolecularSynthesis.GS.Plugin
 
                 // need to save S value and n value, delete the added graph, back to StartState                                                  
                 TreeCandidate current = StartState;
-                while (current.Children.Count > 0)
-                    current = SelectPromisingNode(current);// until at leaf node               
 
-                if (current.n == 0)
+
+                // Random search
+
+
+                //------------------------------------------------------------------
+                // for random search here, first we need to determine the level of candidate in the tree, then pick a random leaf at each level  
+
+                if (i < (iteration / 2))
                 {
-                    Everystep = Rollout(current);
-                    current.S = Everystep[0];
-                    score = Everystep[1];
+                    var Levelnumber = rand.Next(1, 15);
+
+                    var Leafnumber = 0;
+                    var n = 0;
+                    while (n < Levelnumber)
+                    {
+                        if (current.Children.Count == 0)
+                        {
+                            AddNewNode(current);
+
+                        }
+                        else
+                        {
+                            Leafnumber = rand.Next(0, current.Children.Count);
+                            current = current.Children[Leafnumber];
+                            n = n + 1;
+                        }
+                    }
+
+                    //foreach (var option in current.recipe)
+                    //{
+                    //    var option0 = rulesets[0].recognize(current.graph);
+                    //    var option1 = rulesets[1].recognize(current.graph);
+                    //    if (option.optionNumber>option0.Count)
+                    //    {
+                    //        option0[option.optionNumber].apply(current.graph, null);
+
+                    //    }
+
+
+                    //    else
+
+                    //    {
+                    //        option1[option.optionNumber - option0.Count].apply(current.graph, null);
+
+                    //    }                                
+                    //}
+
+                    //var option2 = rulesets[2].recognize(current.graph);
+                    //option2[0].apply(current.graph, null);
+
+                    var resultMol = OBFunctions.designgraphtomol(current.graph);
+                    resultMol = justMinimize(resultMol);
+                    OBFunctions.updatepositions(current.graph, resultMol);
+
+                    score = Evaluation.distance(current, desiredLenghtAndRadius);
+                    BackPropogation(FindAllParents(current), current);
                 }
+
+                //--------------------------------------------------------------------
+
                 else
                 {
-                    // add all possible actions under one parent node
-                    int RS0 = 0;
-                    foreach (var option in current.recipe)
-                    {
-                        // need to recognize how many Rules from Ruleset0 exist
-                        if (option.ruleSetIndex == 0)
-                            RS0++;
-                    }
-                    // go RS0 RS2 RS1 
-                    if (RS0 < 5)
-                    {
-                        AddNewNode(current);
-                        string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
-                        MCTSProcess.Add(ChildrenInformation);
-                        current = SelectPromisingNode(current);
+                    // MCTS
+                    while (current.Children.Count > 0)
+                        current = SelectPromisingNode(current);// until at leaf node               
 
-
+                    if (current.n == 0)
+                    {
                         Everystep = Rollout(current);
                         current.S = Everystep[0];
                         score = Everystep[1];
-
                     }
                     else
                     {
-                        Everystep = Rollout(current);
-                        current.S = Everystep[0];
-                        score = Everystep[1];
+                        // add all possible actions under one parent node
+                        int RS0 = 0;
+                        foreach (var option in current.recipe)
+                        {
+                            // need to recognize how many Rules from Ruleset0 exist
+                            if (option.ruleSetIndex == 0)
+                                RS0++;
+                        }
+                        // go RS0 RS2 RS1 
+                        if (RS0 < 5)
+                        {
+                            AddNewNode(current);
+                            string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
+                            MCTSProcess.Add(ChildrenInformation);
+                            current = SelectPromisingNode(current);
+
+
+                            Everystep = Rollout(current);
+                            current.S = Everystep[0];
+                            score = Everystep[1];
+
+                        }
+                        else
+                        {
+                            Everystep = Rollout(current);
+                            current.S = Everystep[0];
+                            score = Everystep[1];
+                        }
                     }
                 }
-
                 // --------------------collect current evaluation value at each iteration-----------------
                 //var resultMol = OBFunctions.designgraphtomol(current.graph);
                 //resultMol = justMinimize(resultMol);

@@ -23,6 +23,9 @@ namespace TestOpenBabel
         public override string text => "TestBenz";
         public string filename = @"..\..\..\..\ForCiftest";
         public string extension = "xyz";
+
+
+        static double[] desiredLenghtAndRadius = new double[] { 565, 140 };
         //deault constructor
         public TestBenzRing(GlobalSettings settings) : base(settings)
         {
@@ -72,45 +75,94 @@ namespace TestOpenBabel
 
             // 6 3 6 3 2(602,68)
             // 5 2 5 2 1
+
+            // 3 3 5 3 6
+
+            // 2 2 4 2 5
+
+            //RS0 7 3 1 5 2(565,140)  RS1 option 4,9,10 (recegonize before apply everytime!!!)
+            //    6 2 0 4 1 
+            // RS0 2 5 2 2 7 --- RS1 4  (583.79, 111.58)
+            //     1 4 1 1 6         12
+
+            // RS0 7 7 5 5 ; RS1 8(17.33)
+            //     6 6 4 4 
+
+
+            // Rs0 3 7 4 6 ; RS1 7(option number 24)   (5.5 or 7)
+            //     2 6 3 5       24    
+            // 1 7 3 6 1-- 8 3 (D: 6.97)  (572,117)
+            // 0 6 2 5 0   7 2
+
+
+            // 6 5 7 1 ; 1_7 1_3
             option0 = rulesets[0].recognize(StartState.graph);
             option0[5].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[1]);
-
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[2].apply(StartState.graph, null);
             StartState.addToRecipe(option0[5]);
 
             option0 = rulesets[0].recognize(StartState.graph);
-            option0[5].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[2]);
+            option0[4].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[4]);
 
             option0 = rulesets[0].recognize(StartState.graph);
-            option0[2].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[2]);
+            option0[6].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[6]);
 
             option0 = rulesets[0].recognize(StartState.graph);
-            option0[1].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[3]);
+            option0[0].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[0]);
+
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[5].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[5]);
+
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[2].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[2]);
+
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[2].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[2]);
+
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[4].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[4]);
+
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[2].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[2]);
+
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[5].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[5]);
 
             Console.WriteLine("\n");
             Console.WriteLine("--------------------");
 
             var candidate = (TreeCandidate)StartState.copy();
 
-            foreach (var item in candidate.recipe)
-            {
-                // item.ruleSetIndex
-                // item.ruleNumber
-                Console.WriteLine("RulesetNumber: " + item.ruleSetIndex.ToString() +"    "+ "RuleNumber: "+ item.ruleNumber.ToString());
+            //foreach (var item in candidate.recipe)
+            //{
+            //    // item.ruleSetIndex
+            //    // item.ruleNumber
+            //    Console.WriteLine("RulesetNumber: " + item.ruleSetIndex.ToString() +"    "+ "RuleNumber: "+ item.ruleNumber.ToString());
 
 
 
-            }
-            Console.WriteLine("--------------------");
+            //}
+            //Console.WriteLine("--------------------");
 
             //option2 = rulesets[2].recognize(candidate.graph);
             //option2[0].apply(candidate.graph, null);
             //candidate.addToRecipe(option0[2]);
+
+            option1 = rulesets[1].recognize(StartState.graph);
+            option1[25].apply(StartState.graph, null);
+            StartState.addToRecipe(option1[25]);
+
+            //option1 = rulesets[1].recognize(StartState.graph);
+            option1[7].apply(StartState.graph, null);
+            StartState.addToRecipe(option1[7]);
 
 
             //var resultMol = OBFunctions.designgraphtomol(candidate.graph);
@@ -145,9 +197,11 @@ namespace TestOpenBabel
             SearchIO.addAndShowGraphWindow(StartState.graph);
 
             var result = Evaluation.FindLengthAndRadius(StartState.graph);
+            var score = Evaluation.distance(StartState, desiredLenghtAndRadius);
             //[0] is Length, [1] is Radius, unit is 
             SearchIO.output("Length is: " + result[0]);
             SearchIO.output("Radius is: " + result[1]);
+            SearchIO.output("distance is: " + score);
 
             //var FinalResultMol = OBFunctions.designgraphtomol(StartState.graph);
 

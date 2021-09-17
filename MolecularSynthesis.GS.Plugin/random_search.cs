@@ -24,11 +24,11 @@ namespace MolecularSynthesis.GS.Plugin
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         //static double[] desiredLenghtAndRadius = new double[] { 300, 50 };
-        static Random rnd = new Random(0);
+        static Random rnd = new Random(11);
         //static double[] desiredLenghtAndRadius = new double[] { 245.277, 89.53 };
         // RS0 R7 R3; RS1 R1 R2
 
-        static double[] desiredLenghtAndRadius = new double[] { 658.15, 94.29 };
+        static double[] desiredLenghtAndRadius = new double[] { 560, 140 };
         // RS0 R3 R4 R5 R6
 
         public random_search(GlobalSettings settings) : base(settings)
@@ -70,10 +70,13 @@ namespace MolecularSynthesis.GS.Plugin
             timer.Start();
 
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 10;
+            int TotalNumber = 3000;
             var rand = new Random();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
+
+            TreeCandidate bestCandidate = new TreeCandidate(seedCandidate);
+            bestCandidate.S = 10000000;
 
             List<string> resultCollector = new List<string>();
 
@@ -87,7 +90,7 @@ namespace MolecularSynthesis.GS.Plugin
             try
             {
 
-                Parallel.For(0, 10000, count =>
+                Parallel.For(0, TotalNumber, count =>
                 {
 
                     //for (int i = 0; i < TotalNumber; i++)
@@ -100,7 +103,7 @@ namespace MolecularSynthesis.GS.Plugin
 
 
                     // generate backbone rules
-                    var BBnumber = rand.Next(1, 10);
+                    var BBnumber = rand.Next(1, 5);
 
                     for (int j = 0; j < BBnumber; j++)
                     {
@@ -154,6 +157,13 @@ namespace MolecularSynthesis.GS.Plugin
                     OBFunctions.updatepositions(candidate.graph, resultMol);
 
                     var score = Evaluation.distance(candidate, desiredLenghtAndRadius);
+
+                    if (score < bestCandidate.S)
+                    {
+                        bestCandidate = candidate;
+                        bestCandidate.S = score;
+
+                    }
                     resultCollector.Add(score.ToString());
 
                     //----------------------------------------
@@ -184,6 +194,27 @@ namespace MolecularSynthesis.GS.Plugin
             {
                 Console.WriteLine("exc.message");
             }
+
+                        
+
+            var resultMol = OBFunctions.designgraphtomol(bestCandidate.graph);
+            resultMol = justMinimize(resultMol);
+            OBFunctions.updatepositions(bestCandidate.graph, resultMol);
+
+            var score = Evaluation.distance(bestCandidate, desiredLenghtAndRadius);
+
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine(score);
+            Console.WriteLine("---------------------------------------");
+
+            Console.WriteLine("---------------------------------------");
+            foreach (var option in bestCandidate.recipe)
+            {
+                string SolutionInformation = option.ruleSetIndex + " " + option.ruleNumber + "------------" + option.optionNumber;
+                Console.WriteLine(SolutionInformation);
+            }
+            Console.WriteLine("*******" + bestCandidate.S + "********");
+            Console.WriteLine("---------------------------------------");
 
             timer.Stop();
             TimeSpan ts = timer.Elapsed;

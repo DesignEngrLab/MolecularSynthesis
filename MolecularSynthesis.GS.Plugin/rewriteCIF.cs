@@ -41,9 +41,9 @@ using System.ComponentModel;
 
 namespace TestOpenBabel
 {
-    public class test_cif : SearchProcess
+    public class rewriteCIF : SearchProcess
     {
-        public override string text => "test_cif";
+        public override string text => "rewriteCIF";
         static readonly Dictionary<string, int> elementTabel = new Dictionary<string, int>()
         {
             {"H", 1},
@@ -55,7 +55,7 @@ namespace TestOpenBabel
             {"F", 9}
         };
         //deault constructor
-        public test_cif(GlobalSettings settings) : base(settings)
+        public rewriteCIF(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -88,84 +88,14 @@ namespace TestOpenBabel
             option2[0].apply(StartState.graph, null);
             StartState.addToRecipe(option0[2]);
 
-            var resultMol = OBFunctions.designgraphtomol(StartState.graph);
+            // its only a test, should do it after energy minimization
 
+            //var resultMol = OBFunctions.designgraphtomol(StartState.graph);
 
-
-
-
-
-            var conv = new OBConversion();
-            conv.SetInAndOutFormats("pdb", "mol");
-            var filename = "HS.mol";
-
-            // C:\Users\zhang\Desktop
-            filename = Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", filename);
-            conv.WriteFile(resultMol, filename);
-
-            //---------------------------convert.mol file to .cif file
-            string name2 = "HS.cif";
-            //name2 = convert.tostring(i) + name2;
-
-
-            using (Process proc = new Process())
-            {
-                Console.WriteLine("Converting files");
-                //"c:\program files\openbabel-3.1.1\obabel.exe"
-                //C:\Program Files (x86)\OpenBabel-3.1.1
-                proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obabel";
-                proc.StartInfo.Arguments = filename + " -O " + name2;
-                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis/examples";
-                //c:\\users\\zhang\\desktop
-                proc.StartInfo.RedirectStandardOutput = true;
-
-                proc.Start();
-
-                proc.WaitForExit();
-            }
-            //--------------------------------------------------------------
-            
-
-
-            // --------------------------------write new cif file can be used for tobacco
-
-            List<string> list = new List<string>();
-            list.Add("_symmetry_space_group_name_H-M	'P1'");
-            list.Add("_symmetry_Int_Tables_number       1");
-            list.Add("loop_");
-            list.Add("_symmetry_equiv_pos_as_xyz");
-            list.Add("'x,y,z'");
-
-            list.Add("_cell_length_a                    20.0000");
-            list.Add("_cell_length_b                    20.0000");
-            list.Add("_cell_length_c                    20.0000");
-            list.Add("_cell_angle_alpha                 90.0000");
-            list.Add("_cell_angle_beta                  90.0000");
-            list.Add("_cell_angle_gamma                 90.0000");
-
-
-            string[] lines = System.IO.File.ReadAllLines(@"/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/HS.cif");
-            List<string> list2 = lines.ToList();
-            list2.RemoveAt(0);
-            list2.RemoveAt(1);
-            list2.RemoveAt(2);
-            list2.RemoveAt(3);
-
-
-            list.AddRange(list2);
-
-            list.Add("loop_");
-            list.Add("_geom_bond_atom_site_label_1");
-            list.Add("_geom_bond_atom_site_label_2");
-            list.Add("_geom_bond_distance");
-            list.Add("_geom_bond_site_symmetry_2");
-            list.Add("_ccdc_geom_bond_type");
-
+            // write cif file based on node and arcs information                     
 
             const double scale = 1.399 / 50.0;
-
-
-
+            //StartState.graph.removeArc;
             Dictionary<string, int> nodeatomlookup = new Dictionary<string, int>(); //dictionary for looking up which nodes go to which atoms by their names
             int i = 0;
             foreach (node n in StartState.graph.nodes)
@@ -193,12 +123,71 @@ namespace TestOpenBabel
                 //mol.AddAtom(atom);
             }
 
+
+            // --------------------------------write new cif file can be used for tobacco
+
+            List<string> list = new List<string>();
+            list.Add("_symmetry_space_group_name_H-M	'P1'");
+            list.Add("_symmetry_Int_Tables_number       1");
+            list.Add("loop_");
+            list.Add("_symmetry_equiv_pos_as_xyz");
+            list.Add("'x,y,z'");
+
+            // how to calculate cell length???
+            list.Add("_cell_length_a                    20.0000");
+            list.Add("_cell_length_b                    20.0000");
+            list.Add("_cell_length_c                    20.0000");
+            list.Add("_cell_angle_alpha                 90.0000");
+            list.Add("_cell_angle_beta                  90.0000");
+            list.Add("_cell_angle_gamma                 90.0000");
+
+            list.Add("loop_");
+            list.Add("_atom_site_label");
+            list.Add("_atom_site_type_symbol");
+            list.Add("_atom_site_fract_x");
+            list.Add("_atom_site_fract_y");
+            list.Add("_atom_site_fract_z");
+
+            //  if Boundary, replace element with X
+            //  if extra, remove this node
+            foreach (node n in StartState.graph.nodes)
+            {
+                if (n.localLabels.Contains("Boundary"))
+                {
+                    n.localLabels[0] = "X";
+                }
+                else if (n.localLabels.Contains("extra"))
+                {
+                    //how to delete a node???
+                    continue;
+                }
+
+                list.Add((n.localLabels[0] + nodeatomlookup[n.name].ToString()).PadRight(8) + n.localLabels[0] + "   " + n.X.ToString().PadRight(8) + "   " + n.Y.ToString().PadRight(8) + "   " + n.Z.ToString().PadRight(8));
+            
+            }
+
+
+
+
+
+
+            list.Add("loop_");
+            list.Add("_geom_bond_atom_site_label_1");
+            list.Add("_geom_bond_atom_site_label_2");
+            list.Add("_geom_bond_distance");
+            list.Add("_geom_bond_site_symmetry_2");
+            list.Add("_ccdc_geom_bond_type");
+
+
+
+
             //  if Boundary, replace element with X
             //  if extra, remove this node
 
             foreach (arc a in StartState.graph.arcs)
             {
-
+                if (a.From.localLabels.Contains("extra") || a.To.localLabels.Contains("extra"))
+                    continue;
 
                 //list.Add(a.length.ToString());
                 if (a.localLabels.Contains("b"))

@@ -87,7 +87,7 @@ namespace MolecularSynthesis.GS.Plugin
             try
             {
 
-                Parallel.For(0, 10000, count =>
+                Parallel.For(0, 100, count =>
                 {
 
                     //for (int i = 0; i < TotalNumber; i++)
@@ -176,7 +176,7 @@ namespace MolecularSynthesis.GS.Plugin
             ts.Hours, ts.Minutes, ts.Seconds,
             ts.Milliseconds / 10);
             Console.WriteLine("RunTime " + elapsedTime);
-
+            Console.WriteLine("HSHSHSHSHSHSHSHSHS");
             System.IO.File.WriteAllLines(@"/nfs/hpc/share/zhangho2/MolecularSynthesis/examples_Kai/RandomSearchRecord.txt", resultCollector);
 
 

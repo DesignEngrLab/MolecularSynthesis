@@ -55,6 +55,7 @@ namespace MolecularSynthesis.GS.Plugin
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
             int iteration = 10;
+
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
             // 1. check if this is the leaf node, if not, go to step 2 until it is a leaf node,if yes go to step 3

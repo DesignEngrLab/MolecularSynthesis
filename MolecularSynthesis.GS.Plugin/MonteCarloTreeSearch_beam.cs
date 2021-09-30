@@ -77,6 +77,7 @@ namespace MolecularSynthesis.GS.Plugin
             int IterationTimes = 0;
             List<string> MCTSProcess = new List<string>();
             List<string> resultCollector = new List<string>();
+            List<double> calculationResult = new List<double>();
 
             var timer = new Stopwatch();
             timer.Start();
@@ -94,12 +95,16 @@ namespace MolecularSynthesis.GS.Plugin
                 TreeCandidate current = StartState;
                 while (current.Children.Count > 0)
                     current = SelectPromisingNode(current);  // until at leaf node                                                         
-                     
+
 
                 if (current.n == 0)
-                    // situation 1: leaf node , n=0 ; then go back to parent to rollout all the siblings 
-                    current.S = Rollout(current);
+                // situation 1: leaf node , n=0 ; then go back to parent to rollout all the siblings 
+                {
+                    current = current.Parent;
+                    //calculationResult = rollout(current.Children);
 
+                    current.S = Rollout(current);
+                }
                 else
                 {
                     // add all possible actions under one parent node
@@ -113,7 +118,7 @@ namespace MolecularSynthesis.GS.Plugin
                     // go RS0 RS2 RS1 
                     if (RS0 < 5)
 
-                        // situation 2 : leaf node, n !=0, and expandable ; then expand all the children and rollout all the children 
+                    // situation 2 : leaf node, n !=0, and expandable ; then expand all the children and rollout all the children 
                     {
                         AddNewNode(current);
                         string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
@@ -122,9 +127,10 @@ namespace MolecularSynthesis.GS.Plugin
                         current.S = Rollout(current);
                     }
                     else
-
+                    {
                         // situation 3: leaf node, n !=0, and not expandable ; then rollout all the siblings just like situation 1 
                         current.S = Rollout(current);
+                    }
                 }
 
                 // --------------------collect current evaluation value at each iteration-----------------

@@ -56,21 +56,21 @@ namespace TestOpenBabel
             option0[6].apply(StartState.graph, null);
             StartState.addToRecipe(option0[6]);
 
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[5].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[5]);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[5].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[5]);
 
-            option0 = rulesets[0].recognize(StartState.graph);
-            option0[1].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[1]);
+            //option0 = rulesets[0].recognize(StartState.graph);
+            //option0[1].apply(StartState.graph, null);
+            //StartState.addToRecipe(option0[1]);
 
-            option1 = rulesets[1].recognize(StartState.graph);
-            option1[3].apply(StartState.graph, null);
-            StartState.addToRecipe(option1[3]);
+            //option1 = rulesets[1].recognize(StartState.graph);
+            //option1[3].apply(StartState.graph, null);
+            //StartState.addToRecipe(option1[3]);
 
-            option1 = rulesets[1].recognize(StartState.graph);
-            option1[16].apply(StartState.graph, null);
-            StartState.addToRecipe(option1[16]);
+            //option1 = rulesets[1].recognize(StartState.graph);
+            //option1[16].apply(StartState.graph, null);
+            //StartState.addToRecipe(option1[16]);
 
             //option0 = rulesets[0].recognize(StartState.graph);
             //option0[1].apply(StartState.graph, null);
@@ -104,29 +104,29 @@ namespace TestOpenBabel
             int i = 12345678;
             string name = ".mol";
             name = Convert.ToString(i) + name;
-            conv.WriteFile(FinalResultMol, Path.Combine("C:\\Users\\zhang\\Desktop", name));
+            conv.WriteFile(FinalResultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/output", name));
 
-            string name2 = ".xyz";
-            name2 = Convert.ToString(i) + name2;
+            //string name2 = ".xyz";
+            //name2 = Convert.ToString(i) + name2;
 
-            using (Process proc = new Process())
-            {
-                //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
-                proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
-                proc.StartInfo.Arguments = name + " -O " + name2;
-                proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\Desktop";
-                //C:\Users\zhang\Desktop
-                //proc.StartInfo.RedirectStandardError = true;
-                //proc.StartInfo.UseShellExecute = false;
-                proc.StartInfo.RedirectStandardOutput = true;
-                //proc.StartInfo.RedirectStandardInput = false;
+            //using (Process proc = new Process())
+            //{
+            //    //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
+            //    proc.StartInfo.FileName = "C:\\Program Files\\OpenBabel-3.1.1\\obabel.exe";
+            //    proc.StartInfo.Arguments = name + " -O " + name2;
+            //    proc.StartInfo.WorkingDirectory = "C:\\Users\\zhang\\Desktop";
+            //    //C:\Users\zhang\Desktop
+            //    //proc.StartInfo.RedirectStandardError = true;
+            //    //proc.StartInfo.UseShellExecute = false;
+            //    proc.StartInfo.RedirectStandardOutput = true;
+            //    //proc.StartInfo.RedirectStandardInput = false;
 
-                Console.Write("starting Converting...");
-                proc.Start();
+            //    Console.Write("starting Converting...");
+            //    proc.Start();
 
-                //minimizeOutput = proc.StandardOutput.ReadToEnd();
-                proc.WaitForExit();
-            }
+            //    //minimizeOutput = proc.StandardOutput.ReadToEnd();
+            //    proc.WaitForExit();
+            //}
 
             // writing TXT file
             //List<string> list = new List<string>();
@@ -152,16 +152,16 @@ namespace TestOpenBabel
             SearchIO.output("Length is: "+ result[0]);
             SearchIO.output("Radius is: "+ result[1]);
 
-            string[] PathOfXyz = Directory.GetFiles(@"C:\Users\zhang\desktop", "*.xyz");
+            //string[] PathOfXyz = Directory.GetFiles(@"C:\Users\zhang\desktop", "*.xyz");
             //string CifFilename = Path.GetFileName(PathOfXyz[0]);
             //foreach (var namexxx in PathOfXyz)
             //{
             //    Console.WriteLine(Path.GetFileName(namexxx));
             //}
-            Console.WriteLine(Path.GetFileName(PathOfXyz[0]));
-            Console.WriteLine(Path.GetFileName(PathOfXyz[1]));
+            //Console.WriteLine(Path.GetFileName(PathOfXyz[0]));
+            //Console.WriteLine(Path.GetFileName(PathOfXyz[1]));
 
-            RunBat("C:\\Users\\zhang\\source\\repos\\PoreBlazer\\Windows\\HKUST1\\run.bat");
+            //RunBat("C:\\Users\\zhang\\source\\repos\\PoreBlazer\\Windows\\HKUST1\\run.bat");
 
             //C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\results.txt
             //string[] EvaluationResult = System.IO.File.ReadAllLines(@"C:\Users\zhang\source\repos\PoreBlazer\Windows\HKUST1\results.txt");

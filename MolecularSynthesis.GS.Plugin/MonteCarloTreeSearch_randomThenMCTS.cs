@@ -53,7 +53,7 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 100;
+            int iteration = 3000;
 
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
@@ -92,13 +92,13 @@ namespace MolecularSynthesis.GS.Plugin
             //while (current.n<50)
             for (int i = 0; i < iteration; i++)
             {
-                Console.WriteLine("-----------------------------iterationtime=", i);
+                Console.WriteLine("-----------------------------iterationtime="+ i);
                 // if abs(current.S - target value)  < stop criteria 
                 //  record this recipe
 
                 // need to save S value and n value, delete the added graph, back to StartState                                                  
+                //TreeCandidate current = (TreeCandidate)StartState.copy();
                 TreeCandidate current = StartState;
-
 
                 // Random search
 
@@ -122,32 +122,17 @@ namespace MolecularSynthesis.GS.Plugin
                         else
                         {
                             Leafnumber = rand.Next(0, current.Children.Count);
-                            current = current.Children[Leafnumber];
+                            current = (TreeCandidate)current.Children[Leafnumber].copy();
                             n = n + 1;
                         }
+                        //var resultMoltest = OBFunctions.designgraphtomol(current.graph);
+                        //resultMoltest = justMinimize(resultMoltest);
                     }
+                                       
 
-                    //foreach (var option in current.recipe)
-                    //{
-                    //    var option0 = rulesets[0].recognize(current.graph);
-                    //    var option1 = rulesets[1].recognize(current.graph);
-                    //    if (option.optionNumber>option0.Count)
-                    //    {
-                    //        option0[option.optionNumber].apply(current.graph, null);
-
-                    //    }
-
-
-                    //    else
-
-                    //    {
-                    //        option1[option.optionNumber - option0.Count].apply(current.graph, null);
-
-                    //    }                                
-                    //}
-
-                    //var option2 = rulesets[2].recognize(current.graph);
-                    //option2[0].apply(current.graph, null);
+                    var option2 = rulesets[2].recognize(current.graph);
+                    option2[0].apply(current.graph, null);
+                    current.addToRecipe(option2[0]);
 
                     var resultMol = OBFunctions.designgraphtomol(current.graph);
                     resultMol = justMinimize(resultMol);
@@ -214,9 +199,9 @@ namespace MolecularSynthesis.GS.Plugin
                 //--------------------------------------------------------------------------------------
 
                 BackPropogation(FindAllParents(current), current);
-                IterationTimes = DisplayData(IterationTimes, MCTSProcess, current);
+                //IterationTimes = DisplayData(IterationTimes, MCTSProcess, current);
             }
-            ReportFinalData(StartState, MCTSProcess);
+            //ReportFinalData(StartState, MCTSProcess);
             System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\examples\MCTSRecord.txt", resultCollector);
 
 

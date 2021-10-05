@@ -227,10 +227,10 @@ namespace MolecularSynthesis.GS.Plugin
 
             //}
 
-            double Epsilon = 0.3;
+            double Epsilon = 0.2;
 
             // greedy search begin
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 1000; i++)
             {
 
                 // generate a random number between 0-1 to determine go greedy or go random
@@ -238,7 +238,7 @@ namespace MolecularSynthesis.GS.Plugin
                 
                 var e_greedy = rand.NextDouble();
 
-                e_greedy = 0.2;
+                //e_greedy = 0.2;
                 if (e_greedy > Epsilon) // go greedy
                 {
 

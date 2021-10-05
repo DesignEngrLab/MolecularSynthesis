@@ -13,10 +13,12 @@ using System.Linq;
 using OpenBabel;
 using OpenBabelFunctions;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class MCTS : SearchProcess
+    public class RandomTreeSearch_paraVersion : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -29,7 +31,7 @@ namespace MolecularSynthesis.GS.Plugin
         // RS0 R3 R4 R5 R6
         static TreeCandidate noneparallel = new TreeCandidate(new candidate());
 
-        public MCTS(GlobalSettings settings) : base(settings)
+        public RandomTreeSearch_paraVersion(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -42,7 +44,7 @@ namespace MolecularSynthesis.GS.Plugin
         /// <value>The text.</value>
         public override string text
         {
-            get { return "MCTS"; }
+            get { return "RandomTreeSearch_paraVersion"; }
         }
         protected override void Run()
         {
@@ -53,8 +55,8 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 20000;
-            
+            int iteration = 10;
+
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
             // 1. check if this is the leaf node, if not, go to step 2 until it is a leaf node,if yes go to step 3
@@ -66,93 +68,78 @@ namespace MolecularSynthesis.GS.Plugin
             // rollout process should match linker length , add a collector to collect solutions from trees with different depth
             // change for loop to while loop, set stop criteria, like n=50
             // careful for result from evaluation, should include posive value and negative value
-
-            TreeCandidate StartState = new TreeCandidate(seedCandidate);
-
-            StartState.S = 0;
-            StartState.n = 0;
-            StartState.UCB = double.MaxValue;
-            StartState.Children = new List<TreeCandidate>();
-            StartState.Parent = null;
-
-            int IterationTimes = 0;
-            List<string> MCTSProcess = new List<string>();
-            List<string> resultCollector = new List<string>();
-
-            double[] Everystep = new double[2];
-            double score = 0;
-
             var timer = new Stopwatch();
             timer.Start();
 
-            //TreeCandidate current = StartState;
-
-            //while (current.n<50)
-            for (int i = 0; i < iteration; i++)
+            Parallel.For(0, 10, count =>
             {
-                Console.WriteLine("-----------------------------iterationtime=", i);
-                // if abs(current.S - target value)  < stop criteria 
-                //  record this recipe
 
-                // need to save S value and n value, delete the added graph, back to StartState                                                  
-                TreeCandidate current = StartState;
-                while (current.Children.Count > 0)
-                    current = SelectPromisingNode(current);// until at leaf node               
+                TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
-                if (current.n == 0)
+                StartState.S = 0;
+                StartState.n = 0;
+                StartState.UCB = double.MaxValue;
+                StartState.Children = new List<TreeCandidate>();
+                StartState.Parent = null;
+
+                int IterationTimes = 0;
+                List<string> MCTSProcess = new List<string>();
+                List<string> resultCollector = new List<string>();
+
+                double[] Everystep = new double[2];
+                double score = 0;
+
+                var rand = new Random();
+
+                //TreeCandidate current = StartState;
+
+                //while (current.n<50)
+
+                Parallel.For(0, iteration, count =>
                 {
-                    Everystep = Rollout(current);
-                    current.S = Everystep[0];
-                    score = Everystep[1];
-                }
-                else
-                {
-                    // add all possible actions under one parent node
-                    int RS0 = 0;
-                    foreach (var option in current.recipe)
-                    {
-                        // need to recognize how many Rules from Ruleset0 exist
-                        if (option.ruleSetIndex == 0)
-                            RS0++;
-                    }
-                    // go RS0 RS2 RS1 
-                    if (RS0 < 5)
-                    {
-                        AddNewNode(current);
-                        string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
-                        MCTSProcess.Add(ChildrenInformation);
-                        current = SelectPromisingNode(current);
+                    TreeCandidate current = (TreeCandidate)StartState.copy();
+                    var Levelnumber = rand.Next(1, 15);
 
+                    var Leafnumber = 0;
+                    var n = 0;
+                    while (n < Levelnumber)
+                    {
+                        if (current.Children.Count == 0)
+                        {
+                            AddNewNode(current);
 
-                        Everystep = Rollout(current);
-                        current.S = Everystep[0];
-                        score = Everystep[1];
+                        }
+                        else
+                        {
+                            Leafnumber = rand.Next(0, current.Children.Count);
+                            current = (TreeCandidate)current.Children[Leafnumber].copy();
+                            n = n + 1;
+                        }
 
                     }
-                    else
-                    {
-                        Everystep = Rollout(current);
-                        current.S = Everystep[0];
-                        score = Everystep[1];
-                    }
-                }
 
-                // --------------------collect current evaluation value at each iteration-----------------
-                //var resultMol = OBFunctions.designgraphtomol(current.graph);
-                //resultMol = justMinimize(resultMol);
-                //OBFunctions.updatepositions(current.graph, resultMol);
 
-                //var score = Evaluation.distance(current, desiredLenghtAndRadius);
-                resultCollector.Add(score.ToString());
+                    var option2 = rulesets[2].recognize(current.graph);
+                    option2[0].apply(current.graph, null);
+                    current.addToRecipe(option2[0]);
 
-                //--------------------------------------------------------------------------------------
+                    var resultMol = OBFunctions.designgraphtomol(current.graph);
+                    resultMol = justMinimize(resultMol);
+                    OBFunctions.updatepositions(current.graph, resultMol);
 
-                BackPropogation(FindAllParents(current), current);
-                //IterationTimes = DisplayData(IterationTimes, MCTSProcess, current);
-            }
-            //ReportFinalData(StartState, MCTSProcess);
-            System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\examples\MCTSRecord.txt", resultCollector);
+                    score = Evaluation.distance(current, desiredLenghtAndRadius);
+                    resultCollector.Add(score.ToString());
 
+                });
+
+                var filename = "RandomTreeSearch_data" + Thread.CurrentThread.ManagedThreadId.ToString();
+                filename = filename + ".txt";
+                System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\examples\" + filename, resultCollector);
+
+
+                //ReportFinalData(StartState, MCTSProcess);
+                //System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\examples\MCTSRecord.txt", resultCollector);
+            });
 
             timer.Stop();
             TimeSpan ts = timer.Elapsed;

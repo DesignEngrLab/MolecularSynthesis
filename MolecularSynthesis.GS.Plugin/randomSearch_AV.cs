@@ -64,17 +64,28 @@ namespace MolecularSynthesis.GS.Plugin
             var timer = new Stopwatch();
             timer.Start();
 
+            //timer.Stop();
+            //TimeSpan ts = timer.Elapsed;
+            ////string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");
+
+            //string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            //ts.Hours, ts.Minutes, ts.Seconds,
+            //ts.Milliseconds / 10);
+            //Console.WriteLine("RunTime " + elapsedTime);
+
+
+
             // Randomly generate .mol and .xyz files
-            int TotalNumber = 40;
+            int TotalNumber = 1;
             var rand = new Random(7);
             List<string> Results = new List<string>();
             List<string> Recipe = new List<string>();
 
             TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
-                Console.WriteLine("IterationTime========", i);
+                Console.WriteLine("IterationTime========"+ i);
                 var candidateThreadDictionary = new ConcurrentDictionary<candidate, int>();
 
                 Recipe.Add("---------IterationTime:" + i.ToString() + " ----------------------");
@@ -145,6 +156,13 @@ namespace MolecularSynthesis.GS.Plugin
 
                         // 2. minimize
 
+                        var timer22 = new Stopwatch();
+                        timer22.Start();
+
+                        
+
+
+
                         using (Process proc = new Process())
                         {
 
@@ -166,6 +184,17 @@ namespace MolecularSynthesis.GS.Plugin
                             minimizeOutput = proc.StandardOutput.ReadToEnd();
                             proc.WaitForExit();
                         }
+
+                        timer22.Stop();
+                        TimeSpan ts22 = timer22.Elapsed;
+                        //string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");
+
+                        string elapsedTime22 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                        ts22.Hours, ts22.Minutes, ts22.Seconds,
+                        ts22.Milliseconds / 10);
+                        Console.WriteLine("RunTime " + elapsedTime22 + "minimization");
+
+
                         lock (noneparallel)
                             conv.ReadString(resultMol, minimizeOutput);
 
@@ -189,6 +218,12 @@ namespace MolecularSynthesis.GS.Plugin
 
                         // 3. .mol to .cif
 
+                        var timer2 = new Stopwatch();
+                        timer2.Start();
+
+                        
+
+
                         using (Process proc = new Process())
                         {
 
@@ -210,7 +245,18 @@ namespace MolecularSynthesis.GS.Plugin
                             System.Console.WriteLine("CIFGeneration.jl is running");
                             proc.WaitForExit();
                         }
+
                         Console.WriteLine("Finish .mol to .cif");
+
+                        timer2.Stop();
+                        TimeSpan ts2 = timer2.Elapsed;
+                        //string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");
+
+                        string elapsedTime2 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                        ts2.Hours, ts2.Minutes, ts2.Seconds,
+                        ts2.Milliseconds / 10);
+                        Console.WriteLine("RunTime " + elapsedTime2 + " .mol to .cif");
+
                         //File.Delete("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename2);
 
                         // 3.1 move .cif to edge folder 
@@ -230,6 +276,11 @@ namespace MolecularSynthesis.GS.Plugin
 
                     Console.WriteLine("wait all thread to stop here");
                 });
+
+                var timer3 = new Stopwatch();
+                timer3.Start();
+                             
+
 
 
                 Console.WriteLine("IterationTime======== " + i.ToString());
@@ -251,6 +302,17 @@ namespace MolecularSynthesis.GS.Plugin
                     proc.WaitForExit();
                 }
                 Console.WriteLine("IterationTime========", i.ToString());
+
+                timer3.Stop();
+                TimeSpan ts3 = timer3.Elapsed;
+                //string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");
+
+                string elapsedTime3 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts3.Hours, ts3.Minutes, ts3.Seconds,
+                ts3.Milliseconds / 10);
+                Console.WriteLine("RunTime " + elapsedTime3 + "invoke tobacco");
+
+
 
                 Parallel.ForEach(candidateThreadDictionary, kvp =>
                  {
@@ -282,6 +344,12 @@ namespace MolecularSynthesis.GS.Plugin
 
                          // pcu_v1-6c_Zn_1_Ch_1-
 
+                         var timer5 = new Stopwatch();
+                         timer5.Start();
+
+                         
+
+
                          using (Process proc = new Process())
                          {
 
@@ -304,10 +372,25 @@ namespace MolecularSynthesis.GS.Plugin
                              System.Console.WriteLine("MakeCssr is running");
                              proc.WaitForExit();
                          }
+
+                         timer5.Stop();
+                         TimeSpan ts5 = timer5.Elapsed;
+                         //string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");
+
+                         string elapsedTime5 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                         ts5.Hours, ts5.Minutes, ts5.Seconds,
+                         ts5.Milliseconds / 10);
+                         Console.WriteLine("RunTime " + elapsedTime5 + "invoke MakeCssr.jl");
+
+
                          //File.Delete(position2);
 
                          // 6. invoke zeo++ to get PoresizeValue
 
+                         var timer6 = new Stopwatch();
+                         timer6.Start();
+
+                        
                          var filename5 = filename4.Split(".")[0] + ".cssr";
                          Console.WriteLine("filename5:");
                          Console.WriteLine(filename5);
@@ -344,6 +427,16 @@ namespace MolecularSynthesis.GS.Plugin
                              proc.WaitForExit();
                          }
                          File.Delete(position2);
+
+                         timer6.Stop();
+                         TimeSpan ts6 = timer6.Elapsed;
+                         //string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");
+
+                         string elapsedTime6 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                         ts6.Hours, ts6.Minutes, ts6.Seconds,
+                         ts6.Milliseconds / 10);
+                         Console.WriteLine("RunTime " + elapsedTime6 + "invoke zeo++");
+
 
                          // 7. read .res file to get poresize value
 

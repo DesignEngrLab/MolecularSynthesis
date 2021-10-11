@@ -96,7 +96,7 @@ namespace TestOpenBabel
             string position1 = "/nfs/hpc/share/zhangho2/MolecularSynthesis/output/" + name;
             string position2 = "/nfs/hpc/share/zhangho2/zeo++-0.3/" + name;
             System.IO.File.Move(position1, position2, true);
-
+            Console.WriteLine("\n");
             //2. .mol to.xyz
 
             string name2 = ".xyz";
@@ -122,7 +122,7 @@ namespace TestOpenBabel
                 proc.WaitForExit();
             }
 
-
+            Console.WriteLine("\n");
 
             // 3. get rid of two carboxylate
             string name3 = Convert.ToString(i) + "_XXX" + ".xyz";
@@ -139,22 +139,33 @@ namespace TestOpenBabel
                 proc.WaitForExit();
 
             }
+            Console.WriteLine("\n");
+            // 4. read the new xyz file and copy
 
-            // 4.  build MOF
+            string[] lines = System.IO.File.ReadAllLines(@position4);
+            System.IO.File.WriteAllLines(@"/nfs/hpc/share/zhangho2/zeo++-0.3/ForEvaluation.xyz", lines);
+            Console.WriteLine("Finish writing new .xyz file");
+            Console.WriteLine("\n");
+            
+            // 5.  build MOF
 
+
+            // ./framework_builder nets/pcu.cgd 1 output 6c_Zn_1_Ch.xyz ForEvaluation.xyz
             using (Process proc = new Process())
             {
                 proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/framework_builder";
-                proc.StartInfo.Arguments = "nets/pcu.cgd 1 output 6c_Zn_1_Ch.xyz " + name3;
-                proc.StartInfo.WorkingDirectory = this.outputDirectory;
+                proc.StartInfo.Arguments = "nets/pcu.cgd 1 output 6c_Zn_1_Ch.xyz ForEvaluation.xyz";
+                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
                 proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.RedirectStandardError = true;
                 proc.Start();
                 Console.Write("starting building...");
                 proc.WaitForExit();
 
             }
 
-            // 5. find accessible volume 
+            // 6. find accessible volume 
             using (Process proc = new Process())
             {
 

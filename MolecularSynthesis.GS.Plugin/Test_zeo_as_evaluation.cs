@@ -164,6 +164,12 @@ namespace TestOpenBabel
                 proc.WaitForExit();
 
             }
+            //  5.1 need to change the output file name for multithread
+            File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
+            System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
+
+
+
 
             // 6. find accessible volume 
             using (Process proc = new Process())
@@ -174,7 +180,7 @@ namespace TestOpenBabel
                 proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
                 //proc.StartInfo.Arguments = name + " -O " + name2;
 
-                proc.StartInfo.Arguments = " -vol 1.2 1.2 50000 " + "output_framework.cssr";
+                proc.StartInfo.Arguments = " -vol 1.2 1.2 50000 " + "IOP.cssr";
                 //C: \Users\zhang\source\repos\MolecularSynthesis\output
                 proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
                 //C:\\Users\\zhang\\Desktop
@@ -185,6 +191,29 @@ namespace TestOpenBabel
                 proc.WaitForExit();
             }
 
+            // 7. read data from relative file
+
+            
+            string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.vol");
+            string[] words = contents.Split(' ');
+            Console.WriteLine(contents);
+
+            Console.WriteLine("------------------");
+            foreach (var word in words)
+            {
+                Console.WriteLine(word);
+            }
+
+            Console.WriteLine("Accessible volume:" + words[15]);
+            Console.WriteLine("Accessible Volume Fraction:  " + words[13]);
+            //Console.WriteLine("Poresize: ", words[5]);
+            //PoreSizeValue = Convert.ToDouble(words[5]);
+            //Console.WriteLine("Poresizevalue: ", words[5]);
+
+            //Results.Add("Accessible volume: " + words[15] + "---" + ThreadNumber.ToString());
+            //Results.Add("Accessible Volume Fraction: " + words[13] + "---" + ThreadNumber.ToString());
+
+            File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr" );
 
 
 

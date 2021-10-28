@@ -22,16 +22,16 @@ using System.Reflection;
 
 namespace TestOpenBabel
 {
-    public class Test_zeo_as_evaluation_para : SearchProcess
+    public class Test_zeo_as_evaluation_para_PD : SearchProcess
     {
-        public override string text => "Test_zeo_as_evaluation_para";
+        public override string text => "Test_zeo_as_evaluation_para_PD";
         //public string filename = @"..\..\..\..\ForCiftest";
         //public string extension = "xyz";
         static Random rand = new Random();
         static TreeCandidate noneparallel = new TreeCandidate(new candidate());
 
         //deault constructor
-        public Test_zeo_as_evaluation_para(GlobalSettings settings) : base(settings)
+        public Test_zeo_as_evaluation_para_PD(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -201,7 +201,7 @@ namespace TestOpenBabel
                     proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
                     //proc.StartInfo.Arguments = name + " -O " + name2;
 
-                    proc.StartInfo.Arguments = " -vol 1.2 1.2 50000 " + finalVar;
+                    proc.StartInfo.Arguments = " -res " + finalVar;
                     //C: \Users\zhang\source\repos\MolecularSynthesis\output
                     proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
                     //C:\\Users\\zhang\\Desktop
@@ -215,7 +215,7 @@ namespace TestOpenBabel
                 // 7. read data from relative file
 
 
-                string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + ThreadNumber.ToString() + ".vol");
+                string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + ThreadNumber.ToString() + ".res");
                 string[] words = contents.Split(' ');
                 Console.WriteLine(contents);
 
@@ -225,13 +225,15 @@ namespace TestOpenBabel
                     Console.WriteLine(word);
                 }
 
-                Console.WriteLine("Accessible volume:" + words[15]);
-                Console.WriteLine("Accessible Volume Fraction:  " + words[13]);
-                Results.Add(words[15]);
-                Results.Add(words[13]);
-                ;            //Console.WriteLine("Poresize: ", words[5]);
-                             //PoreSizeValue = Convert.ToDouble(words[5]);
-                             //Console.WriteLine("Poresizevalue: ", words[5]);
+                Console.WriteLine("Pore diameter:" + words[11]);
+                Results.Add(words[11]);
+                //Console.WriteLine("Accessible volume:" + words[15]);
+                //Console.WriteLine("Accessible Volume Fraction:  " + words[13]);
+                //Results.Add(words[15]);
+                //Results.Add(words[13]);
+                //Console.WriteLine("Poresize: ", words[5]);
+                //PoreSizeValue = Convert.ToDouble(words[5]);
+                //Console.WriteLine("Poresizevalue: ", words[5]);
 
                 //Results.Add("Accessible volume: " + words[15] + "---" + ThreadNumber.ToString());
                 //Results.Add("Accessible Volume Fraction: " + words[13] + "---" + ThreadNumber.ToString());
@@ -245,7 +247,7 @@ namespace TestOpenBabel
 
 
 
-            System.IO.File.WriteAllLines(@"/nfs/hpc/share/zhangho2/zeo++-0.3/AV_result.txt", Results);
+            System.IO.File.WriteAllLines(@"/nfs/hpc/share/zhangho2/zeo++-0.3/PD_result.txt", Results);
 
 
             //-----------------------------------------------------------------------------------------------

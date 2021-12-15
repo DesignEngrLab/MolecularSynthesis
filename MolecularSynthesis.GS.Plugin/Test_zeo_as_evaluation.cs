@@ -58,13 +58,26 @@ namespace TestOpenBabel
             var option1 = rulesets[1].recognize(StartState.graph);
             var option2 = rulesets[2].recognize(StartState.graph);
 
+            // RS0 7 3 1 5 2 ; RS1 4 9 10
+            //     6 2 0 4 1       3 8  9
+            // Accessible volume:3.98412
+            // Accessible Volume Fraction: 0.81394
+
             option0 = rulesets[0].recognize(StartState.graph);
             option0[6].apply(StartState.graph, null);
             StartState.addToRecipe(option0[6]);
 
             option0 = rulesets[0].recognize(StartState.graph);
-            option0[5].apply(StartState.graph, null);
-            StartState.addToRecipe(option0[5]);
+            option0[2].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[2]);
+
+            option0 = rulesets[0].recognize(StartState.graph);
+            option0[0].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[0]);
+
+            option0 = rulesets[0].recognize(StartState.graph);
+            option0[4].apply(StartState.graph, null);
+            StartState.addToRecipe(option0[4]);
 
             option0 = rulesets[0].recognize(StartState.graph);
             option0[1].apply(StartState.graph, null);
@@ -73,6 +86,14 @@ namespace TestOpenBabel
             option1 = rulesets[1].recognize(StartState.graph);
             option1[3].apply(StartState.graph, null);
             StartState.addToRecipe(option1[3]);
+
+            option1 = rulesets[1].recognize(StartState.graph);
+            option1[8].apply(StartState.graph, null);
+            StartState.addToRecipe(option1[8]);
+
+            option1 = rulesets[1].recognize(StartState.graph);
+            option1[9].apply(StartState.graph, null);
+            StartState.addToRecipe(option1[9]);
 
             option2 = rulesets[2].recognize(StartState.graph);
             option2[0].apply(StartState.graph, null);
@@ -165,8 +186,8 @@ namespace TestOpenBabel
 
             }
             //  5.1 need to change the output file name for multithread
-            File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
-            System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
+            //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
+            //System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
 
 
 
@@ -180,7 +201,7 @@ namespace TestOpenBabel
                 proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
                 //proc.StartInfo.Arguments = name + " -O " + name2;
 
-                proc.StartInfo.Arguments = " -vol 1.2 1.2 50000 " + "IOP.cssr";
+                proc.StartInfo.Arguments = " -sa 1.2 1.2 2000 " + "output_framework.cssr";
                 //C: \Users\zhang\source\repos\MolecularSynthesis\output
                 proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
                 //C:\\Users\\zhang\\Desktop
@@ -194,7 +215,7 @@ namespace TestOpenBabel
             // 7. read data from relative file
 
             
-            string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.vol");
+            string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.sa");
             string[] words = contents.Split(' ');
             Console.WriteLine(contents);
 
@@ -204,8 +225,8 @@ namespace TestOpenBabel
                 Console.WriteLine(word);
             }
 
-            Console.WriteLine("Accessible volume:" + words[15]);
-            Console.WriteLine("Accessible Volume Fraction:  " + words[13]);
+            //Console.WriteLine("Accessible volume:" + words[15]);
+            //Console.WriteLine("Accessible Volume Fraction:  " + words[13]);
             //Console.WriteLine("Poresize: ", words[5]);
             //PoreSizeValue = Convert.ToDouble(words[5]);
             //Console.WriteLine("Poresizevalue: ", words[5]);
@@ -213,7 +234,7 @@ namespace TestOpenBabel
             //Results.Add("Accessible volume: " + words[15] + "---" + ThreadNumber.ToString());
             //Results.Add("Accessible Volume Fraction: " + words[13] + "---" + ThreadNumber.ToString());
 
-            File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr" );
+            //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr" );
 
 
 

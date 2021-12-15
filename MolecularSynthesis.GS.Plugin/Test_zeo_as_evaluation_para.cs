@@ -48,7 +48,7 @@ namespace TestOpenBabel
             stopWatch.Start();
             List<string> Results = new List<string>();
 
-            Parallel.For(0, 10, count =>
+            Parallel.For(0, 3000, count =>
             {
 
                 TreeCandidate StartState = new TreeCandidate(seedCandidate);
@@ -72,7 +72,7 @@ namespace TestOpenBabel
 
                 //List<string> Results = new List<string>();
 
-                for (int j = 0; j < 4; j++)
+                for (int j = 0; j < 6; j++)
                 {
 
 
@@ -99,9 +99,12 @@ namespace TestOpenBabel
                 conv.SetInAndOutFormats("pdb", "mol");
 
                 // 1. generate .mol file, move the zeo++ folder
-                int i = ThreadNumber;
+                //Guid.NewGuid().ToString("N");
+
+                //int i = ThreadNumber;
                 string name = ".mol";
-                name = Convert.ToString(i) + name;
+                string uniqueName = Guid.NewGuid().ToString("N");
+                name = uniqueName + name;
                 conv.WriteFile(FinalResultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/output", name));
 
                 string position1 = "/nfs/hpc/share/zhangho2/MolecularSynthesis/output/" + name;
@@ -111,7 +114,7 @@ namespace TestOpenBabel
                 //2. .mol to.xyz
 
                 string name2 = ".xyz";
-                name2 = Convert.ToString(i) + name2;
+                name2 = uniqueName + name2;
                 string position3 = "/nfs/hpc/share/zhangho2/zeo++-0.3/" + name2;
 
                 using (Process proc = new Process())
@@ -136,14 +139,14 @@ namespace TestOpenBabel
                 Console.WriteLine("\n");
 
                 // 3. get rid of two carboxylate
-                string name3 = Convert.ToString(i) + "_XXX" + ".xyz";
+                string name3 = uniqueName + "_XXX" + ".xyz";
                 string position4 = "/nfs/hpc/share/zhangho2/zeo++-0.3/" + name3;
 
                 using (Process proc = new Process())
                 {
                     proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/molecule_to_abstract";
                     proc.StartInfo.Arguments = position3 + " 0 " + position4;
-                    proc.StartInfo.WorkingDirectory = this.outputDirectory;
+                    proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
                     proc.StartInfo.RedirectStandardOutput = true;
                     proc.Start();
                     Console.Write("starting removing...");
@@ -159,7 +162,7 @@ namespace TestOpenBabel
                 Console.WriteLine("\n");
 
                 // 5.  build MOF
-                string finalVar = ThreadNumber.ToString() + ".cssr";
+                string finalVar = uniqueName + ".cssr";
 
                 // ./framework_builder nets/pcu.cgd 1 output 6c_Zn_1_Ch.xyz ForEvaluation.xyz
                 lock (noneparallel)
@@ -175,22 +178,11 @@ namespace TestOpenBabel
                         Console.Write("starting building...");
                         proc.WaitForExit();
 
-                        File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
+                        //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
                         System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
                     }
 
-                //  5.1 need to change the output file name for multithread
-
-
-
-                //string finalVar = ThreadNumber.ToString() + ".cssr";
-                //lock (noneparallel)
-                //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
-                // lock (noneparallel)
-                //System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
-
-
-
+                
                 
                 // 6. find accessible volume 
                 using (Process proc = new Process())
@@ -215,7 +207,7 @@ namespace TestOpenBabel
                 // 7. read data from relative file
 
 
-                string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + ThreadNumber.ToString() + ".vol");
+                string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + uniqueName + ".vol");
                 string[] words = contents.Split(' ');
                 Console.WriteLine(contents);
 
@@ -237,7 +229,7 @@ namespace TestOpenBabel
                 //Results.Add("Accessible Volume Fraction: " + words[13] + "---" + ThreadNumber.ToString());
 
 
-                File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar + ".cssr");
+                File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
 
             });
 
@@ -314,7 +306,7 @@ namespace TestOpenBabel
                     // C:\Program Files (x86)\OpenBabel-3.1.1
 
                     proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obminimize";
-                    proc.StartInfo.Arguments = "-ff UFF " + filename;
+                    proc.StartInfo.Arguments = "-ff GAFF " + filename;
 
                     //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                     // or '-c' convergence criteria

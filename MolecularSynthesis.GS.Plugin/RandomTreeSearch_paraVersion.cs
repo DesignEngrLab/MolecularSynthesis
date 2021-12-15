@@ -13,13 +13,12 @@ using System.Linq;
 using OpenBabel;
 using OpenBabelFunctions;
 using System.Diagnostics;
-using System;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class MCTS_para_zeo_PD : SearchProcess
+    public class RandomTreeSearch_paraVersion : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -33,7 +32,7 @@ namespace MolecularSynthesis.GS.Plugin
         // RS0 R3 R4 R5 R6
         static TreeCandidate noneparallel = new TreeCandidate(new candidate());
 
-        public MCTS_para_zeo_PD(GlobalSettings settings) : base(settings)
+        public RandomTreeSearch_paraVersion(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -46,7 +45,7 @@ namespace MolecularSynthesis.GS.Plugin
         /// <value>The text.</value>
         public override string text
         {
-            get { return "MCTS_para_zeo_PD"; }
+            get { return "RandomTreeSearch_paraVersion"; }
         }
         protected override void Run()
         {
@@ -57,7 +56,7 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 100;
+            int iteration = 3000;
 
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
@@ -70,26 +69,11 @@ namespace MolecularSynthesis.GS.Plugin
             // rollout process should match linker length , add a collector to collect solutions from trees with different depth
             // change for loop to while loop, set stop criteria, like n=50
             // careful for result from evaluation, should include posive value and negative value
-
-
-            int IterationTimes = 0;
-            List<string> MCTSProcess = new List<string>();
-            //List<string> resultCollector = new List<string>();
-
-
-
             var timer = new Stopwatch();
             timer.Start();
 
-            //TreeCandidate current = StartState;
-
-            //while (current.n<50)
-
             Parallel.For(0, 1, count =>
             {
-                //Console.WriteLine($"value of count = {count}, thread = {Thread.CurrentThread.ManagedThreadId}");
-                //Sleep the loop for 10 miliseconds
-                //Thread.Sleep(10);
 
                 TreeCandidate StartState = new TreeCandidate(seedCandidate);
 
@@ -99,80 +83,68 @@ namespace MolecularSynthesis.GS.Plugin
                 StartState.Children = new List<TreeCandidate>();
                 StartState.Parent = null;
 
+                int IterationTimes = 0;
+                List<string> MCTSProcess = new List<string>();
                 List<string> resultCollector = new List<string>();
+
                 double[] Everystep = new double[2];
                 double score = 0;
 
+                var rand = new Random();
+
+                //TreeCandidate current = StartState;
+
+                //while (current.n<50)
                 for (int i = 0; i < iteration; i++)
                 {
 
-                    Console.WriteLine("-----------------------------iterationtime=" + i.ToString());
-                    // if abs(current.S - target value)  < stop criteria 
-                    //  record this recipe
 
-                    // need to save S value and n value, delete the added graph, back to StartState                                                  
-                    TreeCandidate current = StartState;
-                    while (current.Children.Count > 0)
-                        current = SelectPromisingNode(current);// until at leaf node               
 
-                    if (current.n == 0)
+                    //Parallel.For(0, iteration, count =>
+                    //{
+                    TreeCandidate current = (TreeCandidate)StartState.copy();
+                    var Levelnumber = rand.Next(1, 15);
+
+                    var Leafnumber = 0;
+                    var n = 0;
+                    while (n < Levelnumber)
                     {
-                        Everystep = Rollout(current);
-                        current.S = Everystep[0];
-                        score = Everystep[1];
-                    }
-                    else
-                    {
-                        // add all possible actions under one parent node
-                        int RS0 = 0;
-                        foreach (var option in current.recipe)
-                        {
-                            // need to recognize how many Rules from Ruleset0 exist
-                            if (option.ruleSetIndex == 0)
-                                RS0++;
-                        }
-                        // go RS0 RS2 RS1 
-                        if (RS0 < 5)
+                        if (current.Children.Count == 0)
                         {
                             AddNewNode(current);
-                            string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
-                            MCTSProcess.Add(ChildrenInformation);
-                            current = SelectPromisingNode(current);
-
-
-                            Everystep = Rollout(current);
-                            current.S = Everystep[0];
-                            score = Everystep[1];
 
                         }
                         else
                         {
-                            Everystep = Rollout(current);
-                            current.S = Everystep[0];
-                            score = Everystep[1];
+                            Leafnumber = rand.Next(0, current.Children.Count);
+                            current = (TreeCandidate)current.Children[Leafnumber].copy();
+                            n = n + 1;
                         }
+
                     }
 
-                    // --------------------collect current evaluation value at each iteration-----------------
-                    //var resultMol = OBFunctions.designgraphtomol(current.graph);
-                    //resultMol = justMinimize(resultMol);
-                    //OBFunctions.updatepositions(current.graph, resultMol);
 
-                    //var score = Evaluation.distance(current, desiredLenghtAndRadius);
+                    var option2 = rulesets[2].recognize(current.graph);
+                    option2[0].apply(current.graph, null);
+                    current.addToRecipe(option2[0]);
+
+                    var resultMol = OBFunctions.designgraphtomol(current.graph);
+                    resultMol = justMinimize(resultMol);
+                    OBFunctions.updatepositions(current.graph, resultMol);
+
+                    score = loss(current, desiredPD);
+                    //score = Evaluation.distance(current, desiredLenghtAndRadius);
                     resultCollector.Add(score.ToString());
-
-                    //--------------------------------------------------------------------------------------
-
-                    BackPropogation(FindAllParents(current), current);
-                    //IterationTimes = DisplayData(IterationTimes, MCTSProcess, current);
-
-
-
                 }
-                //ReportFinalData(StartState, MCTSProcess);
-                var filename = "MCTS_data_forUse_e20_PD" + Thread.CurrentThread.ManagedThreadId.ToString();
+                //});
+
+                var filename = "RandomTreeSearch_data_PD" + Thread.CurrentThread.ManagedThreadId.ToString();
                 filename = filename + ".txt";
                 System.IO.File.WriteAllLines(@"/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename, resultCollector);
+
+
+                //ReportFinalData(StartState, MCTSProcess);
+                //System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\examples\MCTSRecord.txt", resultCollector);
 
             });
 
@@ -466,14 +438,15 @@ namespace MolecularSynthesis.GS.Plugin
             resultMol = justMinimize(resultMol);
             OBFunctions.updatepositions(child.graph, resultMol);
 
-            lock(noneparallel)
-                score = loss(child, desiredPD);
+            score = Evaluation.distance(child, desiredLenghtAndRadius);
 
             double[] ResultInformation = new double[2];
             ResultInformation[0] = 100000 - score;
             ResultInformation[1] = score;
 
             return ResultInformation;
+
+
 
 
             //return (double)Evaluation.TotalAtomMass(child);
@@ -565,24 +538,17 @@ namespace MolecularSynthesis.GS.Plugin
 
             return mol;
 
-
-
-
         }
 
-        //private static OBMol loss(OBMol mol)
         private static double loss(candidate child, double desiredPD)
         {
-            var score = 0;
-            int ThreadNumber = System.Threading.Thread.CurrentThread.ManagedThreadId;
-
             var FinalResultMol = OBFunctions.designgraphtomol(child.graph);
 
             var conv = new OBConversion();
             conv.SetInAndOutFormats("pdb", "mol");
 
             // 1. generate .mol file, move the zeo++ folder
-            int i = ThreadNumber;
+            int i = 911;
             string name = ".mol";
             name = Convert.ToString(i) + name;
             conv.WriteFile(FinalResultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/output", name));
@@ -642,35 +608,25 @@ namespace MolecularSynthesis.GS.Plugin
             Console.WriteLine("\n");
 
             // 5.  build MOF
-            //string finalVar = ThreadNumber.ToString() + ".cssr";
-            string finalVar = Guid.NewGuid().ToString() + ".cssr";
+
+
             // ./framework_builder nets/pcu.cgd 1 output 6c_Zn_1_Ch.xyz ForEvaluation.xyz
-            lock (noneparallel)
-                using (Process proc = new Process())
-                {
-                    proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/framework_builder";
-                    proc.StartInfo.Arguments = "nets/pcu.cgd 1 output 6c_Zn_1_Ch.xyz ForEvaluation.xyz";
-                    proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
-                    proc.StartInfo.RedirectStandardOutput = true;
-                    proc.StartInfo.UseShellExecute = false;
-                    proc.StartInfo.RedirectStandardError = true;
-                    proc.Start();
-                    Console.Write("starting building...");
-                    proc.WaitForExit();
+            using (Process proc = new Process())
+            {
+                proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/framework_builder";
+                proc.StartInfo.Arguments = "nets/pcu.cgd 1 output 6c_Zn_1_Ch.xyz ForEvaluation.xyz";
+                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.RedirectStandardError = true;
+                proc.Start();
+                Console.Write("starting building...");
+                proc.WaitForExit();
 
-                    File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
-                    System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
-                }
-
+            }
             //  5.1 need to change the output file name for multithread
-
-
-
-            //string finalVar = ThreadNumber.ToString() + ".cssr";
-            //lock (noneparallel)
-            //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
-            // lock (noneparallel)
-            //System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
+            File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
+            //System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
 
 
 
@@ -684,7 +640,7 @@ namespace MolecularSynthesis.GS.Plugin
                 proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
                 //proc.StartInfo.Arguments = name + " -O " + name2;
 
-                proc.StartInfo.Arguments = " -res " + finalVar;
+                proc.StartInfo.Arguments = " -res " + "output_framework.cssr";
                 //C: \Users\zhang\source\repos\MolecularSynthesis\output
                 proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
                 //C:\\Users\\zhang\\Desktop
@@ -698,7 +654,7 @@ namespace MolecularSynthesis.GS.Plugin
             // 7. read data from relative file
 
 
-            string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + ThreadNumber.ToString() + ".res");
+            string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.res");
             string[] words = contents.Split(' ');
             Console.WriteLine(contents);
 
@@ -708,20 +664,24 @@ namespace MolecularSynthesis.GS.Plugin
                 Console.WriteLine(word);
             }
 
-            Console.WriteLine("Pore diameter:" + words[9]);
-                     
+            //Console.WriteLine("Accessible volume:" + words[15]);
+            //Console.WriteLine("Accessible Volume Fraction:  " + words[13]);
+            //Console.WriteLine("Poresize: ", words[5]);
+            //PoreSizeValue = Convert.ToDouble(words[5]);
+            //Console.WriteLine("Poresizevalue: ", words[5]);
+
+            //Results.Add("Accessible volume: " + words[15] + "---" + ThreadNumber.ToString());
+            //Results.Add("Accessible Volume Fraction: " + words[13] + "---" + ThreadNumber.ToString());
+
+            File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
 
 
-            //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar + ".cssr");
-
-            //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar + ".cssr");
-
-
-
-            return Math.Pow(Convert.ToDouble(words[11]) - desiredPD,2);
-            
+            return Math.Pow(Convert.ToDouble(words[4]) - desiredPD, 2);
         }
+
+
     }
+
 }
 
 

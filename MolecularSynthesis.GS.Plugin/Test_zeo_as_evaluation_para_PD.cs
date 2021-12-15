@@ -48,7 +48,7 @@ namespace TestOpenBabel
             stopWatch.Start();
             List<string> Results = new List<string>();
 
-            Parallel.For(0, 10, count =>
+            Parallel.For(0, 100, count =>
             {
 
                 TreeCandidate StartState = new TreeCandidate(seedCandidate);
@@ -176,7 +176,7 @@ namespace TestOpenBabel
                         proc.WaitForExit();
 
                         File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
-                        System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
+                        //System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar);
                     }
 
                 //  5.1 need to change the output file name for multithread
@@ -201,7 +201,7 @@ namespace TestOpenBabel
                     proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
                     //proc.StartInfo.Arguments = name + " -O " + name2;
 
-                    proc.StartInfo.Arguments = " -res " + finalVar;
+                    proc.StartInfo.Arguments = " -res " + "output_framework.cssr";
                     //C: \Users\zhang\source\repos\MolecularSynthesis\output
                     proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
                     //C:\\Users\\zhang\\Desktop
@@ -215,7 +215,7 @@ namespace TestOpenBabel
                 // 7. read data from relative file
 
 
-                string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + ThreadNumber.ToString() + ".res");
+                string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/" + "output_framework.cssr.res");
                 string[] words = contents.Split(' ');
                 Console.WriteLine(contents);
 
@@ -239,7 +239,7 @@ namespace TestOpenBabel
                 //Results.Add("Accessible Volume Fraction: " + words[13] + "---" + ThreadNumber.ToString());
 
 
-                File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar + ".cssr");
+                //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/" + finalVar + ".cssr");
 
             });
 

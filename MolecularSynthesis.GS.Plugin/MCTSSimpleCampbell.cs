@@ -27,6 +27,7 @@ namespace MolecularSynthesis.GS.Plugin
         //RS0 R3 L=134;
         //static double[] desiredLenghtAndRadius = new double[] { 245.277, 89.53 };
         static Random rnd = new Random();
+        candidate bestCandidate = null;
 
         static double[] desiredLenghtAndRadius = new double[] { 565, 140 };
         static double desiredPD = 25.07296;
@@ -133,6 +134,9 @@ namespace MolecularSynthesis.GS.Plugin
 
 
             }
+
+            //save the best!!
+
             //ReportFinalData(StartState, MCTSProcess);
             var filename = "MCTS_data_forUse" + Thread.CurrentThread.ManagedThreadId.ToString();
             filename = filename + ".txt";
@@ -304,9 +308,11 @@ namespace MolecularSynthesis.GS.Plugin
             resultMol = justMinimize(resultMol);
             OBFunctions.updatepositions(child.graph, resultMol);
 
-            //score = Evaluation.distance(child, desiredLenghtAndRadius);
             var score = loss(child, desiredPD);
-            return (100000 - score, score);
+            var S = 100000 - score;
+            if (bestCandidate == null || ((TreeCandidate)bestCandidate).S < S)
+                bestCandidate = child;
+            return (S, score);
         }
         public IEnumerable<TreeCandidate> FindAllParents(TreeCandidate current)
         {

@@ -180,6 +180,6 @@ namespace GraphSynth
         D1, D2, D3, D4, D5, D6, D7, D8, D9, D0,
         A, B, C, D, E, F, G, H, I, J,
         K, L, M, N, O, P, Q, R, S, T,
-        F1, V, X
+        U, V, X, Y, Z
     }
 }

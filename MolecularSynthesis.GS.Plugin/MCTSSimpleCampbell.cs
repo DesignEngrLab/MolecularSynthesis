@@ -1,21 +1,14 @@
-using System.Collections.Generic;
-using System.Threading;
 using GraphSynth;
 using GraphSynth.Representation;
 using GraphSynth.Search;
-using Priority_Queue;
-using System;
-using System.Collections;
-using System.Security.Cryptography.X509Certificates;
-using System.IO;
-using MolecularSynthesis.GS.Plugin;
-using System.Linq;
 using OpenBabel;
 using OpenBabelFunctions;
-using System.Diagnostics;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace MolecularSynthesis.GS.Plugin
 {
@@ -31,10 +24,11 @@ namespace MolecularSynthesis.GS.Plugin
         double ExploreWeight = 50;
         static double[] desiredLenghtAndRadius = new double[] { 565, 140 };
         static double desiredPD = 25.07296;
-
-        // RS0 R3 R4 R5 R6
-        static TreeCandidate noneparallel = new TreeCandidate(new candidate());
-
+        string rootDirectory;
+        //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
+        string openBabelLocation = @"C:\Program Files\OpenBabel-3.1.1";
+        //string openBabelLocation = "/usr/local/apps/openbabel/3.1.1/bin";
+        string zeoPPLocation = "/nfs/hpc/share/zhangho2/zeo++-0.3";
         public MCTSSimpleCampbell(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
@@ -52,6 +46,7 @@ namespace MolecularSynthesis.GS.Plugin
         }
         protected override void Run()
         {
+            rootDirectory = new DirectoryInfo(this.outputDirectory).Parent.FullName;
             //var candidates = new SimplePriorityQueue<candidate, double>();
 
             // generate a random number 0 or 1 to decide the next rule is from RS0 or RS1
@@ -77,8 +72,6 @@ namespace MolecularSynthesis.GS.Plugin
             int IterationTimes = 0;
             List<string> MCTSProcess = new List<string>();
             //List<string> resultCollector = new List<string>();
-
-
 
             var timer = new Stopwatch();
             timer.Start();
@@ -140,7 +133,7 @@ namespace MolecularSynthesis.GS.Plugin
             //ReportFinalData(StartState, MCTSProcess);
             var filename = "MCTS_data_forUse" + Thread.CurrentThread.ManagedThreadId.ToString();
             filename = filename + ".txt";
-            System.IO.File.WriteAllLines(@"/nfs/hpc/share/zhangho2/MolecularSynthesis/examples/" + filename, resultCollector);
+            System.IO.File.WriteAllLines(outputDirectory + filename, resultCollector);
 
             //});
 
@@ -171,7 +164,7 @@ namespace MolecularSynthesis.GS.Plugin
                 MCTSProcess.Add(SolutionInformation);
             }
 
-            System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\output\MCTSProcessRecord.txt", MCTSProcess);
+            System.IO.File.WriteAllLines(outputDirectory + "MCTSProcessRecord.txt", MCTSProcess);
         }
 
         private int DisplayData(int IterationTimes, List<string> MCTSProcess, TreeCandidate current)
@@ -343,10 +336,9 @@ namespace MolecularSynthesis.GS.Plugin
         }
 
 
-        private static OBMol justMinimize(OBMol mol)
+        private OBMol justMinimize(OBMol mol)
         {
             var conv = new OBConversion();
-            lock (noneparallel)
                 conv.SetInAndOutFormats("pdb", "mol");
 
             //lock (noneparallel) 
@@ -354,21 +346,20 @@ namespace MolecularSynthesis.GS.Plugin
             int ThreadNumber = System.Threading.Thread.CurrentThread.ManagedThreadId;
             string filename = "Test" + ThreadNumber.ToString() + ".mol";
 
-            lock (noneparallel)
-                conv.WriteFile(mol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/examples", filename));
+                conv.WriteFile(mol, Path.Combine(outputDirectory, filename));
             string minimizeOutput;
 
             using (Process proc = new Process())
             {
                 // C:\Program Files (x86)\OpenBabel-3.1.1
 
-                proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obminimize";
+                proc.StartInfo.FileName =Path.Combine(openBabelLocation,"obminimize");
                 proc.StartInfo.Arguments = "-ff UFF " + filename;
 
                 //proc.StartInfo.Arguments = "-n200 minimize.mol"; //can add arguments here like number of iterations,
                 // or '-c' convergence criteria
                 proc.StartInfo.ErrorDialog = false;
-                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/MolecularSynthesis/examples";
+                proc.StartInfo.WorkingDirectory = outputDirectory;
                 //proc.StartInfo.RedirectStandardError = true;
                 //proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
@@ -381,7 +372,6 @@ namespace MolecularSynthesis.GS.Plugin
                 proc.WaitForExit();
 
             }
-            lock (noneparallel)
                 conv.ReadString(mol, minimizeOutput);
 
             //File.Delete("C:\\Users\\zhang\\source\\repos\\MolecularSynthesis\\examples\\"+ filename);
@@ -393,7 +383,7 @@ namespace MolecularSynthesis.GS.Plugin
 
         }
 
-        private static double loss(candidate child, double desiredPD)
+        private double loss(candidate child, double desiredPD)
         {
             var FinalResultMol = OBFunctions.designgraphtomol(child.graph);
 
@@ -405,25 +395,23 @@ namespace MolecularSynthesis.GS.Plugin
             string uniqueName = Guid.NewGuid().ToString("D");
             string name = ".mol";
             name = uniqueName + name;
-            conv.WriteFile(FinalResultMol, Path.Combine("/nfs/hpc/share/zhangho2/MolecularSynthesis/output", name));
+            conv.WriteFile(FinalResultMol, Path.Combine(outputDirectory, name));
 
-            string position1 = "/nfs/hpc/share/zhangho2/MolecularSynthesis/output/" + name;
-            string position2 = "/nfs/hpc/share/zhangho2/zeo++-0.3/" + name;
+            string position1 = Path.Combine(outputDirectory, name);
+            string position2 = Path.Combine(zeoPPLocation, name);
             System.IO.File.Move(position1, position2, true);
             Console.WriteLine("\n");
             //2. .mol to.xyz
 
             string name2 = ".xyz";
             name2 = uniqueName + name2;
-            string position3 = "/nfs/hpc/share/zhangho2/zeo++-0.3/" + name2;
+            string position3 = Path.Combine(zeoPPLocation, name2);
 
             using (Process proc = new Process())
             {
-                //"C:\Program Files\OpenBabel-3.1.1\obabel.exe"
-                proc.StartInfo.FileName = "/usr/local/apps/openbabel/3.1.1/bin/obabel";
+                proc.StartInfo.FileName = Path.Combine(openBabelLocation, "obabel");
                 proc.StartInfo.Arguments = position2 + " -O " + position3;
-                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
-                //C:\Users\zhang\Desktop
+                proc.StartInfo.WorkingDirectory = zeoPPLocation;
                 //proc.StartInfo.RedirectStandardError = true;
                 //proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
@@ -440,13 +428,13 @@ namespace MolecularSynthesis.GS.Plugin
 
             // 3. get rid of two carboxylate
             string name3 = uniqueName + "_XXX" + ".xyz";
-            string position4 = "/nfs/hpc/share/zhangho2/zeo++-0.3/" + name3;
+            string position4 = Path.Combine(zeoPPLocation, name3);
 
             using (Process proc = new Process())
             {
-                proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/molecule_to_abstract";
+                proc.StartInfo.FileName = Path.Combine(zeoPPLocation, "molecule_to_abstract");
                 proc.StartInfo.Arguments = position3 + " 0 " + position4;
-                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
+                proc.StartInfo.WorkingDirectory = zeoPPLocation;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.Start();
                 Console.Write("starting removing...");
@@ -457,7 +445,7 @@ namespace MolecularSynthesis.GS.Plugin
             // 4. read the new xyz file and copy
 
             string[] lines = System.IO.File.ReadAllLines(@position4);
-            System.IO.File.WriteAllLines(@"/nfs/hpc/share/zhangho2/zeo++-0.3/ForEvaluation.xyz", lines);
+            System.IO.File.WriteAllLines(Path.Combine(zeoPPLocation, "ForEvaluation.xyz"), lines);
             Console.WriteLine("Finish writing new .xyz file");
             Console.WriteLine("\n");
 
@@ -467,9 +455,9 @@ namespace MolecularSynthesis.GS.Plugin
             // ./framework_builder nets/pcu.cgd 1 output 6c_Zn_1_Ch.xyz ForEvaluation.xyz
             using (Process proc = new Process())
             {
-                proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/framework_builder";
+                proc.StartInfo.FileName = Path.Combine(zeoPPLocation, "framework_builder");
                 proc.StartInfo.Arguments = "nets/pcu.cgd 1 output 6c_Zn_1_Ch.xyz ForEvaluation.xyz";
-                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
+                proc.StartInfo.WorkingDirectory = zeoPPLocation;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardError = true;
@@ -479,8 +467,9 @@ namespace MolecularSynthesis.GS.Plugin
 
             }
             //  5.1 need to change the output file name for multithread
-            //File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
-            //System.IO.File.Move("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.cssr", "/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
+            //File.Delete(Path.Combine(zeoPPLocation, "IOP.cssr"));
+            //System.IO.File.Move(Path.Combine(zeoPPLocation, "output_framework.cssr"),
+            //    Path.Combine(zeoPPLocation, "IOP.cssr"));
 
 
 
@@ -488,16 +477,10 @@ namespace MolecularSynthesis.GS.Plugin
             // 6. find accessible volume 
             using (Process proc = new Process())
             {
-
-                //C: \Users\zhang\source\repos\zeo++-0.3\network
-                // /nfs/hpc/share/zhangho2/MolecularSynthesis/zeo++-0.3
-                proc.StartInfo.FileName = "/nfs/hpc/share/zhangho2/zeo++-0.3/network";
+                proc.StartInfo.FileName = Path.Combine(zeoPPLocation, "network");
                 //proc.StartInfo.Arguments = name + " -O " + name2;
-
                 proc.StartInfo.Arguments = " -res " + "output_framework.cssr";
-                //C: \Users\zhang\source\repos\MolecularSynthesis\output
-                proc.StartInfo.WorkingDirectory = "/nfs/hpc/share/zhangho2/zeo++-0.3";
-                //C:\\Users\\zhang\\Desktop
+                proc.StartInfo.WorkingDirectory = zeoPPLocation;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.StartInfo.UseShellExecute = false;
                 proc.Start();
@@ -508,7 +491,7 @@ namespace MolecularSynthesis.GS.Plugin
             // 7. read data from relative file
 
 
-            string contents = File.ReadAllText("/nfs/hpc/share/zhangho2/zeo++-0.3/output_framework.res");
+            string contents = File.ReadAllText(Path.Combine(zeoPPLocation, "output_framework.res"));
             string[] words = contents.Split(' ');
             Console.WriteLine(contents);
 
@@ -527,7 +510,7 @@ namespace MolecularSynthesis.GS.Plugin
             //Results.Add("Accessible volume: " + words[15] + "---" + ThreadNumber.ToString());
             //Results.Add("Accessible Volume Fraction: " + words[13] + "---" + ThreadNumber.ToString());
 
-            File.Delete("/nfs/hpc/share/zhangho2/zeo++-0.3/IOP.cssr");
+            File.Delete(Path.Combine(zeoPPLocation, "IOP.cssr"));
 
 
             return Math.Pow(Convert.ToDouble(words[4]) - desiredPD, 2);

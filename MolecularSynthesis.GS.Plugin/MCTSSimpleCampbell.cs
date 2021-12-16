@@ -28,7 +28,7 @@ namespace MolecularSynthesis.GS.Plugin
         //static double[] desiredLenghtAndRadius = new double[] { 245.277, 89.53 };
         static Random rnd = new Random();
         candidate bestCandidate = null;
-
+        double ExploreWeight = 50;
         static double[] desiredLenghtAndRadius = new double[] { 565, 140 };
         static double desiredPD = 25.07296;
 
@@ -224,13 +224,13 @@ namespace MolecularSynthesis.GS.Plugin
             if (child.n == 0)
                 return double.MaxValue;
             else
-                return child.S / child.n + 50 * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
+                return child.S / child.n + ExploreWeight * Math.Sqrt(Math.Log(child.Parent.n) / child.n);
         }
 
         //create the bestchild as an intermidiate variable
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
         {
-            TreeCandidate bestChild = null;
+            TreeCandidate bestChild = current;
             while (current.Children.Count != 0)
             {
                 double bestUcb = double.MinValue;

@@ -13,13 +13,10 @@ using System.Linq;
 using OpenBabel;
 using OpenBabelFunctions;
 using System.Diagnostics;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class MCTS_MonteCarloTreeSearch_paraVersion : SearchProcess
+    public class MCTS : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -32,7 +29,7 @@ namespace MolecularSynthesis.GS.Plugin
         // RS0 R3 R4 R5 R6
         static TreeCandidate noneparallel = new TreeCandidate(new candidate());
 
-        public MCTS_MonteCarloTreeSearch_paraVersion(GlobalSettings settings) : base(settings)
+        public MCTS(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -45,7 +42,7 @@ namespace MolecularSynthesis.GS.Plugin
         /// <value>The text.</value>
         public override string text
         {
-            get { return "MCTS_MonteCarloTreeSearch_paraVersion"; }
+            get { return "MCTS"; }
         }
         protected override void Run()
         {
@@ -70,12 +67,27 @@ namespace MolecularSynthesis.GS.Plugin
             // change for loop to while loop, set stop criteria, like n=50
             // careful for result from evaluation, should include posive value and negative value
 
-            
+            TreeCandidate bestCandidate = new TreeCandidate(seedCandidate);
+            bestCandidate.S = 10000000;
+
+            TreeCandidate StartState = new TreeCandidate(seedCandidate);
+
+            StartState.S = 0;
+            StartState.n = 0;
+            StartState.UCB = double.MaxValue;
+            StartState.Children = new List<TreeCandidate>();
+            StartState.Parent = null;
+
             int IterationTimes = 0;
             List<string> MCTSProcess = new List<string>();
-            //List<string> resultCollector = new List<string>();
+            List<string> resultCollector = new List<string>();
 
-            
+            //double[] Everystep = new double[2];
+            TreeCandidate Everystep= new TreeCandidate(seedCandidate);
+            Everystep.S = 0;
+            Everystep.E = 0;
+
+            double score = 0;
 
             var timer = new Stopwatch();
             timer.Start();
@@ -83,97 +95,104 @@ namespace MolecularSynthesis.GS.Plugin
             //TreeCandidate current = StartState;
 
             //while (current.n<50)
-
-            Parallel.For(0, 5, count =>
+            for (int i = 0; i < iteration; i++)
             {
-                //Console.WriteLine($"value of count = {count}, thread = {Thread.CurrentThread.ManagedThreadId}");
-                //Sleep the loop for 10 miliseconds
-                //Thread.Sleep(10);
+                Console.WriteLine("-----------------------------iterationtime=", i);
+                // if abs(current.S - target value)  < stop criteria 
+                //  record this recipe
 
-                TreeCandidate StartState = new TreeCandidate(seedCandidate);
+                // need to save S value and n value, delete the added graph, back to StartState                                                  
+                TreeCandidate current = StartState;
+                while (current.Children.Count > 0)
+                    current = SelectPromisingNode(current);// until at leaf node               
 
-                StartState.S = 0;
-                StartState.n = 0;
-                StartState.UCB = double.MaxValue;
-                StartState.Children = new List<TreeCandidate>();
-                StartState.Parent = null;
-
-                List<string> resultCollector = new List<string>();
-                double[] Everystep = new double[2];
-                double score = 0;
-
-                for (int i = 0; i < iteration; i++)
+                if (current.n == 0)
                 {
-                    
-                    Console.WriteLine("-----------------------------iterationtime="+ i.ToString());
-                    // if abs(current.S - target value)  < stop criteria 
-                    //  record this recipe
-
-                    // need to save S value and n value, delete the added graph, back to StartState                                                  
-                    TreeCandidate current = StartState;
-                    while (current.Children.Count > 0)
-                        current = SelectPromisingNode(current);// until at leaf node               
-
-                    if (current.n == 0)
+                    Everystep = Rollout(current);
+                    current.S = Everystep.S;
+                    score = Everystep.E;
+                }
+                else
+                {
+                    // add all possible actions under one parent node
+                    int RS0 = 0;
+                    foreach (var option in current.recipe)
                     {
+                        // need to recognize how many Rules from Ruleset0 exist
+                        if (option.ruleSetIndex == 0)
+                            RS0++;
+                    }
+                    // go RS0 RS2 RS1 
+                    if (RS0 < 5)
+                    {
+                        AddNewNode(current);
+                        string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
+                        MCTSProcess.Add(ChildrenInformation);
+                        current = SelectPromisingNode(current);
+
+
                         Everystep = Rollout(current);
-                        current.S = Everystep[0];
-                        score = Everystep[1];
+                        current.S = Everystep.S;
+                        score = Everystep.E;
+
                     }
                     else
                     {
-                        // add all possible actions under one parent node
-                        int RS0 = 0;
-                        foreach (var option in current.recipe)
-                        {
-                            // need to recognize how many Rules from Ruleset0 exist
-                            if (option.ruleSetIndex == 0)
-                                RS0++;
-                        }
-                        // go RS0 RS2 RS1 
-                        if (RS0 < 5)
-                        {
-                            AddNewNode(current);
-                            string ChildrenInformation = "Children number = " + current.Children.Count.ToString() + "**********";
-                            MCTSProcess.Add(ChildrenInformation);
-                            current = SelectPromisingNode(current);
-
-
-                            Everystep = Rollout(current);
-                            current.S = Everystep[0];
-                            score = Everystep[1];
-
-                        }
-                        else
-                        {
-                            Everystep = Rollout(current);
-                            current.S = Everystep[0];
-                            score = Everystep[1];
-                        }
+                        Everystep = Rollout(current);
+                        current.S = Everystep.S;
+                        score = Everystep.E;
                     }
 
-                    // --------------------collect current evaluation value at each iteration-----------------
-                    //var resultMol = OBFunctions.designgraphtomol(current.graph);
-                    //resultMol = justMinimize(resultMol);
-                    //OBFunctions.updatepositions(current.graph, resultMol);
-
-                    //var score = Evaluation.distance(current, desiredLenghtAndRadius);
-                    resultCollector.Add(score.ToString());
-
-                    //--------------------------------------------------------------------------------------
-
-                    BackPropogation(FindAllParents(current), current);
-                    //IterationTimes = DisplayData(IterationTimes, MCTSProcess, current);
-
-                    
 
                 }
-                //ReportFinalData(StartState, MCTSProcess);
-                var filename = "MCTS_data_foruse" + Thread.CurrentThread.ManagedThreadId.ToString();
-                filename = filename + ".txt";
-                System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\examples\" + filename, resultCollector);
 
-            });
+                // --------------------collect current evaluation value at each iteration-----------------
+                //var resultMol = OBFunctions.designgraphtomol(current.graph);
+                //resultMol = justMinimize(resultMol);
+                //OBFunctions.updatepositions(current.graph, resultMol);
+
+                //var score = Evaluation.distance(current, desiredLenghtAndRadius);
+
+                if (score < bestCandidate.S)
+                {
+                    bestCandidate = current;
+                    bestCandidate.S = score;
+                    bestCandidate.recipe = Everystep.recipe;
+
+                }
+                resultCollector.Add(score.ToString());
+
+                //--------------------------------------------------------------------------------------
+
+                BackPropogation(FindAllParents(current), current);
+                //IterationTimes = DisplayData(IterationTimes, MCTSProcess, current);
+            }
+            //ReportFinalData(StartState, MCTSProcess);
+            System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\examples\MCTSRecord.txt", resultCollector);
+
+
+            var resultMol = OBFunctions.designgraphtomol(bestCandidate.graph);
+            resultMol = justMinimize(resultMol);
+            OBFunctions.updatepositions(bestCandidate.graph, resultMol);
+
+            //var Bestscore = Evaluation.distance(bestCandidate, desiredLenghtAndRadius);
+
+            //Console.WriteLine("---------------------------------------");
+            //Console.WriteLine(Bestscore);
+            //Console.WriteLine("---------------------------------------");
+
+            Console.WriteLine("---------------------------------------");
+            foreach (var option in bestCandidate.recipe)
+            {
+                string SolutionInformation = option.ruleSetIndex + " " + option.ruleNumber + "------------" + option.optionNumber;
+                Console.WriteLine(SolutionInformation);
+            }
+            Console.WriteLine("*******" + bestCandidate.S + "********");
+            Console.WriteLine("---------------------------------------");
+
+
+
+
 
             timer.Stop();
             TimeSpan ts = timer.Elapsed;
@@ -357,17 +376,19 @@ namespace MolecularSynthesis.GS.Plugin
             }
         }
 
-        public double[] Rollout(TreeCandidate candidate)
+        public TreeCandidate Rollout(TreeCandidate candidate)
         {
             double score;
             int RS0 = candidate.ruleSetIndicesInRecipe.Count(rsIndex => rsIndex == 0);
             int RS1 = 0;
+
             var rand = new Random();
             TreeCandidate child = (TreeCandidate)candidate.copy();
 
+
             //------------------- look n step ahead, n euqals to 1,2,3 to ...--------------------------
 
-            int lookahead = 4;
+            int lookahead = 2;
 
             var numberOFBB = rnd.Next(1, lookahead);
 
@@ -382,7 +403,7 @@ namespace MolecularSynthesis.GS.Plugin
                 child.addToRecipe(option0[OptionNumber]);
 
             }
-
+            
             var option1 = rulesets[1].recognize(child.graph);
             var option2 = rulesets[2].recognize(child.graph);
 
@@ -398,7 +419,7 @@ namespace MolecularSynthesis.GS.Plugin
                 var PossibleFGnumber = option1.Count;
 
                 // check how many position are available
-                var totalFGnumber = lookahead - numberOFBB;
+                var totalFGnumber = lookahead- numberOFBB;
 
 
                 for (int j = 0; j < totalFGnumber; j++)
@@ -416,6 +437,7 @@ namespace MolecularSynthesis.GS.Plugin
                     {
                         break;
                     }
+
                 }
 
                 option2 = rulesets[2].recognize(child.graph);
@@ -433,10 +455,15 @@ namespace MolecularSynthesis.GS.Plugin
             //---------------------------------------------------------------------------------------------
 
 
+
+
+
+
+
             //-----------------------new rollout method-------------------------------------------
             // as long as RS0<=5 , RS0 can be 1 2 3 4 5, number of RS1 is random
 
-            //var numberOFBB = rnd.Next(RS0 + 1, 6);
+            //var numberOFBB = rnd.Next(RS0 + 1 , 6);
 
             //// generate backbone group rules
             //while (RS0 < numberOFBB)
@@ -447,6 +474,7 @@ namespace MolecularSynthesis.GS.Plugin
             //    var totalOptionNumber = option0.Count();
             //    var OptionNumber = rnd.Next(0, totalOptionNumber);
             //    option0[OptionNumber].apply(child.graph, null);
+            //    child.addToRecipe(option0[OptionNumber]);
 
             //}
 
@@ -485,6 +513,8 @@ namespace MolecularSynthesis.GS.Plugin
             //    //candidate.addToRecipe(option2[0]);
 
             //}
+
+
 
 
             //-----------------------------old rollout method----------------------------------------
@@ -532,12 +562,14 @@ namespace MolecularSynthesis.GS.Plugin
             OBFunctions.updatepositions(child.graph, resultMol);
 
             score = Evaluation.distance(child, desiredLenghtAndRadius);
-
-            double[] ResultInformation = new double[2];
-            ResultInformation[0] = 100000 - score;
-            ResultInformation[1] = score;
-
-            return ResultInformation;
+            child.S = 10000 - score;
+            child.E = score;
+            //////////////////////-----------------
+            //double[] ResultInformation = new double[2];
+            //ResultInformation[0] = 100000 - score;
+            //ResultInformation[1] = score;
+            //////////////////////----------------
+            return child;
 
 
 

@@ -16,7 +16,7 @@ using System.Diagnostics;
 
 namespace MolecularSynthesis.GS.Plugin
 {
-    public class MCTS : SearchProcess
+    public class e_greedy_treeSearch : SearchProcess
     {
         // give desiredMoment
         // [] desiredMoment = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -29,7 +29,7 @@ namespace MolecularSynthesis.GS.Plugin
         // RS0 R3 R4 R5 R6
         static TreeCandidate noneparallel = new TreeCandidate(new candidate());
 
-        public MCTS(GlobalSettings settings) : base(settings)
+        public e_greedy_treeSearch(GlobalSettings settings) : base(settings)
         {
             RequireSeed = true;
             RequiredNumRuleSets = 2;
@@ -42,7 +42,7 @@ namespace MolecularSynthesis.GS.Plugin
         /// <value>The text.</value>
         public override string text
         {
-            get { return "MCTS"; }
+            get { return "e_greedy_treeSearch"; }
         }
         protected override void Run()
         {
@@ -53,7 +53,7 @@ namespace MolecularSynthesis.GS.Plugin
             //rnd.Next(0, 2); // generate 0 or 1
 
             // use 10000 is that DS use 3000-70000 iteration for 9*9 go play , so guess 10000 is enough
-            int iteration = 20000;
+            int iteration = 3000;
             
             //TreeCandidate node1 = new TreeCandidate() { S = 0, n=0, UCB=0 };
 
@@ -97,6 +97,9 @@ namespace MolecularSynthesis.GS.Plugin
                 // need to save S value and n value, delete the added graph, back to StartState                                                  
                 TreeCandidate current = StartState;
                 while (current.Children.Count > 0)
+
+                    // use e-greedy to replace ucb value 
+
                     current = SelectPromisingNode(current);// until at leaf node               
 
                 if (current.n == 0)
@@ -151,7 +154,7 @@ namespace MolecularSynthesis.GS.Plugin
                 //IterationTimes = DisplayData(IterationTimes, MCTSProcess, current);
             }
             //ReportFinalData(StartState, MCTSProcess);
-            System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\examples\MCTSRecord.txt", resultCollector);
+            System.IO.File.WriteAllLines(@"C:\Users\zhang\source\repos\MolecularSynthesis\examples\e_greedy_0.1_test_Sn.txt", resultCollector);
 
 
             timer.Stop();
@@ -240,23 +243,63 @@ namespace MolecularSynthesis.GS.Plugin
         //create the bestchild as an intermidiate variable
         public TreeCandidate SelectPromisingNode(TreeCandidate current)
         {
+            //Random Epsilon = new Random();
+            var Epsilon = rnd.NextDouble();
+
+            
             TreeCandidate bestChild = null;
             while (current.Children.Count != 0)
             {
-                double bestUcb = double.MinValue;
-                foreach (TreeCandidate child in current.Children)
+                // use e-greedy to replace UCB
+                // 1. if e>0.3,  pick max S
+                // 2. if e<0.3, random pick
+
+                if (Epsilon > 0.1)
                 {
-                    double Ucb = CalculateUcb(child);
-                    child.UCB = Ucb;
-                    if (Ucb > bestUcb)
-                    {
-                        bestUcb = Ucb;
-                        bestChild = child;
-                    }
+                    // select randomly
+                    var randomChildNumber = rnd.Next(0, current.Children.Count) ;
+
+                    current = current.Children[randomChildNumber];
+
+
                 }
-                current = bestChild;
+
+                else
+                {
+                    // select best S
+                    double bestS = double.MinValue;
+
+                    foreach (TreeCandidate child in current.Children)
+                    {
+                        double S = child.S / (child.n+1);
+                        //child.UCB = Ucb;
+                        if (S > bestS)
+                        {
+                            bestS = S;
+                            bestChild = child;
+                        }
+                    }
+
+                    current = bestChild;
+                }
+
+
+                //double bestUcb = double.MinValue;
+                //foreach (TreeCandidate child in current.Children)
+                //{
+                //    double Ucb = CalculateUcb(child);
+                //    child.UCB = Ucb;
+                //    if (Ucb > bestUcb)
+                //    {
+                //        bestUcb = Ucb;
+                //        bestChild = child;
+                //    }
+                //}
+
+                //current = bestChild;
             }
-            return bestChild;
+
+            return current;
         }
 
         public TreeCandidate FinalRecipe(TreeCandidate StartState)
